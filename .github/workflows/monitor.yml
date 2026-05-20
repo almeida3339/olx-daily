@@ -47,5 +47,9 @@ jobs:
           git add data/
           if ! git diff --staged --quiet; then
             git commit -m "snapshots $(date -u +%Y-%m-%dT%H:%M)"
-            git push
+            for i in 1 2 3; do
+              git pull --rebase origin main && git push && break
+              echo "Tentativa $i falhou, aguardando $((i * 10))s..."
+              sleep $((i * 10))
+            done
           fi
