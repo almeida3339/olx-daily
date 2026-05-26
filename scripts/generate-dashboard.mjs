@@ -72,7 +72,7 @@ function parseReport(txt) {
   ]);
   const dateM = txt.match(/[—\-]\s*(\d{4}-\d{2}-\d{2})/);
   const date = dateM ? dateM[1] : null;
-  const newItems = extractItems(txt, /^## Novos (an[úu]ncios|produtos)/m);
+  const newItems = extractItems(txt, /^## Novos (an[úu]ncios|produtos|notebooks)/m);
   const priceItems = extractItems(txt, /^## Mudan[cç]as? de pre[cç]o/m);
   return { newCount, priceCount, date, newItems, priceItems };
 }
