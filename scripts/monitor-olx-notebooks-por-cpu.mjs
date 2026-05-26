@@ -14,6 +14,7 @@ import {
   normalizeText,
 } from "./lib/parsers.mjs";
 import { mergeWithPreviousSnapshot as _mergeItems } from "./lib/snapshot.mjs";
+import { DEFAULT_CPU_TERMS } from "./lib/cpu-terms.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const workspaceRoot = path.resolve(__dirname, "..");
@@ -33,40 +34,6 @@ const DETAIL_TIMEOUT_MS = 25_000;
 const RAW_SCROLL_DELAY_MS = Number(process.env.OLX_SCROLL_DELAY_MS ?? 350);
 const RAW_STABLE_ROUNDS = Number(process.env.OLX_STABLE_ROUNDS ?? 2);
 
-const DEFAULT_CPU_TERMS = [
-  "7945hx",
-  "255hx",
-  "13980hx",
-  "8940hx",
-  "8945hs",
-  "7940hx",
-  "13950hx",
-  "14900hx",
-  "13900hx",
-  "7845hx",
-  "8840hx",
-  "14700hx",
-  "14650hx",
-  "14500hx",
-  "hx370",
-  "13700hx",
-  "13650hx",
-  "13620h",
-  "13500hx",
-  "13450hx",
-  "7745hx",
-  "185h",
-  "7940hs",
-  "7840hs",
-  "8845hs",
-  "ai7350",
-  "12700h",
-  "12900h",
-  "155h",
-  "165h",
-  "8745hs",
-  "13700h",
-];
 
 const EXCLUDE_PATTERNS = [
   "sucata",

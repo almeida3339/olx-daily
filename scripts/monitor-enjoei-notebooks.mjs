@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { extractRamGb, extractStorageGb, textContainsCpuTerm } from "./lib/parsers.mjs";
 import { mergeWithPreviousSnapshot as mergeItems } from "./lib/snapshot.mjs";
+import { DEFAULT_CPU_TERMS } from "./lib/cpu-terms.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const automationRoot =
@@ -12,13 +13,6 @@ const automationRoot =
 const SEARCH_ENDPOINT = "https://enjusearch.enjoei.com.br/graphql-search-x";
 const SITE_ORIGIN = "https://www.enjoei.com.br";
 
-const DEFAULT_CPU_TERMS = [
-  "13620h", "13450hx", "12700h", "13650hx", "13700hx",
-  "12900h", "7845hx", "7940hs", "7840hs", "8845hs",
-  "155h", "165h", "185h", "hx370", "8940hx",
-  "13980hx", "7945hx", "14700hx", "13500hx", "13420h",
-  "7640hs", "7540u",
-];
 
 const EXCLUDE_PATTERNS = [
   "tênis", "tenis", "sandália", "sandalia", "sapato", "chinelo",
