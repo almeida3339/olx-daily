@@ -12,6 +12,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/setup-node@v4
         with:
@@ -44,17 +46,10 @@ jobs:
         run: node scripts/generate-dashboard.mjs
 
       - name: Salvar snapshots no repositorio
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # Seta URL com token explícito — evita falha 403 do credential helper
-          git remote set-url origin \
-            https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
-          # Sincroniza antes de adicionar — || evita exit 128 caso o pull falhe
-          git pull --rebase origin main \
-            || { git rebase --abort 2>/dev/null; true; }
+          git pull --rebase origin main || true
           git add data/ index.html || true
           if git diff --staged --quiet; then
             echo "Sem mudancas para commitar."
@@ -63,12 +58,11 @@ jobs:
           git commit -m "snapshots $(date -u +%Y-%m-%dT%H:%M)"
           for i in 1 2 3; do
             if git push; then
-              echo "Push realizado na tentativa $i."
+              echo "Push ok (tentativa $i)."
               exit 0
             fi
             echo "Tentativa $i falhou, aguardando $((i * 10))s..."
-            git pull --rebase origin main \
-              || { git rebase --abort 2>/dev/null; true; }
+            git pull --rebase origin main || true
             sleep $((i * 10))
           done
           echo "Falha ao fazer push apos 3 tentativas."
