@@ -1,6 +1,8 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { extractRamGb, extractStorageGb, textContainsCpuTerm } from "./lib/parsers.mjs";
+import { mergeWithPreviousSnapshot as mergeItems } from "./lib/snapshot.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const automationRoot =
@@ -15,7 +17,7 @@ const DEFAULT_CPU_TERMS = [
   "12900h", "7845hx", "7940hs", "7840hs", "8845hs",
   "155h", "165h", "185h", "hx370", "8940hx",
   "13980hx", "7945hx", "14700hx", "13500hx", "13420h",
-  "7640hs", "7540u", "1255u", "1235u", "8265u",
+  "7640hs", "7540u",
 ];
 
 const EXCLUDE_PATTERNS = [
@@ -207,38 +209,12 @@ function normalizeProduct(node, cpuTerm) {
 }
 
 function itemMatchesCpuTerm(item, term) {
-  const text = normalizeCpuText(`${item.title} ${item.brand ?? ""}`);
-  const t = normalizeCpuText(term);
-  return text.includes(t);
-}
-
-function normalizeCpuText(text) {
-  return (text ?? "").toString().toLowerCase()
-    .normalize("NFD").replace(/[̀-ͯ]/g, "")
-    .replace(/[\s\-_.]/g, "").replace(/[^a-z0-9]/g, "");
+  return textContainsCpuTerm(`${item.title} ${item.brand ?? ""}`, term);
 }
 
 function hasExcludedKeyword(text) {
   const n = (text ?? "").toLowerCase();
   return EXCLUDE_PATTERNS.some((p) => n.includes(p));
-}
-
-function extractRamGb(text) {
-  const m = (text ?? "").match(/\b(\d{1,3})\s*gb\s*(?:ram|ddr\d?)\b/i)
-    ?? (text ?? "").match(/\bram\s*:?\s*(\d{1,3})\s*gb\b/i);
-  if (!m) return null;
-  const v = Number(m[1]);
-  return v >= 2 && v <= 256 ? v : null;
-}
-
-function extractStorageGb(text) {
-  const t = (text ?? "").toLowerCase();
-  const mTb = t.match(/\b(\d+(?:[.,]\d+)?)\s*tb\b/);
-  if (mTb) return Math.round(Number(mTb[1].replace(",", ".")) * 1024);
-  const mSsd = t.match(/\b(\d{2,4})\s*(?:gb\s*)?(?:ssd|nvme|hd|m\.2)\b/)
-    ?? t.match(/\bssd\s*(\d{2,4})\s*gb\b/);
-  if (mSsd) { const v = Number(mSsd[1]); if (v >= 64 && v <= 8192) return v; }
-  return null;
 }
 
 // ── snapshot ─────────────────────────────────────────────────────────────────
@@ -247,27 +223,13 @@ function mergeWithPreviousSnapshot({ runDate, collected, previousSnapshot }) {
   const previousItems = (previousSnapshot?.items ?? []).filter(
     (i) => i.price_brl != null && i.price_brl >= minPriceBrl && i.price_brl <= maxPriceBrl
   );
-  const previousById = new Map(previousItems.map((i) => [i.id ?? i.url, i]));
-  const items = [];
-
-  for (const item of collected) {
-    const key = item.id ?? item.url;
-    const prev = previousById.get(key);
-    items.push({ ...item, first_seen: prev?.first_seen ?? runDate, last_seen: runDate });
-  }
-
-  const currentKeys = new Set(items.map((i) => i.id ?? i.url));
-  for (const prev of previousItems) {
-    if (!currentKeys.has(prev.id ?? prev.url)) {
-      items.push({ ...prev, status: "not_seen", last_seen: runDate });
-    }
-  }
-
-  return {
-    run: { date: runDate, timezone: Intl.DateTimeFormat().resolvedOptions().timeZone },
-    price_range_brl: { min: minPriceBrl, max: maxPriceBrl },
-    items,
-  };
+  return mergeItems({
+    runDate,
+    collected,
+    previousSnapshot: previousSnapshot ? { ...previousSnapshot, items: previousItems } : null,
+    priceMin: minPriceBrl,
+    priceMax: maxPriceBrl,
+  });
 }
 
 // ── relatório ─────────────────────────────────────────────────────────────────
