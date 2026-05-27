@@ -17,7 +17,7 @@ import {
 } from "../scripts/lib/parsers.mjs";
 
 import { mergeWithPreviousSnapshot } from "../scripts/lib/snapshot.mjs";
-import { formatRunLabelFromFile, parseReport } from "../scripts/generate-dashboard.mjs";
+import { formatRunLabelFromFile, parseReport, summarizeMachine } from "../scripts/generate-dashboard.mjs";
 
 // ── parseBrlPrice ─────────────────────────────────────────────────────────────
 
@@ -30,6 +30,64 @@ describe("parseBrlPrice", () => {
   test("sem símbolo retorna null", () => assert.equal(parseBrlPrice("3500"), null));
   test("null retorna null", () => assert.equal(parseBrlPrice(null), null));
   test("texto sem preço retorna null", () => assert.equal(parseBrlPrice("sem preço"), null));
+});
+
+describe("summarizeMachine", () => {
+  test("remove termos genericos e mantem a configuracao principal", () => {
+    assert.deepEqual(
+      summarizeMachine("notebook lenovo ideapad slim 3 i5-13420h 16gb ddr5 4800mhz 512 ssd nvme — 16 GB RAM / 512 GB — cpu: 13620h"),
+      {
+        brand: "Lenovo",
+        model: "Ideapad Slim 3",
+        cpu: "I5-13420H",
+        ram: "16 GB",
+        ssd: "512 GB",
+        gpu: null,
+      },
+    );
+  });
+
+  test("identifica linhas gamer sem deixar palavras promocionais no modelo", () => {
+    assert.deepEqual(
+      summarizeMachine("notebook gamer loq essential - 16 gb ram - rtx 3050 - intel core i5-12450hx — 16 GB RAM / armazenamento n/d — cpu: 13450hx"),
+      {
+        brand: "Lenovo",
+        model: "LOQ Essential",
+        cpu: "I5-12450HX",
+        ram: "16 GB",
+        ssd: "n/d",
+        gpu: "RTX 3050",
+      },
+    );
+  });
+
+  test("infere SSD solto e placa de video dedicada", () => {
+    assert.deepEqual(
+      summarizeMachine("notebook dell g15 5530 i5-13450h rtx3050 512gb cinza-grafite — RAM n/d / armazenamento n/d — cpu: 13450hx"),
+      {
+        brand: "Dell",
+        model: "G15 5530",
+        cpu: "I5-13450H",
+        ram: "n/d",
+        ssd: "512 GB",
+        gpu: "RTX 3050",
+      },
+    );
+  });
+
+  test("mantem desconhecido quando marca ou GPU nao aparecem", () => {
+    assert.deepEqual(
+      summarizeMachine("notebook premium de 14\" com tela oled 3.2k ultra 7 255h, 32gb de ram e 1tb de ssd — 32 GB RAM / 1024 GB — cpu: 255hx"),
+      {
+        brand: "n/d",
+        model: "n/d",
+        cpu: "Ultra 7 255H",
+        ram: "32 GB",
+        ssd: "1 TB",
+        gpu: null,
+      },
+    );
+  });
 });
 
 // ── extractRamGb ──────────────────────────────────────────────────────────────

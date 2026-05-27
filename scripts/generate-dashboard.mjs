@@ -16,7 +16,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   main().catch((e) => { console.error(e.message); process.exitCode = 1; });
 }
 
-export { parseReport, formatRunLabelFromFile };
+export { parseReport, formatRunLabelFromFile, summarizeMachine };
 
 async function main() {
   const [olx, premium, enjoeiNb, enjoeiNbPremium, enjoei] = await Promise.all([
@@ -105,8 +105,156 @@ function parseLine(line) {
   if (changeM) title = title.replace(changeM[0], "");
   else if (priceM) title = title.replace(priceM[0], "");
   title = title.replace(/^\s*[—–\-,\s]+/, "").replace(/[—–\-,\s]+$/, "");
-  if (title.length > 72) title = title.slice(0, 72) + "…";
-  return { title: title || "—", price, url, priceFrom, priceTo };
+  const fullTitle = title || "—";
+  const shortTitle = fullTitle.length > 72 ? fullTitle.slice(0, 72) + "…" : fullTitle;
+  return { title: shortTitle, fullTitle, price, url, priceFrom, priceTo, machine: summarizeMachine(fullTitle) };
+}
+
+function summarizeMachine(text) {
+  const [rawTitle, ...metaParts] = (text ?? "").split(/\s+[—–]\s+/).map((part) => part.trim()).filter(Boolean);
+  const title = rawTitle || text || "";
+  const meta = metaParts.join(" — ");
+  const all = `${title} ${meta}`;
+  const brand = extractBrand(title);
+  const cpu = extractCpu(title) ?? extractCpu(meta) ?? extractCpuFromMeta(meta);
+  const ram = extractRam(all);
+  const ssd = extractSsd(all);
+  const gpu = extractGpu(title) ?? extractGpu(meta);
+  const model = cleanModel(title, brand, cpu, gpu, ram, ssd);
+  return { brand, model, cpu, ram, ssd, gpu };
+}
+
+function extractBrand(text) {
+  const brands = [
+    ["Alienware", /\balienware\b/i],
+    ["Lenovo", /\blenovo\b/i],
+    ["Lenovo", /\bloq\b|\blegion\b|\bideapad\b|\bthinkpad\b/i],
+    ["Acer", /\bacer\b/i],
+    ["Acer", /\baspire\b|\bpredator\b|\bnitro\b/i],
+    ["Dell", /\bdell\b/i],
+    ["Dell", /\binspiron\b|\bxps\b/i],
+    ["Asus", /\basus\b|\brog\b|\btuf\b/i],
+    ["HP", /\bhp\b|\belitebook\b|\bomen\b/i],
+    ["Samsung", /\bsamsung\b|\bgalaxy book\b/i],
+    ["Vaio", /\bvaio\b/i],
+    ["MSI", /\bmsi\b|\btitan\b|\bkatana\b|\braider\b|\bstealth\b/i],
+    ["Gigabyte", /\bgigabyte\b|\baorus\b/i],
+    ["Avell", /\bavell\b/i],
+    ["Nave", /\bnave\b/i],
+    ["GPD", /\bgpd\b/i],
+  ];
+  return brands.find(([, re]) => re.test(text))?.[0] ?? "n/d";
+}
+
+function extractCpu(text) {
+  const patterns = [
+    /\b(?:intel\s+)?core\s+ultra\s+([579])[\s-]*(\d{3})(h|hx)?\b/i,
+    /\bultra\s+([579])[\s-]*(\d{3})(h|hx)?\b/i,
+    /\b(?:intel\s+)?core\s+([3579])[\s-]*(\d{4,5})([a-z]{0,2})\b/i,
+    /\b(?:intel\s+)?(?:core\s+)?(i[3579])[\s-]*(\d{4,5})([a-z]{0,2})\b/i,
+    /\bryzen\s+(?:ai\s+)?([3579])[\s-]*(\d{4})([a-z]{1,3})\b/i,
+    /\b(hx\s*370)\b/i,
+  ];
+  for (const re of patterns) {
+    const m = text.match(re);
+    if (!m) continue;
+    if (/hx\s*370/i.test(m[0])) return "HX 370";
+    if (/ultra/i.test(m[0])) return `Ultra ${m[1]} ${m[2]}${(m[3] ?? "h").toUpperCase()}`;
+    if (/\bcore\s+[3579]\b/i.test(m[0])) return `Core ${m[1]} ${m[2]}${(m[3] ?? "").toUpperCase()}`;
+    if (/ryzen/i.test(m[0])) return `Ryzen ${m[1]} ${m[2]}${(m[3] ?? "").toUpperCase()}`;
+    return `${m[1].toUpperCase()}-${m[2]}${(m[3] ?? "").toUpperCase()}`;
+  }
+  return null;
+}
+
+function extractCpuFromMeta(text) {
+  const m = text.match(/\bcpu:\s*([^—]+)/i);
+  if (!m) return "n/d";
+  return m[1]
+    .split(",")
+    .map((x) => x.trim().toUpperCase())
+    .filter(Boolean)
+    .slice(0, 2)
+    .join(", ") || "n/d";
+}
+
+function extractRam(text) {
+  const m = text.match(/\b(\d{1,3})\s*(?:gb|gbs)\s*(?:de\s*)?(?:ram|mem[oó]ria|ddr\d?)\b/i)
+    ?? text.match(/\b(?:ram|mem[oó]ria)\s*:?\s*(\d{1,3})\s*(?:gb|gbs)\b/i);
+  return m ? `${Number(m[1])} GB` : "n/d";
+}
+
+function extractSsd(text) {
+  const mTb = text.match(/\b(\d+(?:[\.,]\d+)?)\s*tb\b/i);
+  if (mTb) {
+    const value = Number(mTb[1].replace(",", "."));
+    return Number.isFinite(value) ? `${value.toLocaleString("pt-BR")} TB` : "n/d";
+  }
+  const mGb = text.match(/\b(\d{2,5})\s*(?:gb)?\s*(?:ssd|nvme|m\.2)\b/i)
+    ?? text.match(/\bssd\s*(?:de\s*)?(\d{2,5})\s*gb\b/i)
+    ?? text.match(/\/\s*(\d{2,5})\s*GB\b/i)
+    ?? text.match(/\b(128|256|512|1024|2048|4096)\s*gb\b/i);
+  return mGb ? `${Number(mGb[1]).toLocaleString("pt-BR")} GB` : "n/d";
+}
+
+function extractGpu(text) {
+  const patterns = [
+    /\brtx\s*(\d{4})(?:\s*(ti|super))?\b/i,
+    /\bgtx\s*(\d{4})(?:\s*(ti|super))?\b/i,
+    /\bradeon\s*(?:rx\s*)?(\d{4}[a-z]{0,2})\b/i,
+    /\barc\s*([a-z]\d{3})\b/i,
+  ];
+  for (const re of patterns) {
+    const m = text.match(re);
+    if (!m) continue;
+    if (/^rtx/i.test(m[0])) return `RTX ${m[1]}${m[2] ? ` ${m[2].toUpperCase()}` : ""}`;
+    if (/^gtx/i.test(m[0])) return `GTX ${m[1]}${m[2] ? ` ${m[2].toUpperCase()}` : ""}`;
+    if (/radeon/i.test(m[0])) return `Radeon ${m[1].toUpperCase()}`;
+    return `Arc ${m[1].toUpperCase()}`;
+  }
+  return null;
+}
+
+function cleanModel(text, brand, cpu, gpu, ram, ssd) {
+  let s = (text ?? "").toString().toLowerCase();
+  s = s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  s = s
+    .replace(/\bnotebook\b|\blaptop\b|\bgamer\b|\bpremium\b|\btop de linha\b|\btop\b|\bautentico\b|\bnovo em folha\b|\bnovinho em folha\b|\bnovo\b|\bfolha\b|\bpouco uso\b|\bbrindes?\b|\blacrado\b|\bbarato\b|\bestado de novo\b|\bcaixa original\b|\boriginal\b/gi, " ")
+    .replace(/\bryzen\s+[3579]\b/gi, " ")
+    .replace(/\bintel\b|\bcore\b|\bultra\b|\bamd\b|\bryzen\b/gi, " ")
+    .replace(/\b(i[3579])[\s-]*(\d{4,5})([a-z]{0,2})\b/gi, " ")
+    .replace(/\b[3579][\s-]*\d{4,5}(?:h|hx|hs)?\b/gi, " ")
+    .replace(/\b[3579][\s-]*\d{3}(?:h|hx)\b/gi, " ")
+    .replace(/\bai\s+[3579]\b/gi, " ")
+    .replace(/\b\d{3}hx\b/gi, " ")
+    .replace(/\b\d{3}h\b/gi, " ")
+    .replace(/\bhx\s*370\b|\bai\b/gi, " ")
+    .replace(/\b\d{4,5}(?:h|hx|hs)\b/gi, " ")
+    .replace(/\bddr\d?\b/gi, " ")
+    .replace(/\b\d{1,3}\s*(?:gb|gbs)\s*(?:de\s*)?(?:ram|memoria|ddr\d?)\b/gi, " ")
+    .replace(/\b(?:ram|memoria)\s*:?\s*\d{1,3}\s*(?:gb|gbs)\b/gi, " ")
+    .replace(/\b(?:4|6|8|12|16|24|32|64)\s*(?:gb|gbs)\b/gi, " ")
+    .replace(/\b\d+(?:[\.,]\d+)?\s*tb\b/gi, " ")
+    .replace(/\b\d{2,5}\s*(?:gb)?\s*(?:ssd|nvme|m\.2)\b/gi, " ")
+    .replace(/\b(128|256|512|1024|2048|4096)\s*gb\b/gi, " ")
+    .replace(/\bssd\s*(?:de\s*)?\d+(?:[\.,]\d+)?\s*tb\b/gi, " ")
+    .replace(/\bssd\s*(?:de\s*)?\d{2,5}\s*gb\b/gi, " ")
+    .replace(/\brtx\s*\d{4}(?:\s*(?:ti|super))?\b|\bgtx\s*\d{4}(?:\s*(?:ti|super))?\b|\bradeon\s*(?:rx\s*)?\d{4}[a-z]{0,2}\b|\barc\s*[a-z]\d{3}\b/gi, " ")
+    .replace(/\bssd\b|\bnvme\b|\bm\.2\b|\boled\b|\bram\b|\brtx\b|\bgtx\b|\braro\b|\b\d{4,5}gb\b|\b\d+(?:[,.]\d+)?k\b|\b\d{2,5}\s*mhz\b|\b\d{2,3}\s*hz\b/gi, " ")
+    .replace(/\btela\b|\btouch screen\b|\bwindows\b|\bwin\s*11\b|\bw11\b|\bfhd\b|\bips\b|\bfull hd\b|\bquad hd\b|\bquadhd\b|\bnebula\b|\bcaixa\b|\bcinza[-\s\w]*/gi, " ")
+    .replace(/\b\d{2}(?:[,.]\d)?\s*(?:\"|p|pol|polegadas)/gi, " ");
+  s = s.replace(/\bdell\b|\balienware\b|\blenovo\b|\bacer\b|\basus\b|\bhp\b|\bsamsung\b|\bgalaxy book\b|\bvaio\b|\bmsi\b|\bgigabyte\b|\bavell\b|\bnave\b|\bgpd\b/gi, " ");
+  s = s.replace(/\s*[|/(),:;.+*\-]\s*/g, " ").replace(/\s+/g, " ").trim();
+  const stopwords = new Set(["de", "do", "da", "com", "e", "em", "para", "na", "no", "a", "br"]);
+  const words = s.split(" ").filter((word) => word && !stopwords.has(word)).slice(0, 5);
+  return toTitleCase(words.join(" ")) || "n/d";
+}
+
+function toTitleCase(text) {
+  return text.replace(/\b([a-zà-ú0-9]+)\b/gi, (word) => {
+    const upperWords = new Set(["g15", "loq", "rog", "tuf", "ssd", "oled", "g11", "g16", "f15", "v15", "m16"]);
+    return upperWords.has(word.toLowerCase()) ? word.toUpperCase() : word.charAt(0).toUpperCase() + word.slice(1);
+  });
 }
 
 function formatRunLabelFromFile(file, fallbackDate) {
@@ -166,8 +314,16 @@ h1{font-size:1.3rem;color:#f0f6fc;margin-bottom:5px}
 .bn{background:#1a4a2e;color:#3fb950;border:1px solid #238636}
 .bp{background:#3d2b00;color:#e3b341;border:1px solid #9e6a03}
 .ci{padding:5px 10px 8px}
-.item{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:4px 0;border-bottom:1px solid #21262d;font-size:.78rem}
+.item{padding:7px 0;border-bottom:1px solid #21262d;font-size:.78rem}
 .item:last-child{border-bottom:none}
+.legacy-item{display:flex;align-items:center;gap:8px}
+.machine-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:5px}
+.machine-title{color:#c9d1d9;font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.machine-title a{color:#c9d1d9;text-decoration:none}
+.machine-title a:hover{color:#58a6ff;text-decoration:underline}
+.specs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 10px;color:#8b949e}
+.spec{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.spec b{color:#c9d1d9;font-weight:600}
 .it{color:#c9d1d9;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .it a{color:#c9d1d9;text-decoration:none}
 .it a:hover{color:#58a6ff;text-decoration:underline}
@@ -218,6 +374,7 @@ function renderCard(r, dpath) {
 }
 
 function renderRow(item, isPrice) {
+  if (item.machine) return renderMachineRow(item, isPrice);
   const titleHtml = item.url
     ? `<a href="${e(item.url)}" target="_blank">${e(item.title)}</a>`
     : e(item.title);
@@ -225,4 +382,25 @@ function renderRow(item, isPrice) {
     return `<div class="item"><span class="it">${titleHtml}</span><span><span class="pf">${e(item.priceFrom)}</span> → <span class="pt">${e(item.priceTo)}</span></span></div>`;
   }
   return `<div class="item"><span class="it">${titleHtml}</span>${item.price ? `<span class="ip">${e(item.price)}</span>` : ""}</div>`;
+}
+
+function renderMachineRow(item, isPrice) {
+  const m = item.machine;
+  const title = [m.brand, m.model].filter((x) => x && x !== "n/d").join(" ") || m.model || "n/d";
+  const titleHtml = item.url
+    ? `<a href="${e(item.url)}" target="_blank">${e(title)}</a>`
+    : e(title);
+  const gpu = m.gpu ?? "integrada/n/d";
+  const priceHtml = isPrice && item.priceFrom && item.priceTo
+    ? `<span><span class="pf">${e(item.priceFrom)}</span> → <span class="pt">${e(item.priceTo)}</span></span>`
+    : item.price ? `<span class="ip">${e(item.price)}</span>` : "";
+  return `<div class="item">
+  <div class="machine-head"><span class="machine-title">${titleHtml}</span>${priceHtml}</div>
+  <div class="specs">
+    <span class="spec">CPU <b>${e(m.cpu)}</b></span>
+    <span class="spec">RAM <b>${e(m.ram)}</b></span>
+    <span class="spec">SSD <b>${e(m.ssd)}</b></span>
+    <span class="spec">GPU <b>${e(gpu)}</b></span>
+  </div>
+</div>`;
 }
