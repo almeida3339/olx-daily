@@ -17,7 +17,7 @@ import {
 } from "../scripts/lib/parsers.mjs";
 
 import { mergeWithPreviousSnapshot } from "../scripts/lib/snapshot.mjs";
-import { parseReport } from "../scripts/generate-dashboard.mjs";
+import { formatRunLabelFromFile, parseReport } from "../scripts/generate-dashboard.mjs";
 
 // ── parseBrlPrice ─────────────────────────────────────────────────────────────
 
@@ -236,6 +236,10 @@ describe("parseReport", () => {
   test("newCount — OLX report", () => assert.equal(parseReport(olxReport).newCount, 3));
   test("priceCount — OLX report", () => assert.equal(parseReport(olxReport).priceCount, 2));
   test("date — extraído do cabeçalho", () => assert.equal(parseReport(olxReport).date, "2026-05-24"));
+  test("runLabel — timestamp do arquivo convertido para BRT", () =>
+    assert.equal(formatRunLabelFromFile("report-2026-05-27T19-01-42-123Z.md", "2026-05-27"), "2026-05-27 16:01"));
+  test("runLabel — report premium convertido para BRT", () =>
+    assert.equal(formatRunLabelFromFile("report-premium-2026-05-27T10-00-00-000Z.md", "2026-05-27"), "2026-05-27 07:00"));
   test("newCount — Enjoei Notebooks report", () => assert.equal(parseReport(enjoeiNbReport).newCount, 2));
   test("priceCount — Enjoei Notebooks report", () => assert.equal(parseReport(enjoeiNbReport).priceCount, 1));
   test("newItems — Enjoei Notebooks report", () => {

@@ -7,7 +7,7 @@ Monitora notebooks e tênis minimalistas em OLX e Enjoei, rodando 2x ao dia via 
 | Script | O que faz | Faixa |
 |---|---|---|
 | `monitor-olx-notebooks-por-cpu.mjs` | Busca notebooks na OLX por modelo de CPU | R$ 2.000–R$ 4.000 (+ relatório premium R$ 4.001–R$ 8.000) |
-| `monitor-enjoei-notebooks.mjs` | Busca notebooks na Enjoei por modelo de CPU | R$ 1.500–R$ 4.000 |
+| `monitor-enjoei-notebooks.mjs` | Busca notebooks na Enjoei por modelo de CPU | R$ 1.500–R$ 4.000 (+ relatório premium R$ 4.001–R$ 8.000) |
 | `monitor-enjoei-tenis.mjs` | Busca tênis minimalistas na Enjoei | até R$ 500 |
 
 ## Rodar manualmente
@@ -70,7 +70,8 @@ data/
     report-premium-*.md   ← relatório premium (R$ 4k–8k), sem notificação
     snapshot-*.json
   enjoei-notebooks/
-    report-*.md
+    report-*.md           ← relatório principal (R$ 1,5k–4k)
+    report-premium-*.md   ← relatório premium (R$ 4k–8k), sem notificação
     snapshot-*.json
   enjoei/
     report-*.md

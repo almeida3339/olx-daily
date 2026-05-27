@@ -16,13 +16,14 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   main().catch((e) => { console.error(e.message); process.exitCode = 1; });
 }
 
-export { parseReport };
+export { parseReport, formatRunLabelFromFile };
 
 async function main() {
-  const [olx, premium, enjoeiNb, enjoei] = await Promise.all([
+  const [olx, premium, enjoeiNb, enjoeiNbPremium, enjoei] = await Promise.all([
     gather(OLX_DIR, "report-", "report-premium-"),
     gather(OLX_DIR, "report-premium-", null),
-    gather(ENJOEI_NOTEBOOKS_DIR, "report-", null),
+    gather(ENJOEI_NOTEBOOKS_DIR, "report-", "report-premium-"),
+    gather(ENJOEI_NOTEBOOKS_DIR, "report-premium-", null),
     gather(ENJOEI_DIR, "report-", null),
   ]);
   const now = new Date().toLocaleString("pt-BR", {
@@ -30,7 +31,7 @@ async function main() {
     dateStyle: "full",
     timeStyle: "short",
   });
-  await fs.writeFile(OUTPUT, buildHtml({ olx, premium, enjoeiNb, enjoei, now }), "utf8");
+  await fs.writeFile(OUTPUT, buildHtml({ olx, premium, enjoeiNb, enjoeiNbPremium, enjoei, now }), "utf8");
   console.log(`Dashboard gerado: ${OUTPUT}`);
 }
 
@@ -48,7 +49,7 @@ async function gather(dir, prefix, excludePrefix) {
     const txt = await fs.readFile(path.join(dir, file), "utf8").catch(() => null);
     if (!txt) continue;
     const p = parseReport(txt);
-    if (p.newCount > 0 || p.priceCount > 0) out.push({ file, ...p });
+    if (p.newCount > 0 || p.priceCount > 0) out.push({ file, ...p, runLabel: formatRunLabelFromFile(file, p.date) });
   }
   return out;
 }
@@ -108,13 +109,32 @@ function parseLine(line) {
   return { title: title || "—", price, url, priceFrom, priceTo };
 }
 
+function formatRunLabelFromFile(file, fallbackDate) {
+  const m = file.match(/report(?:-premium)?-(\d{4})-(\d{2})-(\d{2})T(\d{2})-(\d{2})-(\d{2})-(\d{3})Z\.md$/);
+  if (!m) return fallbackDate ?? "—";
+
+  const [, year, month, day, hour, minute, second, ms] = m;
+  const date = new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}.${ms}Z`);
+  if (Number.isNaN(date.getTime())) return fallbackDate ?? "—";
+
+  return new Intl.DateTimeFormat("sv-SE", {
+    timeZone: "America/Sao_Paulo",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).format(date);
+}
+
 // ── HTML ─────────────────────────────────────────────────────────────────────
 
 function e(s) {
   return (s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
-function buildHtml({ olx, premium, enjoeiNb, enjoei, now }) {
+function buildHtml({ olx, premium, enjoeiNb, enjoeiNbPremium, enjoei, now }) {
   return `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -163,6 +183,7 @@ h1{font-size:1.3rem;color:#f0f6fc;margin-bottom:5px}
 ${renderSection("OLX Notebooks", "R$ 2.000 – R$ 4.000", olx, "data/olx")}
 ${renderSection("OLX Premium", "R$ 4.001 – R$ 8.000", premium, "data/olx")}
 ${renderSection("Enjoei Notebooks", "R$ 1.500 – R$ 4.000", enjoeiNb, "data/enjoei-notebooks")}
+${renderSection("Enjoei NB Premium", "R$ 4.001 – R$ 8.000", enjoeiNbPremium, "data/enjoei-notebooks")}
 ${renderSection("Enjoei Tênis 42", "até R$ 500,00", enjoei, "data/enjoei")}
 </div>
 </body>
@@ -189,7 +210,7 @@ function renderCard(r, dpath) {
   ].join("\n");
   return `<div class="card">
   <div class="ch">
-    <span class="cd">${e(r.date ?? "—")}<a class="rl" href="${e(url)}" target="_blank">ver completo ↗</a></span>
+    <span class="cd">${e(r.runLabel ?? r.date ?? "—")}<a class="rl" href="${e(url)}" target="_blank">ver completo ↗</a></span>
     <div class="badges">${bn}${bp}</div>
   </div>
   ${rows ? `<div class="ci">${rows}</div>` : ""}
