@@ -66,10 +66,8 @@ const args = process.argv.slice(2);
 const headless = args.includes("--headless");
 const maxAdsPerCpu = Number(getOptionValue(args, "--max-per-cpu") ?? 20);
 const debug = args.includes("--debug");
-// Default: do not open individual ads. Keep the run fast and low-risk against OLX defenses.
-// Use --open-details only when you explicitly need to validate descriptions / extract RAM from inside the ad.
-const openDetails = args.includes("--open-details");
-const listingOnly = args.includes("--listing-only") || !openDetails;
+const forceOpenDetails = args.includes("--open-details");
+const listingOnly = args.includes("--listing-only");
 const cpuArg = getOptionValue(args, "--cpu");
 const cpuTerms = cpuArg ? cpuArg.split(",").map((s) => s.trim().toLowerCase()).filter(Boolean) : DEFAULT_CPU_TERMS;
 const useCurrentChrome = args.includes("--current-chrome");
@@ -310,22 +308,30 @@ async function collectForCpuTerm(page, cpuTerm, maxCards, previousSnapshot) {
   const validated = [];
   for (let index = 0; index < toOpen.length; index += 1) {
     const card = toOpen[index];
+    const listingItem = listingCardToItem(card);
+    const shouldOpen = forceOpenDetails || needsDetailEnrichment(listingItem);
+    if (!shouldOpen) {
+      validated.push(listingItem);
+      if (validated.length >= maxCards) break;
+      continue;
+    }
     if (debug) {
       console.log(`  Abrindo candidato ${index + 1}/${toOpen.length}: R$ ${card.price_brl} - ${card.title}`);
     }
     try {
       const reusable = getReusablePreviousEnrichedItem(previousSnapshot, card);
-      if (reusable) {
+      if (reusable && (!needsDetailEnrichment(reusable) || forceOpenDetails)) {
         validated.push(reusable);
         if (validated.length >= maxCards) break;
         continue;
       }
       const enriched = await withTimeout(enrichAd(page, card), DETAIL_TIMEOUT_MS, `timeout ao abrir anúncio ${card.url}`);
-      if (!enriched) continue;
-      validated.push(enriched);
+      validated.push(enriched ?? listingItem);
       if (validated.length >= maxCards) break;
     } catch (error) {
       console.warn(`  Aviso: pulei anúncio por falha (${error.message}): ${card.url}`);
+      validated.push(listingItem);
+      if (validated.length >= maxCards) break;
     }
   }
 
@@ -371,21 +377,30 @@ async function collectForCpuTermRawCdp(tab, cpuTerm, maxCards, previousSnapshot)
     const validated = [];
     for (let index = 0; index < toOpen.length; index += 1) {
       const card = toOpen[index];
+      const listingItem = listingCardToItem(card);
+      const shouldOpen = forceOpenDetails || needsDetailEnrichment(listingItem);
+      if (!shouldOpen) {
+        validated.push(listingItem);
+        if (validated.length >= maxCards) break;
+        continue;
+      }
       if (debug) {
         console.log(`  Abrindo candidato ${index + 1}/${toOpen.length}: R$ ${card.price_brl} - ${card.title}`);
       }
       try {
         const reusable = getReusablePreviousEnrichedItem(previousSnapshot, card);
-        if (reusable) {
+        if (reusable && (!needsDetailEnrichment(reusable) || forceOpenDetails)) {
           validated.push(reusable);
           if (validated.length >= maxCards) break;
           continue;
         }
         const enriched = await enrichAdRawCdp(cdpUrl, card);
-        if (enriched) validated.push(enriched);
+        validated.push(enriched ?? listingItem);
         if (validated.length >= maxCards) break;
       } catch (error) {
         console.warn(`  Aviso: pulei anúncio por falha (${error.message}): ${card.url}`);
+        validated.push(listingItem);
+        if (validated.length >= maxCards) break;
       }
     }
     return validated.sort((a, b) => (a.price_brl ?? 0) - (b.price_brl ?? 0));
@@ -586,6 +601,10 @@ function listingCardToItem(card) {
     last_seen: null,
     notes: listingOnly ? "Validado apenas pela página de listagem; descrição do anúncio não foi aberta." : null,
   };
+}
+
+function needsDetailEnrichment(item) {
+  return item.ram_gb == null || item.storage_gb == null;
 }
 
 function getReusablePreviousEnrichedItem(previousSnapshot, card) {
@@ -960,8 +979,7 @@ function buildReport({ runDate, snapshot, previousSnapshot, priceMin, priceMax }
   if (priceChanges.length > 0) {
     lines.push("## Mudanças de preço");
     for (const change of priceChanges.sort((a, b) => (a.to ?? 0) - (b.to ?? 0))) {
-      const item = change.item;
-      lines.push(`- R$ ${change.from.toLocaleString("pt-BR")} → R$ ${change.to.toLocaleString("pt-BR")} — ${item.title} (${item.cpu_term}) — ${item.url}`);
+      lines.push(formatPriceChangeLine(change));
     }
     lines.push("");
   }
@@ -987,10 +1005,18 @@ function buildReport({ runDate, snapshot, previousSnapshot, priceMin, priceMax }
 }
 
 function formatItemLine(item) {
+  return `- R$ ${item.price_brl.toLocaleString("pt-BR")} — ${formatItemDetails(item)}`;
+}
+
+function formatPriceChangeLine(change) {
+  return `- R$ ${change.from.toLocaleString("pt-BR")} → R$ ${change.to.toLocaleString("pt-BR")} — ${formatItemDetails(change.item)}`;
+}
+
+function formatItemDetails(item) {
   const ram = item.ram_gb ? `${item.ram_gb} GB RAM` : "RAM n/d";
   const storage = item.storage_gb ? `${item.storage_gb} GB` : "SSD/HD n/d";
   const location = item.location ? ` — ${item.location}` : "";
-  return `- R$ ${item.price_brl.toLocaleString("pt-BR")} — ${item.title} (${item.cpu_term}) — ${ram} / ${storage}${location} — ${item.url}`;
+  return `${item.title} (${item.cpu_term}) — ${ram} / ${storage}${location} — ${item.url}`;
 }
 
 function mergeWithPreviousSnapshot({ runDate, collected, previousSnapshot }) {
@@ -1091,9 +1117,7 @@ function buildPremiumReport({ runDate, snapshot, previousSnapshot, cheapCpuTerms
   if (priceChanges.length > 0) {
     lines.push("## Mudanças de preço");
     for (const change of priceChanges.sort((a, b) => (a.to ?? 0) - (b.to ?? 0))) {
-      lines.push(
-        `- R$ ${change.from.toLocaleString("pt-BR")} → R$ ${change.to.toLocaleString("pt-BR")} — ${change.item.title} (${change.item.cpu_term}) — ${change.item.url}`
-      );
+      lines.push(formatPriceChangeLine(change));
     }
     lines.push("");
   }

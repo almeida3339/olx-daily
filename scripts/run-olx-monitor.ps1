@@ -2,6 +2,7 @@ param(
   [int]$Port = 9222,
   [int]$MaxPerCpu = 12,
   [switch]$OpenDetails,
+  [switch]$ListingOnly,
   [switch]$Foreground,
   [switch]$ForceRestartChrome
 )
@@ -61,13 +62,15 @@ $npmArgs = @(
   "--",
   "--current-chrome",
   "--max-per-cpu",
-  "$MaxPerCpu",
-  "--listing-only"
+  "$MaxPerCpu"
 )
 
 if ($OpenDetails) {
-  $npmArgs = $npmArgs | Where-Object { $_ -ne "--listing-only" }
   $npmArgs += "--open-details"
+}
+
+if ($ListingOnly) {
+  $npmArgs += "--listing-only"
 }
 
 Push-Location $root

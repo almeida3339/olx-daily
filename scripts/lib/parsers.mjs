@@ -25,6 +25,7 @@ export function extractRamGb(text) {
   const patterns = [
     /\b(\d{1,3})\s*gb\s*(?:de\s*)?(?:ram|mem[oó]ria)\b/i,
     /\b(?:ram|mem[oó]ria)\s*:?\s*(\d{1,3})\s*gb\b/i,
+    /\b(?:mem[oó]ria\s+ram|ram|mem[oó]ria)\s*[:\r\n-]+\s*(\d{1,3})\s*gb\b/i,
     /\b(\d{1,3})\s*gb\s*ddr\d\b/i,
   ];
   for (const re of patterns) {
@@ -53,6 +54,11 @@ export function extractStorageGb(text) {
   const mGb = t.match(/\b(\d{2,5})\s*(?:gb\s*)?(?:ssd|hd|nvme|m\.2|armazenamento|storage)\b/);
   if (mGb) {
     const gb = Number(mGb[1]);
+    if (Number.isFinite(gb) && gb >= 64 && gb <= 8192) return gb;
+  }
+  const mStorage = t.match(/\b(?:armazenamento|storage|ssd|hd)\s*[:\r\n-]+\s*(\d{2,5})\s*gb\b/);
+  if (mStorage) {
+    const gb = Number(mStorage[1]);
     if (Number.isFinite(gb) && gb >= 64 && gb <= 8192) return gb;
   }
   const mSsd = t.match(/\bssd\s*(\d{2,5})\s*gb\b/);

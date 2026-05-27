@@ -291,12 +291,12 @@ function buildHtml({ olx, premium, enjoeiNb, enjoeiNbPremium, enjoei, now }) {
 <title>Monitor Notebooks &amp; Tênis</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;font-size:14px;line-height:1.5;padding:28px 20px;max-width:1200px;margin:0 auto}
+body{background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;font-size:14px;line-height:1.5;padding:28px 24px;max-width:1680px;margin:0 auto}
 h1{font-size:1.3rem;color:#f0f6fc;margin-bottom:5px}
 .meta{color:#8b949e;font-size:.8rem;margin-bottom:28px}
 .meta a{color:#58a6ff;text-decoration:none}
 .meta a:hover{text-decoration:underline}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px;align-items:start}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:18px;align-items:start}
 .sec{background:#161b22;border:1px solid #30363d;border-radius:8px;overflow:hidden}
 .sh{padding:14px 16px 10px;border-bottom:1px solid #21262d}
 .sh h2{font-size:.9rem;font-weight:600;color:#f0f6fc}
