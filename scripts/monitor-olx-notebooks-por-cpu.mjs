@@ -310,6 +310,12 @@ async function collectForCpuTerm(page, cpuTerm, maxCards, previousSnapshot) {
   for (let index = 0; index < toOpen.length; index += 1) {
     const card = toOpen[index];
     const listingItem = listingCardToItem(card);
+    const reusable = forceOpenDetails ? null : getReusablePreviousEnrichedItem(previousSnapshot, card);
+    if (reusable) {
+      validated.push(reusable);
+      if (validated.length >= maxCards) break;
+      continue;
+    }
     const shouldOpen = forceOpenDetails || needsDetailEnrichment(listingItem);
     if (!shouldOpen) {
       validated.push(listingItem);
@@ -320,12 +326,6 @@ async function collectForCpuTerm(page, cpuTerm, maxCards, previousSnapshot) {
       console.log(`  Abrindo candidato ${index + 1}/${toOpen.length}: R$ ${card.price_brl} - ${card.title}`);
     }
     try {
-      const reusable = getReusablePreviousEnrichedItem(previousSnapshot, card);
-      if (reusable && (!needsDetailEnrichment(reusable) || forceOpenDetails)) {
-        validated.push(reusable);
-        if (validated.length >= maxCards) break;
-        continue;
-      }
       const enriched = await withTimeout(enrichAd(page, card), DETAIL_TIMEOUT_MS, `timeout ao abrir anúncio ${card.url}`);
       validated.push(enriched ?? listingItem);
       if (validated.length >= maxCards) break;
@@ -379,6 +379,12 @@ async function collectForCpuTermRawCdp(tab, cpuTerm, maxCards, previousSnapshot)
     for (let index = 0; index < toOpen.length; index += 1) {
       const card = toOpen[index];
       const listingItem = listingCardToItem(card);
+      const reusable = forceOpenDetails ? null : getReusablePreviousEnrichedItem(previousSnapshot, card);
+      if (reusable) {
+        validated.push(reusable);
+        if (validated.length >= maxCards) break;
+        continue;
+      }
       const shouldOpen = forceOpenDetails || needsDetailEnrichment(listingItem);
       if (!shouldOpen) {
         validated.push(listingItem);
@@ -389,12 +395,6 @@ async function collectForCpuTermRawCdp(tab, cpuTerm, maxCards, previousSnapshot)
         console.log(`  Abrindo candidato ${index + 1}/${toOpen.length}: R$ ${card.price_brl} - ${card.title}`);
       }
       try {
-        const reusable = getReusablePreviousEnrichedItem(previousSnapshot, card);
-        if (reusable && (!needsDetailEnrichment(reusable) || forceOpenDetails)) {
-          validated.push(reusable);
-          if (validated.length >= maxCards) break;
-          continue;
-        }
         const enriched = await enrichAdRawCdp(cdpUrl, card);
         validated.push(enriched ?? listingItem);
         if (validated.length >= maxCards) break;
@@ -609,7 +609,8 @@ function listingCardToItem(card) {
 }
 
 function needsDetailEnrichment(item) {
-  return item.ram_gb == null || item.storage_gb == null || item.gpu == null;
+  // GPU is opportunistic: capture it from listing or cached details, but do not open an ad only for GPU.
+  return item.ram_gb == null || item.storage_gb == null;
 }
 
 function getReusablePreviousEnrichedItem(previousSnapshot, card) {
@@ -617,11 +618,9 @@ function getReusablePreviousEnrichedItem(previousSnapshot, card) {
   const key = current.id ?? current.url;
   const previous = (previousSnapshot?.items ?? []).find((item) => (item.id ?? item.url) === key);
   if (!previous) return null;
-  if (previous.status !== "active") return null;
-  if (previous.price_brl !== current.price_brl) return null;
   if ((previous.notes ?? "").includes("Validado apenas")) return null;
 
-  return {
+  const merged = {
     ...previous,
     ...current,
     ram_gb: current.ram_gb ?? previous.ram_gb ?? null,
@@ -631,6 +630,7 @@ function getReusablePreviousEnrichedItem(previousSnapshot, card) {
     notes: previous.notes,
     status: "active",
   };
+  return needsDetailEnrichment(merged) ? null : merged;
 }
 
 async function rawEvaluate(tab, expression) {
@@ -1040,7 +1040,7 @@ function mergeWithPreviousSnapshot({ runDate, collected, previousSnapshot }) {
   });
 }
 
-export { mergeWithPreviousSnapshot, getCheapCpuTerms };
+export { mergeWithPreviousSnapshot, getCheapCpuTerms, getReusablePreviousEnrichedItem, needsDetailEnrichment };
 
 function hasExcludedKeyword(text) {
   const normalized = (text ?? "").toString().toLowerCase();
