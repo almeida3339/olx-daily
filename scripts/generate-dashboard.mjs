@@ -21,11 +21,12 @@ export { parseReport, formatRunLabelFromFile, summarizeMachine };
 
 async function main() {
   const olxDetails = await latestSnapshotDetails(OLX_DIR);
+  const enjoeiNbDetails = await latestSnapshotDetails(ENJOEI_NOTEBOOKS_DIR);
   const [olx, premium, enjoeiNb, enjoeiNbPremium, enjoei] = await Promise.all([
     gather(OLX_DIR, "report-", "report-premium-", olxDetails),
     gather(OLX_DIR, "report-premium-", null, olxDetails),
-    gather(ENJOEI_NOTEBOOKS_DIR, "report-", "report-premium-"),
-    gather(ENJOEI_NOTEBOOKS_DIR, "report-premium-", null),
+    gather(ENJOEI_NOTEBOOKS_DIR, "report-", "report-premium-", enjoeiNbDetails),
+    gather(ENJOEI_NOTEBOOKS_DIR, "report-premium-", null, enjoeiNbDetails),
     gather(ENJOEI_DIR, "report-", null),
   ]);
   const now = new Date().toLocaleString("pt-BR", {

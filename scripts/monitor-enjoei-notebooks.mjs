@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { extractRamGb, extractStorageGb, textContainsCpuTerm } from "./lib/parsers.mjs";
+import { extractGpuLabel, extractRamGb, extractStorageGb, textContainsCpuTerm } from "./lib/parsers.mjs";
 import { mergeWithPreviousSnapshot as mergeItems } from "./lib/snapshot.mjs";
 import { DEFAULT_CPU_TERMS } from "./lib/cpu-terms.mjs";
 
@@ -31,6 +31,7 @@ const shippingRange = getOptionValue(args, "--shipping-range") ?? "same_country"
 const state = getOptionValue(args, "--state") ?? "pr";
 const city = getOptionValue(args, "--city") ?? "curitiba";
 const first = Number(getOptionValue(args, "--first") ?? 30);
+const detailMax = Number(getOptionValue(args, "--detail-max") ?? process.env.ENJOEI_DETAIL_MAX ?? 8);
 const maxPriceBrl = Number(getOptionValue(args, "--max-price") ?? PRICE_MAX_BRL);
 const minPriceBrl = Number(getOptionValue(args, "--min-price") ?? PRICE_MIN_BRL);
 const premiumMaxPriceBrl = Number(getOptionValue(args, "--premium-max-price") ?? PRICE_PREMIUM_MAX_BRL);
@@ -69,7 +70,7 @@ async function main() {
   console.log(`Faixa: R$ ${minPriceBrl}–R$ ${maxPriceBrl} | premium até R$ ${premiumMaxPriceBrl}`);
   console.log(`Snapshot anterior: ${previousSnapshotPath ?? "(nenhum)"}\n`);
 
-  const collected = await collectProducts();
+  const collected = await collectProducts(previousSnapshot);
   const snapshot = mergeWithPreviousSnapshot({ runDate, collected, previousSnapshot });
 
   await fs.mkdir(automationRoot, { recursive: true });
@@ -92,7 +93,7 @@ async function main() {
 
 // ── coleta ───────────────────────────────────────────────────────────────────
 
-async function collectProducts() {
+async function collectProducts(previousSnapshot) {
   const byId = new Map();
   const failedTerms = [];
 
@@ -138,7 +139,7 @@ async function collectProducts() {
   }
 
   if (failedTerms.length) console.warn(`Termos com falha: ${failedTerms.join(", ")}`);
-  return Array.from(byId.values());
+  return enrichMissingDetails(Array.from(byId.values()), previousSnapshot);
 }
 
 async function fetchWithRetry(url, options) {
@@ -230,6 +231,62 @@ function isLikelyNotebookSearchHit(item) {
 }
 
 // ── snapshot ─────────────────────────────────────────────────────────────────
+
+async function enrichMissingDetails(items, previousSnapshot) {
+  const previousById = new Map((previousSnapshot?.items ?? []).map((item) => [item.id ?? item.url, item]));
+  let opened = 0;
+  const out = [];
+
+  for (const item of items) {
+    const previous = previousById.get(item.id ?? item.url);
+    let merged = mergeCachedDetails(item, previous);
+    if (needsProductDetails(merged) && opened < detailMax) {
+      const details = await fetchProductDetails(merged).catch((error) => {
+        console.warn(`  Aviso: não consegui enriquecer "${merged.title}" — ${error.message}`);
+        return null;
+      });
+      opened += 1;
+      if (details) merged = mergeCachedDetails(merged, details);
+    }
+    out.push(merged);
+  }
+
+  if (opened > 0) console.log(`Detalhes Enjoei abertos: ${opened}`);
+  return out;
+}
+
+function mergeCachedDetails(item, details) {
+  if (!details) return item;
+  return {
+    ...item,
+    ram_gb: item.ram_gb ?? details.ram_gb ?? null,
+    storage_gb: item.storage_gb ?? details.storage_gb ?? null,
+    gpu: item.gpu ?? details.gpu ?? null,
+  };
+}
+
+function needsProductDetails(item) {
+  return item.ram_gb == null || item.storage_gb == null;
+}
+
+async function fetchProductDetails(item) {
+  if (!item.id) return null;
+  const response = await fetchWithRetry(`https://pages.enjoei.com.br/products/${item.id}/v2.json`, {
+    headers: {
+      accept: "application/json",
+      "user-agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+    },
+  });
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  const product = await response.json();
+  const text = `${product.title ?? item.title}\n${product.description ?? ""}\n${product.brand?.name ?? ""}`;
+  return {
+    ram_gb: extractRamGb(text),
+    storage_gb: extractStorageGb(text),
+    gpu: extractGpuLabel(text),
+  };
+}
 
 function mergeWithPreviousSnapshot({ runDate, collected, previousSnapshot }) {
   const previousItems = (previousSnapshot?.items ?? []).filter(
