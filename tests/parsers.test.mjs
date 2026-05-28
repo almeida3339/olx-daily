@@ -10,6 +10,7 @@ import {
   parseBrlPrice,
   extractRamGb,
   extractStorageGb,
+  extractGpuLabel,
   textContainsCpuTerm,
   has32GbRam,
   isNotebookCategoryUrl,
@@ -91,6 +92,30 @@ describe("summarizeMachine", () => {
 });
 
 // ── extractRamGb ──────────────────────────────────────────────────────────────
+
+test("summarizeMachine identifica Core Ultra i7 no titulo e Intel Arc no detalhe", () => {
+  assert.deepEqual(
+    summarizeMachine(
+      'Notebook Asus ZenBook 14, Intel Core Ultra i7-155H, 16GB/1TB SSD, Tela 14", Win11 - UX3405 — 16 GB RAM / 1024 GB / GPU Intel Arc integrada — https://sc.olx.com.br/notebooks/asus-1',
+    ),
+    {
+      brand: "Asus",
+      model: "Zenbook 14 UX3405",
+      cpu: "Ultra 7 155H",
+      ram: "16 GB",
+      ssd: "1 TB",
+      gpu: "Intel Arc integrada",
+    },
+  );
+});
+
+describe("extractGpuLabel", () => {
+  test("Intel Arc Graphics integrada", () =>
+    assert.equal(extractGpuLabel("Graficos: Intel Arc Graphics integrada"), "Intel Arc integrada"));
+  test("GeForce RTX com prefixo", () =>
+    assert.equal(extractGpuLabel("Placa de video NVIDIA GeForce RTX 3050 6GB"), "RTX 3050"));
+  test("sem GPU retorna null", () => assert.equal(extractGpuLabel("Notebook com video integrado"), null));
+});
 
 describe("extractRamGb", () => {
   test("16gb RAM", () => assert.equal(extractRamGb("Notebook 16gb RAM 512GB SSD"), 16));

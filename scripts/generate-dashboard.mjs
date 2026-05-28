@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { extractGpuLabel } from "./lib/parsers.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -148,8 +149,8 @@ function extractBrand(text) {
 
 function extractCpu(text) {
   const patterns = [
-    /\b(?:intel\s+)?core\s+ultra\s+([579])[\s-]*(\d{3})(h|hx)?\b/i,
-    /\bultra\s+([579])[\s-]*(\d{3})(h|hx)?\b/i,
+    /\b(?:intel\s+)?core\s+ultra\s+i?([579])[\s-]*(\d{3})(h|hx)?\b/i,
+    /\bultra\s+i?([579])[\s-]*(\d{3})(h|hx)?\b/i,
     /\b(?:intel\s+)?core\s+([3579])[\s-]*(\d{4,5})([a-z]{0,2})\b/i,
     /\b(?:intel\s+)?(?:core\s+)?(i[3579])[\s-]*(\d{4,5})([a-z]{0,2})\b/i,
     /\bryzen\s+(?:ai\s+)?([3579])[\s-]*(\d{4})([a-z]{1,3})\b/i,
@@ -198,21 +199,7 @@ function extractSsd(text) {
 }
 
 function extractGpu(text) {
-  const patterns = [
-    /\brtx\s*(\d{4})(?:\s*(ti|super))?\b/i,
-    /\bgtx\s*(\d{4})(?:\s*(ti|super))?\b/i,
-    /\bradeon\s*(?:rx\s*)?(\d{4}[a-z]{0,2})\b/i,
-    /\barc\s*([a-z]\d{3})\b/i,
-  ];
-  for (const re of patterns) {
-    const m = text.match(re);
-    if (!m) continue;
-    if (/^rtx/i.test(m[0])) return `RTX ${m[1]}${m[2] ? ` ${m[2].toUpperCase()}` : ""}`;
-    if (/^gtx/i.test(m[0])) return `GTX ${m[1]}${m[2] ? ` ${m[2].toUpperCase()}` : ""}`;
-    if (/radeon/i.test(m[0])) return `Radeon ${m[1].toUpperCase()}`;
-    return `Arc ${m[1].toUpperCase()}`;
-  }
-  return null;
+  return extractGpuLabel(text);
 }
 
 function cleanModel(text, brand, cpu, gpu, ram, ssd) {
@@ -221,6 +208,7 @@ function cleanModel(text, brand, cpu, gpu, ram, ssd) {
   s = s
     .replace(/\bnotebook\b|\blaptop\b|\bgamer\b|\bpremium\b|\btop de linha\b|\btop\b|\bautentico\b|\bnovo em folha\b|\bnovinho em folha\b|\bnovo\b|\bfolha\b|\bpouco uso\b|\bbrindes?\b|\blacrado\b|\bbarato\b|\bestado de novo\b|\bcaixa original\b|\boriginal\b/gi, " ")
     .replace(/\bryzen\s+[3579]\b/gi, " ")
+    .replace(/\b(?:core\s+)?ultra\s+i?[579]\s*-?\s*\d{3}(?:h|hx)?\b/gi, " ")
     .replace(/\bintel\b|\bcore\b|\bultra\b|\bamd\b|\bryzen\b/gi, " ")
     .replace(/\b(i[3579])[\s-]*(\d{4,5})([a-z]{0,2})\b/gi, " ")
     .replace(/\b[3579][\s-]*\d{4,5}(?:h|hx|hs)?\b/gi, " ")
@@ -253,6 +241,7 @@ function cleanModel(text, brand, cpu, gpu, ram, ssd) {
 function toTitleCase(text) {
   return text.replace(/\b([a-zà-ú0-9]+)\b/gi, (word) => {
     const upperWords = new Set(["g15", "loq", "rog", "tuf", "ssd", "oled", "g11", "g16", "f15", "v15", "m16"]);
+    if (/^ux\d+$/i.test(word)) return word.toUpperCase();
     return upperWords.has(word.toLowerCase()) ? word.toUpperCase() : word.charAt(0).toUpperCase() + word.slice(1);
   });
 }

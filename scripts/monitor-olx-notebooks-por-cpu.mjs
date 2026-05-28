@@ -6,6 +6,7 @@ import {
   parseBrlPrice,
   extractRamGb,
   extractStorageGb,
+  extractGpuLabel,
   normalizeCpuText,
   textContainsCpuTerm,
   has32GbRam,
@@ -551,9 +552,10 @@ async function enrichAdRawCdp(cdpEndpoint, card) {
     await waitForRawBody(tab);
     const bodyText = (await rawEvaluate(tab, "document.body?.innerText || ''")) ?? "";
     const title = card.title;
+    const detailText = `${title}\n${bodyText}`;
 
     if (hasExcludedKeyword(title) || hasExcludedKeyword(bodyText)) return null;
-    if (!textContainsCpuTerm(`${title}\n${bodyText}`, card.cpu_term)) return null;
+    if (!textContainsCpuTerm(detailText, card.cpu_term)) return null;
 
     return {
       id: extractOlxId(card.url),
@@ -561,8 +563,9 @@ async function enrichAdRawCdp(cdpEndpoint, card) {
       title,
       cpu_term: card.cpu_term,
       price_brl: parseBrlPrice(bodyText) ?? card.price_brl,
-      ram_gb: extractRamGb(bodyText),
-      storage_gb: extractStorageGb(bodyText),
+      ram_gb: extractRamGb(detailText),
+      storage_gb: extractStorageGb(detailText),
+      gpu: extractGpuLabel(detailText),
       location: extractLocationFromText(bodyText),
       condition: extractConditionFromText(bodyText),
       status: "active",
@@ -586,14 +589,16 @@ async function waitForRawBody(tab) {
 }
 
 function listingCardToItem(card) {
+  const listingText = `${card.title}\n${card.text ?? ""}`;
   return {
     id: extractOlxId(card.url),
     url: card.url,
     title: card.title,
     cpu_term: card.cpu_term,
     price_brl: card.price_brl,
-    ram_gb: card.ram_gb ?? extractRamGb(`${card.title}\n${card.text ?? ""}`),
-    storage_gb: card.storage_gb ?? extractStorageGb(`${card.title}\n${card.text ?? ""}`),
+    ram_gb: card.ram_gb ?? extractRamGb(listingText),
+    storage_gb: card.storage_gb ?? extractStorageGb(listingText),
+    gpu: card.gpu ?? extractGpuLabel(listingText),
     location: card.location ?? null,
     condition: null,
     status: "active",
@@ -604,7 +609,7 @@ function listingCardToItem(card) {
 }
 
 function needsDetailEnrichment(item) {
-  return item.ram_gb == null || item.storage_gb == null;
+  return item.ram_gb == null || item.storage_gb == null || item.gpu == null;
 }
 
 function getReusablePreviousEnrichedItem(previousSnapshot, card) {
@@ -621,6 +626,7 @@ function getReusablePreviousEnrichedItem(previousSnapshot, card) {
     ...current,
     ram_gb: current.ram_gb ?? previous.ram_gb ?? null,
     storage_gb: current.storage_gb ?? previous.storage_gb ?? null,
+    gpu: current.gpu ?? previous.gpu ?? null,
     condition: previous.condition ?? current.condition ?? null,
     notes: previous.notes,
     status: "active",
@@ -862,8 +868,10 @@ async function enrichAd(listingPage, card) {
       return null;
     }
 
+    const detailText = `${title}\n${bodyText}`;
+
     // Confirm CPU term exists explicitly in title or body.
-    if (!textContainsCpuTerm(title + "\n" + bodyText, card.cpu_term)) {
+    if (!textContainsCpuTerm(detailText, card.cpu_term)) {
       return null;
     }
 
@@ -871,8 +879,9 @@ async function enrichAd(listingPage, card) {
     const location = extractLocationFromText(bodyText);
     const condition = extractConditionFromText(bodyText);
 
-    const ram_gb = extractRamGb(bodyText);
-    const storage_gb = extractStorageGb(bodyText);
+    const ram_gb = extractRamGb(detailText);
+    const storage_gb = extractStorageGb(detailText);
+    const gpu = extractGpuLabel(detailText);
 
     const id = extractOlxId(url);
 
@@ -884,6 +893,7 @@ async function enrichAd(listingPage, card) {
       price_brl,
       ram_gb,
       storage_gb,
+      gpu,
       location: location || null,
       condition: condition || null,
       status: "active",
@@ -1015,8 +1025,9 @@ function formatPriceChangeLine(change) {
 function formatItemDetails(item) {
   const ram = item.ram_gb ? `${item.ram_gb} GB RAM` : "RAM n/d";
   const storage = item.storage_gb ? `${item.storage_gb} GB` : "SSD/HD n/d";
+  const gpu = item.gpu ? `GPU ${item.gpu}` : "GPU n/d";
   const location = item.location ? ` — ${item.location}` : "";
-  return `${item.title} (${item.cpu_term}) — ${ram} / ${storage}${location} — ${item.url}`;
+  return `${item.title} (${item.cpu_term}) — ${ram} / ${storage} / ${gpu}${location} — ${item.url}`;
 }
 
 function mergeWithPreviousSnapshot({ runDate, collected, previousSnapshot }) {

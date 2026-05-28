@@ -70,6 +70,44 @@ export function extractStorageGb(text) {
 }
 
 /**
+ * Extract a concise GPU label from free-form notebook text.
+ * Returns null when there is no useful GPU signal.
+ */
+export function extractGpuLabel(text) {
+  const t = (text ?? "").toString();
+  const patterns = [
+    /\b(?:nvidia\s+)?(?:geforce\s+)?rtx\s*(\d{4})(?:\s*(ti|super))?\b/i,
+    /\b(?:nvidia\s+)?(?:geforce\s+)?gtx\s*(\d{4})(?:\s*(ti|super))?\b/i,
+    /\bradeon\s*(?:rx\s*)?(\d{4}[a-z]{0,2})\b/i,
+    /\b(?:intel\s+)?arc\s*([a-z]\d{3})\b/i,
+  ];
+  for (const re of patterns) {
+    const m = t.match(re);
+    if (!m) continue;
+    if (/rtx/i.test(m[0])) return `RTX ${m[1]}${m[2] ? ` ${m[2].toUpperCase()}` : ""}`;
+    if (/gtx/i.test(m[0])) return `GTX ${m[1]}${m[2] ? ` ${m[2].toUpperCase()}` : ""}`;
+    if (/radeon/i.test(m[0])) return `Radeon ${m[1].toUpperCase()}`;
+    return `Arc ${m[1].toUpperCase()}`;
+  }
+
+  const normalized = normalizeText(t);
+  if (
+    /\bintel\s+arc\s+graphics\b/.test(normalized) ||
+    /\bintel\s+arc\s+integrada\b/.test(normalized) ||
+    /\barc\s+graphics\b/.test(normalized)
+  ) {
+    return "Intel Arc integrada";
+  }
+  if (/\biris\s+xe\b/.test(normalized)) {
+    return "Iris Xe integrada";
+  }
+  if (/\buhd\s+graphics\b/.test(normalized)) {
+    return "UHD Graphics integrada";
+  }
+  return null;
+}
+
+/**
  * Normalise CPU text for comparison:
  * NFD-normalise, strip diacritics, lowercase, remove spaces/hyphens/dots,
  * keep only [a-z0-9].
