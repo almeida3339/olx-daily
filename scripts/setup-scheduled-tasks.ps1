@@ -6,6 +6,7 @@ $ErrorActionPreference = "Stop"
 
 $root = Resolve-Path (Join-Path $PSScriptRoot "..")
 $taskName = "Monitor-OLX-Local-Publish"
+$powershellExe = (Get-Command powershell.exe -ErrorAction Stop).Source
 $scriptPath = Join-Path $root "scripts\run-local-olx-and-publish.ps1"
 
 if ($Remove) {
@@ -15,7 +16,7 @@ if ($Remove) {
 }
 
 $action = New-ScheduledTaskAction `
-  -Execute "powershell.exe" `
+  -Execute $powershellExe `
   -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`"" `
   -WorkingDirectory $root
 
