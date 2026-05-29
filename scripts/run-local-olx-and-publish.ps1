@@ -44,18 +44,32 @@ try {
     throw "Falha ao sincronizar com origin/main; estado limpo. Rodada abortada (a proxima tentara de novo)."
   }
 
+  # ── Monitor + dashboard (processos node) ──────────────────────────────────
+  # Estes scripts node escrevem avisos em stderr (ex.: "Email nao enviado") sem
+  # que isso seja uma falha fatal — eles sinalizam erro real apenas via exit code
+  # (verificado logo abaixo). Sob $ErrorActionPreference='Stop', porem, qualquer
+  # stderr de um comando nativo PODE virar erro terminante (especialmente se a
+  # saida for redirecionada/mesclada), abortando a publicacao ANTES do commit e
+  # do push — ou seja, perderiamos dados ja coletados so porque o email falhou.
+  # Rodamos com 'Continue' e confiamos exclusivamente no $LASTEXITCODE.
+  $prevEAP = $ErrorActionPreference
+  $ErrorActionPreference = 'Continue'
   if ($NoNotify) {
     & (Join-Path $PSScriptRoot "run-olx-monitor.ps1") -MaxPerCpu $MaxPerCpu
   } else {
     & node (Join-Path $PSScriptRoot "run-monitors-and-notify.mjs") --only-olx --olx-max-per-cpu $MaxPerCpu
   }
-  if ($LASTEXITCODE -ne 0) {
-    throw "Monitor OLX local falhou com exit code $LASTEXITCODE."
+  $monitorExit = $LASTEXITCODE
+  if ($monitorExit -ne 0) {
+    $ErrorActionPreference = $prevEAP
+    throw "Monitor OLX local falhou com exit code $monitorExit."
   }
 
   & node (Join-Path $PSScriptRoot "generate-dashboard.mjs")
-  if ($LASTEXITCODE -ne 0) {
-    throw "Geracao do dashboard falhou com exit code $LASTEXITCODE."
+  $dashExit = $LASTEXITCODE
+  $ErrorActionPreference = $prevEAP
+  if ($dashExit -ne 0) {
+    throw "Geracao do dashboard falhou com exit code $dashExit."
   }
 
   if ($NoPush) {

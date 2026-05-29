@@ -13,7 +13,12 @@ const ENJOEI_DIR           = def("ENJOEI_DATA_DIR",           "monitor-enjoei-te
 const ENJOEI_NOTEBOOKS_DIR = def("ENJOEI_NOTEBOOKS_DATA_DIR", "monitor-enjoei-notebooks");
 
 const GMAIL_USER         = process.env.GMAIL_USER ?? "docrash@gmail.com";
-const GMAIL_APP_PASSWORD = process.env.GMAIL_APP_PASSWORD;
+// App passwords do Gmail são 16 caracteres sem espaços. O Google exibe a senha
+// no formato "xxxx xxxx xxxx xxxx"; se ela for colada com os espaços, o AUTH do
+// SMTP rejeita com "535-5.7.8 Username and Password not accepted" (a regra de
+// "espaços são ignorados" só vale no login web, não no SMTP). Remover qualquer
+// espaço em branco torna a leitura robusta independentemente de como foi salva.
+const GMAIL_APP_PASSWORD = process.env.GMAIL_APP_PASSWORD?.replace(/\s+/g, "");
 const NOTIFY_TO          = process.env.NOTIFY_EMAIL_TO ?? GMAIL_USER;
 const CALLMEBOT_PHONE    = process.env.CALLMEBOT_PHONE ?? "554196968789";
 const CALLMEBOT_APIKEY   = process.env.CALLMEBOT_APIKEY ?? "2696242";
