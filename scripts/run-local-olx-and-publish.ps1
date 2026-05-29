@@ -17,8 +17,32 @@ $success = $false
 
 Push-Location $root
 try {
-  git fetch origin main
-  git pull --rebase origin main
+  # ── Guard anti-rebase-preso ───────────────────────────────────────────────
+  # Se uma rodada anterior morreu no meio de um rebase (ex.: timeout de 20 min
+  # da task agendada), o repositorio fica preso em "rebase in progress". Sem
+  # limpar, o git commit/push abaixo rodaria sobre um HEAD destacado e corromperia
+  # o historico — foi exatamente o que travou as publicacoes em 29/05.
+  $gitDir = (git rev-parse --git-dir).Trim()
+  if ((Test-Path (Join-Path $gitDir "rebase-merge")) -or (Test-Path (Join-Path $gitDir "rebase-apply"))) {
+    Write-Host "Rebase incompleto de uma rodada anterior detectado — abortando para limpar o estado."
+    git rebase --abort 2>$null
+  }
+
+  # ── Sincronizar com o remoto ──────────────────────────────────────────────
+  # index.html e gerado e muda em toda rodada (local e CI), entao conflita com
+  # frequencia no rebase. Como ele e regenerado logo abaixo a partir de data/,
+  # resolvemos qualquer conflito automaticamente com -X theirs (os dados ficam em
+  # pastas separadas — data/olx vs data/enjoei* — e nao conflitam entre si).
+  # Qualquer falha inesperada: abortar e sair. NUNCA commitar com rebase pela metade.
+  git fetch origin
+  if ($LASTEXITCODE -ne 0) { throw "git fetch falhou (exit $LASTEXITCODE)." }
+
+  git -c core.editor=true rebase -X theirs origin/main
+  if ($LASTEXITCODE -ne 0) {
+    Write-Host "Rebase nao concluiu automaticamente — abortando para nao corromper o historico."
+    git rebase --abort 2>$null
+    throw "Falha ao sincronizar com origin/main; estado limpo. Rodada abortada (a proxima tentara de novo)."
+  }
 
   if ($NoNotify) {
     & (Join-Path $PSScriptRoot "run-olx-monitor.ps1") -MaxPerCpu $MaxPerCpu
