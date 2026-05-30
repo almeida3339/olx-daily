@@ -192,7 +192,7 @@ function buildSubject(sources, errors) {
   if (totalPrice > 0) parts.push(`${totalPrice} alteração(ões) de preço`);
   if (errors.length)  parts.push("erros");
   if (!parts.length)  parts.push("sem novidades");
-  return `[Monitor] ${parts.join(" | ")} — ${new Date().toLocaleDateString("pt-BR")}`;
+  return `[Monitor] ${parts.join(" | ")} — ${new Date().toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" })}`;
 }
 
 function buildBody(sources, errors) {
@@ -205,8 +205,10 @@ function buildBody(sources, errors) {
 }
 
 function buildWhatsAppMessage(sources, errors) {
-  const date = new Date().toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
-  const time = new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+  // Fixa o fuso em BRT: o monitor Enjoei roda no GitHub Actions (UTC), entao
+  // sem timeZone o horario saia 3h adiantado (ex.: 16:01 BRT aparecia "19:01").
+  const date = new Date().toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo", day: "2-digit", month: "2-digit" });
+  const time = new Date().toLocaleTimeString("pt-BR", { timeZone: "America/Sao_Paulo", hour: "2-digit", minute: "2-digit" });
   const lines = [`Monitor ${date} ${time}`];
 
   if (errors.length) lines.push(`Erros: ${errors.join(", ")}`);
