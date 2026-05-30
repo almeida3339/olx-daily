@@ -89,8 +89,29 @@ try {
     $stamp = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm")
     git commit -m "snapshots olx local $stamp"
     if ($LASTEXITCODE -ne 0) { $ErrorActionPreference = $prevEAP; throw "git commit falhou (exit $LASTEXITCODE)." }
-    git push origin main
-    if ($LASTEXITCODE -ne 0) { $ErrorActionPreference = $prevEAP; throw "git push falhou (exit $LASTEXITCODE)." }
+
+    # O push compete com o CI do Enjoei, que tambem publica em main. A coleta +
+    # dashboard leva minutos; o rebase de inicio de rodada ja fica defasado e, se o
+    # CI empurrar nesse meio-tempo, nosso push e rejeitado (non-fast-forward) e os
+    # dados do OLX ficam presos localmente. Foi exatamente o que aconteceu em
+    # 30/05 (run 10:52 coletou 161 itens, push rejeitado, exit 1). Por isso
+    # re-sincronizamos (fetch + rebase -X theirs) IMEDIATAMENTE antes de cada nova
+    # tentativa de push, ate 4 vezes.
+    $pushed = $false
+    for ($attempt = 1; $attempt -le 4 -and -not $pushed; $attempt++) {
+      git push origin main
+      if ($LASTEXITCODE -eq 0) { $pushed = $true; break }
+      Write-Host "Push rejeitado (tentativa $attempt/4) - re-sincronizando com origin/main."
+      git fetch origin
+      if ($LASTEXITCODE -ne 0) { Write-Host "fetch falhou; nova tentativa."; Start-Sleep -Seconds 3; continue }
+      git -c core.editor=true rebase -X theirs origin/main
+      if ($LASTEXITCODE -ne 0) {
+        git rebase --abort 2>$null
+        $ErrorActionPreference = $prevEAP
+        throw "Rebase pre-push falhou; estado limpo. Rodada abortada (a proxima tentara de novo)."
+      }
+    }
+    if (-not $pushed) { $ErrorActionPreference = $prevEAP; throw "git push falhou apos 4 tentativas." }
   } else {
     Write-Host "Sem mudancas OLX para publicar."
   }
