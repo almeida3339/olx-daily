@@ -52,7 +52,7 @@ export function extractStorageGb(text) {
     const tb = Number(mTb[1].replace(",", "."));
     if (Number.isFinite(tb)) return Math.round(tb * 1024);
   }
-  const mGb = t.match(/\b(\d{2,5})\s*(?:gb\s*)?(?:ssd|hd|nvme|m\.2|armazenamento|storage)\b/);
+  const mGb = t.match(/\b(\d{2,5})\s*(?:gb\s*)?(?:de\s+)?(?:ssd|hd|nvme|m\.2|armazenamento|storage)\b/);
   if (mGb) {
     const gb = Number(mGb[1]);
     if (Number.isFinite(gb) && gb >= 64 && gb <= 8192) return gb;
@@ -104,6 +104,38 @@ export function extractGpuLabel(text) {
   }
   if (/\buhd\s+graphics\b/.test(normalized)) {
     return "UHD Graphics integrada";
+  }
+  return null;
+}
+
+/**
+ * Extract a concise CPU label from free-form notebook text.
+ * Mirrors the dashboard's extractCpu so the monitor can persist a CPU
+ * label (e.g. from a description) even when the title is uninformative.
+ * Returns null when there is no recognisable CPU signal.
+ */
+export function extractCpuLabel(text) {
+  const t = (text ?? "").toString();
+  const patterns = [
+    /\b(?:intel\s+)?core\s+ultra\s+i?([579])[\s-]*(\d{3})(h|hx)?\b/i,
+    /\bultra\s+i?([579])[\s-]*(\d{3})(h|hx)?\b/i,
+    /\bryzen\s+ai\s+([3579])[\s-]*(\d{3})\b/i,
+    /\bai\s*([3579])[\s-]*(\d{3})\b/i,
+    /\bai([3579])(\d{3})\b/i,
+    /\b(?:intel\s+)?core\s+([3579])[\s-]*(\d{4,5})([a-z]{0,2})\b/i,
+    /\b(?:intel\s+)?(?:core\s+)?(i[3579])[\s-]*(\d{4,5})([a-z]{0,2})\b/i,
+    /\bryzen\s+(?:ai\s+)?([3579])[\s-]*(\d{4})([a-z]{1,3})\b/i,
+    /\b(hx\s*370)\b/i,
+  ];
+  for (const re of patterns) {
+    const m = t.match(re);
+    if (!m) continue;
+    if (/hx\s*370/i.test(m[0])) return "HX 370";
+    if (/ultra/i.test(m[0])) return `Ultra ${m[1]} ${m[2]}${(m[3] ?? "h").toUpperCase()}`;
+    if (/\b(?:ryzen\s+)?ai/i.test(m[0])) return `Ryzen AI ${m[1]} ${m[2]}`;
+    if (/\bcore\s+[3579]\b/i.test(m[0])) return `Core ${m[1]} ${m[2]}${(m[3] ?? "").toUpperCase()}`;
+    if (/ryzen/i.test(m[0])) return `Ryzen ${m[1]} ${m[2]}${(m[3] ?? "").toUpperCase()}`;
+    return `${m[1].toUpperCase()}-${m[2]}${(m[3] ?? "").toUpperCase()}`;
   }
   return null;
 }

@@ -11,6 +11,7 @@ import {
   extractRamGb,
   extractStorageGb,
   extractGpuLabel,
+  extractCpuLabel,
   textContainsCpuTerm,
   has32GbRam,
   isNotebookCategoryUrl,
@@ -157,9 +158,25 @@ describe("extractStorageGb", () => {
   test("512 SSD sem unidade explícita", () => assert.equal(extractStorageGb("Notebook 512 SSD"), 512));
   test("SSD 512 GB (ordem invertida)", () => assert.equal(extractStorageGb("SSD 512 GB"), 512));
   test("armazenamento OLX em linhas separadas", () => assert.equal(extractStorageGb("Armazenamento\n480 Gb"), 480));
+  test("477gb de armazenamento (descrição Enjoei)", () =>
+    assert.equal(extractStorageGb("16gb de ram e 477gb de armazenamento"), 477));
   test("RAM sozinha não é storage", () => assert.equal(extractStorageGb("16GB RAM"), null));
   test("string vazia retorna null", () => assert.equal(extractStorageGb(""), null));
   test("null retorna null", () => assert.equal(extractStorageGb(null), null));
+});
+
+// ── extractCpuLabel ───────────────────────────────────────────────────────────
+
+describe("extractCpuLabel", () => {
+  test("Core Ultra 7 155H em descrição", () =>
+    assert.equal(
+      extractCpuLabel("notebook samsung galaxy book4 pro, com processador intel core ultra 7 155h"),
+      "Ultra 7 155H"
+    ));
+  test("i5-13420H", () => assert.equal(extractCpuLabel("Notebook Dell i5-13420H"), "I5-13420H"));
+  test("Ryzen AI 7 350", () => assert.equal(extractCpuLabel("Asus Ryzen AI 7 350"), "Ryzen AI 7 350"));
+  test("sem CPU retorna null", () => assert.equal(extractCpuLabel("notebook samsung galaxy book4 pro"), null));
+  test("null retorna null", () => assert.equal(extractCpuLabel(null), null));
 });
 
 // ── textContainsCpuTerm ───────────────────────────────────────────────────────

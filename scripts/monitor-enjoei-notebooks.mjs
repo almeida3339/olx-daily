@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { extractGpuLabel, extractRamGb, extractStorageGb, textContainsCpuTerm } from "./lib/parsers.mjs";
+import { extractCpuLabel, extractGpuLabel, extractRamGb, extractStorageGb, textContainsCpuTerm } from "./lib/parsers.mjs";
 import { mergeWithPreviousSnapshot as mergeItems } from "./lib/snapshot.mjs";
 import { DEFAULT_CPU_TERMS } from "./lib/cpu-terms.mjs";
 
@@ -31,7 +31,7 @@ const shippingRange = getOptionValue(args, "--shipping-range") ?? "same_country"
 const state = getOptionValue(args, "--state") ?? "pr";
 const city = getOptionValue(args, "--city") ?? "curitiba";
 const first = Number(getOptionValue(args, "--first") ?? 30);
-const detailMax = Number(getOptionValue(args, "--detail-max") ?? process.env.ENJOEI_DETAIL_MAX ?? 8);
+const detailMax = Number(getOptionValue(args, "--detail-max") ?? process.env.ENJOEI_DETAIL_MAX ?? 30);
 const maxPriceBrl = Number(getOptionValue(args, "--max-price") ?? PRICE_MAX_BRL);
 const minPriceBrl = Number(getOptionValue(args, "--min-price") ?? PRICE_MIN_BRL);
 const premiumMaxPriceBrl = Number(getOptionValue(args, "--premium-max-price") ?? PRICE_PREMIUM_MAX_BRL);
@@ -199,6 +199,7 @@ function normalizeProduct(node, cpuTerm) {
     brand: node.brand?.displayable_name ?? null,
     price_brl: Number.isFinite(price) ? price : null,
     original_price_brl: Number.isFinite(Number(node.price?.original)) ? Number(node.price.original) : null,
+    cpu: extractCpuLabel(title),
     ram_gb: extractRamGb(title),
     storage_gb: extractStorageGb(title),
     used: Boolean(node.used),
@@ -259,6 +260,7 @@ function mergeCachedDetails(item, details) {
   if (!details) return item;
   return {
     ...item,
+    cpu: item.cpu ?? details.cpu ?? null,
     ram_gb: item.ram_gb ?? details.ram_gb ?? null,
     storage_gb: item.storage_gb ?? details.storage_gb ?? null,
     gpu: item.gpu ?? details.gpu ?? null,
@@ -266,7 +268,7 @@ function mergeCachedDetails(item, details) {
 }
 
 function needsProductDetails(item) {
-  return item.ram_gb == null || item.storage_gb == null;
+  return item.cpu == null || item.ram_gb == null || item.storage_gb == null;
 }
 
 async function fetchProductDetails(item) {
@@ -282,6 +284,7 @@ async function fetchProductDetails(item) {
   const product = await response.json();
   const text = `${product.title ?? item.title}\n${product.description ?? ""}\n${product.brand?.name ?? ""}`;
   return {
+    cpu: extractCpuLabel(text),
     ram_gb: extractRamGb(text),
     storage_gb: extractStorageGb(text),
     gpu: extractGpuLabel(text),

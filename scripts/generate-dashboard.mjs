@@ -134,7 +134,7 @@ function summarizeMachine(text, details = null) {
   const detailMeta = details ? formatSnapshotSpecs(details) : "";
   const all = `${title} ${meta} ${detailMeta}`;
   const brand = extractBrand(title);
-  const cpu = extractCpu(title) ?? extractCpu(meta) ?? extractCpu(detailMeta) ?? extractCpuFromMeta(meta);
+  const cpu = extractCpu(title) ?? extractCpu(meta) ?? extractCpu(detailMeta) ?? details?.cpu ?? extractCpuFromMeta(meta);
   const ram = extractRam(all);
   const ssd = extractSsd(all);
   const gpu = extractGpu(title) ?? extractGpu(meta) ?? extractGpu(detailMeta);
@@ -143,8 +143,12 @@ function summarizeMachine(text, details = null) {
 }
 
 function formatSnapshotSpecs(item) {
+  const cpuLabel =
+    item.cpu ??
+    item.cpu_term ??
+    (Array.isArray(item.cpu_terms) && item.cpu_terms.length ? item.cpu_terms.join(", ") : null);
   return [
-    item.cpu_term ? `cpu: ${item.cpu_term}` : "",
+    cpuLabel ? `cpu: ${cpuLabel}` : "",
     item.ram_gb ? `${item.ram_gb} GB RAM` : "",
     item.storage_gb ? `${item.storage_gb} GB SSD` : "",
     item.gpu ? `GPU ${item.gpu}` : "",
