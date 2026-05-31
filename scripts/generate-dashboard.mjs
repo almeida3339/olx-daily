@@ -29,12 +29,16 @@ async function main() {
     gather(ENJOEI_NOTEBOOKS_DIR, "report-premium-", null, enjoeiNbDetails),
     gather(ENJOEI_DIR, "report-", null),
   ]);
-  const now = new Date().toLocaleString("pt-BR", {
-    timeZone: "America/Sao_Paulo",
-    dateStyle: "full",
-    timeStyle: "short",
-  });
-  await fs.writeFile(OUTPUT, buildHtml({ olx, premium, enjoeiNb, enjoeiNbPremium, enjoei, now }), "utf8");
+  const [olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated] = await Promise.all([
+    latestRunLabel(OLX_DIR),
+    latestRunLabel(ENJOEI_NOTEBOOKS_DIR),
+    latestRunLabel(ENJOEI_DIR),
+  ]);
+  await fs.writeFile(
+    OUTPUT,
+    buildHtml({ olx, premium, enjoeiNb, enjoeiNbPremium, enjoei, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated }),
+    "utf8"
+  );
   console.log(`Dashboard gerado: ${OUTPUT}`);
 }
 
@@ -69,6 +73,19 @@ async function gather(dir, prefix, excludePrefix, detailsByUrl = new Map()) {
     if (p.newCount > 0 || p.priceCount > 0) out.push({ file, ...p, runLabel: formatRunLabelFromFile(file, p.date) });
   }
   return out;
+}
+
+// Rotulo BRT da rodada mais recente de uma fonte, independente de ter tido
+// novidades (o gather so retorna cards com mudanca, entao nao serve para isso).
+// Usa o report comum (nao-premium), que toda rodada gera, para que a ordenacao
+// lexicografica por nome reflita a ordem cronologica real.
+async function latestRunLabel(dir) {
+  const all = await fs.readdir(dir).catch(() => []);
+  const file = all
+    .filter((n) => n.startsWith("report-") && !n.startsWith("report-premium-") && n.endsWith(".md"))
+    .sort()
+    .reverse()[0];
+  return file ? formatRunLabelFromFile(file, null) : null;
 }
 
 // ── parser ───────────────────────────────────────────────────────────────────
@@ -306,7 +323,7 @@ function e(s) {
   return (s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
-function buildHtml({ olx, premium, enjoeiNb, enjoeiNbPremium, enjoei, now }) {
+function buildHtml({ olx, premium, enjoeiNb, enjoeiNbPremium, enjoei, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated }) {
   return `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -317,7 +334,11 @@ function buildHtml({ olx, premium, enjoeiNb, enjoeiNbPremium, enjoei, now }) {
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;font-size:14px;line-height:1.5;padding:28px 24px;max-width:1680px;margin:0 auto}
 h1{font-size:1.3rem;color:#f0f6fc;margin-bottom:5px}
-.meta{color:#8b949e;font-size:.8rem;margin-bottom:28px}
+.meta{color:#8b949e;font-size:.8rem;margin-bottom:8px}
+.updates{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.8rem;margin-bottom:26px}
+.updates .u{color:#8b949e;background:#161b22;border:1px solid #30363d;border-radius:6px;padding:3px 9px}
+.updates .u b{color:#c9d1d9;font-weight:600}
+.updates .u time{color:#58a6ff;font-variant-numeric:tabular-nums}
 .meta a{color:#58a6ff;text-decoration:none}
 .meta a:hover{text-decoration:underline}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:18px;align-items:start}
@@ -358,7 +379,12 @@ h1{font-size:1.3rem;color:#f0f6fc;margin-bottom:5px}
 </head>
 <body>
 <h1>Monitor</h1>
-<p class="meta">Atualizado: ${e(now)} (BRT) &nbsp;·&nbsp; <a href="https://github.com/${REPO}" target="_blank">ver repositório ↗</a></p>
+<p class="meta">Última atualização por fonte (BRT) &nbsp;·&nbsp; <a href="https://github.com/${REPO}" target="_blank">ver repositório ↗</a></p>
+<div class="updates">
+<span class="u"><b>OLX</b> <time>${e(olxUpdated ?? "—")}</time></span>
+<span class="u"><b>Enjoei Notebooks</b> <time>${e(enjoeiNbUpdated ?? "—")}</time></span>
+<span class="u"><b>Enjoei Tênis</b> <time>${e(enjoeiTenisUpdated ?? "—")}</time></span>
+</div>
 <div class="grid">
 ${renderSection("OLX Notebooks", "R$ 2.000 – R$ 4.000", olx, "data/olx")}
 ${renderSection("OLX Premium", "R$ 4.001 – R$ 8.000", premium, "data/olx")}
