@@ -198,18 +198,20 @@ function extractCpu(text) {
   const patterns = [
     /\b(?:intel\s+)?core\s+ultra\s+i?([579])[\s-]*(\d{3})(h|hx)?\b/i,
     /\bultra\s+i?([579])[\s-]*(\d{3})(h|hx)?\b/i,
+    /\bryzen\s+ai\s+max\+?\s*(?:pro\s+)?(\d{3})\b/i,
     /\bryzen\s+ai\s+([3579])[\s-]*(\d{3})\b/i,
     /\bai\s*([3579])[\s-]*(\d{3})\b/i,
     /\bai([3579])(\d{3})\b/i,
     /\b(?:intel\s+)?core\s+([3579])[\s-]*(\d{4,5})([a-z]{0,2})\b/i,
     /\b(?:intel\s+)?(?:core\s+)?(i[3579])[\s-]*(\d{4,5})([a-z]{0,2})\b/i,
     /\bryzen\s+(?:ai\s+)?([3579])[\s-]*(\d{4})([a-z]{1,3})\b/i,
-    /\b(hx\s*370)\b/i,
+    /\bhx\s*(370|470)\b/i,
   ];
   for (const re of patterns) {
     const m = text.match(re);
     if (!m) continue;
-    if (/hx\s*370/i.test(m[0])) return "HX 370";
+    if (/\bai\s+max/i.test(m[0])) return `Ryzen AI Max ${m[1]}`;
+    if (/\bhx\s*\d{3}/i.test(m[0])) return `HX ${m[1]}`;
     if (/ultra/i.test(m[0])) return `Ultra ${m[1]} ${m[2]}${(m[3] ?? "h").toUpperCase()}`;
     if (/\b(?:ryzen\s+)?ai/i.test(m[0])) return `Ryzen AI ${m[1]} ${m[2]}`;
     if (/\bcore\s+[3579]\b/i.test(m[0])) return `Core ${m[1]} ${m[2]}${(m[3] ?? "").toUpperCase()}`;

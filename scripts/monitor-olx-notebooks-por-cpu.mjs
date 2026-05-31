@@ -15,7 +15,7 @@ import {
   normalizeText,
 } from "./lib/parsers.mjs";
 import { mergeWithPreviousSnapshot as _mergeItems } from "./lib/snapshot.mjs";
-import { DEFAULT_CPU_TERMS } from "./lib/cpu-terms.mjs";
+import { DEFAULT_CPU_TERMS, cpuSearchQuery } from "./lib/cpu-terms.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const workspaceRoot = path.resolve(__dirname, "..");
@@ -269,7 +269,7 @@ async function connectToCurrentChrome(cdpEndpoint) {
 }
 
 async function collectForCpuTerm(page, cpuTerm, maxCards, previousSnapshot) {
-  const query = encodeURIComponent(cpuTerm === "ai7350" ? "ryzen ai 7 350" : cpuTerm);
+  const query = encodeURIComponent(cpuSearchQuery(cpuTerm));
   const url = `${BASE_URL}?q=${query}&sp=1&opst=2`;
   console.log(`\nCPU: ${cpuTerm} -> ${url}`);
 
@@ -342,7 +342,7 @@ async function collectForCpuTerm(page, cpuTerm, maxCards, previousSnapshot) {
 }
 
 async function collectForCpuTermRawCdp(tab, cpuTerm, maxCards, previousSnapshot) {
-  const query = encodeURIComponent(cpuTerm === "ai7350" ? "ryzen ai 7 350" : cpuTerm);
+  const query = encodeURIComponent(cpuSearchQuery(cpuTerm));
   const url = `${BASE_URL}?q=${query}&sp=1&opst=2`;
   console.log(`\nCPU: ${cpuTerm} -> ${url}`);
 

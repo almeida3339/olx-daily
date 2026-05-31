@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { extractCpuLabel, extractGpuLabel, extractRamGb, extractStorageGb, textContainsCpuTerm } from "./lib/parsers.mjs";
 import { mergeWithPreviousSnapshot as mergeItems } from "./lib/snapshot.mjs";
-import { DEFAULT_CPU_TERMS } from "./lib/cpu-terms.mjs";
+import { DEFAULT_CPU_TERMS, cpuSearchQuery } from "./lib/cpu-terms.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const automationRoot =
@@ -175,15 +175,16 @@ function buildApiUrl(term) {
   url.searchParams.set("search_id", `codex-search-${ts}`);
   url.searchParams.set("shipping_range", shippingRange);
   url.searchParams.set("state", state);
-  url.searchParams.set("term", term);
+  url.searchParams.set("term", cpuSearchQuery(term));
   // sem size_types.shoes nem department — busca geral
   return url;
 }
 
 function buildSearchPageUrl(term) {
-  const url = new URL(`${SITE_ORIGIN}/${encodeURIComponent(term)}/s`);
+  const query = cpuSearchQuery(term);
+  const url = new URL(`${SITE_ORIGIN}/${encodeURIComponent(query)}/s`);
   url.searchParams.set("ref", "products_search");
-  url.searchParams.set("q", term);
+  url.searchParams.set("q", query);
   return url.toString();
 }
 

@@ -175,6 +175,9 @@ describe("extractCpuLabel", () => {
     ));
   test("i5-13420H", () => assert.equal(extractCpuLabel("Notebook Dell i5-13420H"), "I5-13420H"));
   test("Ryzen AI 7 350", () => assert.equal(extractCpuLabel("Asus Ryzen AI 7 350"), "Ryzen AI 7 350"));
+  test("Ryzen AI Max+ 395", () => assert.equal(extractCpuLabel("ROG Flow Z13 Ryzen AI Max+ 395"), "Ryzen AI Max 395"));
+  test("Ryzen AI Max PRO 390", () => assert.equal(extractCpuLabel("Notebook Ryzen AI Max PRO 390"), "Ryzen AI Max 390"));
+  test("HX 470", () => assert.equal(extractCpuLabel("Notebook Ryzen AI 9 HX 470"), "HX 470"));
   test("sem CPU retorna null", () => assert.equal(extractCpuLabel("notebook samsung galaxy book4 pro"), null));
   test("null retorna null", () => assert.equal(extractCpuLabel(null), null));
 });
@@ -188,10 +191,16 @@ describe("textContainsCpuTerm", () => {
     assert.equal(textContainsCpuTerm("Intel Core i7 14650 HX laptop", "14650hx"), true));
   test("termo ausente", () =>
     assert.equal(textContainsCpuTerm("Intel Core i7-13620H notebook", "13650hx"), false));
-  test("ai7350 — variante com espaços", () =>
-    assert.equal(textContainsCpuTerm("Ryzen AI 7 350 laptop", "ai7350"), true));
-  test("ai7350 — variante compacta", () =>
-    assert.equal(textContainsCpuTerm("ryzenai7350", "ai7350"), true));
+  test("aimax395 — Ryzen AI Max+ 395", () =>
+    assert.equal(textContainsCpuTerm("ROG Flow Z13 Ryzen AI Max+ 395 32GB", "aimax395"), true));
+  test("aimax395 — variante PRO casa no mesmo termo", () =>
+    assert.equal(textContainsCpuTerm("HP ZBook Ultra Ryzen AI Max+ PRO 395", "aimax395"), true));
+  test("aimax390 — Ryzen AI Max PRO 390", () =>
+    assert.equal(textContainsCpuTerm("Notebook Ryzen AI Max PRO 390", "aimax390"), true));
+  test("aimax395 NÃO casa com 390", () =>
+    assert.equal(textContainsCpuTerm("Ryzen AI Max PRO 390 notebook", "aimax395"), false));
+  test("hx470 — Ryzen AI 9 HX 470", () =>
+    assert.equal(textContainsCpuTerm("Notebook Ryzen AI 9 HX 470 16GB", "hx470"), true));
   test("8845hs case-insensitive", () =>
     assert.equal(textContainsCpuTerm("Ryzen 9 8845HS gaming", "8845hs"), true));
   test("string vazia retorna false", () =>

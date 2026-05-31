@@ -119,18 +119,20 @@ export function extractCpuLabel(text) {
   const patterns = [
     /\b(?:intel\s+)?core\s+ultra\s+i?([579])[\s-]*(\d{3})(h|hx)?\b/i,
     /\bultra\s+i?([579])[\s-]*(\d{3})(h|hx)?\b/i,
+    /\bryzen\s+ai\s+max\+?\s*(?:pro\s+)?(\d{3})\b/i,
     /\bryzen\s+ai\s+([3579])[\s-]*(\d{3})\b/i,
     /\bai\s*([3579])[\s-]*(\d{3})\b/i,
     /\bai([3579])(\d{3})\b/i,
     /\b(?:intel\s+)?core\s+([3579])[\s-]*(\d{4,5})([a-z]{0,2})\b/i,
     /\b(?:intel\s+)?(?:core\s+)?(i[3579])[\s-]*(\d{4,5})([a-z]{0,2})\b/i,
     /\bryzen\s+(?:ai\s+)?([3579])[\s-]*(\d{4})([a-z]{1,3})\b/i,
-    /\b(hx\s*370)\b/i,
+    /\bhx\s*(370|470)\b/i,
   ];
   for (const re of patterns) {
     const m = t.match(re);
     if (!m) continue;
-    if (/hx\s*370/i.test(m[0])) return "HX 370";
+    if (/\bai\s+max/i.test(m[0])) return `Ryzen AI Max ${m[1]}`;
+    if (/\bhx\s*\d{3}/i.test(m[0])) return `HX ${m[1]}`;
     if (/ultra/i.test(m[0])) return `Ultra ${m[1]} ${m[2]}${(m[3] ?? "h").toUpperCase()}`;
     if (/\b(?:ryzen\s+)?ai/i.test(m[0])) return `Ryzen AI ${m[1]} ${m[2]}`;
     if (/\bcore\s+[3579]\b/i.test(m[0])) return `Core ${m[1]} ${m[2]}${(m[3] ?? "").toUpperCase()}`;
@@ -164,17 +166,19 @@ export function normalizeCpuText(text) {
  *   • "165h"    does NOT match "165hz"              (\b fails: h→z word char)
  *   • "7945hx"  does NOT match "7945HX3D"           (\b fails: x→3 word char)
  *
- * Special-cases "ai7350" (multi-word brand + model).
+ * Special-cases os AMD "Ryzen AI Max" (aimax395/aimax390), cujo número sozinho
+ * é genérico demais — exigem o contexto de marca "AI Max" perto do número.
  */
 export function textContainsCpuTerm(text, cpuTerm) {
   const raw = (text ?? "").toString();
 
-  if (cpuTerm === "ai7350") {
-    const n = normalizeCpuText(raw);
+  if (cpuTerm === "aimax395" || cpuTerm === "aimax390") {
+    const model = cpuTerm.slice(-3); // "395" ou "390"
+    const n = normalizeCpuText(raw); // remove espaços/hífens/"+" → ex.: "ryzenaimax395"
     return (
-      n.includes("ryzenai7350") ||
-      n.includes("ai7350") ||
-      (n.includes("ryzenai") && n.includes("350"))
+      n.includes(`aimax${model}`) ||
+      (n.includes("aimax") && n.includes(model)) ||
+      (n.includes("ryzen") && n.includes("max") && n.includes(model))
     );
   }
 
