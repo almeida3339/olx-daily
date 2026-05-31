@@ -73,6 +73,7 @@ async function main() {
   const collected = await collectProducts(previousSnapshot);
   const snapshot = mergeWithPreviousSnapshot({ runDate, collected, previousSnapshot });
   backfillSpecsFromTitle(snapshot);
+  verifyCarriedItems(snapshot);
 
   await fs.mkdir(automationRoot, { recursive: true });
 
@@ -280,7 +281,10 @@ async function enrichMissingDetails(items, previousSnapshot) {
   for (const item of out) {
     const evidence = item.__evidence ?? `${item.title ?? ""} ${item.brand ?? ""}`;
     delete item.__evidence;
-    const terms = (item.cpu_terms ?? []).filter((t) => textContainsCpuTerm(evidence, t));
+    // Re-deriva os termos a partir da evidência (não só o termo da busca): um
+    // anúncio devolvido por uma busca mas que na verdade é outra CPU da lista
+    // recebe a etiqueta correta, em vez de ser descartado.
+    const terms = DEFAULT_CPU_TERMS.filter((t) => textContainsCpuTerm(evidence, t));
     if (terms.length === 0) {
       dropped += 1;
       console.log(`  Descartado (CPU não confere): "${item.title}" [buscado: ${(item.cpu_terms ?? []).join(", ")}]`);
@@ -344,6 +348,26 @@ function backfillSpecsFromTitle(snapshot) {
     if (item.storage_gb == null) { const v = extractStorageGb(title); if (v != null) item.storage_gb = v; }
     if (item.gpu == null) { const v = extractGpuLabel(title); if (v != null) item.gpu = v; }
   }
+}
+
+// Itens "not_seen" são copiados verbatim do snapshot anterior e não passam pela
+// verificação de CPU da coleta. Se vierem de um snapshot pré-fix, podem carregar
+// termos errados (ex.: um notebook "pro max" marcado como aimax395 pela busca
+// difusa). Aqui re-validamos os cpu_terms dos carregados contra título + marca +
+// label de CPU já extraído (a descrição não está disponível aqui), descartando
+// os que não confirmam nenhum termo. Itens ativos já foram verificados na coleta.
+function verifyCarriedItems(snapshot) {
+  snapshot.items = (snapshot.items ?? []).filter((item) => {
+    if (item.status !== "not_seen") return true;
+    const evidence = `${item.title ?? ""} ${item.brand ?? ""} ${item.cpu ?? ""}`;
+    // Re-deriva os termos a partir da evidência (não só o termo da busca): um
+    // anúncio devolvido por uma busca mas que na verdade é outra CPU da lista
+    // recebe a etiqueta correta, em vez de ser descartado.
+    const terms = DEFAULT_CPU_TERMS.filter((t) => textContainsCpuTerm(evidence, t));
+    if (terms.length === 0) return false;
+    item.cpu_terms = terms;
+    return true;
+  });
 }
 
 function mergeWithPreviousSnapshot({ runDate, collected, previousSnapshot }) {

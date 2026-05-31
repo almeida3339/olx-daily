@@ -182,6 +182,17 @@ export function textContainsCpuTerm(text, cpuTerm) {
     );
   }
 
+  // Intel Core Ultra HX (290/285/275 HX e 255 HX): muitos anúncios escrevem só
+  // "Ultra 9 285" (sem sufixo) ou "285H". Aceitamos o número do modelo no
+  // contexto "Ultra <n>" com sufixo opcional (nenhum/H/HX), exigindo o "Ultra"
+  // para não casar números soltos (preço, modelo de chassi etc.). O token
+  // compacto "285hx" também casa fora desse contexto.
+  if (cpuTerm === "290hx" || cpuTerm === "285hx" || cpuTerm === "275hx" || cpuTerm === "255hx") {
+    const model = cpuTerm.slice(0, 3); // "290" | "285" | "275" | "255"
+    if (new RegExp(`\\bultra\\s+i?[579][\\s-]*${model}(?:[\\s-]*hx?)?\\b`, "i").test(raw)) return true;
+    return new RegExp(`\\b${model}[\\s-]*hx\\b`, "i").test(raw);
+  }
+
   // Escape special regex chars (CPU terms are alphanumeric, but keep it safe).
   const escaped = cpuTerm.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   // Insert flexible separator at digit↔letter transitions within the term.
