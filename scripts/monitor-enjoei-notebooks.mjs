@@ -64,7 +64,7 @@ async function main() {
 
   console.log(`Execução Enjoei Notebooks: ${runTimestamp}`);
   console.log(`Termos: ${terms.join(", ")}`);
-  console.log(`Faixa: R$ ${minPriceBrl}–R$ ${maxPriceBrl} | premium até R$ ${premiumMaxPriceBrl}`);
+  console.log(`Faixa: R$ ${minPriceBrl}–R$ ${maxPriceBrl}`);
   console.log(`Snapshot anterior: ${previousSnapshotPath ?? "(nenhum)"}\n`);
 
   const collected = await collectProducts(previousSnapshot);
