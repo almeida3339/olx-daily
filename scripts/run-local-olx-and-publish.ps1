@@ -12,6 +12,7 @@ $env:OLX_DATA_DIR = Join-Path $root "data\olx"
 $env:ENJOEI_DATA_DIR = Join-Path $root "data\enjoei"
 $env:ENJOEI_NOTEBOOKS_DATA_DIR = Join-Path $root "data\enjoei-notebooks"
 $env:DOCKSTATIONS_DATA_DIR = Join-Path $root "data\dockstations"
+$env:FITBIT_DATA_DIR = Join-Path $root "data\fitbit"
 $env:OLX_MAX_PER_CPU = "$MaxPerCpu"
 
 $success = $false
@@ -85,7 +86,7 @@ try {
   # terminante e aborta ANTES do commit/push. O que importa e o exit code: rodamos
   # com 'Continue' e verificamos commit/push explicitamente.
   $ErrorActionPreference = 'Continue'
-  git add data/olx data/dockstations index.html
+  git add data/olx data/dockstations data/fitbit index.html
   if (-not (git diff --staged --quiet)) {
     $stamp = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm")
     git commit -m "snapshots olx local $stamp"

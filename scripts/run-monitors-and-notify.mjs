@@ -12,6 +12,7 @@ const OLX_DIR              = def("OLX_DATA_DIR",              "monitor-olx-noteb
 const ENJOEI_DIR           = def("ENJOEI_DATA_DIR",           "monitor-enjoei-tenis-42");
 const ENJOEI_NOTEBOOKS_DIR = def("ENJOEI_NOTEBOOKS_DATA_DIR", "monitor-enjoei-notebooks");
 const DOCKSTATIONS_DIR     = def("DOCKSTATIONS_DATA_DIR",     "monitor-dockstations");
+const FITBIT_DIR           = def("FITBIT_DATA_DIR",           "monitor-fitbit");
 
 const GMAIL_USER         = process.env.GMAIL_USER ?? "docrash@gmail.com";
 // App passwords do Gmail são 16 caracteres sem espaços. O Google exibe a senha
@@ -30,6 +31,7 @@ const onlyOlx            = process.argv.includes("--only-olx");
 const skipOlx            = process.argv.includes("--skip-olx") || process.env.SKIP_OLX === "1";
 const skipEnjoei         = process.argv.includes("--skip-enjoei") || process.env.SKIP_ENJOEI === "1";
 const skipDockstations   = process.argv.includes("--skip-dockstations") || process.env.SKIP_DOCKSTATIONS === "1";
+const skipFitbit         = process.argv.includes("--skip-fitbit") || process.env.SKIP_FITBIT === "1";
 const olxMaxPerCpu       = getArgValue("--olx-max-per-cpu") ?? process.env.OLX_MAX_PER_CPU ?? "12";
 
 main().catch((err) => { console.error(`Falha geral: ${err.message}`); process.exitCode = 1; });
@@ -53,6 +55,7 @@ async function main() {
     // trata falhas de cada fonte internamente, então roda independente dos flags
     // only-olx/skip-enjoei (assim funciona tanto no Task Scheduler local quanto no CI).
     if (!skipDockstations) jobs.push(["dockstations", runScript("monitor-dockstations.mjs", [])]);
+    if (!skipFitbit) jobs.push(["fitbit", runScript("monitor-fitbit.mjs", [])]);
 
     const results = await Promise.allSettled(jobs.map(([, promise]) => promise));
     for (let i = 0; i < jobs.length; i += 1) {
@@ -63,15 +66,17 @@ async function main() {
       if (name === "enjoei-tenis") { console.error(`Enjoei tênis falhou: ${result.reason.message}`); errors.push(`Enjoei tênis: ${result.reason.message}`); }
       if (name === "enjoei-notebooks") { console.error(`Enjoei NB falhou: ${result.reason.message}`); errors.push(`Enjoei NB: ${result.reason.message}`); }
       if (name === "dockstations") { console.error(`Dockstations falhou: ${result.reason.message}`); errors.push(`Dockstations: ${result.reason.message}`); }
+      if (name === "fitbit") { console.error(`Fitbit falhou: ${result.reason.message}`); errors.push(`Fitbit: ${result.reason.message}`); }
     }
   }
 
   const enjoeiOn = !onlyOlx && !skipEnjoei;
-  const [olxStd, enjoeiReport, enjoeiNbStd, dockReport] = await Promise.all([
+  const [olxStd, enjoeiReport, enjoeiNbStd, dockReport, fitbitReport] = await Promise.all([
     skipOlx          ? null : readLatestReport(OLX_DIR).catch(() => null),
     enjoeiOn         ? readLatestReport(ENJOEI_DIR).catch(() => null) : null,
     enjoeiOn         ? readLatestReport(ENJOEI_NOTEBOOKS_DIR).catch(() => null) : null,
     skipDockstations ? null : readLatestReport(DOCKSTATIONS_DIR).catch(() => null),
+    skipFitbit       ? null : readLatestReport(FITBIT_DIR).catch(() => null),
   ]);
 
   // Cada fonte conta itens NOVOS e ALTERAÇÕES DE PREÇO (antes só contava novos do range padrão).
@@ -80,6 +85,7 @@ async function main() {
     { label: "Enjoei Notebooks", report: enjoeiNbStd, newRe: /Novos notebooks[^:]*:\s*\*\*(\d+)\*\*/,              newSec: "## Novos notebooks", priceSec: "## Mudanças de preço" },
     { label: "Enjoei Tênis",     report: enjoeiReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,                    newSec: "## Novos produtos",  priceSec: "## Mudancas de preco" },
     { label: "Dockstations",     report: dockReport,   newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,                    newSec: "## Novos produtos",  priceSec: "## Mudanças de preço" },
+    { label: "Fitbit Air",       report: fitbitReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,                    newSec: "## Novos produtos",  priceSec: "## Mudanças de preço" },
   ].map((s) => ({
     ...s,
     newCount:   extractNewCount(s.report, s.newRe),

@@ -38,6 +38,7 @@ jobs:
           ENJOEI_DATA_DIR: ${{ github.workspace }}/data/enjoei
           ENJOEI_NOTEBOOKS_DATA_DIR: ${{ github.workspace }}/data/enjoei-notebooks
           DOCKSTATIONS_DATA_DIR: ${{ github.workspace }}/data/dockstations
+          FITBIT_DATA_DIR: ${{ github.workspace }}/data/fitbit
         run: node scripts/run-monitors-and-notify.mjs
 
       - name: Gerar dashboard HTML
@@ -46,6 +47,7 @@ jobs:
           ENJOEI_DATA_DIR: ${{ github.workspace }}/data/enjoei
           ENJOEI_NOTEBOOKS_DATA_DIR: ${{ github.workspace }}/data/enjoei-notebooks
           DOCKSTATIONS_DATA_DIR: ${{ github.workspace }}/data/dockstations
+          FITBIT_DATA_DIR: ${{ github.workspace }}/data/fitbit
         run: node scripts/generate-dashboard.mjs
 
       - name: Salvar snapshots no repositorio
