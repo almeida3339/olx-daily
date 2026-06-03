@@ -28,6 +28,9 @@ const BASE_URL = "https://www.olx.com.br/brasil/informatica/notebooks";
 
 const PRICE_MIN_BRL = 2000;
 const PRICE_MAX_BRL = 8000;
+// Mudanças de preço aparecem para itens até este teto (novos só vão até
+// PRICE_MAX_BRL). Acima disso não interessa acompanhar variação.
+const PRICE_CHANGE_MAX_BRL = 10000;
 const NAVIGATION_TIMEOUT_MS = 30_000;
 const DETAIL_TIMEOUT_MS = 25_000;
 const RAW_SCROLL_DELAY_MS = Number(process.env.OLX_SCROLL_DELAY_MS ?? 350);
@@ -931,6 +934,7 @@ function buildReport({ runDate, snapshot, previousSnapshot, priceMin, priceMax }
   for (const item of currentItems) {
     const prev = previousById.get(item.id ?? item.url);
     if (!prev) continue;
+    if (item.price_brl != null && item.price_brl > PRICE_CHANGE_MAX_BRL) continue;
     if (prev.price_brl != null && item.price_brl != null && prev.price_brl !== item.price_brl) {
       priceChanges.push({ item, from: prev.price_brl, to: item.price_brl });
     }
