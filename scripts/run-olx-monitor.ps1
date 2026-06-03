@@ -26,21 +26,22 @@ function Test-Cdp {
   }
 }
 
-if (-not (Test-Cdp)) {
-  $chromeArgs = @{
-    OlxProfile = $true
-    Port = $Port
-    Url = "https://www.olx.com.br"
-    WaitSeconds = 90
-  }
-  if (-not $Foreground) {
-    $chromeArgs.Background = $true
-  }
-  if ($ForceRestartChrome) {
-    $chromeArgs.ForceCloseProfile = $true
-  }
-  & (Join-Path $PSScriptRoot "start-chrome-debug.ps1") @chromeArgs
+# Sempre recicla o Chrome de debug do perfil OLX a cada rodada. Reusar o Chrome
+# de execucoes anteriores acumula abas ao longo de dias e acaba travando o
+# monitor (a porta 9222 fica viva mas a sessao degrada — incidente 03/06). O
+# perfil persiste em disco, entao cookies/Cloudflare sao preservados; so o
+# processo reinicia. ForceCloseProfile=$true forca fechar antes de subir fresco.
+$chromeArgs = @{
+  OlxProfile = $true
+  Port = $Port
+  Url = "https://www.olx.com.br"
+  WaitSeconds = 90
+  ForceCloseProfile = $true
 }
+if (-not $Foreground) {
+  $chromeArgs.Background = $true
+}
+& (Join-Path $PSScriptRoot "start-chrome-debug.ps1") @chromeArgs
 
 $deadline = (Get-Date).AddSeconds(90)
 while ((Get-Date) -lt $deadline) {

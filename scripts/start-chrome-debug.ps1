@@ -75,16 +75,10 @@ function Get-ChromeProcessesForUserDataDir([string]$dir) {
     }
 }
 
-try {
-  if (-not (Test-Cdp)) {
-    throw "CDP nao respondeu."
-  }
-  Write-Host "Chrome ja esta com depuracao remota ativa em 127.0.0.1:$Port."
-  exit 0
-} catch {
-  Write-Host "Porta $Port ainda nao esta ativa."
-}
-
+# ForceCloseProfile precisa rodar ANTES de checar a porta 9222: um Chrome zumbi
+# (sessao de dias atras, abas acumuladas) ainda responde no CDP e, sem fechar
+# primeiro, o reuso degradado trava o monitor (incidente 03/06). Fechar aqui
+# garante que reciclamos de fato quando o reinicio foi pedido.
 if ($ForceCloseProfile) {
   $procs = @(Get-ChromeProcessesForUserDataDir -dir $UserDataDir)
   if ($procs.Count -gt 0) {
@@ -98,6 +92,16 @@ if ($ForceCloseProfile) {
     }
     Start-Sleep -Seconds 2
   }
+}
+
+try {
+  if (-not (Test-Cdp)) {
+    throw "CDP nao respondeu."
+  }
+  Write-Host "Chrome ja esta com depuracao remota ativa em 127.0.0.1:$Port."
+  exit 0
+} catch {
+  Write-Host "Porta $Port ainda nao esta ativa."
 }
 
 Write-Host "Se ja houver Chrome aberto usando o MESMO perfil sem depuracao remota, feche apenas essas janelas antes de continuar."
