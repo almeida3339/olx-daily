@@ -1,12 +1,45 @@
 param(
   [int]$MaxPerCpu = 12,
   [switch]$NoNotify,
-  [switch]$NoPush
+  [switch]$NoPush,
+  [int]$WaitForInternetSeconds = 1200
 )
 
 $ErrorActionPreference = "Stop"
 
 $root = Resolve-Path (Join-Path $PSScriptRoot "..")
+
+# A tarefa das 07:00 costuma rodar logo apos o PC ligar, quando o Wi-Fi/rede
+# ainda nao conectou. Sem isso, o primeiro acesso de rede (git fetch / scraping)
+# falharia de imediato. Aqui aguardamos a conectividade ficar disponivel (ate
+# WaitForInternetSeconds) antes de comecar; assim que a rede sobe, seguimos.
+function Wait-ForInternet {
+  param([int]$TimeoutSeconds = 1200, [int]$IntervalSeconds = 15)
+  $probeHosts = @("github.com", "www.olx.com.br")
+  $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
+  while ((Get-Date) -lt $deadline) {
+    foreach ($h in $probeHosts) {
+      try {
+        $client = New-Object System.Net.Sockets.TcpClient
+        $async = $client.BeginConnect($h, 443, $null, $null)
+        $connected = $async.AsyncWaitHandle.WaitOne(4000, $false) -and $client.Connected
+        $client.Close()
+        if ($connected) { return $true }
+      } catch {
+        try { $client.Close() } catch {}
+      }
+    }
+    Write-Host "Sem conexao ainda; aguardando ${IntervalSeconds}s e tentando de novo..."
+    Start-Sleep -Seconds $IntervalSeconds
+  }
+  return $false
+}
+
+if (-not (Wait-ForInternet -TimeoutSeconds $WaitForInternetSeconds)) {
+  Write-Host "Internet indisponivel apos ${WaitForInternetSeconds}s de espera; abortando rodada (a proxima tentara de novo)."
+  exit 0
+}
+Write-Host "Conexao disponivel. Iniciando rodada."
 
 $env:OLX_DATA_DIR = Join-Path $root "data\olx"
 $env:ENJOEI_DATA_DIR = Join-Path $root "data\enjoei"
