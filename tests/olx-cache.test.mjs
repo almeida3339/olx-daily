@@ -26,6 +26,7 @@ describe("OLX detail reuse", () => {
             gpu: "Intel Arc integrada",
             status: "not_seen",
             notes: null,
+            desc_checked: true,
           },
         ],
       },
@@ -43,6 +44,37 @@ describe("OLX detail reuse", () => {
     assert.equal(reused.storage_gb, 1024);
     assert.equal(reused.gpu, "Intel Arc integrada");
     assert.equal(reused.status, "active");
+  });
+
+  test("nao reaproveita item da faixa cuja descricao nunca foi verificada", () => {
+    const reused = getReusablePreviousEnrichedItem(
+      {
+        items: [
+          {
+            id: "1508025079",
+            url: "https://sp.olx.com.br/notebooks/acer-helios-1508025079",
+            title: "Notebook Acer Helios Neo 16 i7 14700hx RTX4070, 16GB RAM",
+            cpu_term: "14700hx",
+            price_brl: 2000,
+            ram_gb: 16,
+            storage_gb: 512,
+            gpu: "RTX 4070",
+            status: "active",
+            notes: null,
+            // sem desc_checked: snapshot antigo, descricao nunca aberta
+          },
+        ],
+      },
+      {
+        url: "https://sp.olx.com.br/notebooks/acer-helios-1508025079",
+        title: "Notebook Acer Helios Neo 16 i7 14700hx RTX4070, 16GB RAM",
+        text: "",
+        cpu_term: "14700hx",
+        price_brl: 2000,
+      },
+    );
+    // Deve forcar reabertura (null) para que EXCLUDE_PATTERNS rode sobre o corpo.
+    assert.equal(reused, null);
   });
 
   test("nao reaproveita item que nunca foi enriquecido", () => {

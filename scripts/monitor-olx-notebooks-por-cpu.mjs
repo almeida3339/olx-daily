@@ -55,8 +55,16 @@ const EXCLUDE_PATTERNS = [
   "conserto",
   "não liga",
   "nao liga",
+  "não ligou",
+  "nao ligou",
   "não funciona",
   "nao funciona",
+  "surto elétrico",
+  "surto eletrico",
+  "queimou",
+  "queimada",
+  "retirada de peças",
+  "retirada de pecas",
   "problema",
   "mini pc",
   "mini-pc",
@@ -305,7 +313,12 @@ async function collectForCpuTerm(page, cpuTerm, maxCards, previousSnapshot) {
       if (validated.length >= maxCards) break;
       continue;
     }
-    const shouldOpen = forceOpenDetails || needsDetailEnrichment(listingItem);
+    // Abre o detalhe também quando o item está na faixa do relatório, mesmo com
+    // specs completas, para verificar a descrição contra defeitos (EXCLUDE_PATTERNS).
+    // Muitos anúncios só declaram "não liga / defeito / avaria" no corpo, não no
+    // título — sem abrir, passariam direto para a notificação.
+    const inReportRange = listingItem.price_brl != null && listingItem.price_brl >= PRICE_MIN_BRL && listingItem.price_brl <= PRICE_MAX_BRL;
+    const shouldOpen = forceOpenDetails || needsDetailEnrichment(listingItem) || inReportRange;
     if (!shouldOpen) {
       validated.push(listingItem);
       if (validated.length >= maxCards) break;
@@ -374,7 +387,10 @@ async function collectForCpuTermRawCdp(tab, cpuTerm, maxCards, previousSnapshot)
         if (validated.length >= maxCards) break;
         continue;
       }
-      const shouldOpen = forceOpenDetails || needsDetailEnrichment(listingItem);
+      // Mesmo motivo da versão Playwright: in-range sempre abre para checar
+      // defeitos declarados apenas na descrição.
+      const inReportRange = listingItem.price_brl != null && listingItem.price_brl >= PRICE_MIN_BRL && listingItem.price_brl <= PRICE_MAX_BRL;
+      const shouldOpen = forceOpenDetails || needsDetailEnrichment(listingItem) || inReportRange;
       if (!shouldOpen) {
         validated.push(listingItem);
         if (validated.length >= maxCards) break;
@@ -561,6 +577,7 @@ async function enrichAdRawCdp(cdpEndpoint, card) {
       first_seen: null,
       last_seen: null,
       notes: null,
+      desc_checked: true,
     };
   } finally {
     await tab.closeTab();
@@ -609,6 +626,12 @@ function getReusablePreviousEnrichedItem(previousSnapshot, card) {
   if (!previous) return null;
   if ((previous.notes ?? "").includes("Validado apenas")) return null;
 
+  // Não reusa item da faixa do relatório cuja descrição nunca foi verificada
+  // (snapshots antigos, anteriores à checagem de defeito): força reabrir para
+  // que EXCLUDE_PATTERNS rode sobre o corpo do anúncio.
+  const inReportRange = current.price_brl != null && current.price_brl >= PRICE_MIN_BRL && current.price_brl <= PRICE_MAX_BRL;
+  if (inReportRange && !previous.desc_checked) return null;
+
   const merged = {
     ...previous,
     ...current,
@@ -617,6 +640,7 @@ function getReusablePreviousEnrichedItem(previousSnapshot, card) {
     gpu: current.gpu ?? previous.gpu ?? null,
     condition: previous.condition ?? current.condition ?? null,
     notes: previous.notes,
+    desc_checked: previous.desc_checked ?? false,
     status: "active",
   };
   return needsDetailEnrichment(merged) ? null : merged;
@@ -889,6 +913,7 @@ async function enrichAd(listingPage, card) {
       first_seen: null,
       last_seen: null,
       notes: null,
+      desc_checked: true,
     };
   } finally {
     await page.close().catch(() => {});
