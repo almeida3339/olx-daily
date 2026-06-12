@@ -103,7 +103,20 @@ async function latestRunLabel(dir) {
     .filter((n) => n.startsWith("report-") && !n.startsWith("report-premium-") && n.endsWith(".md"))
     .sort()
     .reverse()[0];
-  return file ? formatRunLabelFromFile(file, null) : null;
+  if (!file) return { label: null, fresh: false };
+  const ts = runTimestampFromFile(file);
+  // "fresh" = última coleta há menos de 24h (destaque no dashboard).
+  const fresh = ts != null && (Date.now() - ts.getTime()) < 24 * 60 * 60 * 1000;
+  return { label: formatRunLabelFromFile(file, null), fresh };
+}
+
+// Extrai o instante (UTC) do nome do arquivo de relatório, ou null se não casar.
+function runTimestampFromFile(file) {
+  const m = file.match(/report(?:-premium)?-(\d{4})-(\d{2})-(\d{2})T(\d{2})-(\d{2})-(\d{2})-(\d{3})Z\.md$/);
+  if (!m) return null;
+  const [, y, mo, d, h, mi, s, ms] = m;
+  const date = new Date(`${y}-${mo}-${d}T${h}:${mi}:${s}.${ms}Z`);
+  return Number.isNaN(date.getTime()) ? null : date;
 }
 
 // ── parser ───────────────────────────────────────────────────────────────────
@@ -359,6 +372,10 @@ h1{font-size:1.3rem;color:#f0f6fc;margin-bottom:5px}
 .updates .u{color:#8b949e;background:#161b22;border:1px solid #30363d;border-radius:6px;padding:3px 9px}
 .updates .u b{color:#c9d1d9;font-weight:600}
 .updates .u time{color:#58a6ff;font-variant-numeric:tabular-nums}
+.updates .u.fresh{color:#3fb950;background:#0f2417;border-color:#238636}
+.updates .u.fresh b{color:#56d364}
+.updates .u.fresh time{color:#56d364}
+.updates .u.fresh::before{content:"●";color:#3fb950;font-size:8px;margin-right:6px;vertical-align:middle}
 .meta a{color:#58a6ff;text-decoration:none}
 .meta a:hover{text-decoration:underline}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:18px;align-items:start}
@@ -405,14 +422,14 @@ h1{font-size:1.3rem;color:#f0f6fc;margin-bottom:5px}
 <h1>Monitor</h1>
 <p class="meta">Última atualização por fonte (BRT) &nbsp;·&nbsp; <a href="https://github.com/${REPO}" target="_blank" rel="noopener noreferrer">ver repositório ↗</a></p>
 <div class="updates">
-<span class="u"><b>OLX</b> <time>${e(olxUpdated ?? "—")}</time></span>
-<span class="u"><b>Enjoei Notebooks</b> <time>${e(enjoeiNbUpdated ?? "—")}</time></span>
-<span class="u"><b>Enjoei Tênis</b> <time>${e(enjoeiTenisUpdated ?? "—")}</time></span>
-<span class="u"><b>Dockstations</b> <time>${e(dockUpdated ?? "—")}</time></span>
-<span class="u"><b>Fitbit Air</b> <time>${e(fitbitUpdated ?? "—")}</time></span>
-<span class="u"><b>Lifefactory</b> <time>${e(lifefactoryUpdated ?? "—")}</time></span>
-<span class="u"><b>Tela Book3</b> <time>${e(telaBook3Updated ?? "—")}</time></span>
-<span class="u"><b>Melanger</b> <time>${e(melangerUpdated ?? "—")}</time></span>
+<span class="u${olxUpdated.fresh ? " fresh" : ""}"><b>OLX</b> <time>${e(olxUpdated.label ?? "—")}</time></span>
+<span class="u${enjoeiNbUpdated.fresh ? " fresh" : ""}"><b>Enjoei Notebooks</b> <time>${e(enjoeiNbUpdated.label ?? "—")}</time></span>
+<span class="u${enjoeiTenisUpdated.fresh ? " fresh" : ""}"><b>Enjoei Tênis</b> <time>${e(enjoeiTenisUpdated.label ?? "—")}</time></span>
+<span class="u${dockUpdated.fresh ? " fresh" : ""}"><b>Dockstations</b> <time>${e(dockUpdated.label ?? "—")}</time></span>
+<span class="u${fitbitUpdated.fresh ? " fresh" : ""}"><b>Fitbit Air</b> <time>${e(fitbitUpdated.label ?? "—")}</time></span>
+<span class="u${lifefactoryUpdated.fresh ? " fresh" : ""}"><b>Lifefactory</b> <time>${e(lifefactoryUpdated.label ?? "—")}</time></span>
+<span class="u${telaBook3Updated.fresh ? " fresh" : ""}"><b>Tela Book3</b> <time>${e(telaBook3Updated.label ?? "—")}</time></span>
+<span class="u${melangerUpdated.fresh ? " fresh" : ""}"><b>Melanger</b> <time>${e(melangerUpdated.label ?? "—")}</time></span>
 </div>
 <div class="grid">
 ${renderSection("OLX Notebooks", "R$ 2.000 – R$ 8.000", olx, "data/olx")}
