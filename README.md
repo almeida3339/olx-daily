@@ -52,6 +52,11 @@ npm run monitor:todos:forcar-email
 # Regenerar dashboard HTML
 npm run dashboard
 
+# Mercado Livre com perfil autenticado
+npm run mercadolivre:login
+# Entre na conta, feche esse Chrome e execute:
+npm run monitor:mercadolivre
+
 # Local + commit + push automático (PowerShell Windows)
 .\scripts\run-local-olx-and-publish.ps1
 ```
@@ -357,7 +362,10 @@ Stop-Process -Id 12345 -Force
 ```
 scripts/
   lib/
-    watchlist-monitor.mjs          ← lib compartilhada (coleta OLX/Enjoei, merge, relatório)
+    monitor-core.mjs               ← schema, cobertura, merge e histórico compartilhados
+    snapshot.mjs                   ← compatibilidade dos monitores especializados
+    watchlist-monitor.mjs          ← coleta OLX/Enjoei e relatório
+    mercadolivre-production.mjs    ← coleta e enriquecimento do Mercado Livre
   monitor-olx-notebooks-por-cpu.mjs ← monitores especializados (CPU, defei
 tos)
   monitor-enjoei-notebooks.mjs
@@ -377,7 +385,7 @@ tests/
   olx-cache.test.mjs
   olx-detail.test.mjs
   parsers.test.mjs
-  (108 testes, cobertura alta)
+  (144 testes, cobertura alta)
 
 data/
   olx/, enjoei/, enjoei-notebooks/, dockstations/, fitbit/, 
@@ -411,6 +419,8 @@ README.md
 ## Notas de design
 
 - **Watchlists + lib compartilhada:** add nova source em minutos sem duplicação
+- **Núcleo único:** OLX, Enjoei e Mercado Livre compartilham schema, cobertura, merge, histórico e normalização
+- **Compatibilidade retroativa:** snapshots antigos continuam legíveis; novas rodadas usam `schema_version: 2`
 - **Persistência de validação (`desc_checked`):** força reabertura de itens antigos sem verificação quando entram novamente na faixa
 - **Teto de 10k retroativo:** não filtra itens >10k da coleta (podem ser histórico), mas do dashboard (sempre mostra estado atual)
 - **Bivolt override (`keepTerms`):** modelo genérico para exceções em filtros, extensível
@@ -418,7 +428,22 @@ README.md
 - **Chrome perfil persistente:** cookies/session não recriam a cada rodada, só o processo
 - **Snapshot JSON minimalista:** só campos usados (sem GPU para Dockstations, sem specs para Tênis)
 
+### Mercado Livre
+
+- `npm run monitor:mercadolivre:notebooks`: busca consolidada dos processadores.
+- `npm run monitor:mercadolivre:watchlists`: executa as demais listas em sequência.
+- `npm run monitor:mercadolivre`: executa toda a fila do Mercado Livre.
+- O perfil autenticado fica em `.chrome-mercadolivre-profile` e aceita somente uma coleta por vez.
+- Desafio, limitação ou sessão expirada interrompem a fila sem apagar o histórico anterior.
+- Notebooks são coletados entre R$ 2.000 e R$ 10.000; o painel mostra somente até R$ 8.000.
+- Galaxy Buds4 Pro é uma watchlist oficial na faixa de R$ 500 a R$ 1.000, com variantes de escrita e envio local.
+- Fichas técnicas são abertas apenas para anúncios novos ou incompletos, com limite por rodada.
+- A rotina automática local inclui o Mercado Livre. No GitHub Actions ele fica desativado por não haver perfil autenticado.
+- A visão de notebooks do Mercado Livre está consolidada no `index.html`; o dashboard experimental separado foi removido.
+- Reaparecimentos não são tratados como novos; mudanças de preço continuam sendo alertadas.
+- Itens cujos termos saem da configuração são arquivados como `out_of_scope`.
+
 ---
 
-**Última atualização:** 2026-06-10  
+**Última atualização:** 2026-06-14
 **Commit:** `5bd16a3`

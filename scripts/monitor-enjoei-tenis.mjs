@@ -1,6 +1,10 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  buildMonitorChanges,
+  mergeMonitorSnapshot,
+} from "./lib/monitor-core.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const automationRoot = process.env.ENJOEI_DATA_DIR ?? path.join(process.env.USERPROFILE ?? process.env.HOME ?? "", ".codex", "automations", "monitor-enjoei-tenis-42");
@@ -52,8 +56,8 @@ async function main() {
   console.log(`Snapshot anterior: ${previousSnapshotPath ?? "(nenhum)"}`);
   console.log("");
 
-  const collected = await collectProducts();
-  const snapshot = mergeWithPreviousSnapshot({ runDate, collected, previousSnapshot });
+  const { items: collected, failedTerms } = await collectProducts();
+  const snapshot = mergeWithPreviousSnapshot({ now, collected, failedTerms, previousSnapshot });
 
   await fs.mkdir(automationRoot, { recursive: true });
 
@@ -121,7 +125,7 @@ async function collectProducts() {
     console.warn(`\nTermos que falharam: ${failedTerms.join(", ")}`);
   }
 
-  return Array.from(byId.values());
+  return { items: Array.from(byId.values()), failedTerms };
 }
 
 async function fetchWithRetry(url, options) {
@@ -200,47 +204,40 @@ function normalizeProduct(node, searchTerm) {
   };
 }
 
-function mergeWithPreviousSnapshot({ runDate, collected, previousSnapshot }) {
+function mergeWithPreviousSnapshot({ now, collected, failedTerms, previousSnapshot }) {
   const previousItems = (previousSnapshot?.items ?? []).filter(
     (item) => (item.price_brl == null || item.price_brl <= maxPriceBrl) && itemMatchesAnySearchTerm(item)
   );
-  const previousById = new Map(previousItems.map((item) => [item.id ?? item.url, item]));
-
-  const items = [];
-  for (const item of collected) {
-    const key = item.id ?? item.url;
-    const previous = previousById.get(key);
-    items.push({
-      ...item,
-      first_seen: previous?.first_seen ?? runDate,
-      last_seen: runDate,
-    });
-  }
-
-  const currentKeys = new Set(items.map((item) => item.id ?? item.url));
-  for (const previous of previousItems) {
-    const key = previous.id ?? previous.url;
-    if (!currentKeys.has(key)) {
-      items.push({
-        ...previous,
-        status: "not_seen",
-        last_seen: runDate,
-      });
-    }
-  }
-
-  return {
-    run: { date: runDate, timezone: Intl.DateTimeFormat().resolvedOptions().timeZone },
-    search: {
-      terms,
-      department,
-      shoe_size: shoeSize,
-      shipping_range: shippingRange,
-      max_price_brl: maxPriceBrl,
-      source_urls: terms.map((searchTerm) => buildSearchPageUrl(searchTerm)),
+  const snapshot = mergeMonitorSnapshot({
+    previousSnapshot: previousSnapshot ? { ...previousSnapshot, items: previousItems } : null,
+    collected,
+    now,
+    run: {
+      id: "enjoei-tenis-42",
+      label: "Enjoei Tenis 42",
+      partial: failedTerms.length > 0 || terms.length < DEFAULT_TERMS.length,
     },
-    items,
+    configuredCoverage: DEFAULT_TERMS,
+    scheduledCoverage: terms,
+    successfulCoverage: terms.filter((term) => !failedTerms.includes(term)),
+    failedCoverage: failedTerms,
+    itemCoverage: (item) => item.search_terms ?? [],
+    filters: {
+      price_brl: { min: 0, max: maxPriceBrl },
+      shoe_size: shoeSize,
+      department,
+      shipping_range: shippingRange,
+    },
+  });
+  snapshot.search = {
+    terms,
+    department,
+    shoe_size: shoeSize,
+    shipping_range: shippingRange,
+    max_price_brl: maxPriceBrl,
+    source_urls: terms.map((searchTerm) => buildSearchPageUrl(searchTerm)),
   };
+  return snapshot;
 }
 
 function buildReport({ runDate, snapshot, previousSnapshot }) {
@@ -251,20 +248,21 @@ function buildReport({ runDate, snapshot, previousSnapshot }) {
   const previousById = new Map(previousComparableItems.map((item) => [item.id ?? item.url, item]));
   const currentById = new Map(currentItems.map((item) => [item.id ?? item.url, item]));
 
-  const newItems = currentItems.filter((item) => !previousById.has(item.id ?? item.url));
+  const { newItems, priceChanges: sharedPriceChanges } = buildMonitorChanges(
+    { items: previousComparableItems },
+    snapshot,
+    { reactivationIsNew: false },
+  );
   const stillActive = currentItems.filter((item) => previousById.has(item.id ?? item.url));
   const notSeenThisRun = previousComparableItems
     .filter((item) => item.status === "active")
     .filter((item) => !currentById.has(item.id ?? item.url));
 
-  const priceChanges = [];
-  for (const item of currentItems) {
-    const previous = previousById.get(item.id ?? item.url);
-    if (!previous) continue;
-    if (previous.price_brl != null && item.price_brl != null && previous.price_brl !== item.price_brl) {
-      priceChanges.push({ item, from: previous.price_brl, to: item.price_brl });
-    }
-  }
+  const priceChanges = sharedPriceChanges.map((item) => ({
+    item,
+    from: item.previous_price_brl,
+    to: item.price_brl,
+  }));
 
   const lines = [];
   lines.push(`# Monitor Enjoei tenis ${shoeSize} ate R$ ${formatBrl(maxPriceBrl)} - ${runDate}`);

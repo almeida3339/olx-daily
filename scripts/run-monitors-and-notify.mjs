@@ -17,6 +17,16 @@ const LIFEFACTORY_DIR      = def("LIFEFACTORY_DATA_DIR",      "monitor-lifefacto
 const TELA_BOOK3_DIR       = def("TELA_GALAXYBOOK3_DATA_DIR", "monitor-tela-galaxybook3");
 const MELANGER_DIR         = def("MELANGER_DATA_DIR",         "monitor-melanger");
 const BUDS4PRO_DIR         = def("GALAXY_BUDS4_PRO_DATA_DIR", "monitor-galaxy-buds4-pro");
+const MERCADOLIVRE_DIRS = [
+  ["Mercado Livre Notebooks", path.join(workspaceRoot, "data", "mercadolivre-notebooks")],
+  ["ML Galaxy Buds4 Pro", path.join(workspaceRoot, "data", "mercadolivre-galaxy-buds4-pro")],
+  ["ML Dockstations", path.join(workspaceRoot, "data", "mercadolivre-dockstations")],
+  ["ML Fitbit Air", path.join(workspaceRoot, "data", "mercadolivre-fitbit-air")],
+  ["ML Lifefactory", path.join(workspaceRoot, "data", "mercadolivre-lifefactory")],
+  ["ML Tela Book3", path.join(workspaceRoot, "data", "mercadolivre-tela-galaxybook3")],
+  ["ML Melanger", path.join(workspaceRoot, "data", "mercadolivre-melanger")],
+  ["ML Tênis 42", path.join(workspaceRoot, "data", "mercadolivre-tenis-42")],
+];
 
 // NUNCA usar defaults hardcoded para credenciais: este repositório é público
 // (GitHub Pages) e qualquer valor aqui vaza para o mundo. As variáveis são
@@ -43,6 +53,9 @@ const skipLifefactory    = process.argv.includes("--skip-lifefactory") || proces
 const skipTelaBook3      = process.argv.includes("--skip-tela-book3") || process.env.SKIP_TELA_BOOK3 === "1";
 const skipMelanger       = process.argv.includes("--skip-melanger") || process.env.SKIP_MELANGER === "1";
 const skipBuds4Pro       = process.argv.includes("--skip-buds4-pro") || process.env.SKIP_BUDS4_PRO === "1";
+const skipMercadoLivre   = process.argv.includes("--skip-mercadolivre")
+  || process.env.SKIP_MERCADOLIVRE === "1"
+  || process.env.GITHUB_ACTIONS === "true";
 const olxMaxPerCpu       = getArgValue("--olx-max-per-cpu") ?? process.env.OLX_MAX_PER_CPU ?? "12";
 
 main().catch((err) => { console.error(`Falha geral: ${err.message}`); process.exitCode = 1; });
@@ -72,6 +85,8 @@ async function main() {
     if (!skipTelaBook3) jobs.push(["tela-book3", runScript("monitor-tela-galaxybook3.mjs", [])]);
     if (!skipMelanger) jobs.push(["melanger", runScript("monitor-melanger.mjs", [])]);
     if (!skipBuds4Pro) jobs.push(["buds4-pro", runScript("monitor-galaxy-buds4-pro.mjs", [])]);
+    if (!skipMercadoLivre) jobs.push(["mercadolivre", runScript("monitor-mercadolivre-all.mjs", [])]);
+    else console.log("Mercado Livre pulado (flag ativa ou ambiente sem perfil local).");
 
     const results = await Promise.allSettled(jobs.map(([, promise]) => promise));
     for (let i = 0; i < jobs.length; i += 1) {
@@ -87,6 +102,7 @@ async function main() {
       if (name === "tela-book3") { console.error(`Tela Book3 falhou: ${result.reason.message}`); errors.push(`Tela Book3: ${result.reason.message}`); }
       if (name === "melanger") { console.error(`Melanger falhou: ${result.reason.message}`); errors.push(`Melanger: ${result.reason.message}`); }
       if (name === "buds4-pro") { console.error(`Galaxy Buds4 Pro falhou: ${result.reason.message}`); errors.push(`Galaxy Buds4 Pro: ${result.reason.message}`); }
+      if (name === "mercadolivre") { console.error(`Mercado Livre falhou: ${result.reason.message}`); errors.push(`Mercado Livre: ${result.reason.message}`); }
     }
   }
 
@@ -124,6 +140,24 @@ async function main() {
     newCount:   extractNewCount(s.report, s.newRe),
     priceCount: extractNewCount(s.report, PRICE_CHANGE_RE),
   }));
+  if (!skipMercadoLivre) {
+    const mlReports = await Promise.all(MERCADOLIVRE_DIRS.map(([, dir]) =>
+      readLatestReport(dir, reportMinTime).catch(() => null)
+    ));
+    for (let index = 0; index < MERCADOLIVRE_DIRS.length; index += 1) {
+      const [label] = MERCADOLIVRE_DIRS[index];
+      const report = mlReports[index];
+      sources.push({
+        label,
+        report,
+        newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,
+        newSec: "## Novos produtos",
+        priceSec: "## Mudancas de preco",
+        newCount: extractNewCount(report, /Novos produtos:\s*\*\*(\d+)\*\*/),
+        priceCount: extractNewCount(report, PRICE_CHANGE_RE),
+      });
+    }
+  }
 
   const totalNew   = sources.reduce((sum, s) => sum + s.newCount, 0);
   const totalPrice = sources.reduce((sum, s) => sum + s.priceCount, 0);

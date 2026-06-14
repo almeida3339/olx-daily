@@ -1,7 +1,9 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { extractGpuLabel, parseBrlPrice } from "./lib/parsers.mjs";
+import { extractGpuLabel, parseBrlPrice, textContainsCpuTerm } from "./lib/parsers.mjs";
+import { extractMercadoLivreNotebookSpecs } from "./lib/mercadolivre-monitor.mjs";
+import { isMercadoLivreNotebookDisplayPrice } from "./lib/mercadolivre-notebook-ranges.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -14,6 +16,16 @@ const LIFEFACTORY_DIR      = process.env.LIFEFACTORY_DATA_DIR      ?? path.join(
 const TELA_BOOK3_DIR       = process.env.TELA_GALAXYBOOK3_DATA_DIR ?? path.join(ROOT, "data", "tela-galaxybook3");
 const MELANGER_DIR         = process.env.MELANGER_DATA_DIR         ?? path.join(ROOT, "data", "melanger");
 const BUDS4PRO_DIR         = process.env.GALAXY_BUDS4_PRO_DATA_DIR ?? path.join(ROOT, "data", "galaxy-buds4-pro");
+const MERCADOLIVRE_NOTEBOOKS_DIR = process.env.MERCADOLIVRE_NOTEBOOKS_DATA_DIR ?? path.join(ROOT, "data", "mercadolivre-notebooks");
+const MERCADOLIVRE_WATCHLISTS = [
+  ["Galaxy Buds4 Pro", "Mercado Livre Galaxy Buds4 Pro", "R$ 500 - R$ 1.000", "mercadolivre-galaxy-buds4-pro"],
+  ["Dockstations", "Mercado Livre Dockstations", "até R$ 500", "mercadolivre-dockstations"],
+  ["Fitbit Air", "Mercado Livre Fitbit Air", "R$ 300 - R$ 600", "mercadolivre-fitbit-air"],
+  ["Lifefactory", "Mercado Livre Lifefactory", "500 ml-1 L · R$ 25 - R$ 75", "mercadolivre-lifefactory"],
+  ["Tela Book3", "Mercado Livre Tela Galaxy Book3", "BA96-08462A · até R$ 1.000", "mercadolivre-tela-galaxybook3"],
+  ["Melanger", "Mercado Livre Melanger", "110/127V · R$ 1.000 - R$ 5.000", "mercadolivre-melanger"],
+  ["Tênis 42", "Mercado Livre Tênis 42", "masculino · tamanho 42 · até R$ 500", "mercadolivre-tenis-42"],
+];
 const OUTPUT = path.join(ROOT, "index.html");
 const REPO = "almeida3339/olx-daily";
 const BLOB = `https://github.com/${REPO}/blob/main`;
@@ -33,6 +45,27 @@ export { parseReport, formatRunLabelFromFile, summarizeMachine };
 async function main() {
   const olxDetails = await latestSnapshotDetails(OLX_DIR);
   const enjoeiNbDetails = await latestSnapshotDetails(ENJOEI_NOTEBOOKS_DIR);
+  const mercadoLivre = {
+    reports: await gather(MERCADOLIVRE_NOTEBOOKS_DIR, "report-", null, await latestSnapshotDetails(MERCADOLIVRE_NOTEBOOKS_DIR)),
+    updated: await latestRunLabel(MERCADOLIVRE_NOTEBOOKS_DIR),
+  };
+  if (!mercadoLivre.reports.length) {
+    const current = await currentMercadoLivreSnapshotReport(MERCADOLIVRE_NOTEBOOKS_DIR, 8000);
+    if (current) mercadoLivre.reports = [current];
+  }
+  const mercadoLivreWatchlists = await Promise.all(MERCADOLIVRE_WATCHLISTS.map(async ([chip, title, sub, folder]) => {
+    const dir = path.join(ROOT, "data", folder);
+    const reports = await gather(dir, "report-", null, await latestSnapshotDetails(dir));
+    if (!reports.length) {
+      const current = await currentMercadoLivreSnapshotReport(dir);
+      if (current) reports.push(current);
+    }
+    return {
+      chip, title, sub, dpath: `data/${folder}`,
+      reports,
+      updated: await latestRunLabel(dir),
+    };
+  }));
   const [olx, enjoeiNb, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro] = await Promise.all([
     gather(OLX_DIR, "report-", "report-premium-", olxDetails),
     gather(ENJOEI_NOTEBOOKS_DIR, "report-", "report-premium-", enjoeiNbDetails),
@@ -57,7 +90,7 @@ async function main() {
   ]);
   await fs.writeFile(
     OUTPUT,
-    buildHtml({ olx, enjoeiNb, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated }),
+    buildHtml({ olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated }),
     "utf8"
   );
   console.log(`Dashboard gerado: ${OUTPUT}`);
@@ -73,7 +106,16 @@ async function latestSnapshotDetails(dir) {
   if (!raw) return new Map();
   try {
     const snapshot = JSON.parse(raw);
-    return new Map((snapshot.items ?? []).filter((item) => item.url).map((item) => [item.url, item]));
+    return new Map((snapshot.items ?? []).filter((item) => item.url).map((item) => {
+      const notebook = extractMercadoLivreNotebookSpecs(item.specs);
+      return [item.url, {
+        ...item,
+        cpu: notebook.cpuModel ?? item.cpu,
+        ram_gb: notebook.ram ?? item.ram_gb,
+        storage_gb: notebook.storage ?? item.storage_gb,
+        gpu: notebook.gpu ?? item.gpu,
+      }];
+    }));
   } catch {
     return new Map();
   }
@@ -86,11 +128,19 @@ async function gather(dir, prefix, excludePrefix, detailsByUrl = new Map()) {
     .sort()
     .reverse();
   const out = [];
+  const seenNewItems = new Set();
   for (const file of files) {
     if (out.length >= MAX) break;
     const txt = await fs.readFile(path.join(dir, file), "utf8").catch(() => null);
     if (!txt) continue;
     const p = parseReport(txt, detailsByUrl);
+    p.newItems = p.newItems.filter((item) => {
+      const key = item.url ?? `${item.fullTitle}|${item.price}`;
+      if (seenNewItems.has(key)) return false;
+      seenNewItems.add(key);
+      return true;
+    });
+    p.newCount = p.newItems.length;
     if (p.newCount > 0 || p.priceCount > 0) out.push({ file, ...p, runLabel: formatRunLabelFromFile(file, p.date) });
   }
   return out;
@@ -125,7 +175,7 @@ function runTimestampFromFile(file) {
 // ── parser ───────────────────────────────────────────────────────────────────
 
 function parseReport(txt, detailsByUrl = new Map()) {
-  const dateM = txt.match(/[—\-]\s*(\d{4}-\d{2}-\d{2})/);
+  const dateM = txt.match(/Data:\s*(\d{4}-\d{2}-\d{2})/) ?? txt.match(/[—\-]\s*(\d{4}-\d{2}-\d{2})/);
   const date = dateM ? dateM[1] : null;
 
   // Contagem e itens derivam das próprias seções (já filtradas pelo teto de
@@ -144,6 +194,7 @@ function parseReport(txt, detailsByUrl = new Map()) {
     date,
     newItems: newItems.slice(0, MAX),
     priceItems: priceItems.slice(0, MAX),
+    partial: /Cobertura parcial:\s*\*\*sim\*\*/i.test(txt),
   };
 }
 
@@ -353,18 +404,81 @@ function formatRunLabelFromFile(file, fallbackDate) {
   }).format(date);
 }
 
+async function currentMercadoLivreSnapshotReport(dir, displayMax = Infinity) {
+  const all = await fs.readdir(dir).catch(() => []);
+  const file = all.filter((name) => name.startsWith("snapshot-") && name.endsWith(".json")).sort().reverse()[0];
+  if (!file) return null;
+  const raw = await fs.readFile(path.join(dir, file), "utf8").catch(() => null);
+  if (!raw) return null;
+  const snapshot = JSON.parse(raw);
+  const items = (snapshot.items ?? [])
+    .filter((item) => item.status === "active" && Number(item.price_brl) <= displayMax)
+    .slice(0, MAX)
+    .map((item) => ({
+      title: item.title,
+      fullTitle: item.title,
+      price: `R$ ${Number(item.price_brl).toLocaleString("pt-BR")}`,
+      url: item.url,
+      machine: summarizeMachine(item.title, {
+        ...item,
+        ...(() => {
+          const specs = extractMercadoLivreNotebookSpecs(item.specs);
+          return {
+            cpu: specs.cpuModel,
+            ram_gb: specs.ram,
+            storage_gb: specs.storage,
+            gpu: specs.gpu,
+          };
+        })(),
+      }),
+    }));
+  if (!items.length) return null;
+  return {
+    file,
+    runLabel: snapshot.generated_at ? formatDateTimeBrt(new Date(snapshot.generated_at)) : null,
+    date: snapshot.generated_at?.slice(0, 10),
+    newCount: items.length,
+    priceCount: 0,
+    newItems: items,
+    priceItems: [],
+    partial: Boolean(snapshot.run?.partial),
+    current: true,
+  };
+}
+
+function formatDateTimeBrt(date) {
+  return new Intl.DateTimeFormat("sv-SE", {
+    timeZone: "America/Sao_Paulo",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).format(date);
+}
+
 // ── HTML ─────────────────────────────────────────────────────────────────────
 
 function e(s) {
   return (s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
-function buildHtml({ olx, enjoeiNb, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated }) {
+function buildHtml({ olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated }) {
   // Ordenação em dois níveis: primeiro as fontes COM achados recentes (cards com
   // conteúdo), depois as vazias ("Nenhum run com novidades") — sempre no fundo,
   // mesmo que tenham rodado há pouco. Dentro de cada grupo, mais recente primeiro.
   // Tanto os chips quanto os cards seguem esta ordem.
   const sources = [
+    { chip: "Mercado Livre", title: "Mercado Livre Notebooks", sub: "R$ 2.000 - R$ 8.000", data: mercadoLivre.reports, dpath: "data/mercadolivre-notebooks", upd: mercadoLivre.updated },
+    ...mercadoLivreWatchlists.map((source) => ({
+      chip: source.chip,
+      title: source.title,
+      sub: source.sub,
+      data: source.reports,
+      dpath: source.dpath,
+      upd: source.updated,
+    })),
     { chip: "OLX",              title: "OLX Notebooks",     sub: "R$ 2.000 – R$ 8.000",                          data: olx,         dpath: "data/olx",              upd: olxUpdated },
     { chip: "Enjoei Notebooks", title: "Enjoei Notebooks",  sub: "R$ 1.500 – R$ 8.000",                          data: enjoeiNb,    dpath: "data/enjoei-notebooks", upd: enjoeiNbUpdated },
     { chip: "Enjoei Tênis",     title: "Enjoei Tênis 42",   sub: "até R$ 500,00",                                data: enjoei,      dpath: "data/enjoei",           upd: enjoeiTenisUpdated },
@@ -403,7 +517,11 @@ function buildHtml({ olx, enjoeiNb, enjoei, dock, fitbit, lifefactory, telaBook3
     const latest = members.reduce((a, b) => (b.upd.ts > a.upd.ts ? b : a));
     return `<span class="u${latest.upd.fresh ? " fresh" : ""}"><b>${e(label)}</b> <time>${e(latest.upd.label)}</time></span>`;
   };
-  const chipsHtml = [platformChip("OLX", "olx"), platformChip("Enjoei", "enjoei")].join("\n");
+  const chipsHtml = [
+    platformChip("OLX", "olx"),
+    platformChip("Enjoei", "enjoei"),
+    platformChip("Mercado Livre", "mercadolivre"),
+  ].join("\n");
   const cardsHtml = sources
     .map((s) => renderSection(s.title, s.sub, s.data, s.dpath, { label: s.stampLabel, fresh: s.stampFresh }))
     .join("\n");
@@ -449,6 +567,7 @@ h1{font-size:1.3rem;color:#f0f6fc;margin-bottom:5px}
 .badge{font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap}
 .bn{background:#1a4a2e;color:#3fb950;border:1px solid #238636}
 .bp{background:#3d2b00;color:#e3b341;border:1px solid #9e6a03}
+.bw{background:#4b1f24;color:#ff7b72;border:1px solid #da3633}
 .ci{padding:5px 10px 8px}
 .item{padding:7px 0;border-bottom:1px solid #21262d;font-size:.78rem}
 .item:last-child{border-bottom:none}
@@ -490,11 +609,12 @@ ${cardsHtml}
 function platformsOf(dpath) {
   if (dpath === "data/olx") return ["olx"];
   if (dpath === "data/enjoei" || dpath === "data/enjoei-notebooks") return ["enjoei"];
+  if (dpath.startsWith("data/mercadolivre-")) return ["mercadolivre"];
   return ["olx", "enjoei"];
 }
 
 function renderSection(title, sub, reports, dpath, stampInfo) {
-  const showSpecs = dpath !== "data/enjoei" && dpath !== "data/dockstations" && dpath !== "data/fitbit" && dpath !== "data/lifefactory" && dpath !== "data/tela-galaxybook3" && dpath !== "data/melanger" && dpath !== "data/galaxy-buds4-pro";
+  const showSpecs = dpath === "data/olx" || dpath === "data/enjoei-notebooks" || dpath === "data/mercadolivre-notebooks";
   const body = reports.length === 0
     ? `<p class="empty">Nenhum run com novidades recentes.</p>`
     : reports.map((r) => renderCard(r, dpath, showSpecs)).join("\n");
@@ -510,8 +630,11 @@ function renderSection(title, sub, reports, dpath, stampInfo) {
 
 function renderCard(r, dpath, showSpecs) {
   const url = `${BLOB}/${dpath}/${r.file}`;
-  const bn = r.newCount > 0 ? `<span class="badge bn">+${r.newCount} novo${r.newCount > 1 ? "s" : ""}</span>` : "";
+  const bn = r.newCount > 0
+    ? `<span class="badge bn">${r.current ? "" : "+"}${r.newCount} ${r.current ? "ativo" : "novo"}${r.newCount > 1 ? "s" : ""}</span>`
+    : "";
   const bp = r.priceCount > 0 ? `<span class="badge bp">${r.priceCount} preço${r.priceCount > 1 ? "s" : ""}</span>` : "";
+  const bw = r.partial ? `<span class="badge bw">parcial</span>` : "";
   const rows = [
     ...r.newItems.map((i) => renderRow(i, false, showSpecs)),
     ...r.priceItems.map((i) => renderRow(i, true, showSpecs)),
@@ -519,7 +642,7 @@ function renderCard(r, dpath, showSpecs) {
   return `<div class="card">
   <div class="ch">
     <span class="cd">${e(r.runLabel ?? r.date ?? "—")}<a class="rl" href="${e(url)}" target="_blank" rel="noopener noreferrer">ver completo ↗</a></span>
-    <div class="badges">${bn}${bp}</div>
+    <div class="badges">${bw}${bn}${bp}</div>
   </div>
   ${rows ? `<div class="ci">${rows}</div>` : ""}
 </div>`;
@@ -548,9 +671,9 @@ function renderRow(item, isPrice, showSpecs) {
     ? `<a href="${e(item.url)}" target="_blank" rel="noopener noreferrer">${e(item.title)}</a>`
     : e(item.title);
   if (isPrice && item.priceFrom && item.priceTo) {
-    return `<div class="item"><span class="it">${titleHtml}</span>${priceChangeHtml(item)}</div>`;
+    return `<div class="item legacy-item"><span class="it">${titleHtml}</span>${priceChangeHtml(item)}</div>`;
   }
-  return `<div class="item"><span class="it">${titleHtml}</span>${item.price ? `<span class="ip">${e(item.price)}</span>` : ""}</div>`;
+  return `<div class="item legacy-item"><span class="it">${titleHtml}</span>${item.price ? `<span class="ip">${e(item.price)}</span>` : ""}</div>`;
 }
 
 function renderMachineRow(item, isPrice) {

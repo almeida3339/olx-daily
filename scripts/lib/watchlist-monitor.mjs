@@ -7,7 +7,13 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
 import { parseBrlPrice, extractOlxId } from "./parsers.mjs";
-import { mergeWithPreviousSnapshot as mergeItems } from "./snapshot.mjs";
+import {
+  buildMonitorChanges,
+  dedupeMonitorItems,
+  mergeMonitorSnapshot,
+  normalizeMonitorCode,
+  normalizeMonitorText,
+} from "./monitor-core.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const workspaceRoot = path.resolve(__dirname, "..", "..");
@@ -51,6 +57,7 @@ export async function runWatchlistMonitor(config) {
   const terms = termsArg
     ? termsArg.split(",").map((s) => s.trim()).filter(Boolean)
     : config.terms;
+  const configuredTerms = config.terms;
 
   const minSizeMl = config.minSizeMl ?? null;
   const maxSizeMl = config.maxSizeMl ?? null;
@@ -79,10 +86,10 @@ export async function runWatchlistMonitor(config) {
     if (keepTerms.some((k) => n.includes(k))) return true;
     return !excludeTerms.some((t) => n.includes(t));
   };
-  const matchesAnyTerm = (item) => {
+  const matchesAnyTerm = (item, candidateTerms = terms) => {
     const recorded = item.term ?? item.model;
-    if (recorded && terms.some((t) => normalizeCode(t) === normalizeCode(recorded))) return true;
-    return terms.some((t) => textMatchesTerm(item.title ?? "", t));
+    if (recorded && candidateTerms.some((t) => normalizeCode(t) === normalizeCode(recorded))) return true;
+    return candidateTerms.some((t) => textMatchesTerm(item.title ?? "", t));
   };
 
   const now = new Date();
@@ -132,32 +139,45 @@ export async function runWatchlistMonitor(config) {
     }
   }
 
-  // Dedup por chave (id ?? url): o mesmo anúncio não deve contar duas vezes.
-  const byKey = new Map();
-  for (const item of collected) {
-    const key = item.id ?? item.url;
-    if (!byKey.has(key)) byKey.set(key, item);
-  }
-  const deduped = [...byKey.values()];
+  const deduped = dedupeMonitorItems(collected);
 
   const previousItemsInScope = (previousSnapshot?.items ?? []).filter(
-    (i) => (i.price_brl == null || inRange(i.price_brl)) && matchesAnyTerm(i) && sizeOk(i.title ?? "") && notExcluded(i.title ?? "")
+    (i) => (i.price_brl == null || inRange(i.price_brl))
+      && sizeOk(i.title ?? "")
+      && notExcluded(i.title ?? "")
   );
-  // Itens do snapshot anterior cuja fonte/termo falhou nesta rodada: protegidos
-  // de virar not_seen (a ausência pode ser falha de coleta, não desaparecimento).
-  const failedKeys = new Set(
-    previousItemsInScope
-      .filter((i) => failedSourceTerms.has(`${i.source}:${i.term}`))
-      .map((i) => i.id ?? i.url)
+  const configuredSources = ["Enjoei", "OLX"];
+  const scheduledSources = configuredSources.filter((source) =>
+    (source === "Enjoei" && !skipEnjoei) || (source === "OLX" && !skipOlx)
   );
-  const snapshot = mergeItems({
-    runDate,
+  const configuredCoverage = configuredSources.flatMap((source) =>
+    configuredTerms.map((term) => `${source}:${term}`)
+  );
+  const scheduledCoverage = scheduledSources.flatMap((source) =>
+    terms.map((term) => `${source}:${term}`)
+  );
+  const successfulCoverage = scheduledCoverage.filter((key) => !failedSourceTerms.has(key));
+  const snapshot = mergeMonitorSnapshot({
     collected: deduped,
     previousSnapshot: previousSnapshot ? { ...previousSnapshot, items: previousItemsInScope } : null,
-    priceMin: minPrice,
-    priceMax: maxPrice,
-    failedKeys,
+    now,
+    run: {
+      id: slug,
+      label,
+      partial: errors.length > 0 || scheduledCoverage.length < configuredCoverage.length,
+      errors,
+    },
+    filters: {
+      price_brl: { min: minPrice, max: maxPrice },
+      size_ml: { min: minSizeMl, max: maxSizeMl },
+    },
+    configuredCoverage,
+    scheduledCoverage,
+    successfulCoverage,
+    failedCoverage: [...failedSourceTerms],
+    itemCoverage: (item) => item.source && item.term ? [`${item.source}:${item.term}`] : [],
   });
+  snapshot.price_range_brl = { min: minPrice, max: maxPrice };
 
   await fs.mkdir(dataDir, { recursive: true });
   const snapshotPath = path.join(dataDir, `snapshot-${runId}.json`);
@@ -379,12 +399,7 @@ async function collectCards(page) {
 // Compara termos ignorando caixa, acentos e separadores (espaço, hífen, ponto):
 // "SD25 TB4" casa "SD25TB4"; "Fitbit Air" casa "fitbit-air".
 function normalizeCode(text) {
-  return (text ?? "")
-    .toString()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]/g, "");
+  return normalizeMonitorCode(text);
 }
 
 function textMatchesTerm(text, term) {
@@ -394,11 +409,7 @@ function textMatchesTerm(text, term) {
 // Normaliza preservando espaços (lowercase, sem acentos) — para casar termos de
 // exclusão por palavra, ex.: "mamadeira" em "mamadeira de vidro".
 function normalizeText(text) {
-  return (text ?? "")
-    .toString()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase();
+  return normalizeMonitorText(text);
 }
 
 // Extrai a capacidade declarada no texto em ml. Aceita "500ml", "500 ml",
@@ -422,19 +433,21 @@ function buildReport({ label, runDate, snapshot, previousItems, errors, terms, m
   const previousById = new Map(previousItems.map((i) => [i.id ?? i.url, i]));
   const currentById = new Map(currentItems.map((i) => [i.id ?? i.url, i]));
 
-  const newItems = currentItems.filter((i) => !previousById.has(i.id ?? i.url));
+  const { newItems, priceChanges: sharedPriceChanges } = buildMonitorChanges(
+    { items: previousItems },
+    snapshot,
+    { reactivationIsNew: false },
+  );
   const stillActive = currentItems.filter((i) => previousById.has(i.id ?? i.url));
   const notSeen = previousItems
     .filter((i) => i.status === "active")
     .filter((i) => !currentById.has(i.id ?? i.url));
 
-  const priceChanges = [];
-  for (const item of currentItems) {
-    const prev = previousById.get(item.id ?? item.url);
-    if (prev?.price_brl != null && item.price_brl != null && prev.price_brl !== item.price_brl) {
-      priceChanges.push({ item, from: prev.price_brl, to: item.price_brl });
-    }
-  }
+  const priceChanges = sharedPriceChanges.map((item) => ({
+    item,
+    from: item.previous_price_brl,
+    to: item.price_brl,
+  }));
 
   const range = minPrice > 0 ? `R$ ${fmtBrl(minPrice)}–R$ ${fmtBrl(maxPrice)}` : `até R$ ${fmtBrl(maxPrice)}`;
   const lines = [];

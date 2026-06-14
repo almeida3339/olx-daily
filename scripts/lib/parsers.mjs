@@ -2,6 +2,7 @@
  * Shared pure utility functions — no I/O, no side-effects.
  * Imported by monitor scripts and tested directly.
  */
+import { normalizeMonitorText } from "./monitor-core.mjs";
 
 /**
  * Parse a BRL price string.
@@ -234,9 +235,5 @@ export function extractOlxId(url) {
  * Normalise text for loose comparison: NFD, strip diacritics, lowercase.
  */
 export function normalizeText(text) {
-  return (text ?? "")
-    .toString()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase();
+  return normalizeMonitorText(text);
 }
