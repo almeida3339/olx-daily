@@ -45,6 +45,7 @@ export async function runMercadoLivreBatch({
   // (útil para login/desafios); --headless roda sem janela (mais leve, porém
   // mais sujeito a bloqueio do Mercado Livre).
   const visible = args.includes("--visible");
+  const loadAssets = args.includes("--load-assets"); // não bloqueia imagens/mídia/fontes (diagnóstico)
   const maxItemsPerTerm = positiveNumber(option(args, "--max-items"), 20);
   const maxDetails = nonNegativeNumber(option(args, "--max-details"), kind === "notebook" ? 8 : 4);
   const delayMinMs = positiveNumber(option(args, "--delay-min-ms"), 12_000);
@@ -84,11 +85,14 @@ export async function runMercadoLivreBatch({
     });
     // Economia de dados/eficiência: não baixa imagens, mídia nem fontes — o
     // scraper só lê texto (título, preço, ficha). Mantém CSS/JS (SPA do ML).
-    await context.route("**/*", (route) => {
-      const type = route.request().resourceType();
-      if (["image", "media", "font"].includes(type)) return route.abort();
-      return route.continue();
-    }).catch(() => {});
+    // --load-assets desativa (diagnóstico/se o ML degradar a página sem imagens).
+    if (!loadAssets) {
+      await context.route("**/*", (route) => {
+        const type = route.request().resourceType();
+        if (["image", "media", "font"].includes(type)) return route.abort();
+        return route.continue();
+      }).catch(() => {});
+    }
     const page = context.pages()[0] ?? await context.newPage();
     page.setDefaultTimeout(15_000);
     page.setDefaultNavigationTimeout(NAVIGATION_TIMEOUT_MS);
