@@ -40,6 +40,11 @@ export async function runMercadoLivreBatch({
 }) {
   const args = process.argv.slice(2);
   const headless = args.includes("--headless");
+  // Por padrão a janela roda FORA DA TELA (não atrapalha o trabalho), mantendo o
+  // Chrome "real" (menos detectável que headless). --visible mostra a janela
+  // (útil para login/desafios); --headless roda sem janela (mais leve, porém
+  // mais sujeito a bloqueio do Mercado Livre).
+  const visible = args.includes("--visible");
   const maxItemsPerTerm = positiveNumber(option(args, "--max-items"), 20);
   const maxDetails = nonNegativeNumber(option(args, "--max-details"), kind === "notebook" ? 8 : 4);
   const delayMinMs = positiveNumber(option(args, "--delay-min-ms"), 12_000);
@@ -63,13 +68,27 @@ export async function runMercadoLivreBatch({
   console.log(`Pausa entre acessos: ${delayMinMs}-${delayMaxMs} ms`);
 
   try {
+    const launchArgs = headless
+      ? []
+      : visible
+        ? ["--start-maximized"]
+        // Fora da tela + sem throttling de janela em segundo plano, para a
+        // coleta seguir normal mesmo sem aparecer.
+        : ["--window-position=-32000,-32000", "--window-size=1280,900", "--disable-background-timer-throttling", "--disable-renderer-backgrounding"];
     context = await chromium.launchPersistentContext(profileDir, {
       channel: "chrome",
       headless,
       viewport: null,
       locale: "pt-BR",
-      args: headless ? [] : ["--start-maximized"],
+      args: launchArgs,
     });
+    // Economia de dados/eficiência: não baixa imagens, mídia nem fontes — o
+    // scraper só lê texto (título, preço, ficha). Mantém CSS/JS (SPA do ML).
+    await context.route("**/*", (route) => {
+      const type = route.request().resourceType();
+      if (["image", "media", "font"].includes(type)) return route.abort();
+      return route.continue();
+    }).catch(() => {});
     const page = context.pages()[0] ?? await context.newPage();
     page.setDefaultTimeout(15_000);
     page.setDefaultNavigationTimeout(NAVIGATION_TIMEOUT_MS);

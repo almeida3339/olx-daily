@@ -85,8 +85,10 @@ async function main() {
     if (!skipTelaBook3) jobs.push(["tela-book3", runScript("monitor-tela-galaxybook3.mjs", [])]);
     if (!skipMelanger) jobs.push(["melanger", runScript("monitor-melanger.mjs", [])]);
     if (!skipBuds4Pro) jobs.push(["buds4-pro", runScript("monitor-galaxy-buds4-pro.mjs", [])]);
-    if (!skipMercadoLivre) jobs.push(["mercadolivre", runScript("monitor-mercadolivre-all.mjs", [])]);
-    else console.log("Mercado Livre pulado (flag ativa ou ambiente sem perfil local).");
+    // Mercado Livre NÃO roda aqui: é desacoplado do fluxo do OLX/Enjoei (que
+    // espera todos os jobs antes de publicar). O ML é pesado/lento e roda sob
+    // demanda via `npm run monitor:mercadolivre` ou o atalho da barra de tarefas
+    // (run-mercadolivre-and-publish.ps1), que coleta e publica por conta própria.
 
     const results = await Promise.allSettled(jobs.map(([, promise]) => promise));
     for (let i = 0; i < jobs.length; i += 1) {
@@ -102,7 +104,6 @@ async function main() {
       if (name === "tela-book3") { console.error(`Tela Book3 falhou: ${result.reason.message}`); errors.push(`Tela Book3: ${result.reason.message}`); }
       if (name === "melanger") { console.error(`Melanger falhou: ${result.reason.message}`); errors.push(`Melanger: ${result.reason.message}`); }
       if (name === "buds4-pro") { console.error(`Galaxy Buds4 Pro falhou: ${result.reason.message}`); errors.push(`Galaxy Buds4 Pro: ${result.reason.message}`); }
-      if (name === "mercadolivre") { console.error(`Mercado Livre falhou: ${result.reason.message}`); errors.push(`Mercado Livre: ${result.reason.message}`); }
     }
   }
 

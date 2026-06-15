@@ -18,6 +18,8 @@
     "monitor:mercadolivre:watchlists": "node scripts/monitor-mercadolivre-watchlists.mjs",
     "monitor:mercadolivre:notebooks": "node scripts/monitor-mercadolivre-notebooks.mjs",
     "monitor:mercadolivre": "node scripts/monitor-mercadolivre-all.mjs",
+    "mercadolivre:publicar": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run-mercadolivre-and-publish.ps1",
+    "mercadolivre:atalho": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/criar-atalho-ml.ps1",
     "mercadolivre:login": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/open-mercadolivre-profile.ps1",
     "monitor:todos": "node scripts/run-monitors-and-notify.mjs",
     "monitor:todos:forcar-email": "node scripts/run-monitors-and-notify.mjs --force-email",
