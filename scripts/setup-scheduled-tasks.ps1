@@ -43,7 +43,7 @@ $catchupAction = New-ScheduledTaskAction `
 # - Sem StartWhenAvailable: o catchup cuida de runs perdidas por desligamento
 # - MultipleInstances IgnoreNew: evita rodar em paralelo se a anterior ainda estiver rodando
 $mainSettings = New-ScheduledTaskSettingsSet `
-    -ExecutionTimeLimit (New-TimeSpan -Minutes 20) `
+    -ExecutionTimeLimit (New-TimeSpan -Minutes 90) `
     -MultipleInstances IgnoreNew
 
 # ── Task 1: 07:00 ────────────────────────────────────────────────────────────
@@ -73,7 +73,7 @@ $tBoot = New-ScheduledTaskTrigger -AtStartup
 $tBoot.Delay = "PT20M"
 
 $catchupSettings = New-ScheduledTaskSettingsSet `
-    -ExecutionTimeLimit (New-TimeSpan -Minutes 20) `
+    -ExecutionTimeLimit (New-TimeSpan -Minutes 90) `
     -MultipleInstances IgnoreNew
 
 Register-ScheduledTask `
@@ -90,12 +90,14 @@ Write-Host "  Monitor-OLX-0700    — todo dia as 07:00 (se o PC estiver ligado)
 Write-Host "  Monitor-OLX-1600    — todo dia as 16:00 (se o PC estiver ligado)"
 Write-Host "  Monitor-OLX-Catchup — 20 min apos o boot (so roda se ultima run > 9h atras)"
 Write-Host ""
-Write-Host "VARIAVEL DE AMBIENTE NECESSARIA — execute uma vez no terminal:"
+Write-Host "VARIAVEIS DE AMBIENTE NECESSARIAS — execute uma vez no terminal:"
 Write-Host ""
-Write-Host '  setx GMAIL_APP_PASSWORD "sua-senha-de-app-gmail"'
+Write-Host '  setx GMAIL_USER          "seuemail@gmail.com"'
+Write-Host '  setx GMAIL_APP_PASSWORD  "sua-senha-de-app-gmail"'
+Write-Host '  setx CALLMEBOT_PHONE     "5541XXXXXXXXX"'
+Write-Host '  setx CALLMEBOT_APIKEY    "XXXXXXXX"'
 Write-Host ""
-Write-Host "  (as demais — CALLMEBOT_PHONE, CALLMEBOT_APIKEY, GMAIL_USER — ja"
-Write-Host "   tem valores padrao hardcoded no script e nao precisam ser definidas)"
+Write-Host "  (todas as quatro sao obrigatorias; sem elas as notificacoes falham)"
 Write-Host ""
 Write-Host "Para remover todas as tarefas:"
 Write-Host "  .\scripts\setup-scheduled-tasks.ps1 -Remove"

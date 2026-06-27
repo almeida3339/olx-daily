@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { extractCpuLabel, extractGpuLabel, extractRamGb, extractStorageGb, textContainsCpuTerm } from "./lib/parsers.mjs";
-import { mergeWithPreviousSnapshot as mergeItems } from "./lib/snapshot.mjs";
+import { mergeMonitorSnapshot } from "./lib/monitor-core.mjs";
 import { DEFAULT_CPU_TERMS, cpuSearchQuery } from "./lib/cpu-terms.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -67,8 +67,8 @@ async function main() {
   console.log(`Faixa: R$ ${minPriceBrl}–R$ ${maxPriceBrl}`);
   console.log(`Snapshot anterior: ${previousSnapshotPath ?? "(nenhum)"}\n`);
 
-  const collected = await collectProducts(previousSnapshot);
-  const snapshot = mergeWithPreviousSnapshot({ runDate, collected, previousSnapshot });
+  const { items: collected, failedTerms, successfulTerms } = await collectProducts(previousSnapshot);
+  const snapshot = mergeWithPreviousSnapshot({ runDate, collected, previousSnapshot, failedTerms, successfulTerms });
   backfillSpecsFromTitle(snapshot);
   verifyCarriedItems(snapshot);
 
@@ -90,6 +90,7 @@ async function main() {
 async function collectProducts(previousSnapshot) {
   const byId = new Map();
   const failedTerms = [];
+  const successfulTerms = [];
 
   for (let i = 0; i < terms.length; i++) {
     const term = terms[i];
@@ -126,6 +127,7 @@ async function collectProducts(previousSnapshot) {
           byId.set(item.id, item);
         }
       }
+      successfulTerms.push(term);
     } catch (err) {
       console.warn(`  Aviso: falha em "${term}" — ${err.message}`);
       failedTerms.push(term);
@@ -133,7 +135,8 @@ async function collectProducts(previousSnapshot) {
   }
 
   if (failedTerms.length) console.warn(`Termos com falha: ${failedTerms.join(", ")}`);
-  return enrichMissingDetails(Array.from(byId.values()), previousSnapshot);
+  const items = await enrichMissingDetails(Array.from(byId.values()), previousSnapshot);
+  return { items, failedTerms, successfulTerms };
 }
 
 async function fetchWithRetry(url, options) {
@@ -362,17 +365,25 @@ function verifyCarriedItems(snapshot) {
   });
 }
 
-function mergeWithPreviousSnapshot({ runDate, collected, previousSnapshot }) {
+function mergeWithPreviousSnapshot({ runDate, collected, previousSnapshot, failedTerms, successfulTerms }) {
   const previousItems = (previousSnapshot?.items ?? []).filter(
     (i) => i.price_brl != null && i.price_brl >= minPriceBrl && i.price_brl <= maxPriceBrl
   );
-  return mergeItems({
-    runDate,
-    collected,
+  // Cobertura por termo de CPU: itens cujos termos TODOS falharam não são marcados
+  // como not_seen — a ausência pode ser falha de rede, não remoção do anúncio.
+  const result = mergeMonitorSnapshot({
     previousSnapshot: previousSnapshot ? { ...previousSnapshot, items: previousItems } : null,
-    priceMin: minPriceBrl,
-    priceMax: maxPriceBrl,
+    collected,
+    now: new Date(`${runDate}T12:00:00Z`),
+    scheduledCoverage: terms,
+    successfulCoverage: successfulTerms,
+    failedCoverage: failedTerms,
+    configuredCoverage: terms,
+    itemCoverage: (item) => item.cpu_terms ?? [],
   });
+  result.price_range_brl = { min: minPriceBrl, max: maxPriceBrl };
+  result.filters = { ...result.filters, price_brl: result.price_range_brl };
+  return result;
 }
 
 // ── relatório ─────────────────────────────────────────────────────────────────

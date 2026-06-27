@@ -2,7 +2,7 @@ param(
   [int]$MaxPerCpu = 12,
   [switch]$NoNotify,
   [switch]$NoPush,
-  [int]$WaitForInternetSeconds = 1200
+  [int]$WaitForInternetSeconds = 300
 )
 
 $ErrorActionPreference = "Stop"
