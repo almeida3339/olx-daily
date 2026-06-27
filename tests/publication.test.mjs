@@ -30,3 +30,13 @@ test("painel e notificacoes incluem Galaxy Buds4 Pro do Mercado Livre", async ()
   assert.match(dashboard, /mercadolivre-galaxy-buds4-pro/);
   assert.match(notifier, /mercadolivre-galaxy-buds4-pro/);
 });
+
+test("publicacao local nao aborta imediatamente em caso de erro do monitor", async () => {
+  const script = await fs.readFile(path.join(root, "scripts", "run-local-olx-and-publish.ps1"), "utf8");
+  // Verifica se a variável $monitorFailed está definida
+  assert.match(script, /\$monitorFailed\s*=\s*\$monitorExit\s*-ne\s*0/);
+  // Verifica se o git add ocorre antes de subir o erro final do monitor
+  const gitAddIdx = script.indexOf("git add data/");
+  const throwIdx = script.lastIndexOf("Monitor OLX local falhou");
+  assert.ok(gitAddIdx < throwIdx, "git add deve ocorrer antes de subir o erro final");
+});

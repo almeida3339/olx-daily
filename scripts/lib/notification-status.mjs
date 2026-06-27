@@ -1,3 +1,5 @@
+import crypto from "node:crypto";
+
 // Estado de entrega das notificações (e-mail/WhatsApp), persistido entre rodadas
 // para que uma rodada seguinte bem-sucedida possa mencionar a falha da anterior.
 // Tudo aqui é função PURA (sem rede/I/O) para ser testável.
@@ -16,8 +18,21 @@ export function sanitizeErrorMessage(message) {
   // 3. Redige chaves sensíveis: apikey, api_key, token, password, secret, authorization, phone
   const keysToRedact = ["apikey", "api_key", "token", "password", "secret", "authorization", "phone"];
   for (const key of keysToRedact) {
-    const re = new RegExp(`(${key})\\s*[:=]\\s*[^\\s&,;"]+`, "gi");
-    out = out.replace(re, "$1=[redacted]");
+    // 3a. Authorization com Bearer/Basic: "Authorization: Basic abcdef"
+    const reAuth = new RegExp(`(${key})\\s*[:=]\\s*(bearer|basic)\\s+[^\\s&,;"]+`, "gi");
+    out = out.replace(reAuth, "$1=[redacted]");
+
+    // 3b. Valores entre aspas duplas: password: "valor com espaços"
+    const reDoubleQuote = new RegExp(`(${key})\\s*[:=]\\s*"[^"]*"`, "gi");
+    out = out.replace(reDoubleQuote, "$1=[redacted]");
+
+    // 3c. Valores entre aspas simples: token='segredo'
+    const reSingleQuote = new RegExp(`(${key})\\s*[:=]\\s*'[^']*'`, "gi");
+    out = out.replace(reSingleQuote, "$1=[redacted]");
+
+    // 3d. Valores comuns sem aspas: api_key: secret123
+    const reUnquoted = new RegExp(`(${key})\\s*[:=]\\s*[^\\s&,;"]+`, "gi");
+    out = out.replace(reUnquoted, "$1=[redacted]");
   }
 
   // 4. Limita o tamanho máximo do erro armazenado
@@ -29,27 +44,41 @@ export function sanitizeErrorMessage(message) {
 }
 
 // Junta falhas anteriores com as novas, removendo duplicadas por (channel, error)
-// (mantendo a ocorrência mais recente) e limitando o tamanho da fila.
-export function mergePendingFailures(priorPending = [], newFailures = [], maxPending = 20) {
-  const map = new Map();
-  for (const f of priorPending) {
-    if (!f || !f.channel) continue;
-    const key = `${f.channel}:${f.error}`;
-    map.set(key, f);
+// (mantendo a ocorrência mais recente, incrementando contagem) e limitando o tamanho da fila.
+export function mergePendingFailures(priorPending = [], newFailures = [], nowIso = new Date().toISOString(), maxPending = 20) {
+  // Deep copy/normalize to avoid mutating input array
+  const merged = priorPending.map(f => ({
+    id: f.id || crypto.randomUUID(),
+    channel: f.channel,
+    first_seen_at: f.first_seen_at || f.at || nowIso,
+    last_seen_at: f.last_seen_at || f.at || nowIso,
+    error: f.error || "unknown",
+    count: f.count || 1
+  }));
+
+  for (const nf of newFailures) {
+    if (!nf || !nf.channel) continue;
+    const keyError = nf.error || "unknown";
+    const existing = merged.find(f => f.channel === nf.channel && f.error === keyError);
+    if (existing) {
+      existing.last_seen_at = nf.last_seen_at || nf.at || nowIso;
+      existing.count += 1;
+    } else {
+      merged.push({
+        id: nf.id || crypto.randomUUID(),
+        channel: nf.channel,
+        first_seen_at: nf.first_seen_at || nf.at || nowIso,
+        last_seen_at: nf.last_seen_at || nf.at || nowIso,
+        error: keyError,
+        count: nf.count || 1
+      });
+    }
   }
-  for (const f of newFailures) {
-    if (!f || !f.channel) continue;
-    const key = `${f.channel}:${f.error}`;
-    map.set(key, f);
-  }
-  let merged = Array.from(map.values());
-  merged.sort((a, b) => {
-    const tA = a.at ? Date.parse(a.at) : 0;
-    const tB = b.at ? Date.parse(b.at) : 0;
-    return tA - tB;
-  });
+
+  merged.sort((a, b) => Date.parse(a.last_seen_at) - Date.parse(b.last_seen_at));
+
   if (merged.length > maxPending) {
-    merged = merged.slice(merged.length - maxPending);
+    return merged.slice(merged.length - maxPending);
   }
   return merged;
 }
@@ -59,57 +88,76 @@ function convertLegacyStatusToPending(status) {
   const pending = [];
   if (status.email === "failed") {
     pending.push({
+      id: crypto.randomUUID(),
       channel: "email",
-      at: status.generated_at,
-      error: status.email_error || "failed"
+      first_seen_at: status.generated_at,
+      last_seen_at: status.generated_at,
+      error: status.email_error || "failed",
+      count: 1
     });
   }
   if (status.whatsapp === "failed") {
     pending.push({
+      id: crypto.randomUUID(),
       channel: "whatsapp",
-      at: status.generated_at,
-      error: status.whatsapp_error || "failed"
+      first_seen_at: status.generated_at,
+      last_seen_at: status.generated_at,
+      error: status.whatsapp_error || "failed",
+      count: 1
     });
   }
   return pending;
 }
 
+// Junta acks removendo duplicatas e limitando ao maxAcks
+export function mergeAcks(localAcks = [], ciAcks = [], maxAcks = 100) {
+  const merged = Array.from(new Set([...localAcks, ...ciAcks]));
+  if (merged.length > maxAcks) {
+    return merged.slice(merged.length - maxAcks);
+  }
+  return merged;
+}
+
 // Reconcilia as filas de pendência dos status local e CI.
-// Remove pendências que tenham ocorrido em data anterior ou igual à última notificação bem-sucedida de qualquer canal.
+// Remove apenas pendências cujo ID esteja presente na lista de acknowledged_failure_ids consolidada.
 export function reconcilePendingFailures(localStatus, ciStatus) {
   const localPending = localStatus?.pending_failures || (localStatus && !localStatus.pending_failures ? convertLegacyStatusToPending(localStatus) : []);
   const ciPending = ciStatus?.pending_failures || (ciStatus && !ciStatus.pending_failures ? convertLegacyStatusToPending(ciStatus) : []);
 
-  const merged = mergePendingFailures(localPending, ciPending);
-
-  let latestSuccessTime = 0;
-  if (localStatus) {
-    const isSent = localStatus.delivery
-      ? (localStatus.delivery.email === "sent" || localStatus.delivery.whatsapp === "sent")
-      : (localStatus.email === "sent" || localStatus.whatsapp === "sent");
-    if (isSent) {
-      const t = Date.parse(localStatus.generated_at);
-      if (!isNaN(t)) latestSuccessTime = Math.max(latestSuccessTime, t);
+  // Merge prior lists of pending failures
+  const mergedPending = [];
+  const allPending = [...localPending, ...ciPending];
+  for (const f of allPending) {
+    if (!f || !f.channel) continue;
+    const norm = {
+      id: f.id || crypto.randomUUID(),
+      channel: f.channel,
+      first_seen_at: f.first_seen_at || f.at || new Date().toISOString(),
+      last_seen_at: f.last_seen_at || f.at || new Date().toISOString(),
+      error: f.error || "unknown",
+      count: f.count || 1
+    };
+    const existing = mergedPending.find(x => x.channel === norm.channel && x.error === norm.error);
+    if (existing) {
+      if (f.id && !existing.id) existing.id = f.id;
+      existing.first_seen_at = new Date(Math.min(Date.parse(existing.first_seen_at), Date.parse(norm.first_seen_at))).toISOString();
+      existing.last_seen_at = new Date(Math.max(Date.parse(existing.last_seen_at), Date.parse(norm.last_seen_at))).toISOString();
+      existing.count = Math.max(existing.count, norm.count);
+    } else {
+      mergedPending.push(norm);
     }
   }
-  if (ciStatus) {
-    const isSent = ciStatus.delivery
-      ? (ciStatus.delivery.email === "sent" || ciStatus.delivery.whatsapp === "sent")
-      : (ciStatus.email === "sent" || ciStatus.whatsapp === "sent");
-    if (isSent) {
-      const t = Date.parse(ciStatus.generated_at);
-      if (!isNaN(t)) latestSuccessTime = Math.max(latestSuccessTime, t);
-    }
-  }
 
-  return merged.filter(f => {
-    const t = f.at ? Date.parse(f.at) : 0;
-    return isNaN(t) || t > latestSuccessTime;
-  });
+  // Merge acknowledged lists
+  const localAcks = localStatus?.acknowledged_failure_ids || [];
+  const ciAcks = ciStatus?.acknowledged_failure_ids || [];
+  const allAcks = mergeAcks(localAcks, ciAcks);
+
+  return mergedPending.filter(f => !allAcks.includes(f.id));
 }
 
 // Constrói o registro de entrega desta rodada.
-export function buildDeliveryStatus({ now = new Date(), sendingEmail, email, whatsapp, pendingFailures = [], source } = {}) {
+export function buildDeliveryStatus({ now = new Date(), sendingEmail, email, whatsapp, pendingFailures = [], acknowledgedFailureIds = [], source } = {}) {
   const status = {
     generated_at: now.toISOString(),
     source: source || (process.env.GITHUB_ACTIONS === "true" ? "ci" : "local")
@@ -135,6 +183,7 @@ export function buildDeliveryStatus({ now = new Date(), sendingEmail, email, wha
 
   status.delivery = delivery;
   status.pending_failures = pendingFailures;
+  status.acknowledged_failure_ids = acknowledgedFailureIds;
 
   // Flattened for backward compatibility
   status.email = delivery.email;
@@ -157,10 +206,10 @@ export function buildPriorFailureNote(input) {
   } else {
     // Old status format backward compatibility
     if (input.email === "failed") {
-      pending.push({ channel: "email", at: input.generated_at });
+      pending.push({ id: crypto.randomUUID(), channel: "email", first_seen_at: input.generated_at, last_seen_at: input.generated_at });
     }
     if (input.whatsapp === "failed") {
-      pending.push({ channel: "whatsapp", at: input.generated_at });
+      pending.push({ id: crypto.randomUUID(), channel: "whatsapp", first_seen_at: input.generated_at, last_seen_at: input.generated_at });
     }
   }
 
@@ -173,8 +222,8 @@ export function buildPriorFailureNote(input) {
   if (hasEmail) failedChannels.push("e-mail");
   if (hasWhatsapp) failedChannels.push("WhatsApp");
 
-  const whens = Array.from(new Set(pending.map(f => f.at).filter(Boolean)));
-  const whenStr = whens.length === 1 ? ` (${whens[0]})` : "";
+  const times = Array.from(new Set(pending.map(f => f.last_seen_at || f.first_seen_at || f.at).filter(Boolean)));
+  const whenStr = times.length === 1 ? ` (${times[0]})` : "";
 
   return `⚠️ Rodada anterior${whenStr}: falha ao notificar por ${failedChannels.join(" e ")}.`;
 }

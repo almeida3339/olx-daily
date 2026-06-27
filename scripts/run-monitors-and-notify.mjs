@@ -8,7 +8,8 @@ import {
   buildPriorFailureNote,
   reconcilePendingFailures,
   mergePendingFailures,
-  sanitizeErrorMessage
+  sanitizeErrorMessage,
+  mergeAcks
 } from "./lib/notification-status.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -17,6 +18,9 @@ function getStatusFilePath() {
   const source = process.env.GITHUB_ACTIONS === "true" ? "ci" : "local";
   return path.join(workspaceRoot, "data", "status", `latest-${source}.json`);
 }
+
+let fsApi = fs;
+let runCommandFn = (...args) => runCommand(...args);
 
 const def = (env, fallback) => process.env[env] ?? path.join(process.env.USERPROFILE ?? process.env.HOME ?? "", ".codex", "automations", fallback);
 const OLX_DIR              = def("OLX_DATA_DIR",              "monitor-olx-notebooks-por-cpu");
@@ -78,8 +82,21 @@ if (isMain) {
   main().catch((err) => { console.error(`Falha geral: ${err.message}`); process.exitCode = 1; });
 }
 
-export async function main() {
-  const runStart = Date.now();
+export async function main({
+  runCommandFn: runCommandIn = runCommand,
+  sendEmailFn = sendEmail,
+  sendWhatsAppFn = sendWhatsApp,
+  fsApi: fsApiIn = fs,
+  nowFn = () => new Date()
+} = {}) {
+  const prevFsApi = fsApi;
+  const prevRunCommandFn = runCommandFn;
+  fsApi = fsApiIn;
+  runCommandFn = runCommandIn;
+
+  try {
+    const runNow = nowFn();
+    const runStart = runNow.getTime();
   console.log(`Iniciando rodada: ${new Date().toISOString()}`);
   const errors = [];
 
@@ -216,17 +233,20 @@ export async function main() {
     console.log(`\nSUBJECT: ${subject}`);
     console.log(`\nWHATSAPP:\n${whatsappMsg}`);
     console.log(`\nEMAIL BODY:\n${body || "(vazio)"}`);
+    if (errors.length > 0) {
+      process.exitCode = 1;
+    }
     return;
   }
 
   const [emailResult, waResult] = await Promise.allSettled([
-    sendingEmail ? sendEmail(subject, body) : Promise.resolve(null),
-    sendWhatsApp(whatsappMsg),
+    sendingEmail ? sendEmailFn(subject, body) : Promise.resolve(null),
+    sendWhatsAppFn(whatsappMsg),
   ]);
 
-  const emailDelivered = !sendingEmail || emailResult.status === "fulfilled";
-  const whatsappDelivered = waResult.status === "fulfilled";
-  const delivered = emailDelivered || whatsappDelivered;
+  const emailActuallySent = sendingEmail && emailResult.status === "fulfilled";
+  const whatsappActuallySent = waResult.status === "fulfilled";
+  const delivered = emailActuallySent || whatsappActuallySent;
 
   if (sendingEmail) {
     if (emailResult.status === "fulfilled") console.log(`Email enviado para ${NOTIFY_TO}.`);
@@ -235,30 +255,31 @@ export async function main() {
   if (waResult.status === "fulfilled") console.log("WhatsApp enviado.");
   else console.warn(`WhatsApp não enviado: ${waResult.reason?.message}`);
 
-  // Se entregou com sucesso em pelo menos um canal, a fila de pendências antigas é limpa.
-  // Caso contrário (ambos falharam, ou e-mail falhou e whatsapp falhou), as pendências antigas permanecem.
-  let workingPending = delivered ? [] : priorPending;
+  const priorIdsInMessage = priorPending.map(f => f.id);
+  const newAcks = delivered ? priorIdsInMessage : [];
+  const priorAcks = mergeAcks(localStatus?.acknowledged_failure_ids || [], ciStatus?.acknowledged_failure_ids || []);
+  const finalAcks = mergeAcks(priorAcks, newAcks);
+
+  let workingPending = priorPending.filter(f => !finalAcks.includes(f.id));
 
   // Adiciona novas falhas desta rodada (com mensagem sanitizada)
   const newFailures = [];
-  const runNow = new Date();
+  const runNowStr = runNow.toISOString();
   if (sendingEmail && emailResult.status === "rejected") {
     newFailures.push({
       channel: "email",
-      at: runNow.toISOString(),
       error: sanitizeErrorMessage(emailResult.reason?.message)
     });
   }
   if (waResult.status === "rejected") {
     newFailures.push({
       channel: "whatsapp",
-      at: runNow.toISOString(),
       error: sanitizeErrorMessage(waResult.reason?.message)
     });
   }
 
   // Merge final das pendências e escrita
-  const finalPending = mergePendingFailures(workingPending, newFailures);
+  const finalPending = mergePendingFailures(workingPending, newFailures, runNowStr);
 
   const status = buildDeliveryStatus({
     now: runNow,
@@ -268,6 +289,7 @@ export async function main() {
       : undefined,
     whatsapp: { ok: waResult.status === "fulfilled", error: waResult.reason?.message },
     pendingFailures: finalPending,
+    acknowledgedFailureIds: finalAcks,
     source: process.env.GITHUB_ACTIONS === "true" ? "ci" : "local"
   });
 
@@ -278,23 +300,27 @@ export async function main() {
     console.error(`Rodada concluída com ${errors.length} erro(s) de monitoramento.`);
     process.exitCode = 1;
   }
+} finally {
+  fsApi = prevFsApi;
+  runCommandFn = prevRunCommandFn;
+}
 }
 
 async function readDeliveryStatus() {
-  try { return JSON.parse(await fs.readFile(getStatusFilePath(), "utf8")); }
+  try { return JSON.parse(await fsApi.readFile(getStatusFilePath(), "utf8")); }
   catch { return null; }
 }
 
 async function readStatusFile(filePath) {
-  try { return JSON.parse(await fs.readFile(filePath, "utf8")); }
+  try { return JSON.parse(await fsApi.readFile(filePath, "utf8")); }
   catch { return null; }
 }
 
 async function writeDeliveryStatus(status) {
   try {
     const filePath = getStatusFilePath();
-    await fs.mkdir(path.dirname(filePath), { recursive: true });
-    await fs.writeFile(filePath, JSON.stringify(status, null, 2), "utf8");
+    await fsApi.mkdir(path.dirname(filePath), { recursive: true });
+    await fsApi.writeFile(filePath, JSON.stringify(status, null, 2), "utf8");
   } catch (err) {
     console.warn(`Não consegui gravar status de entrega: ${err.message}`);
   }
@@ -304,12 +330,12 @@ async function writeDeliveryStatus(status) {
 
 function runScript(scriptName, extraArgs) {
   const scriptPath = path.join(workspaceRoot, "scripts", scriptName);
-  return runCommand(process.execPath, [scriptPath, ...extraArgs]);
+  return runCommandFn(process.execPath, [scriptPath, ...extraArgs]);
 }
 
 function runOlxMonitor() {
   if (process.platform === "win32" && process.env.GITHUB_ACTIONS !== "true") {
-    return runCommand("powershell.exe", [
+    return runCommandFn("powershell.exe", [
       "-NoProfile",
       "-ExecutionPolicy",
       "Bypass",
@@ -336,7 +362,7 @@ function getArgValue(name) {
 }
 
 async function readLatestReport(dir, minTime = null) {
-  const entries = await fs.readdir(dir).catch(() => []);
+  const entries = await fsApi.readdir(dir).catch(() => []);
   const reports = entries
     .filter((n) => n.startsWith("report-") && !n.startsWith("report-premium-") && n.endsWith(".md"))
     .sort().reverse();
@@ -347,7 +373,7 @@ async function readLatestReport(dir, minTime = null) {
     const ts = reportFileTime(reports[0]);
     if (ts != null && ts < minTime) return null;
   }
-  return fs.readFile(path.join(dir, reports[0]), "utf8");
+  return fsApi.readFile(path.join(dir, reports[0]), "utf8");
 }
 
 // Instante (epoch ms) embutido no nome do arquivo de relatório, ou null.
@@ -360,12 +386,12 @@ function reportFileTime(file) {
 }
 
 async function readLatestPremiumReport(dir) {
-  const entries = await fs.readdir(dir).catch(() => []);
+  const entries = await fsApi.readdir(dir).catch(() => []);
   const reports = entries
     .filter((n) => n.startsWith("report-premium-") && n.endsWith(".md"))
     .sort().reverse();
   if (!reports.length) return null;
-  return fs.readFile(path.join(dir, reports[0]), "utf8");
+  return fsApi.readFile(path.join(dir, reports[0]), "utf8");
 }
 
 // Aceita acento/sem acento: "Alterações de preço detectadas: **4**" e "Alteracoes de preco: **0**".

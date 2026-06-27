@@ -54,7 +54,7 @@ $env:OURA_RING5_DATA_DIR = Join-Path $root "data\oura-ring5"
 $env:MERCADOLIVRE_PROFILE_DIR = Join-Path $root ".chrome-mercadolivre-profile"
 $env:OLX_MAX_PER_CPU = "$MaxPerCpu"
 
-$success = $false
+$fullSuccess = $false
 
 Push-Location $root
 try {
@@ -101,10 +101,7 @@ try {
     & node (Join-Path $PSScriptRoot "run-monitors-and-notify.mjs") --only-olx --olx-max-per-cpu $MaxPerCpu
   }
   $monitorExit = $LASTEXITCODE
-  if ($monitorExit -ne 0) {
-    $ErrorActionPreference = $prevEAP
-    throw "Monitor OLX local falhou com exit code $monitorExit."
-  }
+  $monitorFailed = $monitorExit -ne 0
 
   if ($NoPush) {
     # Sem publicar: regenera o dashboard localmente apenas para inspecao.
@@ -113,7 +110,9 @@ try {
     $ErrorActionPreference = $prevEAP
     if ($dashExit -ne 0) { throw "Geracao do dashboard falhou com exit code $dashExit." }
     Write-Host "NoPush ativo: dashboard regenerado, nada commitado/publicado."
-    $success = $true
+    if ($monitorFailed) {
+      throw "Monitor OLX local falhou com exit code $monitorExit."
+    }
     exit 0
   }
 
@@ -177,14 +176,22 @@ try {
   }
   if (-not $pushed) { $ErrorActionPreference = $prevEAP; throw "git push falhou apos 4 tentativas." }
 
+  $published = $true
+
+  if (-not $monitorFailed) {
+    $fullSuccess = $true
+  }
+
   $ErrorActionPreference = $prevEAP
 
-  $success = $true
+  if ($monitorFailed) {
+    throw "Monitor OLX local falhou com exit code $monitorExit."
+  }
 } finally {
   Pop-Location
-  # Registrar timestamp apenas quando a run completou sem erros.
+  # Registrar timestamp apenas quando a run completou sem erros de monitor ou publicacao.
   # O startup-catchup.ps1 usa este arquivo para decidir se deve rodar.
-  if ($success) {
+  if ($fullSuccess) {
     (Get-Date -Format "o") | Set-Content (Join-Path $env:USERPROFILE ".monitor-olx-enjoei-last-run")
     Write-Host "Timestamp registrado: $(Get-Date -Format 'dd/MM HH:mm')"
   }

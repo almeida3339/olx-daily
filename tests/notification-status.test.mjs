@@ -5,7 +5,8 @@ import {
   buildPriorFailureNote,
   sanitizeErrorMessage,
   mergePendingFailures,
-  reconcilePendingFailures
+  reconcilePendingFailures,
+  mergeAcks
 } from "../scripts/lib/notification-status.mjs";
 
 const NOW = new Date("2026-06-26T19:00:00Z");
@@ -63,6 +64,15 @@ test("sanitize remove chaves sensíveis variadas", () => {
   assert.doesNotMatch(sanitized, /secret123|pwd|shh|tokval|authval|12345/);
 });
 
+test("sanitize remove credenciais com espacos e aspas", () => {
+  const msg = 'password: "valor com espaços", Authorization: Basic abcdef, token=\'segredo\'';
+  const sanitized = sanitizeErrorMessage(msg);
+  assert.match(sanitized, /password=\[redacted\]/);
+  assert.match(sanitized, /Authorization=\[redacted\]/);
+  assert.match(sanitized, /token=\[redacted\]/);
+  assert.doesNotMatch(sanitized, /valor com espaços|abcdef|segredo/);
+});
+
 test("sanitize limita tamanho da mensagem", () => {
   const longMsg = "a".repeat(1200);
   const sanitized = sanitizeErrorMessage(longMsg);
@@ -70,120 +80,142 @@ test("sanitize limita tamanho da mensagem", () => {
   assert.ok(sanitized.endsWith("…"));
 });
 
-test("mergePendingFailures mescla, ordena cronologicamente e limita fila", () => {
+test("mergePendingFailures incrementa contagem e atualiza last_seen_at para falha repetida", () => {
   const prior = [
-    { channel: "email", at: "2026-06-26T10:00:00.000Z", error: "Auth error" },
-    { channel: "whatsapp", at: "2026-06-26T11:00:00.000Z", error: "Timeout" }
+    { id: "id-1", channel: "email", first_seen_at: "2026-06-26T10:00:00.000Z", last_seen_at: "2026-06-26T10:00:00.000Z", error: "Auth error", count: 1 }
   ];
   const newFailures = [
-    { channel: "email", at: "2026-06-26T12:00:00.000Z", error: "Auth error" }, // Duplicada, substitui timestamp
-    { channel: "whatsapp", at: "2026-06-26T13:00:00.000Z", error: "Conn error" }
+    { channel: "email", error: "Auth error" }
   ];
 
-  const merged = mergePendingFailures(prior, newFailures);
-  assert.equal(merged.length, 3);
-  assert.equal(merged[0].at, "2026-06-26T11:00:00.000Z"); // whatsapp Timeout (antigo mantido)
-  assert.equal(merged[1].at, "2026-06-26T12:00:00.000Z"); // email Auth error (novo atualizado)
-  assert.equal(merged[2].at, "2026-06-26T13:00:00.000Z"); // whatsapp Conn error (novo)
+  const merged = mergePendingFailures(prior, newFailures, "2026-06-26T12:00:00.000Z");
+  assert.equal(merged.length, 1);
+  assert.equal(merged[0].id, "id-1");
+  assert.equal(merged[0].first_seen_at, "2026-06-26T10:00:00.000Z");
+  assert.equal(merged[0].last_seen_at, "2026-06-26T12:00:00.000Z");
+  assert.equal(merged[0].count, 2);
 });
 
 test("mergePendingFailures limita fila ao maxPending", () => {
   const list = [];
   for (let i = 0; i < 25; i++) {
-    list.push({ channel: "whatsapp", at: new Date(Date.now() + i * 1000).toISOString(), error: `Error ${i}` });
+    list.push({ channel: "whatsapp", error: `Error ${i}` });
   }
-  const merged = mergePendingFailures(list, [], 20);
+  const merged = mergePendingFailures([], list, NOW.toISOString(), 20);
   assert.equal(merged.length, 20);
-  assert.equal(merged[0].error, "Error 5");
-  assert.equal(merged[19].error, "Error 24");
 });
 
-test("reconcilePendingFailures remove falhas comunicadas por sucesso", () => {
-  // Local falhou em e-mail às 10:00
+test("reconcilePendingFailures mescla local e CI e filtra os que estao em acknowledged_failure_ids", () => {
   const localStatus = {
-    generated_at: "2026-06-26T10:00:00.000Z",
-    delivery: { email: "failed", whatsapp: "sent" }, // WhatsApp foi entregue (sucesso!)
     pending_failures: [
-      { channel: "email", at: "2026-06-26T10:00:00.000Z", error: "Auth error" }
-    ]
+      { id: "id-1", channel: "email", error: "Auth error" },
+      { id: "id-2", channel: "whatsapp", error: "Timeout" }
+    ],
+    acknowledged_failure_ids: ["id-1"]
   };
-
-  // CI falhou em whatsapp às 09:00
   const ciStatus = {
-    generated_at: "2026-06-26T09:00:00.000Z",
-    delivery: { email: "skipped", whatsapp: "failed" },
     pending_failures: [
-      { channel: "whatsapp", at: "2026-06-26T09:00:00.000Z", error: "Timeout" }
-    ]
+      { id: "id-2", channel: "whatsapp", error: "Timeout" },
+      { id: "id-3", channel: "email", error: "SMTP error" }
+    ],
+    acknowledged_failure_ids: ["id-3"]
   };
 
   const reconciled = reconcilePendingFailures(localStatus, ciStatus);
-  // O sucesso do localStatus em WhatsApp às 10:00 deve limpar as falhas de at <= 10:00.
-  // Como ambas as falhas (09:00 e 10:00) ocorreram em ou antes de 10:00, ambas devem ser limpas!
-  assert.equal(reconciled.length, 0);
+  assert.equal(reconciled.length, 1);
+  assert.equal(reconciled[0].id, "id-2");
 });
 
-test("reconcilePendingFailures mantem falhas nao comunicadas", () => {
-  // Local falhou em e-mail às 10:00, sem sucesso em nenhum canal
-  const localStatus = {
-    generated_at: "2026-06-26T10:00:00.000Z",
-    delivery: { email: "failed", whatsapp: "failed" },
-    pending_failures: [
-      { channel: "email", at: "2026-06-26T10:00:00.000Z", error: "Auth error" }
-    ]
-  };
-
-  // CI falhou em whatsapp às 11:00, sem sucesso em nenhum canal
-  const ciStatus = {
-    generated_at: "2026-06-26T11:00:00.000Z",
-    delivery: { email: "skipped", whatsapp: "failed" },
-    pending_failures: [
-      { channel: "whatsapp", at: "2026-06-26T11:00:00.000Z", error: "Timeout" }
-    ]
-  };
-
-  const reconciled = reconcilePendingFailures(localStatus, ciStatus);
-  assert.equal(reconciled.length, 2);
-  assert.equal(reconciled[0].channel, "email");
-  assert.equal(reconciled[1].channel, "whatsapp");
-});
-
-test("reconcilePendingFailures converte status legados", () => {
-  const localStatus = {
-    generated_at: "2026-06-26T10:00:00.000Z",
-    email: "failed",
-    email_error: "Auth error",
-    whatsapp: "sent"
-  };
-  const ciStatus = {
-    generated_at: "2026-06-26T09:00:00.000Z",
-    email: "skipped",
-    whatsapp: "failed",
-    whatsapp_error: "Timeout"
-  };
-
-  const reconciled = reconcilePendingFailures(localStatus, ciStatus);
-  // O sucesso do localStatus em 10:00 deve limpar ambos
-  assert.equal(reconciled.length, 0);
-});
-
-test("nota de falha anterior aparece só quando houve falha", () => {
+test("nota de falha anterior e formatação de pendências", () => {
   assert.equal(buildPriorFailureNote(null), null);
-  assert.equal(buildPriorFailureNote({ email: "sent", whatsapp: "sent" }), null);
+  assert.equal(buildPriorFailureNote([]), null);
 
-  const note = buildPriorFailureNote({ email: "sent", whatsapp: "failed", generated_at: "2026-06-26T16:00:00.000Z" });
-  assert.match(note, /Rodada anterior/);
-  assert.match(note, /WhatsApp/);
-  assert.doesNotMatch(note, /e-mail/);
-});
-
-test("nota de falha anterior formata lista de pendencias corretamente", () => {
   const pending = [
-    { channel: "email", at: "2026-06-26T16:00:00.000Z", error: "Auth failed" },
-    { channel: "whatsapp", at: "2026-06-26T17:00:00.000Z", error: "Timeout" }
+    { channel: "email", last_seen_at: "2026-06-26T16:00:00.000Z", error: "Auth failed" }
   ];
   const note = buildPriorFailureNote(pending);
   assert.match(note, /Rodada anterior/);
   assert.match(note, /e-mail/);
-  assert.match(note, /WhatsApp/);
+  assert.match(note, /2026-06-26T16:00:00.000Z/);
+});
+
+test("mergeAcks limita quantidade de IDs acks", () => {
+  const acks1 = Array.from({ length: 60 }, (_, i) => `id-${i}`);
+  const acks2 = Array.from({ length: 60 }, (_, i) => `id-${i + 50}`);
+  const merged = mergeAcks(acks1, acks2, 100);
+  assert.equal(merged.length, 100);
+});
+
+test("cenario: email failed + WhatsApp sent na mesma rodada deixa a falha de e-mail pendente", () => {
+  const priorPending = [];
+  const priorIdsInMessage = priorPending.map(f => f.id);
+  const delivered = true;
+
+  const newAcks = delivered ? priorIdsInMessage : [];
+  const finalAcks = mergeAcks([], newAcks);
+
+  const workingPending = priorPending.filter(f => !finalAcks.includes(f.id));
+  const newFailures = [{ channel: "email", error: "SMTP error" }];
+
+  const finalPending = mergePendingFailures(workingPending, newFailures, NOW.toISOString());
+  assert.equal(finalPending.length, 1);
+  assert.equal(finalPending[0].channel, "email");
+});
+
+test("cenario: falha anterior incluída na nota + WhatsApp sent remove exatamente aquela falha, falha nova permanece", () => {
+  const priorPending = [
+    { id: "id-1", channel: "email", error: "Auth error" }
+  ];
+  const priorIdsInMessage = priorPending.map(f => f.id);
+  const delivered = true;
+
+  const newAcks = delivered ? priorIdsInMessage : [];
+  const finalAcks = mergeAcks([], newAcks);
+
+  const workingPending = priorPending.filter(f => !finalAcks.includes(f.id));
+  const newFailures = [{ channel: "email", error: "Auth error" }];
+  const finalPending = mergePendingFailures(workingPending, newFailures, NOW.toISOString());
+
+  assert.equal(finalPending.length, 1);
+  assert.notEqual(finalPending[0].id, "id-1");
+  assert.deepEqual(finalAcks, ["id-1"]);
+});
+
+test("cenario: sucesso local que não conhecia falha do CI não apaga a falha do CI", () => {
+  const localStatus = { pending_failures: [], acknowledged_failure_ids: [] };
+  const ciStatus = { pending_failures: [{ id: "id-ci", channel: "email", error: "CI error" }], acknowledged_failure_ids: [] };
+
+  const reconciled = reconcilePendingFailures(localStatus, ciStatus);
+  assert.equal(reconciled.length, 1);
+  assert.equal(reconciled[0].id, "id-ci");
+});
+
+test("cenario: e-mail skipped + WhatsApp failed mantém pendências", () => {
+  const priorPending = [{ id: "id-1", channel: "email", error: "Auth error" }];
+  const priorIdsInMessage = priorPending.map(f => f.id);
+  const delivered = false;
+
+  const newAcks = delivered ? priorIdsInMessage : [];
+  const finalAcks = mergeAcks([], newAcks);
+
+  const workingPending = priorPending.filter(f => !finalAcks.includes(f.id));
+  assert.equal(workingPending.length, 1);
+  assert.equal(workingPending[0].id, "id-1");
+});
+
+test("cenario: acknowledgements de um ambiente impedem ressurreição por arquivo obsoleto do outro", () => {
+  const localStatus = { pending_failures: [], acknowledged_failure_ids: ["id-1"] };
+  const ciStatus = { pending_failures: [{ id: "id-1", channel: "email", error: "Auth error" }], acknowledged_failure_ids: [] };
+
+  const reconciled = reconcilePendingFailures(localStatus, ciStatus);
+  assert.equal(reconciled.length, 0);
+});
+
+test("cenario: repetição da mesma falha incrementa count sem crescer indefinidamente", () => {
+  const prior = [{ id: "id-1", channel: "email", error: "Auth error", count: 5 }];
+  const newFailures = [{ channel: "email", error: "Auth error" }];
+  const merged = mergePendingFailures(prior, newFailures, NOW.toISOString());
+  assert.equal(merged.length, 1);
+  assert.equal(merged[0].count, 6);
+  assert.equal(merged[0].id, "id-1");
 });
