@@ -11,7 +11,7 @@ runWatchlistMonitor({
   label: "Dockstations",
   dataDir,
   profileDir: ".chrome-dockstations-profile",
-  terms: ["SD25TB4", "WD22TB4", "40AY0090BR"],
+  terms: ["SD25TB4", "WD22TB4"],
   minPrice: 0,
   maxPrice: 500,
 }).catch((error) => {
