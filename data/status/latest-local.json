@@ -1,16 +1,28 @@
 {
-  "generated_at": "2026-06-30T10:35:10.307Z",
+  "generated_at": "2026-07-02T10:13:07.457Z",
   "source": "local",
   "delivery": {
-    "email": "sent",
+    "email": "failed",
+    "email_error": "read ECONNRESET",
     "whatsapp": "sent"
   },
-  "pending_failures": [],
+  "pending_failures": [
+    {
+      "id": "9d67b66f-04da-43bf-8485-a4de2d6211ad",
+      "fingerprint": "fp-a5b99d4ac8f8b51b4daa422c",
+      "channel": "email",
+      "first_seen_at": "2026-07-02T10:13:07.457Z",
+      "last_seen_at": "2026-07-02T10:13:07.457Z",
+      "error": "read ECONNRESET",
+      "count": 1
+    }
+  ],
   "acknowledged_failure_ids": [
     "989d7e3b-36d6-48c2-b9c5-8aee4d454fcd",
     "12324b29-8f6b-4842-8855-b57d4d66f06d",
     "f82c0955-b7f6-4773-b6a1-7bee633d8db6"
   ],
-  "email": "sent",
+  "email": "failed",
+  "email_error": "read ECONNRESET",
   "whatsapp": "sent"
 }
