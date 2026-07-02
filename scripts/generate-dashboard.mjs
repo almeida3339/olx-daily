@@ -605,11 +605,42 @@ h1{font-size:1.3rem;color:#f0f6fc;margin-bottom:5px}
 .delta{font-size:.7rem;font-weight:700;line-height:1.1}
 .delta.up{color:#f85149}
 .delta.down{color:#3fb950}
+.triggers{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.trig{font:inherit;font-size:.78rem;font-weight:600;color:#c9d1d9;background:#161b22;border:1px solid #30363d;border-radius:6px;padding:6px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;text-decoration:none}
+.trig:hover{border-color:#58a6ff;color:#58a6ff}
+.trig .tip{font-size:.68rem;font-weight:400;color:#8b949e}
+.trig-copied{color:#3fb950!important;border-color:#238636!important}
 </style>
 </head>
 <body>
 <h1>Monitor</h1>
 <p class="meta">Última atualização por fonte (BRT) &nbsp;·&nbsp; <a href="https://github.com/${REPO}" target="_blank" rel="noopener noreferrer">ver repositório ↗</a></p>
+<div class="triggers">
+  <a class="trig" href="https://github.com/${REPO}/actions/workflows/monitor.yml" target="_blank" rel="noopener noreferrer" title="Abre a página do workflow no GitHub Actions — clique em &quot;Run workflow&quot; para disparar a coleta Enjoei (nuvem)">
+    ▶ Disparar Enjoei <span class="tip">(GitHub Actions)</span>
+  </a>
+  <button type="button" class="trig" onclick="copyTrigger(this,'node scripts/run-monitors-and-notify.mjs --only-olx')" title="Copia o comando PowerShell para rodar o OLX localmente (não roda em CI)">
+    ▶ Disparar OLX <span class="tip">(copia comando local)</span>
+  </button>
+  <button type="button" class="trig" onclick="copyTrigger(this,'.\\scripts\\run-mercadolivre-and-publish.ps1')" title="Copia o comando PowerShell para rodar o Mercado Livre localmente (usa perfil autenticado do navegador)">
+    ▶ Disparar Mercado Livre <span class="tip">(copia comando local)</span>
+  </button>
+</div>
+<script>
+function copyTrigger(btn, cmd) {
+  const original = btn.innerHTML;
+  const done = () => {
+    btn.classList.add('trig-copied');
+    btn.innerHTML = '✓ Comando copiado';
+    setTimeout(() => { btn.classList.remove('trig-copied'); btn.innerHTML = original; }, 2200);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(cmd).then(done).catch(() => window.prompt('Copie o comando:', cmd));
+  } else {
+    window.prompt('Copie o comando:', cmd);
+  }
+}
+</script>
 <div class="updates">
 ${chipsHtml}
 </div>
