@@ -3,16 +3,18 @@ name: Monitor
 on:
   workflow_dispatch:        # disparado pelo cron-job.org via API (07:00, 16:00 BRT — Enjoei only; OLX roda local)
 
-# Permissão mínima por padrão; só o job monitor recebe contents: write (publica).
+# Permissões globais. O deploy do Pages exige permissões adicionais.
 permissions:
   contents: read
+  pages: write
+  id-token: write
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5 # Atualizado de v4 para v5 para eliminar os avisos amarelos
+      - uses: actions/setup-node@v5
         with:
           node-version: '22'
           cache: 'npm'
@@ -28,11 +30,11 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5 # Atualizado de v4 para v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: '22'
           cache: 'npm'
@@ -66,10 +68,6 @@ jobs:
           OLED_MONITORES_DATA_DIR: ${{ github.workspace }}/data/oled-monitores
         run: node scripts/run-monitors-and-notify.mjs
 
-      # O dashboard NAO e gerado aqui: ele depende de TODOS os dados (OLX do
-      # commit local + Enjoei deste run) e e regenerado no passo de publicacao,
-      # ja sincronizado com origin. Gerar antes produziria um index.html defasado
-      # que, no rebase, sobrescreveria o do outro lado (corrida CI x local).
       - name: Salvar snapshots e publicar dashboard
         if: always()
         env:
@@ -88,8 +86,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # (1) Commita apenas os dados coletados (pastas data/* nao conflitam
-          # entre CI e local). O dashboard entra depois, ja sincronizado.
           git add data/
           local_commit=0
           if ! git diff --staged --quiet; then
@@ -97,9 +93,6 @@ jobs:
             local_commit=1
           fi
 
-          # (2) Publica. A cada tentativa: sincroniza com origin usando -X theirs
-          # (resolve o index.html sem travar em conflito — era a causa da falha do
-          # push das 16h), regenera o dashboard com TUDO e empurra.
           for i in 1 2 3 4; do
             git fetch origin
             if ! git -c core.editor=true rebase -X theirs origin/main; then
@@ -136,3 +129,23 @@ jobs:
       - name: Sinalizar falha dos monitores
         if: steps.monitor_run.outcome == 'failure'
         run: exit 1
+
+  # NOVO JOB: Isola a publicação do dashboard de forma nativa e serverless no Pages
+  deploy-pages:
+    needs: monitor
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v5
+        with:
+          ref: main # Garante que vai pegar o index.html atualizado após o push bem-sucedido do job anterior
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Como o seu index.html e gerado na raiz do projeto, o caminho e o diretorio atual (.)
+          path: '.' 
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
