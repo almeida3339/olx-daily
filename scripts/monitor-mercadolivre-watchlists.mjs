@@ -20,8 +20,13 @@ const selected = option("--watchlist");
 const selectedTerm = option("--term");
 const fullSweep = process.argv.includes("--full-sweep");
 const force = process.argv.includes("--force") || fullSweep;
-const requestedBudget = Number(option("--max-terms") ?? process.env.ML_WATCHLIST_TERM_BUDGET ?? 10);
-const budget = Number.isFinite(requestedBudget) && requestedBudget > 0 ? Math.floor(requestedBudget) : 10;
+// Orçamento padrão cobre todos os termos configurados hoje (30, ver soma de
+// watchlist.terms.length abaixo) com folga — evita que uma watchlist grande
+// (ex.: oled-monitores, 17 termos) esgote o orçamento e mate de fome as que
+// vêm depois dela no array (foi o caso do tenis-42, nunca alcançado).
+const DEFAULT_BUDGET = mercadoLivreWatchlists.reduce((sum, w) => sum + w.terms.length, 0) + 10;
+const requestedBudget = Number(option("--max-terms") ?? process.env.ML_WATCHLIST_TERM_BUDGET ?? DEFAULT_BUDGET);
+const budget = Number.isFinite(requestedBudget) && requestedBudget > 0 ? Math.floor(requestedBudget) : DEFAULT_BUDGET;
 const watchlists = selected
   ? mercadoLivreWatchlists.filter((watchlist) => watchlist.id === selected)
   : mercadoLivreWatchlists;

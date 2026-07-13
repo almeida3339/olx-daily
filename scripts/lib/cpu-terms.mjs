@@ -43,6 +43,11 @@ export const CPU_SEARCH_QUERIES = {
   // (colisão "max" + número). No OLX a busca ja e escopada em notebooks.
   aimax395: "ryzen ai max 395 notebook",
   aimax390: "ryzen ai max 390 notebook",
+  // "470" sozinho é genérico demais no Enjoei (bate limite de página todo dia
+  // com ruído — preços, códigos de produto, etc. — sem retornar o notebook
+  // real). Contexto de marca reduz o ruído; o casamento por texto continua
+  // usando o token "hx470" (ver textContainsCpuTerm).
+  hx470: "ryzen ai 9 hx 470 notebook",
 };
 
 /** Query de busca para um termo (com contexto de marca quando necessário). */
