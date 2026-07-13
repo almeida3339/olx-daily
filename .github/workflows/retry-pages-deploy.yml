@@ -1,15 +1,21 @@
 name: Retry Pages Deploy
 
-# O deploy do GitHub Pages ("pages build and deployment", workflow interno do
-# GitHub — não editável no nosso repositório) falha esporadicamente com um
-# erro transitório de infraestrutura ("Deployment failed, try again later"),
-# resolvido na prática clicando "Re-run jobs" manualmente. Este workflow
-# automatiza esse clique: dispara quando o Pages deploy termina e, se falhou,
-# reenvia via API os jobs que falharam. Limitado a 3 tentativas (run_attempt)
-# para não entrar em loop caso o problema não seja transitório.
+# O deploy do GitHub Pages (workflow interno do GitHub, não editável no nosso
+# repositório) falha esporadicamente com um erro transitório de
+# infraestrutura ("Deployment failed, try again later"), resolvido na
+# prática clicando "Re-run jobs" manualmente. Este workflow automatiza esse
+# clique: dispara quando o Pages deploy termina e, se falhou, reenvia via API
+# os jobs que falharam. Limitado a 3 tentativas (run_attempt) para não entrar
+# em loop caso o problema não seja transitório.
+#
+# IMPORTANTE: o filtro `workflows:` casa pelo campo `name` do workflow na API
+# do GitHub, que é "pages-build-deployment" — NÃO o título bonito exibido na
+# UI ("pages build and deployment", com espaços). Confirmado via
+# GET /repos/{owner}/{repo}/actions/workflows. Uma versão anterior deste
+# arquivo usava o título da UI e por isso nunca disparava (0 execuções).
 on:
   workflow_run:
-    workflows: ["pages build and deployment"]
+    workflows: ["pages-build-deployment"]
     types: [completed]
 
 permissions:
