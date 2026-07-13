@@ -24,6 +24,7 @@
     "mercadolivre:login": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/open-mercadolivre-profile.ps1",
     "monitor:todos": "node scripts/run-monitors-and-notify.mjs",
     "monitor:todos:forcar-email": "node scripts/run-monitors-and-notify.mjs --force-email",
+    "monitor:notificacoes": "node scripts/manage-notification-outbox.mjs",
     "dashboard": "node scripts/generate-dashboard.mjs"
   },
   "dependencies": {

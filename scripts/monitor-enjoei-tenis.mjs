@@ -5,13 +5,15 @@ import {
   buildMonitorChanges,
   mergeMonitorSnapshot,
 } from "./lib/monitor-core.mjs";
+import { commitMonitorRun, readLatestValidSnapshot } from "./lib/monitor-runtime.mjs";
+import { ENJOEI_SHOE_TERMS, matchesEnjoeiShoeSearchTerm } from "./lib/shoe-search-rules.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const automationRoot = process.env.ENJOEI_DATA_DIR ?? path.join(process.env.USERPROFILE ?? process.env.HOME ?? "", ".codex", "automations", "monitor-enjoei-tenis-42");
 
 const SEARCH_ENDPOINT = "https://enjusearch.enjoei.com.br/graphql-search-x";
 const SITE_ORIGIN = "https://www.enjoei.com.br";
-const DEFAULT_TERMS = ["barefoot", "feet of tomorrow", "fot", "vita", "vivobarefoot", "xero", "vibram", "merrell", "lems"];
+const DEFAULT_TERMS = ENJOEI_SHOE_TERMS;
 
 const args = process.argv.slice(2);
 const terms = getTerms();
@@ -47,8 +49,9 @@ async function main() {
   const runTimestamp = now.toISOString();
   const runId = runTimestamp.replace(/[:.]/g, "-");
 
-  const previousSnapshotPath = await getLatestSnapshotPath(automationRoot);
-  const previousSnapshot = previousSnapshotPath ? await readJsonSafe(previousSnapshotPath) : null;
+  const previousSnapshotResult = await readLatestValidSnapshot(automationRoot);
+  const previousSnapshotPath = previousSnapshotResult.file ? path.join(automationRoot, previousSnapshotResult.file) : null;
+  const previousSnapshot = previousSnapshotResult.snapshot;
 
   console.log(`Execucao: ${runTimestamp}`);
   console.log(`Buscas: ${terms.join(", ")}`);
@@ -59,18 +62,20 @@ async function main() {
   const { items: collected, failedTerms } = await collectProducts();
   const snapshot = mergeWithPreviousSnapshot({ now, collected, failedTerms, previousSnapshot });
 
-  await fs.mkdir(automationRoot, { recursive: true });
-
-  const snapshotPath = path.join(automationRoot, `snapshot-${runId}.json`);
-  await fs.writeFile(snapshotPath, JSON.stringify(snapshot, null, 2), "utf8");
-
   const report = buildReport({ runDate, snapshot, previousSnapshot });
-  const reportPath = path.join(automationRoot, `report-${runId}.md`);
-  await fs.writeFile(reportPath, report, "utf8");
+  const committed = await commitMonitorRun(automationRoot, {
+    runId,
+    snapshot,
+    report,
+    metadata: { source: "enjoei-tenis", collected_count: collected.length },
+  });
+  const snapshotPath = committed.legacySnapshotPath;
+  const reportPath = committed.legacyReportPath;
 
   console.log(`Produtos coletados: ${collected.length}`);
   console.log(`Snapshot salvo: ${snapshotPath}`);
   console.log(`Relatorio salvo: ${reportPath}`);
+  if (committed.invalidItems.length) console.warn(`${committed.invalidItems.length} item(ns) foram para a quarentena.`);
 }
 
 async function collectProducts() {
@@ -329,35 +334,7 @@ function itemMatchesAnySearchTerm(item) {
 }
 
 function itemMatchesSearchTerm(item, searchTerm) {
-  const normalizedText = normalizeComparableText(`${item.title ?? ""} ${item.brand ?? ""}`);
-  const normalizedTerm = normalizeComparableText(searchTerm);
-
-  if (normalizedTerm === "fot") {
-    return hasWord(normalizedText, "fot") || normalizedText.includes("feet of tomorrow");
-  }
-
-  if (normalizedTerm === "feet of tomorrow") {
-    return normalizedText.includes("feet of tomorrow");
-  }
-
-  if (normalizedTerm === "vita") {
-    return hasWord(normalizedText, "vita");
-  }
-
-  return hasWord(normalizedText, normalizedTerm) || normalizedText.includes(normalizedTerm);
-}
-
-function hasWord(text, word) {
-  const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  return new RegExp(`(^|[^a-z0-9])${escaped}([^a-z0-9]|$)`, "i").test(text);
-}
-
-function normalizeComparableText(text) {
-  return (text ?? "")
-    .toString()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase();
+  return matchesEnjoeiShoeSearchTerm(item, searchTerm);
 }
 
 function formatBrl(value) {

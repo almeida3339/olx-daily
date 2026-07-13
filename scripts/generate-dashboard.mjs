@@ -4,6 +4,8 @@ import { fileURLToPath } from "node:url";
 import { extractGpuLabel, extractRamGb, parseBrlPrice, textContainsCpuTerm } from "./lib/parsers.mjs";
 import { extractMercadoLivreNotebookSpecs } from "./lib/mercadolivre-monitor.mjs";
 import { isMercadoLivreNotebookDisplayPrice } from "./lib/mercadolivre-notebook-ranges.mjs";
+import { buildMonitorHealth } from "./lib/monitor-health.mjs";
+import { readLatestCommittedRun, readLatestValidSnapshot, writeJsonAtomic, writeTextAtomic } from "./lib/monitor-runtime.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -45,7 +47,23 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
 
 export { parseReport, formatRunLabelFromFile, summarizeMachine };
 
+export function buildLocalTriggerCommands(root = ROOT) {
+  const scriptPath = (name) => path.join(root, "scripts", name).replace(/'/g, "''");
+  return {
+    olx: `node '${scriptPath("run-monitors-and-notify.mjs")}' --only-olx`,
+    mercadoLivre: `& '${scriptPath("run-mercadolivre-and-publish.ps1")}'`,
+    notificacoes: `node '${scriptPath("manage-notification-outbox.mjs")}'`,
+  };
+}
+
 async function main() {
+  const health = await buildMonitorHealth(ROOT);
+  await writeJsonAtomic(path.join(ROOT, "data", "status", "monitor-health.json"), health, { validate: null });
+  const priceInsights = await buildPriceInsights([
+    ["OLX", OLX_DIR], ["Enjoei Notebooks", ENJOEI_NOTEBOOKS_DIR], ["Enjoei Tênis", ENJOEI_DIR],
+    ["Mercado Livre Notebooks", MERCADOLIVRE_NOTEBOOKS_DIR],
+    ...MERCADOLIVRE_WATCHLISTS.map(([chip, , , folder]) => [`Mercado Livre ${chip}`, path.join(ROOT, "data", folder)]),
+  ]);
   const olxDetails = await latestSnapshotDetails(OLX_DIR);
   const enjoeiNbDetails = await latestSnapshotDetails(ENJOEI_NOTEBOOKS_DIR);
   const mercadoLivre = {
@@ -95,10 +113,9 @@ async function main() {
     latestRunLabel(OURA_DIR),
     latestRunLabel(OLED_MONITORES_DIR),
   ]);
-  await fs.writeFile(
+  await writeTextAtomic(
     OUTPUT,
-    buildHtml({ olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, oura, oledMonitores, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, ouraUpdated, oledMonitoresUpdated }),
-    "utf8"
+    buildHtml({ health, priceInsights, olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, oura, oledMonitores, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, ouraUpdated, oledMonitoresUpdated }),
   );
   console.log(`Dashboard gerado: ${OUTPUT}`);
 }
@@ -106,32 +123,64 @@ async function main() {
 // ── coleta ──────────────────────────────────────────────────────────────────
 
 async function latestSnapshotDetails(dir) {
-  const all = await fs.readdir(dir).catch(() => []);
-  const file = all.filter((n) => n.startsWith("snapshot-") && n.endsWith(".json")).sort().reverse()[0];
-  if (!file) return new Map();
-  const raw = await fs.readFile(path.join(dir, file), "utf8").catch(() => null);
-  if (!raw) return new Map();
-  try {
-    const snapshot = JSON.parse(raw);
-    return new Map((snapshot.items ?? []).filter((item) => item.url).map((item) => {
-      const notebook = extractMercadoLivreNotebookSpecs(item.specs);
-      return [item.url, {
-        ...item,
-        cpu: notebook.cpuModel ?? item.cpu,
-        ram_gb: notebook.ram ?? item.ram_gb,
-        storage_gb: notebook.storage ?? item.storage_gb,
-        gpu: notebook.gpu ?? item.gpu,
-      }];
-    }));
-  } catch {
-    return new Map();
+  const { snapshot } = await readLatestValidSnapshot(dir);
+  return new Map((snapshot?.items ?? []).filter((item) => item.url).map((item) => {
+    const notebook = extractMercadoLivreNotebookSpecs(item.specs);
+    return [item.url, {
+      ...item,
+      cpu: notebook.cpuModel ?? item.cpu,
+      ram_gb: notebook.ram ?? item.ram_gb,
+      storage_gb: notebook.storage ?? item.storage_gb,
+      gpu: notebook.gpu ?? item.gpu,
+    }];
+  }));
+}
+
+async function buildPriceInsights(descriptors) {
+  const insights = [];
+  for (const [source, dir] of descriptors) {
+    const { snapshot } = await readLatestValidSnapshot(dir);
+    for (const item of snapshot?.items ?? []) {
+      if (item.status !== "active" || !item.url || !Number.isFinite(Number(item.price_brl))) continue;
+      const observations = [...(item.price_history ?? [])]
+        .map((entry) => Number(entry?.price_brl))
+        .filter(Number.isFinite);
+      if (!observations.includes(Number(item.price_brl))) observations.push(Number(item.price_brl));
+      // O painel de inteligencia mostra apenas variacoes realmente observadas.
+      // Isso evita promover resultados legados de baixa confianca (ex.: acessorio
+      // de monitor) so porque estavam presentes em uma snapshot antiga.
+      if (observations.length < 2) continue;
+      const minimum = Math.min(...observations);
+      insights.push({
+        source,
+        title: item.title ?? "Anúncio sem título",
+        url: item.url,
+        current: Number(item.price_brl),
+        minimum,
+        observations: observations.length,
+        firstSeen: item.first_seen ?? null,
+      });
+    }
   }
+  return insights
+    .sort((left, right) => {
+      const leftAtMinimum = left.current === left.minimum ? 0 : 1;
+      const rightAtMinimum = right.current === right.minimum ? 0 : 1;
+      if (leftAtMinimum !== rightAtMinimum) return leftAtMinimum - rightAtMinimum;
+      return left.current - right.current;
+    })
+    .slice(0, 10);
 }
 
 async function gather(dir, prefix, excludePrefix, detailsByUrl = new Map()) {
+  const committed = await readLatestCommittedRun(dir);
+  const committedAt = Date.parse(committed?.manifest?.committed_at ?? "");
   const all = await fs.readdir(dir).catch(() => []);
   const files = all
     .filter((n) => n.startsWith(prefix) && (!excludePrefix || !n.startsWith(excludePrefix)) && n.endsWith(".md"))
+    // Depois que uma fonte adota manifesto, um report criado mas ainda nao
+    // promovido nao pode aparecer no painel como se fosse uma rodada completa.
+    .filter((n) => !Number.isFinite(committedAt) || (runTimestampFromFile(n)?.getTime() ?? -Infinity) <= committedAt + 1000)
     .sort()
     .reverse();
   const out = [];
@@ -158,6 +207,12 @@ async function gather(dir, prefix, excludePrefix, detailsByUrl = new Map()) {
 // Usa o report comum (nao-premium), que toda rodada gera, para que a ordenacao
 // lexicografica por nome reflita a ordem cronologica real.
 async function latestRunLabel(dir) {
+  const committed = await readLatestCommittedRun(dir);
+  const committedAt = Date.parse(committed?.snapshot?.run?.completed_at ?? committed?.manifest?.committed_at ?? "");
+  if (Number.isFinite(committedAt)) {
+    const date = new Date(committedAt);
+    return { label: formatDateTimeBrt(date), fresh: Date.now() - committedAt < 24 * 60 * 60 * 1000, ts: committedAt };
+  }
   const all = await fs.readdir(dir).catch(() => []);
   const file = all
     .filter((n) => n.startsWith("report-") && !n.startsWith("report-premium-") && n.endsWith(".md"))
@@ -478,7 +533,7 @@ function e(s) {
   return (s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
-function buildHtml({ olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, oura, oledMonitores, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, ouraUpdated, oledMonitoresUpdated }) {
+function buildHtml({ health, priceInsights, olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, oura, oledMonitores, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, ouraUpdated, oledMonitoresUpdated }) {
   // Ordenação em dois níveis: primeiro as fontes COM achados recentes (cards com
   // conteúdo), depois as vazias ("Nenhum run com novidades") — sempre no fundo,
   // mesmo que tenham rodado há pouco. Dentro de cada grupo, mais recente primeiro.
@@ -541,7 +596,24 @@ function buildHtml({ olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei
   const cardsHtml = sources
     .map((s) => renderSection(s.title, s.sub, s.data, s.dpath, { label: s.stampLabel, fresh: s.stampFresh }))
     .join("\n");
+  const healthHtml = health.sources.map((source) => {
+    const updated = source.updated_at
+      ? new Date(source.updated_at).toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo", dateStyle: "short", timeStyle: "short" })
+      : "—";
+    const history = source.history?.sample
+      ? `<small>${source.history.sample} rodadas · ${Math.round((source.history.success_rate ?? 0) * 100)}% estáveis</small>`
+      : "";
+    return `<div class="health ${e(source.state)}"><b>${e(source.label)}</b><span>${e(source.message)}</span>${history}<time>${e(updated)}</time></div>`;
+  }).join("\n");
+  const pendingNotifications = health.sources.find((source) => source.id === "notifications")?.outbox ?? [];
+  const notificationsHtml = pendingNotifications.length
+    ? pendingNotifications.map((item) => `<li><b>${e(item.channel)}</b> · ${e(item.status)} · ${e(String(item.attempts ?? 0))} tentativa(s)<br><span>${e(item.last_error ?? "Aguardando entrega")}</span></li>`).join("\n")
+    : "<p class=\"empty\">Nenhuma entrega pendente.</p>";
+  const insightsHtml = priceInsights.length
+    ? priceInsights.map((item) => `<li><a href="${e(item.url)}" target="_blank" rel="noopener noreferrer">${e(item.title)}</a><span>${e(item.source)} · atual <b>R$ ${formatPrice(item.current)}</b> · mínimo <b>R$ ${formatPrice(item.minimum)}</b> · ${item.observations} observação(ões)</span></li>`).join("\n")
+    : "<p class=\"empty\">Ainda não há histórico suficiente para comparar preços.</p>";
 
+  const triggerCommands = buildLocalTriggerCommands();
   return `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -561,6 +633,11 @@ h1{font-size:1.3rem;color:#f0f6fc;margin-bottom:5px}
 .updates .u.fresh b{color:#56d364}
 .updates .u.fresh time{color:#56d364}
 .updates .u.fresh::before{content:"●";color:#3fb950;font-size:8px;margin-right:6px;vertical-align:middle}
+.health-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:7px;margin:0 0 18px}
+.health{display:grid;grid-template-columns:auto 1fr;gap:2px 8px;align-items:baseline;padding:8px 10px;border:1px solid #30363d;border-radius:7px;background:#161b22;font-size:.72rem}
+.health b{color:#c9d1d9}.health span{color:#8b949e}.health small{grid-column:1/-1;color:#8b949e}.health time{grid-column:1/-1;color:#8b949e;font-variant-numeric:tabular-nums}
+.health::before{content:"●";font-size:9px}.health.healthy::before{color:#3fb950}.health.partial::before,.health.degraded::before{color:#e3b341}.health.stale::before{color:#f85149}.health.blocked::before,.health.failed::before,.health.missing::before{color:#ff7b72}
+.ops{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin:0 0 18px}.ops section{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:12px}.ops h2{font-size:.82rem;margin-bottom:8px}.ops ul{list-style:none;display:grid;gap:7px}.ops li{font-size:.73rem;border-top:1px solid #21262d;padding-top:7px}.ops li:first-child{border-top:0;padding-top:0}.ops li a{color:#c9d1d9;text-decoration:none;font-weight:600}.ops li a:hover{color:#58a6ff}.ops li span{display:block;color:#8b949e;margin-top:2px}.ops .hint{font-size:.7rem;color:#8b949e;margin-top:10px}
 .meta a{color:#58a6ff;text-decoration:none}
 .meta a:hover{text-decoration:underline}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:18px;align-items:start}
@@ -619,10 +696,10 @@ h1{font-size:1.3rem;color:#f0f6fc;margin-bottom:5px}
   <a class="trig" href="https://github.com/${REPO}/actions/workflows/monitor.yml" target="_blank" rel="noopener noreferrer" title="Abre a página do workflow no GitHub Actions — clique em &quot;Run workflow&quot; para disparar a coleta Enjoei (nuvem)">
     ▶ Disparar Enjoei <span class="tip">(GitHub Actions)</span>
   </a>
-  <button type="button" class="trig" onclick="copyTrigger(this,'cd C:\\Users\\docra\\Downloads\\olx-daily; node scripts\\run-monitors-and-notify.mjs --only-olx')" title="Copia o comando PowerShell (com cd para a pasta do repo) para rodar o OLX localmente (não roda em CI)">
+  <button type="button" class="trig" data-command="${e(triggerCommands.olx)}" onclick="copyTrigger(this, this.dataset.command)" title="Copia um comando PowerShell com caminho absoluto para rodar o OLX localmente (não roda em CI)">
     ▶ Disparar OLX <span class="tip">(copia comando local)</span>
   </button>
-  <button type="button" class="trig" onclick="copyTrigger(this,'cd C:\\Users\\docra\\Downloads\\olx-daily; .\\scripts\\run-mercadolivre-and-publish.ps1')" title="Copia o comando PowerShell (com cd para a pasta do repo) para rodar o Mercado Livre localmente (usa perfil autenticado do navegador)">
+  <button type="button" class="trig" data-command="${e(triggerCommands.mercadoLivre)}" onclick="copyTrigger(this, this.dataset.command)" title="Copia um comando PowerShell com caminho absoluto para rodar o Mercado Livre localmente (usa perfil autenticado do navegador)">
     ▶ Disparar Mercado Livre <span class="tip">(copia comando local)</span>
   </button>
 </div>
@@ -643,6 +720,13 @@ function copyTrigger(btn, cmd) {
 </script>
 <div class="updates">
 ${chipsHtml}
+</div>
+<div class="health-grid">
+${healthHtml}
+</div>
+<div class="ops">
+  <section><h2>Preços acompanhados</h2><ul>${insightsHtml}</ul></section>
+  <section><h2>Notificações</h2><ul>${notificationsHtml}</ul><button type="button" class="trig" data-command="${e(triggerCommands.notificacoes)}" onclick="copyTrigger(this, this.dataset.command)">Gerenciar pendências <span class="tip">(copia comando)</span></button><p class="hint">Use <code>--retry ID</code> ou <code>--discard ID</code> depois de listar a fila.</p></section>
 </div>
 <div class="grid">
 ${cardsHtml}
@@ -742,4 +826,8 @@ function renderMachineRow(item, isPrice) {
     <span class="spec">GPU <b>${e(gpu)}</b></span>
   </div>
 </div>`;
+}
+
+function formatPrice(value) {
+  return Number(value).toLocaleString("pt-BR");
 }

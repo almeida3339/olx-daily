@@ -6,11 +6,22 @@ import {
   mercadoLivreWatchlistTermMatcher,
   mercadoLivreWatchlists,
 } from "./lib/mercadolivre-watchlists.mjs";
+import {
+  clearMercadoLivreCooldown,
+  planMercadoLivreTerms,
+  readMercadoLivreSchedule,
+  recordMercadoLivreRun,
+  writeMercadoLivreSchedule,
+} from "./lib/mercadolivre-scheduler.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const profileDir = process.env.MERCADOLIVRE_PROFILE_DIR ?? path.join(root, ".chrome-mercadolivre-profile");
 const selected = option("--watchlist");
 const selectedTerm = option("--term");
+const fullSweep = process.argv.includes("--full-sweep");
+const force = process.argv.includes("--force") || fullSweep;
+const requestedBudget = Number(option("--max-terms") ?? process.env.ML_WATCHLIST_TERM_BUDGET ?? 10);
+const budget = Number.isFinite(requestedBudget) && requestedBudget > 0 ? Math.floor(requestedBudget) : 10;
 const watchlists = selected
   ? mercadoLivreWatchlists.filter((watchlist) => watchlist.id === selected)
   : mercadoLivreWatchlists;
@@ -18,17 +29,35 @@ const watchlists = selected
 if (selected && watchlists.length === 0) throw new Error(`Busca desconhecida: ${selected}`);
 
 console.log(`Fila Mercado Livre: ${watchlists.map((item) => item.label).join(", ")}`);
+let schedule = await readMercadoLivreSchedule(root);
+if (process.argv.includes("--clear-cooldown")) {
+  schedule = clearMercadoLivreCooldown(schedule);
+  await writeMercadoLivreSchedule(root, schedule);
+  console.log("Pausa de seguranca do Mercado Livre removida.");
+}
+let remaining = selectedTerm ? Number.POSITIVE_INFINITY : Math.max(1, budget);
 for (const watchlist of watchlists) {
-  const terms = selectedTerm
+  const configuredTerms = selectedTerm
     ? watchlist.terms.filter((term) => term.toLowerCase() === selectedTerm.toLowerCase())
     : watchlist.terms;
-  if (selectedTerm && terms.length === 0) throw new Error(`Termo desconhecido para ${watchlist.id}: ${selectedTerm}`);
-  await runMercadoLivreBatch({
+  if (selectedTerm && configuredTerms.length === 0) throw new Error(`Termo desconhecido para ${watchlist.id}: ${selectedTerm}`);
+  const plan = planMercadoLivreTerms(schedule, {
+    watchlistId: watchlist.id,
+    terms: configuredTerms,
+    maxTerms: fullSweep ? configuredTerms.length : Math.min(remaining, configuredTerms.length),
+    force: force || Boolean(selectedTerm),
+  });
+  if (!plan.terms.length) {
+    console.log(`${watchlist.label}: pulada (${plan.reason}${plan.next_at ? ` ate ${plan.next_at}` : ""}).`);
+    continue;
+  }
+  console.log(`${watchlist.label}: ${plan.terms.length}/${configuredTerms.length} termo(s) nesta rodada.`);
+  const result = await runMercadoLivreBatch({
     id: watchlist.id,
     label: watchlist.label,
     dataDir: path.join(root, "data", `mercadolivre-${watchlist.id}`),
     profileDir,
-    terms,
+    terms: plan.terms,
     allTerms: watchlist.terms,
     minPrice: watchlist.minPrice,
     maxPrice: watchlist.maxPrice,
@@ -38,6 +67,18 @@ for (const watchlist of watchlists) {
     termMatcher: mercadoLivreWatchlistTermMatcher(watchlist) ?? undefined,
     relevantDetails: watchlist.relevantDetails,
   });
+  schedule = recordMercadoLivreRun(schedule, {
+    watchlistId: watchlist.id,
+    scheduledTerms: plan.terms,
+    configuredTerms: watchlist.terms,
+    snapshot: result.snapshot,
+  });
+  await writeMercadoLivreSchedule(root, schedule);
+  remaining -= plan.terms.length;
+  if (remaining <= 0 && !selectedTerm && !fullSweep) {
+    console.log("Orcamento de termos desta rodada atingido; as demais buscas ficam para a proxima execucao.");
+    break;
+  }
 }
 
 function option(name) {

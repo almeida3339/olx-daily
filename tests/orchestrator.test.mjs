@@ -105,7 +105,7 @@ test.describe("Orquestrador - Integração e Propagação de Erros", () => {
     await main({ runCommandFn, sendEmailFn, sendWhatsAppFn, fsApi });
 
     // 4. Assegura que o status foi gravado em latest-ci.json
-    const ciWrite = statusWrites.find(w => w.path.endsWith("latest-ci.json"));
+    const ciWrite = statusWrites.filter(w => w.path.endsWith("latest-ci.json")).at(-1);
     assert.ok(ciWrite, "Devia ter gravado o status de CI");
     assert.equal(ciWrite.json.source, "ci");
 
@@ -137,6 +137,28 @@ test.describe("Orquestrador - Integração e Propagação de Erros", () => {
     assert.equal(process.exitCode, undefined, "Sem falhas, exitCode deve ficar limpo");
   });
 
+  test("modo somente Mercado Livre não executa os outros monitores", async () => {
+    const runCommandFn = async () => { throw new Error("nenhum monitor deveria rodar"); };
+    const sendEmailFn = async () => {};
+    const sendWhatsAppFn = async () => {};
+    const fsApi = {
+      readFile: async () => "{}",
+      writeFile: async () => {},
+      mkdir: async () => {},
+      readdir: async () => [],
+    };
+
+    await main({
+      runCommandFn,
+      sendEmailFn,
+      sendWhatsAppFn,
+      fsApi,
+      args: ["--only-mercadolivre"],
+    });
+
+    assert.equal(process.exitCode, undefined);
+  });
+
   test("erros de notificacao sao enfileirados em pending_failures e sanitizados", async (t) => {
     const runCommandFn = t.mock.fn(async () => Promise.resolve());
     const sendEmailFn = t.mock.fn(async () => Promise.resolve());
@@ -157,13 +179,15 @@ test.describe("Orquestrador - Integração e Propagação de Erros", () => {
     process.env.GITHUB_ACTIONS = "true";
     await main({ runCommandFn, sendEmailFn, sendWhatsAppFn, fsApi });
 
-    const ciWrite = statusWrites.find(w => w.path.endsWith("latest-ci.json"));
+    const ciWrite = statusWrites.filter(w => w.path.endsWith("latest-ci.json")).at(-1);
     assert.ok(ciWrite);
 
     // O erro no WhatsApp deve estar na lista de pending_failures
     const pending = ciWrite.json.pending_failures;
     assert.equal(pending.length, 1);
     assert.equal(pending[0].channel, "whatsapp");
+    assert.equal(ciWrite.json.notification_outbox.length, 1);
+    assert.equal(ciWrite.json.notification_outbox[0].channel, "whatsapp");
 
     // O erro deve ter sido sanitizado (sem telefone nem chave sensível de API)
     assert.doesNotMatch(pending[0].error, /SECRET_KEY/);

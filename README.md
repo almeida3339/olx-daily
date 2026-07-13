@@ -57,6 +57,11 @@ npm run mercadolivre:login
 # Entre na conta, feche esse Chrome e execute:
 npm run monitor:mercadolivre
 
+# Ver ou operar notificacoes pendentes
+npm run monitor:notificacoes
+node scripts/manage-notification-outbox.mjs --retry ID
+node scripts/manage-notification-outbox.mjs --discard ID
+
 # Local + commit + push automático (PowerShell Windows)
 .\scripts\run-local-olx-and-publish.ps1
 ```
@@ -430,6 +435,10 @@ README.md
 
 ### Mercado Livre
 
+As buscas agora usam uma cadencia adaptativa: notebooks executam no maximo 6 CPUs e as demais watchlists compartilham 10 termos por rodada. Termos recentes recebem prioridade; termos vazios entram em rotacao mais lenta. Use `--full-sweep` para uma varredura completa, `--force` para ignorar a cadencia e `--clear-cooldown` somente depois de resolver login, challenge ou limite. Challenge e limite ativam pausas persistentes de seguranca.
+
+Cada coleta nova e promovida por `latest-run.json` apenas depois de snapshot, relatorio e checksum validados. Itens malformados vao para `quarantine/` sem invalidar os demais resultados. O painel usa o historico limitado de rodadas para sinalizar degradacao recorrente, exibir preco atual versus minimo observado e mostrar pendencias da outbox de notificacoes.
+
 - `npm run monitor:mercadolivre:notebooks`: busca consolidada dos processadores.
 - `npm run monitor:mercadolivre:watchlists`: executa as demais listas em sequência.
 - `npm run monitor:mercadolivre`: executa toda a fila do Mercado Livre.
@@ -438,7 +447,10 @@ README.md
 - Notebooks são coletados entre R$ 2.000 e R$ 10.000; o painel mostra somente até R$ 8.000.
 - Galaxy Buds4 Pro é uma watchlist oficial na faixa de R$ 500 a R$ 1.000, com variantes de escrita e envio local.
 - Fichas técnicas são abertas apenas para anúncios novos ou incompletos, com limite por rodada.
-- A rotina automática local inclui o Mercado Livre. No GitHub Actions ele fica desativado por não haver perfil autenticado.
+- A rotina automática local de OLX/Enjoei não abre o Mercado Livre. Para o ML, use `npm run mercadolivre:publicar`: a coleta é publicada e os resultados somente daquela rodada são notificados.
+- Falha na coleta do Mercado Livre gera código de saída diferente de zero mesmo quando os dados parciais foram publicados; `-NoPush` não envia notificações.
+- A publicação manual inclui também `mercadolivre-oled-monitores`.
+- No GitHub Actions o Mercado Livre permanece desativado por não haver perfil autenticado.
 - A visão de notebooks do Mercado Livre está consolidada no `index.html`; o dashboard experimental separado foi removido.
 - Reaparecimentos não são tratados como novos; mudanças de preço continuam sendo alertadas.
 - Itens cujos termos saem da configuração são arquivados como `out_of_scope`.

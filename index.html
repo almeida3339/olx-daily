@@ -17,6 +17,11 @@ h1{font-size:1.3rem;color:#f0f6fc;margin-bottom:5px}
 .updates .u.fresh b{color:#56d364}
 .updates .u.fresh time{color:#56d364}
 .updates .u.fresh::before{content:"●";color:#3fb950;font-size:8px;margin-right:6px;vertical-align:middle}
+.health-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:7px;margin:0 0 18px}
+.health{display:grid;grid-template-columns:auto 1fr;gap:2px 8px;align-items:baseline;padding:8px 10px;border:1px solid #30363d;border-radius:7px;background:#161b22;font-size:.72rem}
+.health b{color:#c9d1d9}.health span{color:#8b949e}.health small{grid-column:1/-1;color:#8b949e}.health time{grid-column:1/-1;color:#8b949e;font-variant-numeric:tabular-nums}
+.health::before{content:"●";font-size:9px}.health.healthy::before{color:#3fb950}.health.partial::before,.health.degraded::before{color:#e3b341}.health.stale::before{color:#f85149}.health.blocked::before,.health.failed::before,.health.missing::before{color:#ff7b72}
+.ops{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin:0 0 18px}.ops section{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:12px}.ops h2{font-size:.82rem;margin-bottom:8px}.ops ul{list-style:none;display:grid;gap:7px}.ops li{font-size:.73rem;border-top:1px solid #21262d;padding-top:7px}.ops li:first-child{border-top:0;padding-top:0}.ops li a{color:#c9d1d9;text-decoration:none;font-weight:600}.ops li a:hover{color:#58a6ff}.ops li span{display:block;color:#8b949e;margin-top:2px}.ops .hint{font-size:.7rem;color:#8b949e;margin-top:10px}
 .meta a{color:#58a6ff;text-decoration:none}
 .meta a:hover{text-decoration:underline}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:18px;align-items:start}
@@ -75,10 +80,10 @@ h1{font-size:1.3rem;color:#f0f6fc;margin-bottom:5px}
   <a class="trig" href="https://github.com/almeida3339/olx-daily/actions/workflows/monitor.yml" target="_blank" rel="noopener noreferrer" title="Abre a página do workflow no GitHub Actions — clique em &quot;Run workflow&quot; para disparar a coleta Enjoei (nuvem)">
     ▶ Disparar Enjoei <span class="tip">(GitHub Actions)</span>
   </a>
-  <button type="button" class="trig" onclick="copyTrigger(this,'cd C:\Users\docra\Downloads\olx-daily; node scripts\run-monitors-and-notify.mjs --only-olx')" title="Copia o comando PowerShell (com cd para a pasta do repo) para rodar o OLX localmente (não roda em CI)">
+  <button type="button" class="trig" data-command="node 'C:\Users\docra\Downloads\olx-daily\scripts\run-monitors-and-notify.mjs' --only-olx" onclick="copyTrigger(this, this.dataset.command)" title="Copia um comando PowerShell com caminho absoluto para rodar o OLX localmente (não roda em CI)">
     ▶ Disparar OLX <span class="tip">(copia comando local)</span>
   </button>
-  <button type="button" class="trig" onclick="copyTrigger(this,'cd C:\Users\docra\Downloads\olx-daily; .\scripts\run-mercadolivre-and-publish.ps1')" title="Copia o comando PowerShell (com cd para a pasta do repo) para rodar o Mercado Livre localmente (usa perfil autenticado do navegador)">
+  <button type="button" class="trig" data-command="&amp; 'C:\Users\docra\Downloads\olx-daily\scripts\run-mercadolivre-and-publish.ps1'" onclick="copyTrigger(this, this.dataset.command)" title="Copia um comando PowerShell com caminho absoluto para rodar o Mercado Livre localmente (usa perfil autenticado do navegador)">
     ▶ Disparar Mercado Livre <span class="tip">(copia comando local)</span>
   </button>
 </div>
@@ -101,6 +106,42 @@ function copyTrigger(btn, cmd) {
 <span class="u fresh"><b>OLX</b> <time>2026-07-13 08:01</time></span>
 <span class="u fresh"><b>Enjoei</b> <time>2026-07-13 08:01</time></span>
 <span class="u"><b>Mercado Livre</b> <time>2026-07-02 15:17</time></span>
+</div>
+<div class="health-grid">
+<div class="health healthy"><b>OLX Notebooks</b><span>Saudável</span><small>1 rodadas · 100% estáveis</small><time>13/07/2026, 09:00</time></div>
+<div class="health partial"><b>Enjoei Notebooks</b><span>Cobertura parcial</span><time>13/07/2026, 09:00</time></div>
+<div class="health healthy"><b>Enjoei Tênis</b><span>Saudável</span><time>13/07/2026, 08:01</time></div>
+<div class="health partial"><b>Dockstations</b><span>Cobertura parcial</span><small>1 rodadas · 100% estáveis</small><time>13/07/2026, 08:01</time></div>
+<div class="health partial"><b>Fitbit Air</b><span>Cobertura parcial</span><small>1 rodadas · 100% estáveis</small><time>13/07/2026, 08:01</time></div>
+<div class="health partial"><b>Lifefactory</b><span>Cobertura parcial</span><small>1 rodadas · 100% estáveis</small><time>13/07/2026, 08:01</time></div>
+<div class="health partial"><b>Tela Book3</b><span>Cobertura parcial</span><small>1 rodadas · 100% estáveis</small><time>13/07/2026, 08:01</time></div>
+<div class="health partial"><b>Melanger</b><span>Cobertura parcial</span><small>1 rodadas · 100% estáveis</small><time>13/07/2026, 08:01</time></div>
+<div class="health partial"><b>Galaxy Buds4 Pro</b><span>Cobertura parcial</span><small>1 rodadas · 100% estáveis</small><time>13/07/2026, 08:01</time></div>
+<div class="health partial"><b>Oura Ring 5</b><span>Cobertura parcial</span><small>1 rodadas · 100% estáveis</small><time>13/07/2026, 08:01</time></div>
+<div class="health partial"><b>Monitores OLED</b><span>Cobertura parcial</span><small>1 rodadas · 100% estáveis</small><time>13/07/2026, 08:01</time></div>
+<div class="health stale"><b>ML Notebooks</b><span>Coleta desatualizada</span><time>02/07/2026, 14:58</time></div>
+<div class="health stale"><b>ML Galaxy Buds4 Pro</b><span>Coleta desatualizada</span><time>02/07/2026, 14:58</time></div>
+<div class="health stale"><b>ML Dockstations</b><span>Coleta desatualizada</span><time>02/07/2026, 15:00</time></div>
+<div class="health stale"><b>ML Fitbit Air</b><span>Coleta desatualizada</span><time>02/07/2026, 15:00</time></div>
+<div class="health stale"><b>ML Lifefactory</b><span>Coleta desatualizada</span><time>02/07/2026, 15:00</time></div>
+<div class="health stale"><b>ML Tela Book3</b><span>Coleta desatualizada</span><time>02/07/2026, 15:01</time></div>
+<div class="health stale"><b>ML Melanger</b><span>Coleta desatualizada</span><time>02/07/2026, 15:01</time></div>
+<div class="health stale"><b>ML Tênis 42</b><span>Coleta desatualizada</span><time>02/07/2026, 15:17</time></div>
+<div class="health stale"><b>ML Monitores OLED</b><span>Coleta desatualizada</span><time>02/07/2026, 15:14</time></div>
+<div class="health healthy"><b>Notificações</b><span>Fila de entrega saudável</span><time>—</time></div>
+</div>
+<div class="ops">
+  <section><h2>Preços acompanhados</h2><ul><li><a href="https://www.enjoei.com.br/p/sandalia-merrell-hydro-moc-132844531" target="_blank" rel="noopener noreferrer">sandalia merrell hydro moc</a><span>Enjoei Tênis · atual <b>R$ 215</b> · mínimo <b>R$ 215</b> · 2 observação(ões)</span></li>
+<li><a href="https://www.enjoei.com.br/p/tenis-vibram-fivefingers-vermelho-42-144425107" target="_blank" rel="noopener noreferrer">tênis vibram fivefingers vermelho 42</a><span>Enjoei Tênis · atual <b>R$ 240</b> · mínimo <b>R$ 240</b> · 2 observação(ões)</span></li>
+<li><a href="https://www.enjoei.com.br/p/notebook-premium-de-14-com-tela-oled-3-2k-ultra-7-255h-32gb-de-ram-e-1tb-de-ssd-143233627" target="_blank" rel="noopener noreferrer">notebook premium de 14&quot; com tela oled 3.2k  ultra 7 255h, 32gb de ram e 1tb de ssd</a><span>Enjoei Notebooks · atual <b>R$ 2.961</b> · mínimo <b>R$ 2.961</b> · 6 observação(ões)</span></li>
+<li><a href="https://sp.olx.com.br/vale-do-paraiba-e-litoral-norte/informatica/notebooks/notebook-alienware-m16-r1-i9-13900hx-32gb-de-ram-e-rtx-4070-8gb-1513495670" target="_blank" rel="noopener noreferrer">Notebook Alienware M16 R1 i9 13900hx, 32gb de RAM e RTX 4070 8GB</a><span>OLX · atual <b>R$ 8.200</b> · mínimo <b>R$ 8.200</b> · 4 observação(ões)</span></li>
+<li><a href="https://www.mercadolivre.com.br/dell-alienware-m16-r1-core-i9-13900hx-rtx-4070-32gb-ram/up/MLBU3952940946?pdp_filters=SHIPPING_ORIGIN%3A10215068%7Cprice%3A2000-10000#polycard_client=search-desktop&amp;be_origin=backend&amp;search_layout=grid&amp;position=3&amp;type=product&amp;float_highlight=price_dropped&amp;tracking_id=35b43ebd-7f0a-44b3-ac18-5f5738cb2226&amp;wid=MLB4660997863&amp;sid=search" target="_blank" rel="noopener noreferrer">Dell Alienware M16 R1 Core I9 13900hx Rtx 4070 32gb Ram</a><span>Mercado Livre Notebooks · atual <b>R$ 8.200</b> · mínimo <b>R$ 8.200</b> · 4 observação(ões)</span></li>
+<li><a href="https://rj.olx.com.br/rio-de-janeiro-e-regiao/informatica/notebooks/notebook-predator-helios-com-inteligencia-artificial-intel-core-i7-14700hx-de-14-geracao-1428973689" target="_blank" rel="noopener noreferrer">Notebook Predator Helios Com Inteligência Artificial Intel Core I7-14700hx De 14ª Geração</a><span>OLX · atual <b>R$ 8.299</b> · mínimo <b>R$ 8.299</b> · 2 observação(ões)</span></li>
+<li><a href="https://mg.olx.com.br/regiao-de-uberlandia-e-uberaba/informatica/notebooks/notebook-gamer-acer-predator-helios-neo-i7-14700hx-32gb-rtx-4070-1510953576" target="_blank" rel="noopener noreferrer">Notebook Gamer Acer Predator Helios Neo i7-14700HX 32GB RTX 4070</a><span>OLX · atual <b>R$ 8.500</b> · mínimo <b>R$ 8.500</b> · 3 observação(ões)</span></li>
+<li><a href="https://produto.mercadolivre.com.br/MLB-4761059155-notebook-gamer-rog-strix-g16-rtx4070-i9-13980hx-32gb-2tb-_JM?searchVariation=203696821363&amp;pdp_filters=price%3A2000-10000%7CSHIPPING_ORIGIN%3A10215068#polycard_client=search-desktop&amp;searchVariation=203696821363&amp;float_highlight=price_dropped&amp;be_origin=backend&amp;search_layout=grid&amp;position=4&amp;type=item&amp;tracking_id=f1c91ee1-a77a-4748-87aa-83793dea725e&amp;sid=search" target="_blank" rel="noopener noreferrer">Notebook Gamer Rog Strix G16 Rtx4070 I9 13980hx 32gb 2tb</a><span>Mercado Livre Notebooks · atual <b>R$ 8.500</b> · mínimo <b>R$ 8.500</b> · 3 observação(ões)</span></li>
+<li><a href="https://df.olx.com.br/distrito-federal-e-regiao/informatica/notebooks/lenovo-legion-pro-5-16irx9-i7-14700hx-rtx-4070-32gb-ram-ssd-1tb-1515023774" target="_blank" rel="noopener noreferrer">Lenovo Legion Pro 5 16IRX9 | i7-14700HX | RTX 4070 | 32GB RAM | SSD 1TB</a><span>OLX · atual <b>R$ 8.900</b> · mínimo <b>R$ 8.900</b> · 3 observação(ões)</span></li>
+<li><a href="https://mg.olx.com.br/regiao-de-juiz-de-fora/informatica/notebooks/notebook-asus-strix-g16-8940hx-5060-1-tb-1517441061" target="_blank" rel="noopener noreferrer">Notebook ASUS Strix g16 8940hx 5060 1 tb</a><span>OLX · atual <b>R$ 10.000</b> · mínimo <b>R$ 10.000</b> · 2 observação(ões)</span></li></ul></section>
+  <section><h2>Notificações</h2><ul><p class="empty">Nenhuma entrega pendente.</p></ul><button type="button" class="trig" data-command="node 'C:\Users\docra\Downloads\olx-daily\scripts\manage-notification-outbox.mjs'" onclick="copyTrigger(this, this.dataset.command)">Gerenciar pendências <span class="tip">(copia comando)</span></button><p class="hint">Use <code>--retry ID</code> ou <code>--discard ID</code> depois de listar a fila.</p></section>
 </div>
 <div class="grid">
 <div class="sec">
@@ -144,8 +185,23 @@ function copyTrigger(btn, cmd) {
 </div></div>
 </div>
 <div class="sec">
-  <div class="sh"><div class="shr"><h2>OLX Notebooks</h2><time class="sd fresh">2026-07-12 17:58</time></div><small>R$ 2.000 – R$ 8.000 &nbsp;·&nbsp; últimos 5 com novidades</small></div>
+  <div class="sh"><div class="shr"><h2>OLX Notebooks</h2><time class="sd fresh">2026-07-13 07:34</time></div><small>R$ 2.000 – R$ 8.000 &nbsp;·&nbsp; últimos 5 com novidades</small></div>
   <div class="sb"><div class="card">
+  <div class="ch">
+    <span class="cd">2026-07-13 07:34<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/olx/report-2026-07-13T10-34-39-369Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></span>
+    <div class="badges"><span class="badge bp">1 preço</span></div>
+  </div>
+  <div class="ci"><div class="item">
+  <div class="machine-head"><span class="machine-title"><a href="https://mg.olx.com.br/regiao-de-juiz-de-fora/informatica/notebooks/notebook-asus-strix-g16-8940hx-5060-1-tb-1517441061" target="_blank" rel="noopener noreferrer">Asus Strix G16 5060</a></span><span class="price-change"><span><span class="pf">R$ 10.500</span> → <span class="pt">R$ 10.000</span></span><span class="delta down" title="desceu">- R$ 500</span></span></div>
+  <div class="specs">
+    <span class="spec">CPU <b>n/d</b></span>
+    <span class="spec">RAM <b>16 GB</b></span>
+    <span class="spec">SSD <b>1 TB</b></span>
+    <span class="spec">GPU <b>RTX 5060</b></span>
+  </div>
+</div></div>
+</div>
+<div class="card">
   <div class="ch">
     <span class="cd">2026-07-12 17:58<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/olx/report-2026-07-12T20-58-05-588Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></span>
     <div class="badges"><span class="badge bp">1 preço</span></div>
@@ -220,30 +276,6 @@ function copyTrigger(btn, cmd) {
     <span class="spec">RAM <b>16 GB</b></span>
     <span class="spec">SSD <b>1 TB</b></span>
     <span class="spec">GPU <b>RTX 4070</b></span>
-  </div>
-</div></div>
-</div>
-<div class="card">
-  <div class="ch">
-    <span class="cd">2026-07-07 16:00<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/olx/report-2026-07-07T19-00-09-279Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></span>
-    <div class="badges"><span class="badge bn">+1 novo</span><span class="badge bp">1 preço</span></div>
-  </div>
-  <div class="ci"><div class="item">
-  <div class="machine-head"><span class="machine-title"><a href="https://sp.olx.com.br/regiao-de-presidente-prudente/informatica/notebooks/notebook-avell-storm-460-i9-14900hx-rtx-4060-16gb-ram-1516213593" target="_blank" rel="noopener noreferrer">Avell Storm 460</a></span><span class="ip">R$ 7.500</span></div>
-  <div class="specs">
-    <span class="spec">CPU <b>I9-14900HX</b></span>
-    <span class="spec">RAM <b>16 GB</b></span>
-    <span class="spec">SSD <b>512 GB</b></span>
-    <span class="spec">GPU <b>RTX 4060</b></span>
-  </div>
-</div>
-<div class="item">
-  <div class="machine-head"><span class="machine-title"><a href="https://sp.olx.com.br/grande-campinas/informatica/notebooks/notebook-asus-rog-strix-g16-i9-14900hx-rtx-5060-16gb-ram-novo-1514817772" target="_blank" rel="noopener noreferrer">Asus ROG Strix G16</a></span><span class="price-change"><span><span class="pf">R$ 9.400</span> → <span class="pt">R$ 9.200</span></span><span class="delta down" title="desceu">- R$ 200</span></span></div>
-  <div class="specs">
-    <span class="spec">CPU <b>I9-14900HX</b></span>
-    <span class="spec">RAM <b>16 GB</b></span>
-    <span class="spec">SSD <b>512 GB</b></span>
-    <span class="spec">GPU <b>RTX 5060</b></span>
   </div>
 </div></div>
 </div></div>

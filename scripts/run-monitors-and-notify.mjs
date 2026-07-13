@@ -11,6 +11,18 @@ import {
   sanitizeErrorMessage,
   mergeAcks
 } from "./lib/notification-status.mjs";
+import { createMonitorLogger } from "./lib/monitor-logger.mjs";
+import { appendMonitorHistory } from "./lib/monitor-history.mjs";
+import {
+  enqueueNotification,
+  claimNotification,
+  notificationDedupeKey,
+  readyNotificationItems,
+  recoverAbandonedNotifications,
+  reconcileNotificationOutbox,
+  settleNotification,
+} from "./lib/notification-outbox.mjs";
+import { readLatestCommittedReport, writeJsonAtomic } from "./lib/monitor-runtime.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const workspaceRoot = path.resolve(__dirname, "..");
@@ -86,6 +98,7 @@ export async function main({
     const skipMonitors       = args.includes("--skip-monitors");
     const dryRun             = args.includes("--dry-run");
     const onlyOlx            = args.includes("--only-olx");
+    const onlyMercadoLivre   = args.includes("--only-mercadolivre");
     const skipOlx            = args.includes("--skip-olx") || process.env.SKIP_OLX === "1";
     const skipEnjoei         = args.includes("--skip-enjoei") || process.env.SKIP_ENJOEI === "1";
     const skipDockstations   = args.includes("--skip-dockstations") || process.env.SKIP_DOCKSTATIONS === "1";
@@ -100,14 +113,19 @@ export async function main({
       || process.env.SKIP_MERCADOLIVRE === "1"
       || process.env.GITHUB_ACTIONS === "true";
     const olxMaxPerCpu       = getArgValue("--olx-max-per-cpu", args) ?? process.env.OLX_MAX_PER_CPU ?? "12";
+    const reportMinTimeArg   = getArgValue("--report-min-time", args) ?? process.env.MONITOR_REPORT_MIN_TIME;
 
     const runNow = nowFn();
     const runStart = runNow.getTime();
+    const logger = createMonitorLogger({ monitor: "orchestrator" });
   console.log(`Iniciando rodada: ${new Date().toISOString()}`);
+  logger.start({ only_mercadolivre: onlyMercadoLivre, skip_monitors: skipMonitors });
   const errors = [];
 
   if (skipMonitors) {
     console.log("--skip-monitors ativo: usando relatórios existentes.");
+  } else if (onlyMercadoLivre) {
+    console.log("--only-mercadolivre ativo: sem coleta de outros monitores.");
   } else {
     console.log("Rodando monitores em paralelo...");
     // Cada job de watchlist (dockstations, fitbit, lifefactory, tela-book3,
@@ -146,7 +164,10 @@ export async function main({
     for (let i = 0; i < jobs.length; i += 1) {
       const [name] = jobs[i];
       const result = results[i];
-      if (result.status !== "rejected") continue;
+      if (result.status !== "rejected") {
+        logger.info("monitor_succeeded", { source: name });
+        continue;
+      }
       if (name === "olx") { console.error(`OLX falhou: ${result.reason.message}`); errors.push(`OLX: ${result.reason.message}`); }
       if (name === "enjoei-tenis") { console.error(`Enjoei tênis falhou: ${result.reason.message}`); errors.push(`Enjoei tênis: ${result.reason.message}`); }
       if (name === "enjoei-notebooks") { console.error(`Enjoei NB falhou: ${result.reason.message}`); errors.push(`Enjoei NB: ${result.reason.message}`); }
@@ -158,6 +179,7 @@ export async function main({
       if (name === "buds4-pro") { console.error(`Galaxy Buds4 Pro falhou: ${result.reason.message}`); errors.push(`Galaxy Buds4 Pro: ${result.reason.message}`); }
       if (name === "oura") { console.error(`Oura Ring 5 falhou: ${result.reason.message}`); errors.push(`Oura Ring 5: ${result.reason.message}`); }
       if (name === "oled-monitores") { console.error(`Monitores OLED falhou: ${result.reason.message}`); errors.push(`Monitores OLED: ${result.reason.message}`); }
+      logger.error("monitor_failed", result.reason, { source: name });
     }
   }
 
@@ -165,23 +187,26 @@ export async function main({
   // relatório novo, readLatestReport(dir, minTime) devolve null em vez do relatório
   // antigo — evita reapresentar/realertar achados de rodadas anteriores. No modo
   // --skip-monitors (reuso de relatórios para teste), não aplicamos o corte.
-  const reportMinTime = skipMonitors ? null : runStart;
-  const enjoeiOn = !onlyOlx && !skipEnjoei;
+  const parsedReportMinTime = reportMinTimeArg ? Date.parse(reportMinTimeArg) : null;
+  const reportMinTime = Number.isFinite(parsedReportMinTime)
+    ? parsedReportMinTime
+    : (skipMonitors ? null : runStart);
+  const enjoeiOn = !onlyOlx && !onlyMercadoLivre && !skipEnjoei;
   const [olxStd, enjoeiReport, enjoeiNbStd, dockReport, fitbitReport, lifefactoryReport, telaBook3Report, melangerReport, buds4ProReport, ouraReport] = await Promise.all([
-    skipOlx          ? null : readLatestReport(OLX_DIR, reportMinTime).catch(() => null),
+    skipOlx || onlyMercadoLivre ? null : readLatestReport(OLX_DIR, reportMinTime).catch(() => null),
     enjoeiOn         ? readLatestReport(ENJOEI_DIR, reportMinTime).catch(() => null) : null,
     enjoeiOn         ? readLatestReport(ENJOEI_NOTEBOOKS_DIR, reportMinTime).catch(() => null) : null,
-    skipDockstations ? null : readLatestReport(DOCKSTATIONS_DIR, reportMinTime).catch(() => null),
-    skipFitbit       ? null : readLatestReport(FITBIT_DIR, reportMinTime).catch(() => null),
-    skipLifefactory  ? null : readLatestReport(LIFEFACTORY_DIR, reportMinTime).catch(() => null),
-    skipTelaBook3    ? null : readLatestReport(TELA_BOOK3_DIR, reportMinTime).catch(() => null),
-    skipMelanger     ? null : readLatestReport(MELANGER_DIR, reportMinTime).catch(() => null),
-    skipBuds4Pro     ? null : readLatestReport(BUDS4PRO_DIR, reportMinTime).catch(() => null),
-    skipOura         ? null : readLatestReport(OURA_DIR, reportMinTime).catch(() => null),
+    skipDockstations || onlyMercadoLivre ? null : readLatestReport(DOCKSTATIONS_DIR, reportMinTime).catch(() => null),
+    skipFitbit || onlyMercadoLivre       ? null : readLatestReport(FITBIT_DIR, reportMinTime).catch(() => null),
+    skipLifefactory || onlyMercadoLivre  ? null : readLatestReport(LIFEFACTORY_DIR, reportMinTime).catch(() => null),
+    skipTelaBook3 || onlyMercadoLivre    ? null : readLatestReport(TELA_BOOK3_DIR, reportMinTime).catch(() => null),
+    skipMelanger || onlyMercadoLivre     ? null : readLatestReport(MELANGER_DIR, reportMinTime).catch(() => null),
+    skipBuds4Pro || onlyMercadoLivre     ? null : readLatestReport(BUDS4PRO_DIR, reportMinTime).catch(() => null),
+    skipOura || onlyMercadoLivre         ? null : readLatestReport(OURA_DIR, reportMinTime).catch(() => null),
   ]);
 
   // Cada fonte conta itens NOVOS e ALTERAÇÕES DE PREÇO (antes só contava novos do range padrão).
-  const sources = [
+  const sources = (onlyMercadoLivre ? [] : [
     { label: "OLX Notebooks",    report: olxStd,      newRe: /Novos an[úu]ncios v[aá]lidos[^:]*:\s*\*\*(\d+)\*\*/, newSec: "## Novos anúncios", priceSec: "## Mudanças de preço" },
     { label: "Enjoei Notebooks", report: enjoeiNbStd, newRe: /Novos notebooks[^:]*:\s*\*\*(\d+)\*\*/,              newSec: "## Novos notebooks", priceSec: "## Mudanças de preço" },
     { label: "Enjoei Tênis",     report: enjoeiReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,                    newSec: "## Novos produtos",  priceSec: "## Mudancas de preco" },
@@ -192,7 +217,7 @@ export async function main({
     { label: "Melanger",         report: melangerReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,                  newSec: "## Novos produtos",  priceSec: "## Mudanças de preço" },
     { label: "Galaxy Buds4 Pro", report: buds4ProReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,                  newSec: "## Novos produtos",  priceSec: "## Mudanças de preço" },
     { label: "Oura Ring 5",      report: ouraReport,   newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,                    newSec: "## Novos produtos",  priceSec: "## Mudanças de preço" },
-  ].map((s) => ({
+  ]).map((s) => ({
     ...s,
     newCount:   extractNewCount(s.report, s.newRe),
     priceCount: extractNewCount(s.report, PRICE_CHANGE_RE),
@@ -235,6 +260,8 @@ export async function main({
 
   const priorPending = reconcilePendingFailures(localStatus, ciStatus);
   const priorNote    = buildPriorFailureNote(priorPending);
+  let notificationOutbox = recoverAbandonedNotifications(reconcileNotificationOutbox(localStatus, ciStatus), runNow);
+  const currentStatus = (process.env.GITHUB_ACTIONS === "true" ? ciStatus : localStatus) ?? {};
 
   const subject     = buildSubject(sources, errors);
   const body        = (priorNote ? `> ${priorNote}\n\n` : "") + buildBody(sources, errors);
@@ -256,11 +283,46 @@ export async function main({
     return;
   }
 
-  const [emailResult, waResult] = await Promise.allSettled([
-    sendingEmail ? sendEmailFn(subject, body) : Promise.resolve(null),
-    sendWhatsAppFn(whatsappMsg),
-  ]);
+  const emailKey = sendingEmail ? notificationDedupeKey("email", { subject, body }) : null;
+  const whatsappKey = notificationDedupeKey("whatsapp", { message: whatsappMsg });
+  if (sendingEmail) {
+    notificationOutbox = enqueueNotification(notificationOutbox, {
+      channel: "email",
+      payload: { subject, body },
+    }, runNow);
+  }
+  notificationOutbox = enqueueNotification(notificationOutbox, {
+    channel: "whatsapp",
+    payload: { message: whatsappMsg },
+  }, runNow);
+  await checkpointNotificationOutbox(notificationOutbox, currentStatus, runNow);
 
+  const deliveryByKey = new Map();
+  for (const queued of readyNotificationItems(notificationOutbox, runNow)) {
+    notificationOutbox = claimNotification(notificationOutbox, queued.id, runNow);
+    await checkpointNotificationOutbox(notificationOutbox, currentStatus, runNow);
+    try {
+      if (queued.channel === "email") await sendEmailFn(queued.payload.subject, queued.payload.body);
+      if (queued.channel === "whatsapp") await sendWhatsAppFn(queued.payload.message);
+      notificationOutbox = settleNotification(notificationOutbox, queued.id, { ok: true }, runNow);
+      deliveryByKey.set(queued.dedupe_key, { ok: true });
+      logger.info("notification_succeeded", { channel: queued.channel, outbox_id: queued.id });
+    } catch (error) {
+      notificationOutbox = settleNotification(notificationOutbox, queued.id, { ok: false, error }, runNow);
+      deliveryByKey.set(queued.dedupe_key, { ok: false, error });
+      logger.error("notification_failed", error, { channel: queued.channel, outbox_id: queued.id });
+    }
+    await checkpointNotificationOutbox(notificationOutbox, currentStatus, runNow);
+  }
+
+  const emailDelivery = emailKey ? deliveryByKey.get(emailKey) : null;
+  const whatsappDelivery = deliveryByKey.get(whatsappKey);
+  const emailResult = sendingEmail
+    ? (emailDelivery?.ok ? { status: "fulfilled" } : { status: "rejected", reason: emailDelivery?.error ?? new Error("Email aguardando nova tentativa") })
+    : { status: "fulfilled" };
+  const waResult = whatsappDelivery?.ok
+    ? { status: "fulfilled" }
+    : { status: "rejected", reason: whatsappDelivery?.error ?? new Error("WhatsApp aguardando nova tentativa") };
   const emailActuallySent = sendingEmail && emailResult.status === "fulfilled";
   const whatsappActuallySent = waResult.status === "fulfilled";
   const delivered = emailActuallySent || whatsappActuallySent;
@@ -307,10 +369,24 @@ export async function main({
     whatsapp: { ok: waResult.status === "fulfilled", error: waResult.reason?.message },
     pendingFailures: finalPending,
     acknowledgedFailureIds: finalAcks,
+    notificationOutbox,
     source: process.env.GITHUB_ACTIONS === "true" ? "ci" : "local"
   });
 
   await writeDeliveryStatus(status);
+  if (fsApi === fs) {
+    await appendMonitorHistory(path.join(workspaceRoot, "data", "status"), {
+      run_id: logger.runId,
+      completed_at: new Date().toISOString(),
+      outcome: errors.length ? "failed" : "success",
+      partial: errors.length > 0,
+      duration_ms: Date.now() - runStart,
+      item_count: totalNew + totalPrice,
+      quarantined_item_count: 0,
+      metadata: { source: status.source, monitor_errors: errors.length, pending_notifications: notificationOutbox.length },
+    });
+  }
+  logger.done({ errors: errors.length, notification_outbox: notificationOutbox.length });
 
   // Propagação de erro se algum monitor falhou
   if (errors.length > 0) {
@@ -331,11 +407,26 @@ async function readStatusFile(filePath) {
 async function writeDeliveryStatus(status) {
   try {
     const filePath = getStatusFilePath();
-    await fsApi.mkdir(path.dirname(filePath), { recursive: true });
-    await fsApi.writeFile(filePath, JSON.stringify(status, null, 2), "utf8");
+    if (fsApi === fs) {
+      await writeJsonAtomic(filePath, status, { validate: null });
+    } else {
+      await fsApi.mkdir(path.dirname(filePath), { recursive: true });
+      await fsApi.writeFile(filePath, JSON.stringify(status, null, 2), "utf8");
+    }
   } catch (err) {
     console.warn(`Não consegui gravar status de entrega: ${err.message}`);
   }
+}
+
+// O checkpoint e gravado antes e depois de cada chamada externa. Se o processo
+// morrer no meio, o item fica em "sending" e a proxima rodada o recupera.
+async function checkpointNotificationOutbox(notificationOutbox, currentStatus, now) {
+  await writeDeliveryStatus({
+    ...currentStatus,
+    generated_at: now.toISOString(),
+    source: process.env.GITHUB_ACTIONS === "true" ? "ci" : "local",
+    notification_outbox: notificationOutbox,
+  });
 }
 
 // ── concorrência ─────────────────────────────────────────────────────────────
@@ -415,6 +506,14 @@ function getArgValue(name, args = process.argv) {
 }
 
 async function readLatestReport(dir, minTime = null) {
+  if (fsApi === fs) {
+    const committed = await readLatestCommittedReport(dir);
+    if (committed) {
+      const timestamp = Date.parse(committed.manifest.committed_at ?? "");
+      if (minTime != null && Number.isFinite(timestamp) && timestamp < minTime) return null;
+      return committed.report;
+    }
+  }
   const entries = await fsApi.readdir(dir).catch(() => []);
   const reports = entries
     .filter((n) => n.startsWith("report-") && !n.startsWith("report-premium-") && n.endsWith(".md"))

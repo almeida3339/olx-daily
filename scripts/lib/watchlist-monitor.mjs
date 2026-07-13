@@ -14,6 +14,7 @@ import {
   normalizeMonitorCode,
   normalizeMonitorText,
 } from "./monitor-core.mjs";
+import { commitMonitorRun, readLatestValidSnapshot } from "./monitor-runtime.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const workspaceRoot = path.resolve(__dirname, "..", "..");
@@ -101,8 +102,9 @@ export async function runWatchlistMonitor(config) {
   const runDate = now.toISOString().slice(0, 10);
   const runId = now.toISOString().replace(/[:.]/g, "-");
 
-  const previousSnapshotPath = await getLatestSnapshotPath(dataDir);
-  const previousSnapshot = previousSnapshotPath ? await readJsonSafe(previousSnapshotPath) : null;
+  const previousSnapshotResult = await readLatestValidSnapshot(dataDir);
+  const previousSnapshotPath = previousSnapshotResult.file ? path.join(dataDir, previousSnapshotResult.file) : null;
+  const previousSnapshot = previousSnapshotResult.snapshot;
 
   const sizeLabel = (minSizeMl != null || maxSizeMl != null)
     ? ` | ${minSizeMl ?? 0}–${maxSizeMl ?? "∞"} ml`
@@ -185,16 +187,19 @@ export async function runWatchlistMonitor(config) {
   });
   snapshot.price_range_brl = { min: minPrice, max: maxPrice };
 
-  await fs.mkdir(dataDir, { recursive: true });
-  const snapshotPath = path.join(dataDir, `snapshot-${runId}.json`);
-  await fs.writeFile(snapshotPath, JSON.stringify(snapshot, null, 2), "utf8");
-
   const report = buildReport({ label, runDate, snapshot, previousItems: previousItemsInScope, errors, terms, minPrice, maxPrice });
-  const reportPath = path.join(dataDir, `report-${runId}.md`);
-  await fs.writeFile(reportPath, report, "utf8");
+  const committed = await commitMonitorRun(dataDir, {
+    runId,
+    snapshot,
+    report,
+    metadata: { source: slug, label, collected_count: deduped.length },
+  });
+  const snapshotPath = committed.legacySnapshotPath;
+  const reportPath = committed.legacyReportPath;
 
   console.log(`\nColetados: ${deduped.length} | Snapshot: ${snapshotPath}`);
   console.log(`Relatório: ${reportPath}`);
+  if (committed.invalidItems.length) console.warn(`${committed.invalidItems.length} item(ns) foram para a quarentena.`);
   if (errors.length) process.exitCode = 1;
 }
 

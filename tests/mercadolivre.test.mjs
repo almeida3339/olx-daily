@@ -162,6 +162,12 @@ test("todas as watchlists do Mercado Livre tem faixa e detalhes relevantes", () 
   }
 });
 
+test("Dockstations não mantém o código removido da watchlist", () => {
+  const dockstations = mercadoLivreWatchlists.find((watchlist) => watchlist.id === "dockstations");
+  assert.ok(dockstations);
+  assert.ok(!dockstations.terms.includes("40AY0090BR"));
+});
+
 test("Lifefactory respeita capacidade e exclui mamadeira", () => {
   const config = mercadoLivreWatchlists.find((item) => item.id === "lifefactory");
   assert.equal(matchesMercadoLivreWatchlist({ title: "Garrafa Lifefactory 650 ml" }, config), true);

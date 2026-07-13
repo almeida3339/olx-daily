@@ -7,7 +7,6 @@ import {
   detectPageState,
   extractMercadoLivreId,
   extractMercadoLivreNotebookSpecs,
-  latestMercadoLivreSnapshotPath,
   pageStateMessage,
   textMatchesTerm,
 } from "./mercadolivre-monitor.mjs";
@@ -16,6 +15,9 @@ import {
   mergeMonitorSnapshot,
   normalizeMonitorText,
 } from "./monitor-core.mjs";
+import { classifyMonitorError, retryTransient } from "./monitor-errors.mjs";
+import { createMonitorLogger } from "./monitor-logger.mjs";
+import { commitMonitorRun, readLatestValidSnapshot } from "./monitor-runtime.mjs";
 
 const NAVIGATION_TIMEOUT_MS = 45_000;
 const LOCK_STALE_MS = 6 * 60 * 60 * 1000;
@@ -52,11 +54,12 @@ export async function runMercadoLivreBatch({
   const delayMaxMs = Math.max(delayMinMs, positiveNumber(option(args, "--delay-max-ms"), 22_000));
   const detailDelayMinMs = positiveNumber(option(args, "--detail-delay-min-ms"), 12_000);
   const detailDelayMaxMs = Math.max(detailDelayMinMs, positiveNumber(option(args, "--detail-delay-max-ms"), 22_000));
-  const previousPath = await latestMercadoLivreSnapshotPath(dataDir);
-  const previous = previousPath ? await readJson(previousPath) : null;
+  const previousResult = await readLatestValidSnapshot(dataDir);
+  const previous = previousResult.snapshot;
   const previousById = new Map((previous?.items ?? []).map((item) => [item.id, item]));
   const lock = await acquireMercadoLivreLock(profileDir);
   const startedAt = new Date();
+  const logger = createMonitorLogger({ monitor: `mercadolivre:${id}` });
   const successfulTerms = [];
   const failedTerms = [];
   const collected = [];
@@ -67,6 +70,7 @@ export async function runMercadoLivreBatch({
   console.log(`Mercado Livre: ${label}`);
   console.log(`${terms.length} busca(s), coleta R$ ${formatNumber(minPrice)}-${formatNumber(maxPrice)}`);
   console.log(`Pausa entre acessos: ${delayMinMs}-${delayMaxMs} ms`);
+  logger.start({ label, terms: terms.length, min_price: minPrice, max_price: maxPrice });
 
   try {
     const launchArgs = headless
@@ -102,41 +106,52 @@ export async function runMercadoLivreBatch({
       if (index > 0) await sleep(randomBetween(delayMinMs, delayMaxMs));
       console.log(`[${index + 1}/${terms.length}] ${task.query}`);
       try {
-        await page.goto(buildSearchUrl(task.query, {
-          minPrice,
-          maxPrice,
-          ...searchOptions,
-          ...(task.searchOptions ?? {}),
-        }), { waitUntil: "domcontentloaded", timeout: NAVIGATION_TIMEOUT_MS });
-        await sleep(randomBetween(delayMinMs, delayMaxMs));
-        const state = await detectPageState(page);
-        if (state !== "results") {
-          const error = new Error(pageStateMessage(state));
-          error.pageState = state;
-          throw error;
-        }
-        const raw = await collectSearchResults(page);
-        if (raw.length === 0) throw new Error("Nenhum card reconhecido; possivel mudanca de layout.");
-        const exclusions = excludeTerms.map(normalizeText);
-        const accepted = raw
-          .filter((item) => item.price_brl >= minPrice && item.price_brl <= maxPrice)
-          .filter((item) => termMatcher(item.title, task.matchTerm))
-          .filter((item) => !exclusions.some((term) => normalizeText(item.title).includes(term)))
-          .filter((item) => !itemFilter || itemFilter(item))
-          .slice(0, maxItemsPerTerm)
-          .map((item) => ({
-            ...item,
-            id: extractMercadoLivreId(item.url) ?? item.id ?? item.url,
-            source: "Mercado Livre",
-            terms: [task.matchTerm],
-            status: "active",
-          }));
+        const accepted = await retryTransient(async () => {
+          await page.goto(buildSearchUrl(task.query, {
+            minPrice,
+            maxPrice,
+            ...searchOptions,
+            ...(task.searchOptions ?? {}),
+          }), { waitUntil: "domcontentloaded", timeout: NAVIGATION_TIMEOUT_MS });
+          await sleep(randomBetween(delayMinMs, delayMaxMs));
+          const state = await detectPageState(page);
+          if (state !== "results") {
+            const error = new Error(pageStateMessage(state));
+            error.pageState = state;
+            throw error;
+          }
+          const raw = await collectSearchResults(page);
+          if (raw.length === 0) throw new Error("Nenhum card reconhecido; possivel mudanca de layout.");
+          const exclusions = excludeTerms.map(normalizeText);
+          return raw
+            .filter((item) => item.price_brl >= minPrice && item.price_brl <= maxPrice)
+            .filter((item) => termMatcher(item.title, task.matchTerm))
+            .filter((item) => !exclusions.some((term) => normalizeText(item.title).includes(term)))
+            .filter((item) => !itemFilter || itemFilter(item))
+            .slice(0, maxItemsPerTerm)
+            .map((item) => ({
+              ...item,
+              id: extractMercadoLivreId(item.url) ?? item.id ?? item.url,
+              source: "Mercado Livre",
+              terms: [task.matchTerm],
+              status: "active",
+            }));
+        }, {
+          sleep,
+          onRetry: ({ attempt, delayMs, classification }) => {
+            logger.warn("term_retry", { term: task.matchTerm, attempt, delay_ms: delayMs, kind: classification.kind });
+            console.warn(`  Erro transitorio; aguardando ${Math.round(delayMs / 1000)}s para tentar uma vez mais.`);
+          },
+        });
         collected.push(...accepted);
         successfulTerms.push(task.matchTerm);
         console.log(`  ${accepted.length} item(ns) aceito(s)`);
+        logger.info("term_succeeded", { term: task.matchTerm, accepted: accepted.length });
       } catch (error) {
-        failedTerms.push({ term: task.matchTerm, error: error.message });
+        const classification = classifyMonitorError(error);
+        failedTerms.push({ term: task.matchTerm, error: error.message, kind: classification.kind });
         console.warn(`  Falhou com seguranca: ${error.message}`);
+        logger.error("term_failed", error, { term: task.matchTerm, kind: classification.kind });
         if (["challenge", "limited", "logged_out"].includes(error.pageState)) {
           aborted = true;
           console.warn("Fila interrompida para evitar acessos adicionais.");
@@ -199,14 +214,19 @@ export async function runMercadoLivreBatch({
   });
   const changes = buildMercadoLivreChanges(previous, snapshot, { displayMinPrice, displayMaxPrice });
   const runId = completedAt.toISOString().replace(/[:.]/g, "-");
-  await fs.mkdir(dataDir, { recursive: true });
-  const snapshotPath = path.join(dataDir, `snapshot-${runId}.json`);
-  const reportPath = path.join(dataDir, `report-${runId}.md`);
-  await fs.writeFile(snapshotPath, JSON.stringify(snapshot, null, 2), "utf8");
-  await fs.writeFile(reportPath, renderMercadoLivreReport(snapshot, changes), "utf8");
+  const committed = await commitMonitorRun(dataDir, {
+    runId,
+    snapshot,
+    report: renderMercadoLivreReport(snapshot, changes),
+    metadata: { source: id, label, collected_count: consolidated.length, failed_term_count: failedTerms.length },
+  });
+  const snapshotPath = committed.legacySnapshotPath;
+  const reportPath = committed.legacyReportPath;
+  logger.done({ partial: snapshot.run?.partial, collected: consolidated.length, failed_terms: failedTerms.length });
   console.log(`Snapshot: ${snapshotPath}`);
   console.log(`Relatorio: ${reportPath}`);
-  return { snapshot, changes, snapshotPath, reportPath };
+  if (committed.invalidItems.length) console.warn(`${committed.invalidItems.length} item(ns) foram para a quarentena.`);
+  return { snapshot: committed.snapshot, changes, snapshotPath, reportPath, manifest: committed.manifest };
 }
 
 export function dedupeMercadoLivreItems(items) {
@@ -430,8 +450,4 @@ function randomBetween(min, max) {
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-async function readJson(file) {
-  return JSON.parse(await fs.readFile(file, "utf8"));
 }

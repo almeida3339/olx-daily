@@ -15,7 +15,7 @@ export const mercadoLivreWatchlists = [
   {
     id: "dockstations",
     label: "Dockstations",
-    terms: ["SD25TB4", "WD22TB4", "40AY0090BR"],
+    terms: ["SD25TB4", "WD22TB4"],
     minPrice: 0,
     maxPrice: 500,
     excludeTerms: ["fonte", "carregador", "cabo", "adaptador", "suporte"],

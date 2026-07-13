@@ -11,11 +11,36 @@ param(
 $ErrorActionPreference = "Continue"
 $root = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 $env:MERCADOLIVRE_PROFILE_DIR = Join-Path $root ".chrome-mercadolivre-profile"
+$autoStashRef = $null
 Set-Location $root
 
-function Fail($msg) { Write-Host "ERRO: $msg" -ForegroundColor Red; exit 1 }
+function Restore-LocalChanges {
+  if (-not $script:autoStashRef) { return }
+  Write-Host "Restaurando alteracoes locais preservadas..." -ForegroundColor Yellow
+  git stash pop --index $script:autoStashRef
+  if ($LASTEXITCODE -ne 0) {
+    Write-Host "Nao foi possivel restaurar automaticamente; suas alteracoes continuam guardadas em $script:autoStashRef." -ForegroundColor Yellow
+    Write-Host "Resolva eventuais conflitos e use: git stash pop --index $script:autoStashRef" -ForegroundColor Yellow
+    return
+  }
+  $script:autoStashRef = $null
+}
+
+function Save-LocalChanges {
+  $dirty = git status --porcelain
+  if (-not $dirty) { return }
+  Write-Host "Alteracoes locais detectadas - guardando temporariamente para sincronizar com seguranca." -ForegroundColor Yellow
+  $label = "mercadolivre-auto-stash-" + [guid]::NewGuid().ToString("N")
+  git stash push --include-untracked --message $label | Out-Null
+  if ($LASTEXITCODE -ne 0) { Fail "git stash falhou; nenhuma alteracao foi descartada." }
+  $script:autoStashRef = (git stash list -1 --format="%gd").Trim()
+  if (-not $script:autoStashRef) { Fail "Nao foi possivel localizar o backup temporario do Git." }
+}
+
+function Fail($msg) { Restore-LocalChanges; Write-Host "ERRO: $msg" -ForegroundColor Red; exit 1 }
 
 Write-Host "=== Mercado Livre: coleta sob demanda ===" -ForegroundColor Cyan
+Save-LocalChanges
 
 # Guard anti-rebase-preso (uma rodada anterior pode ter morrido no meio de um rebase).
 $gitDir = (git rev-parse --git-dir 2>$null | Out-String).Trim()
@@ -31,6 +56,7 @@ git -c core.editor=true rebase -X theirs origin/main
 if ($LASTEXITCODE -ne 0) { git rebase --abort 2>$null; Fail "Falha ao sincronizar com origin/main." }
 
 Write-Host "[2/4] Coletando Mercado Livre - invisivel, pode levar ~15-20 min..." -ForegroundColor Yellow
+$mlStartedAt = [DateTime]::UtcNow.ToString("o")
 $mlArgs = @(); if ($Visible) { $mlArgs += "--visible" }
 node (Join-Path $PSScriptRoot "monitor-mercadolivre-all.mjs") @mlArgs
 $mlExit = $LASTEXITCODE
@@ -40,18 +66,40 @@ Write-Host "[3/4] Regenerando dashboard..."
 node (Join-Path $PSScriptRoot "generate-dashboard.mjs")
 if ($LASTEXITCODE -ne 0) { Fail "Geracao do dashboard falhou exit $LASTEXITCODE." }
 
-if ($NoPush) { Write-Host "NoPush ativo: dashboard regenerado, nada publicado." -ForegroundColor Yellow; exit 0 }
+if ($NoPush) {
+  Write-Host "NoPush ativo: dashboard regenerado, nada publicado." -ForegroundColor Yellow
+  if ($mlExit -ne 0) { Fail "Coleta do Mercado Livre terminou com exit $mlExit." }
+  Restore-LocalChanges
+  exit 0
+}
+
+Write-Host "[3.5/4] Notificando somente os resultados desta coleta..."
+$env:MONITOR_REPORT_MIN_TIME = $mlStartedAt
+node (Join-Path $PSScriptRoot "run-monitors-and-notify.mjs") --only-mercadolivre
+$notifyExit = $LASTEXITCODE
+Remove-Item Env:MONITOR_REPORT_MIN_TIME -ErrorAction SilentlyContinue
+if ($notifyExit -ne 0) { Write-Host "Aviso: notificacao terminou com exit $notifyExit." -ForegroundColor Yellow }
 
 Write-Host "[4/4] Publicando..."
-git add data/mercadolivre-notebooks data/mercadolivre-galaxy-buds4-pro data/mercadolivre-dockstations data/mercadolivre-fitbit-air data/mercadolivre-lifefactory data/mercadolivre-tela-galaxybook3 data/mercadolivre-melanger data/mercadolivre-tenis-42 index.html
-if (git diff --staged --quiet) { Write-Host "Nada novo do Mercado Livre para publicar." -ForegroundColor Green; exit 0 }
+git add data/mercadolivre-notebooks data/mercadolivre-galaxy-buds4-pro data/mercadolivre-dockstations data/mercadolivre-fitbit-air data/mercadolivre-lifefactory data/mercadolivre-tela-galaxybook3 data/mercadolivre-melanger data/mercadolivre-tenis-42 data/mercadolivre-oled-monitores data/status index.html
+if (git diff --staged --quiet) {
+  Write-Host "Nada novo do Mercado Livre para publicar." -ForegroundColor Green
+  if ($mlExit -ne 0) { Fail "Coleta do Mercado Livre terminou com exit $mlExit." }
+  Restore-LocalChanges
+  exit 0
+}
 $stamp = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm")
 git commit -m "snapshots mercadolivre $stamp" | Out-Null
 if ($LASTEXITCODE -ne 0) { Fail "git commit falhou exit $LASTEXITCODE." }
 
 for ($attempt = 1; $attempt -le 4; $attempt++) {
   git push origin main
-  if ($LASTEXITCODE -eq 0) { Write-Host "Publicado com sucesso." -ForegroundColor Green; exit 0 }
+  if ($LASTEXITCODE -eq 0) {
+    if ($mlExit -ne 0) { Fail "Coleta do Mercado Livre terminou com exit $mlExit." }
+    Restore-LocalChanges
+    Write-Host "Publicado com sucesso." -ForegroundColor Green
+    exit 0
+  }
   Write-Host "Push rejeitado tentativa $attempt de 4 - re-sincronizando."
   git fetch origin
   git -c core.editor=true rebase -X theirs origin/main

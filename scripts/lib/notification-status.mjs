@@ -191,7 +191,7 @@ export function reconcilePendingFailures(localStatus, ciStatus) {
 }
 
 // Constrói o registro de entrega desta rodada.
-export function buildDeliveryStatus({ now = new Date(), sendingEmail, email, whatsapp, pendingFailures = [], acknowledgedFailureIds = [], source } = {}) {
+export function buildDeliveryStatus({ now = new Date(), sendingEmail, email, whatsapp, pendingFailures = [], acknowledgedFailureIds = [], notificationOutbox = [], source } = {}) {
   const status = {
     generated_at: now.toISOString(),
     source: source || (process.env.GITHUB_ACTIONS === "true" ? "ci" : "local")
@@ -218,6 +218,7 @@ export function buildDeliveryStatus({ now = new Date(), sendingEmail, email, wha
   status.delivery = delivery;
   status.pending_failures = pendingFailures;
   status.acknowledged_failure_ids = acknowledgedFailureIds;
+  status.notification_outbox = notificationOutbox;
 
   // Flattened for backward compatibility
   status.email = delivery.email;

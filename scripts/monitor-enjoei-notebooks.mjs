@@ -4,6 +4,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { extractCpuLabel, extractGpuLabel, extractRamGb, extractStorageGb, textContainsCpuTerm } from "./lib/parsers.mjs";
 import { mergeMonitorSnapshot } from "./lib/monitor-core.mjs";
 import { DEFAULT_CPU_TERMS, cpuSearchQuery } from "./lib/cpu-terms.mjs";
+import { commitMonitorRun, readLatestValidSnapshot } from "./lib/monitor-runtime.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const automationRoot =
@@ -64,8 +65,9 @@ async function main() {
   const runTimestamp = now.toISOString();
   const runId = runTimestamp.replace(/[:.]/g, "-");
 
-  const previousSnapshotPath = await getLatestSnapshotPath(automationRoot);
-  const previousSnapshot = previousSnapshotPath ? await readJsonSafe(previousSnapshotPath) : null;
+  const previousSnapshotResult = await readLatestValidSnapshot(automationRoot);
+  const previousSnapshotPath = previousSnapshotResult.file ? path.join(automationRoot, previousSnapshotResult.file) : null;
+  const previousSnapshot = previousSnapshotResult.snapshot;
 
   console.log(`Execução Enjoei Notebooks: ${runTimestamp}`);
   console.log(`Termos: ${terms.join(", ")}`);
@@ -81,17 +83,19 @@ async function main() {
   backfillSpecsFromTitle(snapshot);
   verifyCarriedItems(snapshot);
 
-  await fs.mkdir(automationRoot, { recursive: true });
-
-  const snapshotPath = path.join(automationRoot, `snapshot-${runId}.json`);
-  await fs.writeFile(snapshotPath, JSON.stringify(snapshot, null, 2), "utf8");
-
   const report = buildReport({ runDate, snapshot, previousSnapshot, failedTerms, incompleteTerms });
-  const reportPath = path.join(automationRoot, `report-${runId}.md`);
-  await fs.writeFile(reportPath, report, "utf8");
+  const committed = await commitMonitorRun(automationRoot, {
+    runId,
+    snapshot,
+    report,
+    metadata: { source: "enjoei-notebooks", collected_count: collected.length, failed_term_count: failedTerms.length },
+  });
+  const snapshotPath = committed.legacySnapshotPath;
+  const reportPath = committed.legacyReportPath;
 
   console.log(`Coletados: ${collected.length} | Snapshot: ${snapshotPath}`);
   console.log(`Relatório: ${reportPath}`);
+  if (committed.invalidItems.length) console.warn(`${committed.invalidItems.length} item(ns) foram para a quarentena.`);
 
   // Falha total: TODOS os termos lançaram erro (nada coletado). Preservamos o
   // snapshot anterior (o merge já mantém os itens), mas saímos com código != 0

@@ -16,6 +16,7 @@ import {
 } from "./lib/parsers.mjs";
 import { mergeWithPreviousSnapshot as _mergeItems } from "./lib/snapshot.mjs";
 import { DEFAULT_CPU_TERMS, cpuSearchQuery } from "./lib/cpu-terms.mjs";
+import { commitMonitorRun, readLatestValidSnapshot } from "./lib/monitor-runtime.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const workspaceRoot = path.resolve(__dirname, "..");
@@ -100,8 +101,9 @@ async function main() {
   const runTimestamp = now.toISOString();
   const runId = runTimestamp.replace(/[:.]/g, "-");
 
-  const previousSnapshotPath = await getLatestSnapshotPath(automationRoot);
-  const previousSnapshot = previousSnapshotPath ? await readJsonSafe(previousSnapshotPath) : null;
+  const previousSnapshotResult = await readLatestValidSnapshot(automationRoot);
+  const previousSnapshotPath = previousSnapshotResult.file ? path.join(automationRoot, previousSnapshotResult.file) : null;
+  const previousSnapshot = previousSnapshotResult.snapshot;
 
   console.log(`Execução: ${runTimestamp}`);
   console.log(`Snapshot anterior: ${previousSnapshotPath ?? "(nenhum)"}`);
@@ -138,10 +140,6 @@ async function main() {
       previousSnapshot,
     });
 
-    const snapshotPath = path.join(automationRoot, `snapshot-${runId}.json`);
-    await fs.mkdir(automationRoot, { recursive: true });
-    await fs.writeFile(snapshotPath, JSON.stringify(snapshot, null, 2), "utf8");
-
     const report = buildReport({
       runDate,
       snapshot,
@@ -150,11 +148,18 @@ async function main() {
       priceMax: PRICE_MAX_BRL,
     });
 
-    const reportPath = path.join(automationRoot, `report-${runId}.md`);
-    await fs.writeFile(reportPath, report, "utf8");
+    const committed = await commitMonitorRun(automationRoot, {
+      runId,
+      snapshot,
+      report,
+      metadata: { source: "olx-notebooks", collected_count: collected.length },
+    });
+    const snapshotPath = committed.legacySnapshotPath;
+    const reportPath = committed.legacyReportPath;
 
     console.log(`Snapshot salvo: ${snapshotPath}`);
     console.log(`Relatório salvo: ${reportPath}`);
+    if (committed.invalidItems.length) console.warn(`${committed.invalidItems.length} item(ns) foram para a quarentena.`);
   } finally {
     await close();
   }
@@ -185,10 +190,6 @@ async function runWithRawCdp({ cdpUrl, runDate, runTimestamp, previousSnapshot }
   });
 
   const runId = runTimestamp.replace(/[:.]/g, "-");
-  const snapshotPath = path.join(automationRoot, `snapshot-${runId}.json`);
-  await fs.mkdir(automationRoot, { recursive: true });
-  await fs.writeFile(snapshotPath, JSON.stringify(snapshot, null, 2), "utf8");
-
   const report = buildReport({
     runDate,
     snapshot,
@@ -197,11 +198,18 @@ async function runWithRawCdp({ cdpUrl, runDate, runTimestamp, previousSnapshot }
     priceMax: PRICE_MAX_BRL,
   });
 
-  const reportPath = path.join(automationRoot, `report-${runId}.md`);
-  await fs.writeFile(reportPath, report, "utf8");
+  const committed = await commitMonitorRun(automationRoot, {
+    runId,
+    snapshot,
+    report,
+    metadata: { source: "olx-notebooks", collected_count: collected.length, transport: "cdp" },
+  });
+  const snapshotPath = committed.legacySnapshotPath;
+  const reportPath = committed.legacyReportPath;
 
   console.log(`Snapshot salvo: ${snapshotPath}`);
   console.log(`Relatório salvo: ${reportPath}`);
+  if (committed.invalidItems.length) console.warn(`${committed.invalidItems.length} item(ns) foram para a quarentena.`);
 }
 
 async function launchDedicatedChromeProfile(headlessMode) {

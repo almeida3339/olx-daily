@@ -17,9 +17,25 @@ test("publicacao local inclui todas as pastas de producao do Mercado Livre", asy
     "mercadolivre-tela-galaxybook3",
     "mercadolivre-melanger",
     "mercadolivre-tenis-42",
+    "mercadolivre-oled-monitores",
   ]) {
     assert.match(script, new RegExp(`data/${folder}`));
   }
+});
+
+test("publicacao dedicada do Mercado Livre inclui Monitores OLED e propaga falha da coleta", async () => {
+  const script = await fs.readFile(path.join(root, "scripts", "run-mercadolivre-and-publish.ps1"), "utf8");
+  assert.match(script, /data\/mercadolivre-oled-monitores/);
+  assert.match(script, /data\/status/);
+  assert.match(script, /Coleta do Mercado Livre terminou com exit \$mlExit/);
+});
+
+test("publicacao dedicada do Mercado Livre preserva alteracoes locais antes de sincronizar", async () => {
+  const script = await fs.readFile(path.join(root, "scripts", "run-mercadolivre-and-publish.ps1"), "utf8");
+  assert.match(script, /git stash push --include-untracked/);
+  assert.match(script, /git stash pop --index/);
+  assert.match(script, /Save-LocalChanges/);
+  assert.match(script, /Restore-LocalChanges/);
 });
 
 test("painel e notificacoes incluem Galaxy Buds4 Pro do Mercado Livre", async () => {
