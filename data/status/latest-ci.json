@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-07-13T11:01:37.150Z",
+  "generated_at": "2026-07-14T21:26:04.831Z",
   "source": "ci",
   "delivery": {
     "email": "failed",
-    "email_error": "Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to\n535 5.7.8  https://support.google.com/mail/?[redacted] 5a478bee46e88-3120c8e41fcsm36177269eec.15 - gsmtp",
+    "email_error": "Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to\n535 5.7.8  https://support.google.com/mail/?[redacted] 6a1803df08f44-8ffd50e0347sm180004416d6.2 - gsmtp",
     "whatsapp": "sent"
   },
   "pending_failures": [
     {
-      "id": "9f763dbe-d7d0-4c8c-ba71-a6aacb120dcf",
-      "fingerprint": "fp-292f7e7cebadcd276954d91a",
+      "id": "b6976704-d083-40f0-8f7e-c22f2466913e",
+      "fingerprint": "fp-fef1d8193ca315a8650592a2",
       "channel": "email",
-      "first_seen_at": "2026-07-13T11:01:37.150Z",
-      "last_seen_at": "2026-07-13T11:01:37.150Z",
-      "error": "Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to\n535 5.7.8  https://support.google.com/mail/?[redacted] 5a478bee46e88-3120c8e41fcsm36177269eec.15 - gsmtp",
+      "first_seen_at": "2026-07-14T21:26:04.831Z",
+      "last_seen_at": "2026-07-14T21:26:04.831Z",
+      "error": "Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to\n535 5.7.8  https://support.google.com/mail/?[redacted] 6a1803df08f44-8ffd50e0347sm180004416d6.2 - gsmtp",
       "count": 1
     }
   ],
@@ -25,9 +25,61 @@
     "c86917d2-3ba7-4d07-89d0-b46ffbb7f212",
     "9afc0a68-4804-4db2-af9a-373c18a9a0e8",
     "7fdaba36-2fd0-4864-834c-fcad6591cd30",
-    "03e0e609-2900-4fa2-ba48-2ee4feadc354"
+    "03e0e609-2900-4fa2-ba48-2ee4feadc354",
+    "9f763dbe-d7d0-4c8c-ba71-a6aacb120dcf",
+    "ab0d3701-9ebe-4aa3-aa69-9c843a9e4ffa",
+    "b808791e-4599-480c-9fd7-4bccd5aa864b"
+  ],
+  "notification_outbox": [
+    {
+      "id": "c07a5108-c1a0-45b1-aed7-02c6e2c87bc2",
+      "dedupe_key": "48f26cd99cedfce8dfd53418",
+      "channel": "email",
+      "payload": {
+        "subject": "[Monitor] 1 novo(s) | 2 alteração(ões) de preço | erros — 14/07/2026",
+        "body": "## Erros nesta rodada\n- Monitores OLED: Saiu com código 1\n\n---\n\n# Monitor OLX notebooks por CPU — 2026-07-14\n\n## Resumo executivo\n- Novos anúncios válidos (R$ 2.000–R$ 8.000): **0**\n- Anúncios ainda ativos (já vistos) no range: **3**\n- Não vistos nesta rodada (sumiram da listagem): **1**\n- Alterações de preço detectadas: **2**\n\n## Novos anúncios (R$ 2.000–R$ 8.000)\n- Nenhum.\n\n## Anúncios ainda ativos (já vistos) no range\n- R$ 7.500 — Notebook Avell Storm - i9 14900hx RTX 4060 16GB Ram (14900hx) — 16 GB RAM / 512 GB / GPU RTX 4060 — Mirandópolis -  SP — https://sp.olx.com.br/regiao-de-presidente-prudente/informatica/notebooks/notebook-avell-storm-i9-14900hx-rtx-4060-16gb-ram-1516213593\n- R$ 7.999 — Asus Vivobook Pro 16x | I9 13980hx | Rtx 4070 | 16gb Ram (13980hx) — 16 GB RAM / SSD/HD n/d / GPU RTX 4070 — Mogi das Cruzes -  SP — https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/asus-vivobook-pro-16x-i9-13980hx-rtx-4070-16gb-ram-1491857488\n- R$ 7.999 — Notebook Gamer MSI - RTX 3070 Ti / Intel Core i7 12800HX / OLED 240Hz QHD (Aceito Trocas) (12800hx) — 8 GB RAM / 1024 GB / GPU RTX 3070 TI — Curitiba -  PR — https://pr.olx.com.br/regiao-de-curitiba-e-paranagua/informatica/notebooks/notebook-gamer-msi-rtx-3070-ti-intel-core-i7-12800hx-oled-240hz-qhd-aceito-trocas-1496477947\n\n## Mudanças de preço\n- R$ 8.299 → R$ 8.199 — Notebook Predator Helios Com Inteligência Artificial Intel Core I7-14700hx De 14ª Geração (14700hx) — 32 GB RAM / 1024 GB / GPU RTX 4070 — Rio de Janeiro -  RJ — https://rj.olx.com.br/rio-de-janeiro-e-regiao/informatica/notebooks/notebook-predator-helios-com-inteligencia-artificial-intel-core-i7-14700hx-de-14-geracao-1428973689\n- R$ 9.500 → R$ 8.800 — Notebook Gamer NAVE Estelar i7 14700HX, 32GB DDR5, RTX 4060, 240Hz apenas 419 horas de uso (14700hx) — 32 GB RAM / 1024 GB / GPU RTX 4060 — Criciúma -  SC — https://sc.olx.com.br/florianopolis-e-regiao/informatica/notebooks/notebook-gamer-nave-estelar-i7-14700hx-32gb-ddr5-rtx-4060-240hz-apenas-419-horas-de-uso-1516079774\n\n## Não vistos nesta rodada (sumiram da listagem)\n- Observação: como a coleta é por listagem e limitada por CPU, isso **não garante** que o anúncio foi removido da OLX; apenas que não apareceu nos resultados coletados desta execução.\n- Notebook Acer Predator Helios Neo 16 RTX 4070 Core i7 14700HX Gamer (14700hx) — https://rj.olx.com.br/rio-de-janeiro-e-regiao/informatica/notebooks/notebook-acer-predator-helios-neo-16-rtx-4070-core-i7-14700hx-gamer-1517610612\n\n\n---\n\n# Monitor Galaxy Buds4 Pro R$ 500,00–R$ 1.000,00 — 2026-07-14\n\n## Resumo executivo\n- Novos produtos: **1**\n- Já vistos e ativos: **0**\n- Não vistos nesta rodada: **0**\n- Alterações de preço: **0**\n- Termos: galaxy buds4 pro\n\n## Novos produtos\n- R$ 800,00 — [Enjoei] galaxy buds 4 pro (galaxy buds4 pro) — https://www.enjoei.com.br/p/galaxy-buds-4-pro-146653800\n\n## Já vistos e ativos\n- Nenhum.\n"
+      },
+      "status": "blocked",
+      "attempts": 1,
+      "next_attempt_at": null,
+      "last_error": "getaddrinfo ENOTFOUND smtp.gmail.com",
+      "created_at": "2026-07-14T19:00:01.906Z",
+      "updated_at": "2026-07-14T19:00:01.906Z",
+      "sending_at": null
+    },
+    {
+      "id": "13310427-7b03-48c4-8f1d-a40c756ef747",
+      "dedupe_key": "855b37e976d7dc30e415d6a2",
+      "channel": "whatsapp",
+      "payload": {
+        "message": "Monitor 14/07 16:02\nErros: Monitores OLED: Saiu com código 1\n\nOLX Notebooks: 2 preço(s)\n- R$ 8.299 → R$ 8.199 — Notebook Predator Helios Com Inteligência Artificial Intel Core I7-14700hx De 14ª Geração (14700hx) — 32 GB RAM / 1024 GB / GPU RTX 4070 — Rio de Janeiro -  RJ —… https://rj.olx.com.br/rio-de-janeiro-e-regiao/informatica/notebooks/notebook-predator-helios-com-inteligencia-artificial-intel-core-i7-14700hx-de-14-geracao-1428973689\n… https://sc.olx.com.br/florianopolis-e-regiao/informatica/notebooks/notebook-gamer-nave-estelar-i7-14700hx-32gb-ddr5-rtx-4060-240hz-apenas-419-horas-de-uso-1516079774\n\nGalaxy Buds4 Pro: 1 novo(s)\n- R$ 800,00 — [Enjoei] galaxy buds 4 pro (galaxy buds4 pro) —… https://www.enjoei.com.br/p/galaxy-buds-4-pro-146653800\n\nDetalhes completos por email."
+      },
+      "status": "blocked",
+      "attempts": 1,
+      "next_attempt_at": null,
+      "last_error": "fetch failed",
+      "created_at": "2026-07-14T19:00:01.906Z",
+      "updated_at": "2026-07-14T19:00:01.906Z",
+      "sending_at": null
+    },
+    {
+      "id": "f8c609fd-5486-4a5e-862d-60eae1320e43",
+      "dedupe_key": "b8dd09883110b1c7c90827a2",
+      "channel": "email",
+      "payload": {
+        "subject": "[Monitor] 1 novo(s) — 14/07/2026",
+        "body": "> ⚠️ Falhas anteriores de notificação: e-mail e WhatsApp.\n\n# Monitor Enjoei tenis 42 ate R$ 500,00 - 2026-07-14\n\n## Resumo executivo\n- Novos produtos: **1**\n- Produtos ainda ativos ja vistos: **4**\n- Nao vistos nesta rodada: **0**\n- Alteracoes de preco: **0**\n- Termos: barefoot, feet of tomorrow, fot, vita barefoot, vivobarefoot, xero, vibram fivefingers, merrell, lems\n- Preco maximo: R$ 500,00\n\n## Novos produtos\n- R$ 299,00 - tênis barefoot feet of tomorrow tamanho 42 - fot - tam. 42 - vendedor: Eduardo - termos: barefoot, feet of tomorrow, fot - https://www.enjoei.com.br/p/tenis-barefoot-feet-of-tomorrow-tamanho-42-146588220\n\n## Produtos ainda ativos\n- R$ 105,00 - tênis mvp barefoot - preto crossfit - mvp - tam. 42 - vendedor: lucas - termos: barefoot - https://www.enjoei.com.br/p/tenis-mvp-barefoot-preto-crossfit-121147815\n- R$ 240,00 - tênis vibram fivefingers vermelho 42 - vibram - tam. 42 - termos: vibram fivefingers - https://www.enjoei.com.br/p/tenis-vibram-fivefingers-vermelho-42-144425107\n- R$ 385,00 - tênis lems - número 42 - drop zero - lems - tam. 42 - termos: lems - https://www.enjoei.com.br/p/tenis-lems-numero-42-drop-zero-137508659\n- R$ 400,00 - tênis feet of tomorrow fot walka off white - feet of tomorrow - tam. 42 - termos: feet of tomorrow, fot - https://www.enjoei.com.br/p/tenis-feet-of-tomorrow-fot-walka-off-white-134490205\n"
+      },
+      "status": "blocked",
+      "attempts": 1,
+      "next_attempt_at": null,
+      "last_error": "Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to\n535 5.7.8  https://support.google.com/mail/?[redacted] 6a1803df08f44-8ffd50e0347sm180004416d6.2 - gsmtp",
+      "created_at": "2026-07-14T21:26:04.831Z",
+      "updated_at": "2026-07-14T21:26:04.831Z",
+      "sending_at": null
+    }
   ],
   "email": "failed",
-  "email_error": "Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to\n535 5.7.8  https://support.google.com/mail/?[redacted] 5a478bee46e88-3120c8e41fcsm36177269eec.15 - gsmtp",
+  "email_error": "Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to\n535 5.7.8  https://support.google.com/mail/?[redacted] 6a1803df08f44-8ffd50e0347sm180004416d6.2 - gsmtp",
   "whatsapp": "sent"
 }
