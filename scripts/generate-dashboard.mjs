@@ -47,8 +47,20 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
 
 export { parseReport, formatRunLabelFromFile, summarizeMachine };
 
-export function buildLocalTriggerCommands(root = ROOT) {
-  const scriptPath = (name) => path.join(root, "scripts", name).replace(/'/g, "''");
+// Caminho Windows do repositório na máquina local do usuário — usado só para
+// montar os comandos de copiar-e-colar dos botões "Disparar" do dashboard.
+// NÃO deve ser derivado de __dirname/ROOT: quando o dashboard é regenerado
+// pelo CI (Ubuntu), ROOT resolve para um caminho Linux (/home/runner/...) que
+// não significa nada no PowerShell do usuário. Fixo (com override por env
+// var) para os comandos ficarem corretos não importa onde a página foi gerada.
+const LOCAL_REPO_ROOT = process.env.LOCAL_REPO_ROOT ?? "C:\\Users\\docra\\Downloads\\olx-daily";
+
+export function buildLocalTriggerCommands(root = LOCAL_REPO_ROOT) {
+  // path.join é sensível a plataforma (barra "/" no Linux) — mas o resultado é
+  // sempre colado num PowerShell do Windows, então a junção é sempre por "\",
+  // independente do SO onde esta função roda (ver bug do CI: testes passavam
+  // no Windows local e falhavam no Ubuntu por causa disso).
+  const scriptPath = (name) => `${root.replace(/[\\/]+$/, "")}\\scripts\\${name}`.replace(/'/g, "''");
   return {
     olx: `node '${scriptPath("run-monitors-and-notify.mjs")}' --only-olx`,
     mercadoLivre: `& '${scriptPath("run-mercadolivre-and-publish.ps1")}'`,
