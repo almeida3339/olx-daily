@@ -172,7 +172,13 @@ export async function runWatchlistMonitor(config) {
     run: {
       id: slug,
       label,
-      partial: errors.length > 0 || scheduledCoverage.length < configuredCoverage.length,
+      // "parcial" significa "algo AGENDADO nesta rodada falhou" — não "esta
+      // rodada não cobriu tudo que o watchlist cobre no total". OLX e Enjoei
+      // rodam separados por convenção (Enjoei no CI com SKIP_OLX=1, OLX só
+      // local): comparar contra configuredCoverage (que inclui as duas fontes
+      // sempre) marcava toda rodada só-Enjoei do CI como parcial mesmo sem
+      // nada de errado, degradando a saúde reportada com falso positivo.
+      partial: errors.length > 0 || successfulCoverage.length < scheduledCoverage.length,
       errors,
     },
     filters: {
