@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-16T11:05:38.114Z",
+  "generated_at": "2026-07-16T19:04:48.951Z",
   "source": "local",
   "delivery": {
-    "email": "sent",
+    "email": "skipped",
     "whatsapp": "sent"
   },
   "pending_failures": [],
@@ -18,7 +18,8 @@
     "9f763dbe-d7d0-4c8c-ba71-a6aacb120dcf",
     "ab0d3701-9ebe-4aa3-aa69-9c843a9e4ffa",
     "b808791e-4599-480c-9fd7-4bccd5aa864b",
-    "b6976704-d083-40f0-8f7e-c22f2466913e"
+    "b6976704-d083-40f0-8f7e-c22f2466913e",
+    "73ecf2c7-9c1c-4c10-bb06-288c95416c06"
   ],
   "notification_outbox": [
     {
@@ -67,8 +68,24 @@
       "created_at": "2026-07-14T21:26:04.831Z",
       "updated_at": "2026-07-14T21:26:04.831Z",
       "sending_at": null
+    },
+    {
+      "id": "1320107c-f5b9-40d5-b76d-909bc837424a",
+      "dedupe_key": "60e1e476d457daf0cf1286fe",
+      "channel": "email",
+      "payload": {
+        "subject": "[Monitor] 1 novo(s) — 16/07/2026",
+        "body": "# Monitor Galaxy Buds4 Pro R$ 500,00–R$ 1.000,00 — 2026-07-16\n\n## Resumo executivo\n- Novos produtos: **1**\n- Já vistos e ativos: **0**\n- Não vistos nesta rodada: **0**\n- Alterações de preço: **0**\n- Termos: galaxy buds4 pro\n\n## Novos produtos\n- R$ 700,00 — [Enjoei] galaxy buds4 pro (galaxy buds4 pro) — https://www.enjoei.com.br/p/galaxy-buds4-pro-146764267\n\n## Já vistos e ativos\n- Nenhum.\n"
+      },
+      "status": "blocked",
+      "attempts": 1,
+      "next_attempt_at": null,
+      "last_error": "Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to\n535 5.7.8  https://support.google.com/mail/?[redacted] 5a478bee46e88-3140e538368sm15337595eec.12 - gsmtp",
+      "created_at": "2026-07-16T11:01:14.613Z",
+      "updated_at": "2026-07-16T11:01:14.613Z",
+      "sending_at": null
     }
   ],
-  "email": "sent",
+  "email": "skipped",
   "whatsapp": "sent"
 }
