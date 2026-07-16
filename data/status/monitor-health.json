@@ -1,16 +1,16 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-07-13T19:01:36.342Z",
+  "generated_at": "2026-07-14T21:20:40.062Z",
   "sources": [
     {
       "id": "olx",
       "label": "OLX Notebooks",
       "state": "healthy",
-      "updated_at": "2026-07-13T12:00:00.000Z",
-      "age_ms": 25296342,
+      "updated_at": "2026-07-14T12:00:00.000Z",
+      "age_ms": 33640062,
       "invalid_snapshots": 0,
       "history": {
-        "sample": 2,
+        "sample": 3,
         "partial": 0,
         "failed": 0,
         "success_rate": 1,
@@ -23,7 +23,7 @@
       "label": "Enjoei Notebooks",
       "state": "partial",
       "updated_at": "2026-07-13T12:00:00.000Z",
-      "age_ms": 25296342,
+      "age_ms": 120040062,
       "invalid_snapshots": 0,
       "history": {
         "sample": 0,
@@ -37,9 +37,9 @@
     {
       "id": "enjoei",
       "label": "Enjoei Tênis",
-      "state": "healthy",
+      "state": "stale",
       "updated_at": "2026-07-13T11:01:37.186Z",
-      "age_ms": 28799156,
+      "age_ms": 123542876,
       "invalid_snapshots": 0,
       "history": {
         "sample": 0,
@@ -48,17 +48,17 @@
         "success_rate": null,
         "median_duration_ms": null
       },
-      "message": "Saudável"
+      "message": "Coleta desatualizada"
     },
     {
       "id": "dockstations",
       "label": "Dockstations",
       "state": "healthy",
-      "updated_at": "2026-07-13T19:00:03.437Z",
-      "age_ms": 92905,
+      "updated_at": "2026-07-14T19:00:02.336Z",
+      "age_ms": 8437726,
       "invalid_snapshots": 0,
       "history": {
-        "sample": 2,
+        "sample": 3,
         "partial": 0,
         "failed": 0,
         "success_rate": 1,
@@ -70,11 +70,11 @@
       "id": "fitbit",
       "label": "Fitbit Air",
       "state": "healthy",
-      "updated_at": "2026-07-13T19:00:03.437Z",
-      "age_ms": 92905,
+      "updated_at": "2026-07-14T19:00:02.334Z",
+      "age_ms": 8437728,
       "invalid_snapshots": 0,
       "history": {
-        "sample": 2,
+        "sample": 3,
         "partial": 0,
         "failed": 0,
         "success_rate": 1,
@@ -86,11 +86,11 @@
       "id": "lifefactory",
       "label": "Lifefactory",
       "state": "healthy",
-      "updated_at": "2026-07-13T19:00:07.730Z",
-      "age_ms": 88612,
+      "updated_at": "2026-07-14T19:00:09.124Z",
+      "age_ms": 8430938,
       "invalid_snapshots": 0,
       "history": {
-        "sample": 2,
+        "sample": 3,
         "partial": 0,
         "failed": 0,
         "success_rate": 1,
@@ -102,11 +102,11 @@
       "id": "tela-galaxybook3",
       "label": "Tela Book3",
       "state": "healthy",
-      "updated_at": "2026-07-13T19:00:10.885Z",
-      "age_ms": 85457,
+      "updated_at": "2026-07-14T19:00:12.626Z",
+      "age_ms": 8427436,
       "invalid_snapshots": 0,
       "history": {
-        "sample": 2,
+        "sample": 3,
         "partial": 0,
         "failed": 0,
         "success_rate": 1,
@@ -118,11 +118,11 @@
       "id": "melanger",
       "label": "Melanger",
       "state": "healthy",
-      "updated_at": "2026-07-13T19:00:17.593Z",
-      "age_ms": 78749,
+      "updated_at": "2026-07-14T19:00:14.751Z",
+      "age_ms": 8425311,
       "invalid_snapshots": 0,
       "history": {
-        "sample": 2,
+        "sample": 3,
         "partial": 0,
         "failed": 0,
         "success_rate": 1,
@@ -134,11 +134,11 @@
       "id": "galaxy-buds4-pro",
       "label": "Galaxy Buds4 Pro",
       "state": "healthy",
-      "updated_at": "2026-07-13T19:00:19.860Z",
-      "age_ms": 76482,
+      "updated_at": "2026-07-14T19:00:17.408Z",
+      "age_ms": 8422654,
       "invalid_snapshots": 0,
       "history": {
-        "sample": 2,
+        "sample": 3,
         "partial": 0,
         "failed": 0,
         "success_rate": 1,
@@ -150,11 +150,11 @@
       "id": "oura-ring5",
       "label": "Oura Ring 5",
       "state": "healthy",
-      "updated_at": "2026-07-13T19:00:26.816Z",
-      "age_ms": 69526,
+      "updated_at": "2026-07-14T19:00:22.602Z",
+      "age_ms": 8417460,
       "invalid_snapshots": 0,
       "history": {
-        "sample": 2,
+        "sample": 3,
         "partial": 0,
         "failed": 0,
         "success_rate": 1,
@@ -165,25 +165,25 @@
     {
       "id": "oled-monitores",
       "label": "Monitores OLED",
-      "state": "healthy",
-      "updated_at": "2026-07-13T19:00:26.947Z",
-      "age_ms": 69395,
+      "state": "partial",
+      "updated_at": "2026-07-14T19:00:23.167Z",
+      "age_ms": 8416895,
       "invalid_snapshots": 0,
       "history": {
-        "sample": 2,
-        "partial": 0,
+        "sample": 3,
+        "partial": 1,
         "failed": 0,
-        "success_rate": 1,
+        "success_rate": 0.6666666666666666,
         "median_duration_ms": 0
       },
-      "message": "Saudável"
+      "message": "Cobertura parcial"
     },
     {
       "id": "mercadolivre-notebooks",
       "label": "ML Notebooks",
       "state": "healthy",
       "updated_at": "2026-07-13T11:48:56.184Z",
-      "age_ms": 25960158,
+      "age_ms": 120703878,
       "invalid_snapshots": 0,
       "history": {
         "sample": 1,
@@ -199,7 +199,7 @@
       "label": "ML Galaxy Buds4 Pro",
       "state": "healthy",
       "updated_at": "2026-07-13T11:49:11.815Z",
-      "age_ms": 25944527,
+      "age_ms": 120688247,
       "invalid_snapshots": 0,
       "history": {
         "sample": 1,
@@ -215,7 +215,7 @@
       "label": "ML Dockstations",
       "state": "healthy",
       "updated_at": "2026-07-13T11:50:11.455Z",
-      "age_ms": 25884887,
+      "age_ms": 120628607,
       "invalid_snapshots": 0,
       "history": {
         "sample": 1,
@@ -231,7 +231,7 @@
       "label": "ML Fitbit Air",
       "state": "healthy",
       "updated_at": "2026-07-13T11:50:29.364Z",
-      "age_ms": 25866978,
+      "age_ms": 120610698,
       "invalid_snapshots": 0,
       "history": {
         "sample": 1,
@@ -247,7 +247,7 @@
       "label": "ML Lifefactory",
       "state": "healthy",
       "updated_at": "2026-07-13T11:50:53.384Z",
-      "age_ms": 25842958,
+      "age_ms": 120586678,
       "invalid_snapshots": 0,
       "history": {
         "sample": 1,
@@ -263,7 +263,7 @@
       "label": "ML Tela Book3",
       "state": "healthy",
       "updated_at": "2026-07-13T11:51:17.970Z",
-      "age_ms": 25818372,
+      "age_ms": 120562092,
       "invalid_snapshots": 0,
       "history": {
         "sample": 1,
@@ -279,7 +279,7 @@
       "label": "ML Melanger",
       "state": "healthy",
       "updated_at": "2026-07-13T11:51:38.632Z",
-      "age_ms": 25797710,
+      "age_ms": 120541430,
       "invalid_snapshots": 0,
       "history": {
         "sample": 1,
@@ -295,7 +295,7 @@
       "label": "ML Tênis 42",
       "state": "stale",
       "updated_at": "2026-07-02T18:17:32.514Z",
-      "age_ms": 953043828,
+      "age_ms": 1047787548,
       "invalid_snapshots": 0,
       "history": {
         "sample": 0,
@@ -311,7 +311,7 @@
       "label": "ML Monitores OLED",
       "state": "healthy",
       "updated_at": "2026-07-13T11:54:09.006Z",
-      "age_ms": 25647336,
+      "age_ms": 120391056,
       "invalid_snapshots": 0,
       "history": {
         "sample": 1,
@@ -325,12 +325,29 @@
     {
       "id": "notifications",
       "label": "Notificações",
-      "state": "healthy",
+      "state": "blocked",
       "updated_at": null,
       "age_ms": null,
       "invalid_snapshots": 0,
-      "message": "Fila de entrega saudável",
-      "outbox": []
+      "message": "2 entrega(s) bloqueada(s)",
+      "outbox": [
+        {
+          "id": "c07a5108-c1a0-45b1-aed7-02c6e2c87bc2",
+          "channel": "email",
+          "status": "blocked",
+          "attempts": 1,
+          "next_attempt_at": null,
+          "last_error": "getaddrinfo ENOTFOUND smtp.gmail.com"
+        },
+        {
+          "id": "13310427-7b03-48c4-8f1d-a40c756ef747",
+          "channel": "whatsapp",
+          "status": "blocked",
+          "attempts": 1,
+          "next_attempt_at": null,
+          "last_error": "fetch failed"
+        }
+      ]
     }
   ]
 }

@@ -1,32 +1,11 @@
 {
-  "generated_at": "2026-07-14T19:00:01.906Z",
+  "generated_at": "2026-07-16T11:05:38.114Z",
   "source": "local",
   "delivery": {
-    "email": "failed",
-    "email_error": "getaddrinfo ENOTFOUND smtp.gmail.com",
-    "whatsapp": "failed",
-    "whatsapp_error": "fetch failed"
+    "email": "sent",
+    "whatsapp": "sent"
   },
-  "pending_failures": [
-    {
-      "id": "ab0d3701-9ebe-4aa3-aa69-9c843a9e4ffa",
-      "fingerprint": "fp-485e732506ac91be13546954",
-      "channel": "email",
-      "first_seen_at": "2026-07-14T19:00:01.906Z",
-      "last_seen_at": "2026-07-14T19:00:01.906Z",
-      "error": "getaddrinfo ENOTFOUND smtp.gmail.com",
-      "count": 1
-    },
-    {
-      "id": "b808791e-4599-480c-9fd7-4bccd5aa864b",
-      "fingerprint": "fp-6742337b9700fbada1baa2db",
-      "channel": "whatsapp",
-      "first_seen_at": "2026-07-14T19:00:01.906Z",
-      "last_seen_at": "2026-07-14T19:00:01.906Z",
-      "error": "fetch failed",
-      "count": 1
-    }
-  ],
+  "pending_failures": [],
   "acknowledged_failure_ids": [
     "989d7e3b-36d6-48c2-b9c5-8aee4d454fcd",
     "12324b29-8f6b-4842-8855-b57d4d66f06d",
@@ -36,7 +15,10 @@
     "9afc0a68-4804-4db2-af9a-373c18a9a0e8",
     "7fdaba36-2fd0-4864-834c-fcad6591cd30",
     "03e0e609-2900-4fa2-ba48-2ee4feadc354",
-    "9f763dbe-d7d0-4c8c-ba71-a6aacb120dcf"
+    "9f763dbe-d7d0-4c8c-ba71-a6aacb120dcf",
+    "ab0d3701-9ebe-4aa3-aa69-9c843a9e4ffa",
+    "b808791e-4599-480c-9fd7-4bccd5aa864b",
+    "b6976704-d083-40f0-8f7e-c22f2466913e"
   ],
   "notification_outbox": [
     {
@@ -69,10 +51,24 @@
       "created_at": "2026-07-14T19:00:01.906Z",
       "updated_at": "2026-07-14T19:00:01.906Z",
       "sending_at": null
+    },
+    {
+      "id": "f8c609fd-5486-4a5e-862d-60eae1320e43",
+      "dedupe_key": "b8dd09883110b1c7c90827a2",
+      "channel": "email",
+      "payload": {
+        "subject": "[Monitor] 1 novo(s) — 14/07/2026",
+        "body": "> ⚠️ Falhas anteriores de notificação: e-mail e WhatsApp.\n\n# Monitor Enjoei tenis 42 ate R$ 500,00 - 2026-07-14\n\n## Resumo executivo\n- Novos produtos: **1**\n- Produtos ainda ativos ja vistos: **4**\n- Nao vistos nesta rodada: **0**\n- Alteracoes de preco: **0**\n- Termos: barefoot, feet of tomorrow, fot, vita barefoot, vivobarefoot, xero, vibram fivefingers, merrell, lems\n- Preco maximo: R$ 500,00\n\n## Novos produtos\n- R$ 299,00 - tênis barefoot feet of tomorrow tamanho 42 - fot - tam. 42 - vendedor: Eduardo - termos: barefoot, feet of tomorrow, fot - https://www.enjoei.com.br/p/tenis-barefoot-feet-of-tomorrow-tamanho-42-146588220\n\n## Produtos ainda ativos\n- R$ 105,00 - tênis mvp barefoot - preto crossfit - mvp - tam. 42 - vendedor: lucas - termos: barefoot - https://www.enjoei.com.br/p/tenis-mvp-barefoot-preto-crossfit-121147815\n- R$ 240,00 - tênis vibram fivefingers vermelho 42 - vibram - tam. 42 - termos: vibram fivefingers - https://www.enjoei.com.br/p/tenis-vibram-fivefingers-vermelho-42-144425107\n- R$ 385,00 - tênis lems - número 42 - drop zero - lems - tam. 42 - termos: lems - https://www.enjoei.com.br/p/tenis-lems-numero-42-drop-zero-137508659\n- R$ 400,00 - tênis feet of tomorrow fot walka off white - feet of tomorrow - tam. 42 - termos: feet of tomorrow, fot - https://www.enjoei.com.br/p/tenis-feet-of-tomorrow-fot-walka-off-white-134490205\n"
+      },
+      "status": "blocked",
+      "attempts": 1,
+      "next_attempt_at": null,
+      "last_error": "Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to\n535 5.7.8  https://support.google.com/mail/?[redacted] 6a1803df08f44-8ffd50e0347sm180004416d6.2 - gsmtp",
+      "created_at": "2026-07-14T21:26:04.831Z",
+      "updated_at": "2026-07-14T21:26:04.831Z",
+      "sending_at": null
     }
   ],
-  "email": "failed",
-  "email_error": "getaddrinfo ENOTFOUND smtp.gmail.com",
-  "whatsapp": "failed",
-  "whatsapp_error": "fetch failed"
+  "email": "sent",
+  "whatsapp": "sent"
 }
