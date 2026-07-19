@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-07-19T11:01:08.772Z",
+  "generated_at": "2026-07-19T19:01:13.596Z",
   "source": "ci",
   "delivery": {
     "email": "failed",
-    "email_error": "Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to\n535 5.7.8  https://support.google.com/mail/?[redacted] a92af1059eb24-13ce2a129f3sm19833500c88.7 - gsmtp",
+    "email_error": "Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to\n535 5.7.8  https://support.google.com/mail/?[redacted] 5a478bee46e88-31429fe4677sm25793587eec.11 - gsmtp",
     "whatsapp": "sent"
   },
   "pending_failures": [
     {
-      "id": "5e74ffc0-1533-4149-b6c9-8e6e918e471c",
-      "fingerprint": "fp-5ccb46af5f21d0301ff4886d",
+      "id": "0ee031e9-6b54-4f75-af3c-77fc8c69ce90",
+      "fingerprint": "fp-51bbaad8f6345d59af6d0392",
       "channel": "email",
-      "first_seen_at": "2026-07-19T11:01:08.772Z",
-      "last_seen_at": "2026-07-19T11:01:08.772Z",
-      "error": "Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to\n535 5.7.8  https://support.google.com/mail/?[redacted] a92af1059eb24-13ce2a129f3sm19833500c88.7 - gsmtp",
+      "first_seen_at": "2026-07-19T19:01:13.596Z",
+      "last_seen_at": "2026-07-19T19:01:13.596Z",
+      "error": "Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to\n535 5.7.8  https://support.google.com/mail/?[redacted] 5a478bee46e88-31429fe4677sm25793587eec.11 - gsmtp",
       "count": 1
     }
   ],
@@ -34,7 +34,8 @@
     "3dea0a91-d1f7-430d-aa11-ed0fba7a719f",
     "efc20084-549e-4a4c-b722-62c5b87d95c2",
     "97fbf5ed-dad5-40fc-a7d5-adf365d350fe",
-    "10f52fc4-8975-4215-82d1-8bdbd8dc115e"
+    "10f52fc4-8975-4215-82d1-8bdbd8dc115e",
+    "5e74ffc0-1533-4149-b6c9-8e6e918e471c"
   ],
   "notification_outbox": [
     {
@@ -179,9 +180,25 @@
       "created_at": "2026-07-19T11:01:08.772Z",
       "updated_at": "2026-07-19T11:01:08.772Z",
       "sending_at": null
+    },
+    {
+      "id": "8c9395e7-97c3-4121-8136-01a55911017c",
+      "dedupe_key": "ee559f6ea5af6ab9d158734e",
+      "channel": "email",
+      "payload": {
+        "subject": "[Monitor] 1 novo(s) — 19/07/2026",
+        "body": "> ⚠️ Falhas anteriores de notificação: e-mail.\n\n# Monitor Galaxy Buds4 Pro R$ 500,00–R$ 1.000,00 — 2026-07-19\n\n## Resumo executivo\n- Novos produtos: **1**\n- Já vistos e ativos: **0**\n- Não vistos nesta rodada: **0**\n- Alterações de preço: **0**\n- Termos: galaxy buds4 pro\n\n## Novos produtos\n- R$ 1.000,00 — [Enjoei] fone de ouvido samsung galaxy buds4 pro preto (galaxy buds4 pro) — https://www.enjoei.com.br/p/fone-de-ouvido-samsung-galaxy-buds4-pro-preto-146542493\n\n## Já vistos e ativos\n- Nenhum.\n"
+      },
+      "status": "blocked",
+      "attempts": 1,
+      "next_attempt_at": null,
+      "last_error": "Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to\n535 5.7.8  https://support.google.com/mail/?[redacted] 5a478bee46e88-31429fe4677sm25793587eec.11 - gsmtp",
+      "created_at": "2026-07-19T19:01:13.596Z",
+      "updated_at": "2026-07-19T19:01:13.596Z",
+      "sending_at": null
     }
   ],
   "email": "failed",
-  "email_error": "Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to\n535 5.7.8  https://support.google.com/mail/?[redacted] a92af1059eb24-13ce2a129f3sm19833500c88.7 - gsmtp",
+  "email_error": "Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to\n535 5.7.8  https://support.google.com/mail/?[redacted] 5a478bee46e88-31429fe4677sm25793587eec.11 - gsmtp",
   "whatsapp": "sent"
 }
