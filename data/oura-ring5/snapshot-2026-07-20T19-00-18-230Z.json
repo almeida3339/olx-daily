@@ -1,0 +1,61 @@
+{
+  "schema_version": 2,
+  "generated_at": "2026-07-20T19:00:18.230Z",
+  "run": {
+    "date": "2026-07-20",
+    "timezone": "America/Sao_Paulo",
+    "id": "oura-ring-5",
+    "label": "Oura Ring 5",
+    "partial": false,
+    "errors": [],
+    "scheduled_coverage": [
+      "Enjoei:oura ring",
+      "OLX:oura ring"
+    ],
+    "successful_coverage": [
+      "Enjoei:oura ring",
+      "OLX:oura ring"
+    ],
+    "failed_coverage": [],
+    "configured_coverage": [
+      "Enjoei:oura ring",
+      "OLX:oura ring"
+    ],
+    "quarantined_item_count": 0
+  },
+  "filters": {
+    "price_brl": {
+      "min": 1800,
+      "max": 2700
+    },
+    "size_ml": {
+      "min": null,
+      "max": null
+    }
+  },
+  "items": [
+    {
+      "id": "1519529107",
+      "url": "https://ba.olx.com.br/grande-salvador/eletronicos-e-celulares/smartwatches/oura-ring-5-gold-1519529107",
+      "title": "Oura ring 5 gold",
+      "source": "OLX",
+      "term": "oura ring",
+      "price_brl": 2700,
+      "location": "Salvador -  BA",
+      "status": "active",
+      "first_seen": "2026-07-20",
+      "last_seen": "2026-07-20",
+      "out_of_scope_at": null,
+      "price_history": [
+        {
+          "at": "2026-07-20T19:00:18.230Z",
+          "price_brl": 2700
+        }
+      ]
+    }
+  ],
+  "price_range_brl": {
+    "min": 1800,
+    "max": 2700
+  }
+}
