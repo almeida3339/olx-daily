@@ -1,29 +1,30 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-06-16T19:01:00.539Z",
+  "generated_at": "2026-07-21T19:01:06.694Z",
   "run": {
-    "date": "2026-06-16",
+    "date": "2026-07-21",
     "timezone": "UTC",
-    "id": "fitbit-air",
-    "label": "Fitbit Air",
-    "partial": true,
+    "id": "melanger",
+    "label": "Melanger",
+    "partial": false,
     "errors": [],
     "scheduled_coverage": [
-      "Enjoei:fitbit air"
+      "Enjoei:melanger"
     ],
     "successful_coverage": [
-      "Enjoei:fitbit air"
+      "Enjoei:melanger"
     ],
     "failed_coverage": [],
     "configured_coverage": [
-      "Enjoei:fitbit air",
-      "OLX:fitbit air"
-    ]
+      "Enjoei:melanger",
+      "OLX:melanger"
+    ],
+    "quarantined_item_count": 0
   },
   "filters": {
     "price_brl": {
-      "min": 300,
-      "max": 600
+      "min": 1000,
+      "max": 5000
     },
     "size_ml": {
       "min": null,
@@ -32,7 +33,7 @@
   },
   "items": [],
   "price_range_brl": {
-    "min": 300,
-    "max": 600
+    "min": 1000,
+    "max": 5000
   }
 }
