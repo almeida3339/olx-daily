@@ -1,11 +1,11 @@
-# Monitor Dockstations até R$ 500,00 — 2026-06-16
+# Monitor Fitbit Air R$ 300,00–R$ 600,00 — 2026-07-21
 
 ## Resumo executivo
 - Novos produtos: **0**
 - Já vistos e ativos: **0**
 - Não vistos nesta rodada: **0**
 - Alterações de preço: **0**
-- Termos: SD25TB4, WD22TB4, 40AY0090BR
+- Termos: fitbit air
 
 ## Novos produtos
 - Nenhum.
