@@ -72,6 +72,28 @@ test("painel usa nomes canônicos, preços padronizados e badge parcial âmbar",
   assert.match(health, /monitor-labels\.mjs/);
 });
 
+test("quedas de preço têm destaque visual e texto explícito", async () => {
+  const dashboard = await fs.readFile(path.join(root, "scripts", "generate-dashboard.mjs"), "utf8");
+  assert.match(dashboard, /\.delta\.down\{color:#56d364;background:#0f2417/);
+  assert.match(dashboard, /↑ subiu/);
+  assert.match(dashboard, /↓ caiu/);
+  assert.doesNotMatch(dashboard, /\.delta\.up\{color:#f85149/);
+});
+
+test("botões de disparo mantêm o contexto em uma segunda linha", async () => {
+  const dashboard = await fs.readFile(path.join(root, "scripts", "generate-dashboard.mjs"), "utf8");
+  assert.match(dashboard, /\.trig\{[^}]*flex-direction:column/);
+  assert.match(dashboard, /\.trig \.tip\{display:block/);
+});
+
+test("timestamps visíveis usam formato brasileiro e fuso explícito", async () => {
+  const dashboard = await fs.readFile(path.join(root, "scripts", "generate-dashboard.mjs"), "utf8");
+  assert.match(dashboard, /new Intl\.DateTimeFormat\("pt-BR"/);
+  assert.match(dashboard, /\}\)\.format\(date\)\} BRT/);
+  assert.doesNotMatch(dashboard, /DateTimeFormat\("sv-SE"/);
+  assert.match(dashboard, /updatedDate\.toISOString\(\)/);
+});
+
 test("orquestrador inclui Monitores OLED nos achados notificáveis", async () => {
   const notifier = await fs.readFile(path.join(root, "scripts", "run-monitors-and-notify.mjs"), "utf8");
   assert.match(notifier, /OLED_MONITORES_DIR/);

@@ -473,21 +473,14 @@ function toTitleCase(text) {
 
 function formatRunLabelFromFile(file, fallbackDate) {
   const m = file.match(/report(?:-premium)?-(\d{4})-(\d{2})-(\d{2})T(\d{2})-(\d{2})-(\d{2})-(\d{3})Z\.md$/);
-  if (!m) return fallbackDate ?? "—";
+  if (!m) {
+    const fallback = String(fallbackDate ?? "").match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    return fallback ? `${fallback[3]}/${fallback[2]}/${fallback[1]}` : "—";
+  }
 
   const [, year, month, day, hour, minute, second, ms] = m;
   const date = new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}.${ms}Z`);
-  if (Number.isNaN(date.getTime())) return fallbackDate ?? "—";
-
-  return new Intl.DateTimeFormat("sv-SE", {
-    timeZone: "America/Sao_Paulo",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  }).format(date);
+  return Number.isNaN(date.getTime()) ? "—" : formatDateTimeBrt(date);
 }
 
 async function currentMercadoLivreSnapshotReport(dir, displayMax = Infinity) {
@@ -533,7 +526,8 @@ async function currentMercadoLivreSnapshotReport(dir, displayMax = Infinity) {
 }
 
 function formatDateTimeBrt(date) {
-  return new Intl.DateTimeFormat("sv-SE", {
+  if (!(date instanceof Date) || Number.isNaN(date.getTime())) return "—";
+  return `${new Intl.DateTimeFormat("pt-BR", {
     timeZone: "America/Sao_Paulo",
     year: "numeric",
     month: "2-digit",
@@ -541,7 +535,7 @@ function formatDateTimeBrt(date) {
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,
-  }).format(date);
+  }).format(date)} BRT`;
 }
 
 // ── HTML ─────────────────────────────────────────────────────────────────────
@@ -678,13 +672,13 @@ function buildHtml({ health, priceInsights, olx, enjoeiNb, mercadoLivre, mercado
     ? `<details class="empty-sources"><summary>Sem novidades recentes · ${emptySources.length} monitores</summary><div class="empty-grid">${emptySources.map((s) => renderSection(s.title, s.sub, s.data, s.dpath, { label: s.stampLabel, fresh: s.stampFresh })).join("\n")}</div></details>`
     : "";
   const healthHtml = health.sources.map((source) => {
-    const updated = source.updated_at
-      ? new Date(source.updated_at).toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo", dateStyle: "short", timeStyle: "short" })
-      : "—";
+    const updatedDate = source.updated_at ? new Date(source.updated_at) : null;
+    const updated = updatedDate && !Number.isNaN(updatedDate.getTime()) ? formatDateTimeBrt(updatedDate) : "—";
     const history = source.history?.sample
       ? `<small>${source.history.sample} rodadas · ${Math.round((source.history.success_rate ?? 0) * 100)}% estáveis</small>`
       : "";
-    return `<div class="health ${e(source.state)}"><b>${e(source.label)}</b><span>${e(source.message)}</span>${history}<time>${e(updated)}</time></div>`;
+    const datetime = updatedDate && !Number.isNaN(updatedDate.getTime()) ? ` datetime="${e(updatedDate.toISOString())}"` : "";
+    return `<div class="health ${e(source.state)}"><b>${e(source.label)}</b><span>${e(source.message)}</span>${history}<time${datetime}>${e(updated)}</time></div>`;
   }).join("\n");
   const healthCounts = health.sources.reduce((counts, source) => {
     counts[source.state] = (counts[source.state] ?? 0) + 1;
@@ -773,16 +767,16 @@ h1{font-size:1.3rem;color:#f0f6fc;margin-bottom:5px}
 .pf{color:#8b949e;text-decoration:line-through;font-size:.75rem}
 .pt{color:#e3b341;font-weight:700;font-size:.75rem}
 .price-change{display:inline-flex;flex-direction:column;align-items:flex-end;gap:1px}
-.delta{font-size:.7rem;font-weight:700;line-height:1.1}
-.delta.up{color:#f85149}
-.delta.down{color:#3fb950}
+.delta{display:inline-flex;align-items:center;gap:3px;font-size:.68rem;font-weight:700;line-height:1.1;padding:2px 6px;border-radius:10px;white-space:nowrap}
+.delta.up{color:#d29922;background:#2d2106;border:1px solid #9e6a03}
+.delta.down{color:#56d364;background:#0f2417;border:1px solid #238636}
 .triggers{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
-.trig{font:inherit;font-size:.78rem;font-weight:600;color:#c9d1d9;background:#161b22;border:1px solid #30363d;border-radius:6px;padding:6px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;text-decoration:none}
+.trig{font:inherit;font-size:.78rem;font-weight:600;color:#c9d1d9;background:#161b22;border:1px solid #30363d;border-radius:6px;padding:6px 12px;cursor:pointer;display:inline-flex;flex-direction:column;align-items:flex-start;gap:1px;text-decoration:none;line-height:1.25}
 .trig:hover{border-color:#58a6ff;color:#58a6ff}
 .trig:focus-visible,.rl:focus-visible,.meta a:focus-visible,.it a:focus-visible,.machine-title a:focus-visible{outline:2px solid #58a6ff;outline-offset:2px}
-.trig .tip{font-size:.68rem;font-weight:400;color:#8b949e}
+.trig .tip{display:block;font-size:.68rem;font-weight:400;color:#8b949e;white-space:nowrap}
 .trig-copied{color:#3fb950!important;border-color:#238636!important}
-@media (max-width:700px){body{padding:18px 12px;font-size:13px}.grid,.ops{grid-template-columns:minmax(0,1fr);gap:12px}.trig{width:100%;justify-content:space-between}.sh .shr{align-items:flex-start;flex-wrap:wrap}.cd{white-space:normal}.health-grid{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:700px){body{padding:18px 12px;font-size:13px}.grid,.ops{grid-template-columns:minmax(0,1fr);gap:12px}.trig{width:100%;align-items:flex-start}.sh .shr{align-items:flex-start;flex-wrap:wrap}.cd{white-space:normal}.health-grid{grid-template-columns:minmax(0,1fr)}}
 </style>
 </head>
 <body>
@@ -858,7 +852,7 @@ function renderSection(title, sub, reports, dpath, stampInfo) {
     : reports.map((r) => renderCard(r, dpath, showSpecs)).join("\n");
   // Data/hora do último achado desta busca, dentro do card (verde se < 24h).
   const stamp = stampInfo && stampInfo.label
-    ? `<time class="sd${stampInfo.fresh ? " fresh" : ""}">${e(stampInfo.label)}</time>`
+    ? `<time class="sd${stampInfo.fresh ? " fresh" : ""}"${Number.isFinite(stampInfo.ts) ? ` datetime="${e(new Date(stampInfo.ts).toISOString())}"` : ""}>${e(stampInfo.label)}</time>`
     : "";
   return `<div class="sec">
   <div class="sh"><div class="shr"><h2>${e(title)}</h2>${stamp}</div><small>${e(sub)} &nbsp;·&nbsp; últimos ${reports.length} com novidades</small></div>
@@ -877,9 +871,11 @@ function renderCard(r, dpath, showSpecs) {
     ...r.newItems.map((i) => renderRow(i, false, showSpecs)),
     ...r.priceItems.map((i) => renderRow(i, true, showSpecs)),
   ].join("\n");
+  const runDate = runTimestampFromFile(r.file);
+  const datetime = runDate ? ` datetime="${e(runDate.toISOString())}"` : "";
   return `<div class="card">
   <div class="ch">
-    <span class="cd">${e(r.runLabel ?? r.date ?? "—")}<a class="rl" href="${e(url)}" target="_blank" rel="noopener noreferrer">ver completo ↗</a></span>
+    <time class="cd"${datetime}>${e(r.runLabel ?? r.date ?? "—")}<a class="rl" href="${e(url)}" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
     <div class="badges">${bw}${bn}${bp}</div>
   </div>
   ${rows ? `<div class="ci">${rows}</div>` : ""}
@@ -895,7 +891,7 @@ function priceDelta(priceFrom, priceTo) {
   if (from == null || to == null || from === to) return "";
   const up = to > from;
   const abs = Math.abs(to - from);
-  return `<span class="delta ${up ? "up" : "down"}" title="${up ? "subiu" : "desceu"}">${up ? "+" : "-"} ${formatBrlPrice(abs)}</span>`;
+  return `<span class="delta ${up ? "up" : "down"}" title="${up ? "subiu" : "caiu"}">${up ? "↑ subiu" : "↓ caiu"} ${formatBrlPrice(abs)}</span>`;
 }
 
 // Bloco de preco para uma mudanca: linha "de → para" com a diferenca embaixo.

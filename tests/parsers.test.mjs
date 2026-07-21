@@ -408,9 +408,11 @@ describe("parseReport", () => {
   test("priceCount — OLX report", () => assert.equal(parseReport(olxReport).priceCount, 2));
   test("date — extraído do cabeçalho", () => assert.equal(parseReport(olxReport).date, "2026-05-24"));
   test("runLabel — timestamp do arquivo convertido para BRT", () =>
-    assert.equal(formatRunLabelFromFile("report-2026-05-27T19-01-42-123Z.md", "2026-05-27"), "2026-05-27 16:01"));
+    assert.equal(formatRunLabelFromFile("report-2026-05-27T19-01-42-123Z.md", "2026-05-27"), "27/05/2026, 16:01 BRT"));
   test("runLabel — report premium convertido para BRT", () =>
-    assert.equal(formatRunLabelFromFile("report-premium-2026-05-27T10-00-00-000Z.md", "2026-05-27"), "2026-05-27 07:00"));
+    assert.equal(formatRunLabelFromFile("report-premium-2026-05-27T10-00-00-000Z.md", "2026-05-27"), "27/05/2026, 07:00 BRT"));
+  test("runLabel — fallback de data também usa formato brasileiro", () =>
+    assert.equal(formatRunLabelFromFile("report-invalido.md", "2026-05-27"), "27/05/2026"));
   test("newCount — Enjoei Notebooks report", () => assert.equal(parseReport(enjoeiNbReport).newCount, 2));
   test("priceCount — Enjoei Notebooks report", () => assert.equal(parseReport(enjoeiNbReport).priceCount, 1));
   test("newItems — Enjoei Notebooks report", () => {

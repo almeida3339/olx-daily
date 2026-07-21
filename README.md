@@ -343,7 +343,7 @@ Adicionar uma nova: copiar um, mudar config, pronto.
 - Teto de R$ 10 mil retroativo
 - Bivolt vs 220V puro
 
-**Estado atual:** 232 testes passando, incluindo filtros semânticos, integração
+**Estado atual:** 236 testes passando, incluindo filtros semânticos, integração
 de notificações, retenção de artefatos e sanitização de caminhos locais.
 
 ---
