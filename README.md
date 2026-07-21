@@ -1,4 +1,4 @@
-# Monitor OLX & Enjoei — 8 Watchlists de Produtos
+# Monitor OLX, Enjoei & Mercado Livre — monitoramento de produtos
 
 Sistema modular de monitoramento diário (2× por dia, 07:00 e 16:00 BRT) de 8 marketplaces e categorias. Busca em OLX (scraping + Playwright) e Enjoei (GraphQL API). Envia e-mail (Gmail) e WhatsApp (CallMeBot) quando há itens novos ou mudanças de preço. Dashboard HTML em GitHub Pages.
 
@@ -11,7 +11,7 @@ Sistema modular de monitoramento diário (2× por dia, 07:00 e 16:00 BRT) de 8 m
 
 ---
 
-## Monitores (8 watchlists)
+## Monitores principais
 
 | Nome | Fonte | Faixa | Detalhes |
 |---|---|---|---|
@@ -23,6 +23,9 @@ Sistema modular de monitoramento diário (2× por dia, 07:00 e 16:00 BRT) de 8 m
 | **Lifefactory** | OLX + Enjoei | R$ 25–75 | Garrafa térmica 500ml–1L (exclui mamadeira, bivolt OK) |
 | **Tela Galaxy Book3** | OLX + Enjoei | até R$ 1.000 | Part number BA96-08462A (Galaxy Book3 Ultra) |
 | **Melanger** | OLX (2 categorias) + Enjoei | R$ 1.000–5.000 | Moinho de chocolate 110V (exclui 220V puro, bivolt OK) |
+| **Galaxy Buds4 Pro** | OLX + Enjoei | R$ 500–1.000 | Variantes do modelo e envio local |
+| **Oura Ring 5** | OLX + Enjoei | R$ 1.800–2.700 | Tamanhos 9–11 |
+| **Monitores OLED** | OLX + Enjoei | R$ 1.500–3.000 | Entrega local e filtro de categoria |
 
 **OLX: 2 categorias customizadas para Melanger**
 - `https://www.olx.com.br/eletro/eletroportateis-para-cozinha-e-limpeza?q=melanger`
@@ -57,10 +60,13 @@ npm run mercadolivre:login
 # Entre na conta, feche esse Chrome e execute:
 npm run monitor:mercadolivre
 
-# Ver ou operar notificacoes pendentes
+# Ver ou operar notificações pendentes
 npm run monitor:notificacoes
 node scripts/manage-notification-outbox.mjs --retry ID
 node scripts/manage-notification-outbox.mjs --discard ID
+
+# Limitar o histórico de snapshots/relatórios por fonte (padrão: 120 rodadas)
+npm run data:prune -- --keep-runs 120
 
 # Local + commit + push automático (PowerShell Windows)
 .\scripts\run-local-olx-and-publish.ps1
@@ -68,7 +74,7 @@ node scripts/manage-notification-outbox.mjs --discard ID
 
 **Flags opcionais:**
 - `--skip-olx`, `--skip-enjoei`, `--skip-dockstations`, etc: pula watchlist específica
-- `--dry-run`: teste notificações sem agendar monitores
+- `--dry-run`: simula notificações sem enviá-las nem gravar status
 - `--skip-monitors --dry-run`: testa apenas notificações com relatórios salvos
 
 ---
@@ -98,6 +104,10 @@ setx MELANGER_DATA_DIR               "C:\caminho\data\melanger"
 
 **GitHub Actions:** mesmas variáveis em `Settings → Secrets and variables → Actions`
 
+**Dashboard público:** os botões locais não publicam o caminho da máquina. Eles
+usam `OLX_DAILY_REPO` quando definido; caso contrário, assumem
+`$HOME\Downloads\olx-daily` no PowerShell.
+
 ---
 
 ## GitHub Actions (CI)
@@ -108,14 +118,17 @@ setx MELANGER_DATA_DIR               "C:\caminho\data\melanger"
 1. Checkout do main
 2. Setup Node 22 + dependências
 3. Instala Playwright + Chromium
-4. Roda 5 monitores em paralelo (OLX skipped no CI, Enjoei roda):
+4. Roda as watchlists remotas (OLX e Mercado Livre ficam locais):
    - Enjoei Notebooks
    - Enjoei Tênis
    - Dockstations
    - Fitbit
    - Lifefactory
-   - Tela Book3
-   - Melanger
+    - Tela Book3
+    - Melanger
+    - Galaxy Buds4 Pro
+    - Oura Ring 5
+    - Monitores OLED
 5. **Notifica**: e-mail + WhatsApp se totais > 0 ou errors presentes
 6. **Loop de publicação** (até 4 tentativas):
    - `git fetch origin`
@@ -330,7 +343,8 @@ Adicionar uma nova: copiar um, mudar config, pronto.
 - Teto de R$ 10 mil retroativo
 - Bivolt vs 220V puro
 
-**Objetivo:** 108/108 testes passando (incluindo novos testes sobre filtros semânticos).
+**Estado atual:** 232 testes passando, incluindo filtros semânticos, integração
+de notificações, retenção de artefatos e sanitização de caminhos locais.
 
 ---
 
@@ -380,7 +394,8 @@ tos)
   monitor-lifefactory.mjs
   monitor-tela-galaxybook3.mjs
   monitor-melanger.mjs
-  run-monitors-and-notify.mjs      ← orquestrador (roda 8 em paralelo, notifica)
+  run-monitors-and-notify.mjs      ← orquestrador (limita concorrência, notifica)
+  prune-data.mjs                  ← retenção explícita dos artefatos históricos
   run-local-olx-and-publish.ps1    ← automação Windows (espera rede, push)
   run-olx-monitor.ps1              ← wrapper Chrome debug
   start-chrome-debug.ps1           ← inicia Chrome com port 9222

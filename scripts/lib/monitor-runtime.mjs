@@ -3,6 +3,23 @@ import path from "node:path";
 import crypto from "node:crypto";
 
 export const MONITOR_RUN_MANIFEST_SCHEMA_VERSION = 1;
+export const DEFAULT_MONITOR_ARTIFACT_RETENTION_RUNS = 120;
+
+export function sanitizeArtifactText(value) {
+  return String(value ?? "")
+    .replace(/[A-Za-z]:[\\/]Program Files[\\/]Google[\\/]Chrome[\\/]Application[\\/]chrome\.exe/gi, "[redacted-local-path]")
+    .replace(/[A-Za-z]:[\\/]Users[\\/][^\s"'<>]+/gi, "[redacted-local-path]")
+    .replace(/--user-data-dir=(?:"[^"]+"|'[^']+'|[^\s]+)/gi, "--user-data-dir=[redacted]");
+}
+
+function sanitizeArtifactValue(value) {
+  if (typeof value === "string") return sanitizeArtifactText(value);
+  if (Array.isArray(value)) return value.map(sanitizeArtifactValue);
+  if (value && typeof value === "object") {
+    return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, sanitizeArtifactValue(item)]));
+  }
+  return value;
+}
 
 export async function writeTextAtomic(filePath, text) {
   const dir = path.dirname(filePath);
@@ -111,6 +128,9 @@ export async function commitMonitorRun(dataDir, { runId, snapshot, report, metad
   if (!hasText(runId)) throw new Error("runId obrigatorio");
   if (typeof report !== "string" || !report.trim()) throw new Error("relatorio vazio");
   const prepared = quarantineInvalidItems(snapshot);
+  prepared.snapshot = sanitizeArtifactValue(prepared.snapshot);
+  prepared.invalid = sanitizeArtifactValue(prepared.invalid);
+  const safeReport = sanitizeArtifactText(report);
   validateStrictMonitorSnapshot(prepared.snapshot);
 
   const runDir = path.join(dataDir, "runs", runId);
@@ -118,7 +138,7 @@ export async function commitMonitorRun(dataDir, { runId, snapshot, report, metad
   const reportPath = path.join(runDir, "report.md");
   const quarantinePath = path.join(dataDir, "quarantine", `${runId}.json`);
   await writeJsonAtomic(snapshotPath, prepared.snapshot, { validate: validateStrictMonitorSnapshot });
-  await writeTextAtomic(reportPath, report);
+  await writeTextAtomic(reportPath, safeReport);
   if (prepared.invalid.length) {
     await writeJsonAtomic(quarantinePath, {
       schema_version: 1,
@@ -137,7 +157,7 @@ export async function commitMonitorRun(dataDir, { runId, snapshot, report, metad
     quarantine: prepared.invalid.length ? relativeArtifact(dataDir, quarantinePath) : null,
     checksums: {
       snapshot_sha256: sha256(JSON.stringify(prepared.snapshot)),
-      report_sha256: sha256(report),
+      report_sha256: sha256(safeReport),
     },
     metadata: {
       ...metadata,
@@ -153,7 +173,7 @@ export async function commitMonitorRun(dataDir, { runId, snapshot, report, metad
   const legacySnapshotPath = path.join(dataDir, `snapshot-${runId}.json`);
   const legacyReportPath = path.join(dataDir, `report-${runId}.md`);
   await writeJsonAtomic(legacySnapshotPath, prepared.snapshot, { validate: validateStrictMonitorSnapshot });
-  await writeTextAtomic(legacyReportPath, report);
+  await writeTextAtomic(legacyReportPath, safeReport);
 
   await writeJsonAtomic(path.join(dataDir, "latest-run.json"), manifest, { validate: null });
   const { appendMonitorHistory } = await import("./monitor-history.mjs");
@@ -169,6 +189,9 @@ export async function commitMonitorRun(dataDir, { runId, snapshot, report, metad
     quarantined_item_count: prepared.invalid.length,
     metadata: manifest.metadata,
   });
+  // Retenção é manutenção best-effort: uma falha de limpeza não invalida uma
+  // coleta já validada e publicada.
+  await pruneMonitorArtifacts(dataDir).catch(() => {});
   return {
     snapshot: prepared.snapshot,
     invalidItems: prepared.invalid,
@@ -179,6 +202,58 @@ export async function commitMonitorRun(dataDir, { runId, snapshot, report, metad
     legacySnapshotPath,
     legacyReportPath,
   };
+}
+
+/**
+ * Keeps the generated run history bounded while preserving the current pointer
+ * and the most recent artifacts used by the dashboard. Legacy files are kept
+ * in sync with the run directories so old links do not grow forever.
+ */
+export async function pruneMonitorArtifacts(
+  dataDir,
+  { keepRuns = Number(process.env.MONITOR_ARTIFACT_RETENTION_RUNS ?? DEFAULT_MONITOR_ARTIFACT_RETENTION_RUNS) } = {},
+) {
+  const keep = Number.isFinite(Number(keepRuns)) ? Math.max(1, Math.floor(Number(keepRuns))) : DEFAULT_MONITOR_ARTIFACT_RETENTION_RUNS;
+  const root = path.resolve(dataDir);
+  const isSafeChild = (candidate) => {
+    const resolved = path.resolve(candidate);
+    return resolved !== root && resolved.startsWith(`${root}${path.sep}`);
+  };
+
+  const runRoot = path.join(root, "runs");
+  const runEntries = await fs.readdir(runRoot, { withFileTypes: true }).catch(() => []);
+  const runs = [];
+  for (const entry of runEntries) {
+    if (!entry.isDirectory()) continue;
+    const runDir = path.join(runRoot, entry.name);
+    let committedAt = "";
+    try {
+      const manifest = JSON.parse(await fs.readFile(path.join(runDir, "manifest.json"), "utf8"));
+      committedAt = String(manifest.committed_at ?? "");
+    } catch {
+      committedAt = String((await fs.stat(runDir).catch(() => ({ mtimeMs: 0 }))).mtimeMs);
+    }
+    runs.push({ name: entry.name, committedAt });
+  }
+  runs.sort((left, right) => right.committedAt.localeCompare(left.committedAt));
+  await Promise.all(runs.slice(keep).map(async ({ name }) => {
+    const target = path.join(runRoot, name);
+    if (isSafeChild(target)) await fs.rm(target, { recursive: true, force: true });
+  }));
+
+  const legacyEntries = await fs.readdir(root, { withFileTypes: true }).catch(() => []);
+  const legacy = legacyEntries
+    .filter((entry) => entry.isFile())
+    .map((entry) => {
+      const match = entry.name.match(/^(?:snapshot|report)-(.+)\.(?:json|md)$/);
+      return match ? { name: entry.name, stamp: match[1] } : null;
+    })
+    .filter(Boolean);
+  const keepLegacyStamps = new Set([...new Set(legacy.map((entry) => entry.stamp))].sort().reverse().slice(0, keep));
+  await Promise.all(legacy.filter(({ stamp }) => !keepLegacyStamps.has(stamp)).map(async ({ name }) => {
+    const target = path.join(root, name);
+    if (isSafeChild(target)) await fs.unlink(target).catch(() => {});
+  }));
 }
 
 export async function readLatestCommittedRun(dataDir) {

@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { extractGpuLabel, extractRamGb, parseBrlPrice, textContainsCpuTerm } from "./lib/parsers.mjs";
+import { extractGpuLabel, extractRamGb, formatBrlPrice, parseBrlPrice, textContainsCpuTerm } from "./lib/parsers.mjs";
 import { extractMercadoLivreNotebookSpecs } from "./lib/mercadolivre-monitor.mjs";
 import { isMercadoLivreNotebookDisplayPrice } from "./lib/mercadolivre-notebook-ranges.mjs";
 import { buildMonitorHealth } from "./lib/monitor-health.mjs";
@@ -35,6 +35,7 @@ const OUTPUT = path.join(ROOT, "index.html");
 const REPO = "almeida3339/olx-daily";
 const BLOB = `https://github.com/${REPO}/blob/main`;
 const MAX = 5;
+const HIGHLIGHT_MAX = 8;
 // Teto de preço para itens exibidos (espelha o filtro de mudanças de preço do
 // monitor OLX). Aplicado aqui também para valer retroativamente em relatórios
 // antigos, que foram gerados antes do filtro existir. Itens acima disso (ex.:
@@ -47,19 +48,23 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
 
 export { parseReport, formatRunLabelFromFile, summarizeMachine };
 
-// Caminho Windows do repositório na máquina local do usuário — usado só para
-// montar os comandos de copiar-e-colar dos botões "Disparar" do dashboard.
-// NÃO deve ser derivado de __dirname/ROOT: quando o dashboard é regenerado
-// pelo CI (Ubuntu), ROOT resolve para um caminho Linux (/home/runner/...) que
-// não significa nada no PowerShell do usuário. Fixo (com override por env
-// var) para os comandos ficarem corretos não importa onde a página foi gerada.
-const LOCAL_REPO_ROOT = process.env.LOCAL_REPO_ROOT ?? "C:\\Users\\docra\\Downloads\\olx-daily";
-
-export function buildLocalTriggerCommands(root = LOCAL_REPO_ROOT) {
+// O dashboard é público. Não embutir o caminho absoluto do usuário nos botões:
+// além de expor PII, ele quebra quando a página é gerada no CI. O comando usa
+// OLX_DAILY_REPO quando configurado e cai no local padrão de Downloads.
+export function buildLocalTriggerCommands(root = null) {
   // path.join é sensível a plataforma (barra "/" no Linux) — mas o resultado é
   // sempre colado num PowerShell do Windows, então a junção é sempre por "\",
   // independente do SO onde esta função roda (ver bug do CI: testes passavam
   // no Windows local e falhavam no Ubuntu por causa disso).
+  if (!root) {
+    const repoSetup = "$repo = $env:OLX_DAILY_REPO; if (-not $repo) { $repo = Join-Path $HOME 'Downloads\\olx-daily' }; ";
+    const scriptPath = (name) => `(Join-Path $repo 'scripts\\${name}')`;
+    return {
+      olx: `${repoSetup}node ${scriptPath("run-monitors-and-notify.mjs")} --only-olx`,
+      mercadoLivre: `${repoSetup}& ${scriptPath("run-mercadolivre-and-publish.ps1")}`,
+      notificacoes: `${repoSetup}node ${scriptPath("manage-notification-outbox.mjs")}`,
+    };
+  }
   const scriptPath = (name) => `${root.replace(/[\\/]+$/, "")}\\scripts\\${name}`.replace(/'/g, "''");
   return {
     olx: `node '${scriptPath("run-monitors-and-notify.mjs")}' --only-olx`,
@@ -290,9 +295,9 @@ function parseLine(line, detailsByUrl = new Map()) {
   const url = urlM ? urlM[0].replace(/[.,)]+$/, "") : null;
   const changeM = raw.match(/(R\$\s*[\d.,]+)\s*(?:→|->)\s*(R\$\s*[\d.,]+)/);
   const priceM = raw.match(/R\$\s*[\d.,]+/);
-  const priceFrom = changeM ? changeM[1].trim() : null;
-  const priceTo = changeM ? changeM[2].trim() : null;
-  const price = priceM ? priceM[0] : null;
+  const priceFrom = changeM ? formatBrlPrice(changeM[1].trim()) : null;
+  const priceTo = changeM ? formatBrlPrice(changeM[2].trim()) : null;
+  const price = priceM ? formatBrlPrice(priceM[0]) : null;
   let title = raw;
   if (url) title = title.replace(url, "");
   if (changeM) title = title.replace(changeM[0], "");
@@ -498,7 +503,7 @@ async function currentMercadoLivreSnapshotReport(dir, displayMax = Infinity) {
     .map((item) => ({
       title: item.title,
       fullTitle: item.title,
-      price: `R$ ${Number(item.price_brl).toLocaleString("pt-BR")}`,
+      price: formatBrlPrice(item.price_brl),
       url: item.url,
       machine: summarizeMachine(item.title, {
         ...item,
@@ -543,6 +548,43 @@ function formatDateTimeBrt(date) {
 
 function e(s) {
   return (s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+export function classifyNotificationError(error) {
+  const raw = String(error ?? "").trim();
+  const compact = raw.replace(/\s+/g, " ").trim();
+  if (!compact) {
+    return { code: "pending", label: "aguardando entrega", detail: "Aguardando entrega" };
+  }
+  if (/535(?:[- ]5\.7\.8)?|username and password not accepted|invalid login/i.test(compact)) {
+    return { code: "smtp-auth", label: "credencial SMTP rejeitada", detail: "O servidor SMTP rejeitou a autenticação." };
+  }
+  if (/ENOTFOUND|EAI_AGAIN|ECONNREFUSED|ETIMEDOUT|ECONNRESET|fetch failed|network|dns/i.test(compact)) {
+    return { code: "network", label: "falha de rede/DNS", detail: "Não foi possível alcançar o serviço de notificação." };
+  }
+  return { code: "delivery", label: "falha de entrega", detail: compact.slice(0, 240) };
+}
+
+export function groupPendingNotifications(items = []) {
+  const groups = new Map();
+  for (const item of items) {
+    const classification = classifyNotificationError(item.last_error);
+    const key = `${item.channel ?? "?"}\u0000${item.status ?? "?"}\u0000${classification.code}`;
+    const group = groups.get(key) ?? {
+      ...item,
+      count: 0,
+      attempts: 0,
+      error_code: classification.code,
+      error_label: classification.label,
+      error_detail: classification.detail,
+      raw_detail: item.last_error ?? "",
+    };
+    group.count += 1;
+    group.attempts = Math.max(Number(group.attempts ?? 0), Number(item.attempts ?? 0));
+    groups.set(key, group);
+  }
+  return [...groups.values()].sort((left, right) =>
+    right.count - left.count || String(left.channel).localeCompare(String(right.channel)),
+  );
 }
 
 function buildHtml({ health, priceInsights, olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, oura, oledMonitores, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, ouraUpdated, oledMonitoresUpdated }) {
@@ -594,6 +636,28 @@ function buildHtml({ health, priceInsights, olx, enjoeiNb, mercadoLivre, mercado
   // coleta mais recente entre todas as buscas daquela plataforma. As watchlists
   // combinadas (Dockstations, Fitbit, etc.) contam para as duas. O timestamp de
   // cada busca específica vai dentro do próprio card (renderSection).
+  const highlightItems = [];
+  const seenHighlights = new Set();
+  for (const source of sources) {
+    if (!source.stampFresh || !source.data[0]) continue;
+    const report = source.data[0];
+    for (const [isPrice, items] of [[true, report.priceItems ?? []], [false, report.newItems ?? []]]) {
+      for (const item of items) {
+        const key = `${isPrice ? "price" : "new"}:${item.url ?? item.title}`;
+        if (seenHighlights.has(key)) continue;
+        seenHighlights.add(key);
+        const from = parseBrlPrice(item.priceFrom);
+        const to = parseBrlPrice(item.priceTo);
+        highlightItems.push({ ...item, isPrice, priceDrop: isPrice && Number.isFinite(from) && Number.isFinite(to) && to < from, source: source.title, runLabel: report.runLabel ?? report.date });
+      }
+    }
+  }
+  highlightItems.sort((left, right) => Number(right.priceDrop) - Number(left.priceDrop) || Number(right.isPrice) - Number(left.isPrice));
+  const highlights = highlightItems.slice(0, HIGHLIGHT_MAX);
+  const highlightsHtml = highlights.length
+    ? `<section class="highlights"><div class="section-title"><div><h2>Destaques de hoje</h2><p>Novos anúncios e mudanças de preço das últimas 24 horas.</p></div><b>${highlights.length} achado${highlights.length > 1 ? "s" : ""}</b></div><ul>${highlights.map(renderHighlight).join("\n")}</ul></section>`
+    : `<section class="highlights empty-highlights"><div class="section-title"><div><h2>Destaques de hoje</h2><p>Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p></div></div></section>`;
+
   const platformChip = (label, platform) => {
     const members = sources.filter((s) => platformsOf(s.dpath).includes(platform) && s.upd.ts != null);
     if (!members.length) return `<span class="u"><b>${e(label)}</b> <time>—</time></span>`;
@@ -605,9 +669,14 @@ function buildHtml({ health, priceInsights, olx, enjoeiNb, mercadoLivre, mercado
     platformChip("Enjoei", "enjoei"),
     platformChip("Mercado Livre", "mercadolivre"),
   ].join("\n");
-  const cardsHtml = sources
+  const activeSources = sources.filter((source) => source.hasFind);
+  const emptySources = sources.filter((source) => !source.hasFind);
+  const cardsHtml = activeSources
     .map((s) => renderSection(s.title, s.sub, s.data, s.dpath, { label: s.stampLabel, fresh: s.stampFresh }))
     .join("\n");
+  const emptyCardsHtml = emptySources.length
+    ? `<details class="empty-sources"><summary>Sem novidades recentes · ${emptySources.length} monitores</summary><div class="empty-grid">${emptySources.map((s) => renderSection(s.title, s.sub, s.data, s.dpath, { label: s.stampLabel, fresh: s.stampFresh })).join("\n")}</div></details>`
+    : "";
   const healthHtml = health.sources.map((source) => {
     const updated = source.updated_at
       ? new Date(source.updated_at).toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo", dateStyle: "short", timeStyle: "short" })
@@ -617,13 +686,22 @@ function buildHtml({ health, priceInsights, olx, enjoeiNb, mercadoLivre, mercado
       : "";
     return `<div class="health ${e(source.state)}"><b>${e(source.label)}</b><span>${e(source.message)}</span>${history}<time>${e(updated)}</time></div>`;
   }).join("\n");
+  const healthCounts = health.sources.reduce((counts, source) => {
+    counts[source.state] = (counts[source.state] ?? 0) + 1;
+    return counts;
+  }, {});
+  const healthyCount = healthCounts.healthy ?? 0;
+  const attentionCount = health.sources.length - healthyCount;
+  const healthSummary = `${healthyCount} ${healthyCount === 1 ? "saudável" : "saudáveis"} · ${attentionCount} em atenção`;
+  const healthPanelHtml = `<details class="health-panel ${attentionCount ? "attention" : "ok"}"><summary><span><b>Saúde da coleta</b><small>${e(healthSummary)}</small></span><strong>${attentionCount ? "Atenção" : "Operacional"}</strong></summary><div class="health-grid">${healthHtml}</div></details>`;
   const pendingNotifications = health.sources.find((source) => source.id === "notifications")?.outbox ?? [];
-  const notificationsHtml = pendingNotifications.length
-    ? pendingNotifications.map((item) => `<li><b>${e(item.channel)}</b> · ${e(item.status)} · ${e(String(item.attempts ?? 0))} tentativa(s)<br><span>${e(item.last_error ?? "Aguardando entrega")}</span></li>`).join("\n")
-    : "<p class=\"empty\">Nenhuma entrega pendente.</p>";
+  const notificationGroups = groupPendingNotifications(pendingNotifications);
+  const notificationsHtml = notificationGroups.length
+    ? notificationGroups.map((item) => `<li><b>${e(item.channel)}</b> · ${item.count}× · ${e(item.error_label)} · ${e(item.status)}<br><span>${e(item.error_detail)}</span>${item.raw_detail ? `<details><summary>Detalhe técnico</summary><span>${e(item.raw_detail)}</span></details>` : ""}</li>`).join("\n")
+    : "<li class=\"empty\">Nenhuma entrega pendente.</li>";
   const insightsHtml = priceInsights.length
-    ? priceInsights.map((item) => `<li><a href="${e(item.url)}" target="_blank" rel="noopener noreferrer">${e(item.title)}</a><span>${e(item.source)} · atual <b>R$ ${formatPrice(item.current)}</b> · mínimo <b>R$ ${formatPrice(item.minimum)}</b> · ${item.observations} observação(ões)</span></li>`).join("\n")
-    : "<p class=\"empty\">Ainda não há histórico suficiente para comparar preços.</p>";
+    ? priceInsights.map((item) => `<li><a href="${e(item.url)}" target="_blank" rel="noopener noreferrer">${e(item.title)}</a><span>${e(item.source)} · atual <b>${formatBrlPrice(item.current)}</b> · mínimo <b>${formatBrlPrice(item.minimum)}</b> · ${item.observations} observação(ões)</span></li>`).join("\n")
+    : "<li class=\"empty\">Ainda não há histórico suficiente para comparar preços.</li>";
 
   const triggerCommands = buildLocalTriggerCommands();
   return `<!DOCTYPE html>
@@ -645,7 +723,9 @@ h1{font-size:1.3rem;color:#f0f6fc;margin-bottom:5px}
 .updates .u.fresh b{color:#56d364}
 .updates .u.fresh time{color:#56d364}
 .updates .u.fresh::before{content:"●";color:#3fb950;font-size:8px;margin-right:6px;vertical-align:middle}
-.health-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:7px;margin:0 0 18px}
+.highlights{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px 16px;margin:0 0 14px}.empty-highlights{color:#8b949e}.section-title{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:8px}.section-title h2{font-size:.95rem;color:#f0f6fc}.section-title p{font-size:.75rem;color:#8b949e}.section-title>b{font-size:.72rem;color:#58a6ff;white-space:nowrap}.highlights ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:7px 18px;list-style:none}.highlight-item{display:flex;align-items:flex-start;gap:8px;min-width:0;padding-top:7px;border-top:1px solid #21262d;font-size:.78rem}.highlight-kind{font-size:.64rem;font-weight:700;border-radius:10px;padding:2px 7px;flex-shrink:0}.highlight-kind.new{color:#3fb950;background:#0f2417;border:1px solid #238636}.highlight-kind.price{color:#e3b341;background:#3d2b00;border:1px solid #9e6a03}.highlight-title{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.highlight-title a{color:#c9d1d9;text-decoration:none;font-weight:600}.highlight-title a:hover{color:#58a6ff}.highlight-title small{display:block;color:#8b949e;font-size:.68rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.highlights .ip,.highlights .price-change{margin-left:auto;flex-shrink:0}
+.health-panel{margin:0 0 18px;border:1px solid #30363d;border-radius:8px;background:#161b22}.health-panel>summary{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 14px;cursor:pointer;list-style:none}.health-panel>summary::-webkit-details-marker{display:none}.health-panel>summary::before{content:"›";color:#8b949e;font-size:1.1rem;transition:transform .15s ease}.health-panel[open]>summary::before{transform:rotate(90deg)}.health-panel>summary>span{display:flex;align-items:baseline;gap:10px;min-width:0}.health-panel>summary b{color:#f0f6fc;font-size:.82rem}.health-panel>summary small{color:#8b949e;font-size:.72rem}.health-panel>summary strong{color:#e3b341;font-size:.72rem}.health-panel:not(:has(.health.stale,.health.blocked,.health.failed,.health.missing,.health.degraded,.health.partial))>summary strong{color:#3fb950}.health-panel .health-grid{padding:0 14px 14px}
+.health-panel.ok>summary strong{color:#3fb950}.health-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:7px;margin:0 0 18px}
 .health{display:grid;grid-template-columns:auto 1fr;gap:2px 8px;align-items:baseline;padding:8px 10px;border:1px solid #30363d;border-radius:7px;background:#161b22;font-size:.72rem}
 .health b{color:#c9d1d9}.health span{color:#8b949e}.health small{grid-column:1/-1;color:#8b949e}.health time{grid-column:1/-1;color:#8b949e;font-variant-numeric:tabular-nums}
 .health::before{content:"●";font-size:9px}.health.healthy::before{color:#3fb950}.health.partial::before,.health.degraded::before{color:#e3b341}.health.stale::before{color:#f85149}.health.blocked::before,.health.failed::before,.health.missing::before{color:#ff7b72}
@@ -653,6 +733,7 @@ h1{font-size:1.3rem;color:#f0f6fc;margin-bottom:5px}
 .meta a{color:#58a6ff;text-decoration:none}
 .meta a:hover{text-decoration:underline}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:18px;align-items:start}
+.empty-sources{margin:18px 0;border:1px solid #30363d;border-radius:8px;background:#161b22}.empty-sources>summary{padding:10px 14px;color:#8b949e;font-size:.78rem;cursor:pointer;list-style:none}.empty-sources>summary::-webkit-details-marker{display:none}.empty-sources>summary::before{content:"›";display:inline-block;margin-right:7px;font-size:1rem;transition:transform .15s ease}.empty-sources[open]>summary::before{transform:rotate(90deg)}.empty-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:18px;padding:0 14px 14px}.empty-grid .sec{opacity:.86}
 .sec{background:#161b22;border:1px solid #30363d;border-radius:8px;overflow:hidden}
 .sh{padding:14px 16px 10px;border-bottom:1px solid #21262d}
 .sh .shr{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
@@ -672,7 +753,7 @@ h1{font-size:1.3rem;color:#f0f6fc;margin-bottom:5px}
 .badge{font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap}
 .bn{background:#1a4a2e;color:#3fb950;border:1px solid #238636}
 .bp{background:#3d2b00;color:#e3b341;border:1px solid #9e6a03}
-.bw{background:#4b1f24;color:#ff7b72;border:1px solid #da3633}
+.bw{background:#3d2b00;color:#e3b341;border:1px solid #9e6a03}
 .ci{padding:5px 10px 8px}
 .item{padding:7px 0;border-bottom:1px solid #21262d;font-size:.78rem}
 .item:last-child{border-bottom:none}
@@ -684,6 +765,7 @@ h1{font-size:1.3rem;color:#f0f6fc;margin-bottom:5px}
 .specs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 10px;color:#8b949e}
 .spec{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .spec b{color:#c9d1d9;font-weight:600}
+.ops details{margin-top:4px;color:#8b949e}.ops details summary{cursor:pointer;font-size:.68rem}.ops details span{white-space:pre-wrap;overflow-wrap:anywhere}
 .it{color:#c9d1d9;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .it a{color:#c9d1d9;text-decoration:none}
 .it a:hover{color:#58a6ff;text-decoration:underline}
@@ -697,8 +779,10 @@ h1{font-size:1.3rem;color:#f0f6fc;margin-bottom:5px}
 .triggers{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
 .trig{font:inherit;font-size:.78rem;font-weight:600;color:#c9d1d9;background:#161b22;border:1px solid #30363d;border-radius:6px;padding:6px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;text-decoration:none}
 .trig:hover{border-color:#58a6ff;color:#58a6ff}
+.trig:focus-visible,.rl:focus-visible,.meta a:focus-visible,.it a:focus-visible,.machine-title a:focus-visible{outline:2px solid #58a6ff;outline-offset:2px}
 .trig .tip{font-size:.68rem;font-weight:400;color:#8b949e}
 .trig-copied{color:#3fb950!important;border-color:#238636!important}
+@media (max-width:700px){body{padding:18px 12px;font-size:13px}.grid,.ops{grid-template-columns:minmax(0,1fr);gap:12px}.trig{width:100%;justify-content:space-between}.sh .shr{align-items:flex-start;flex-wrap:wrap}.cd{white-space:normal}.health-grid{grid-template-columns:minmax(0,1fr)}}
 </style>
 </head>
 <body>
@@ -708,10 +792,10 @@ h1{font-size:1.3rem;color:#f0f6fc;margin-bottom:5px}
   <a class="trig" href="https://github.com/${REPO}/actions/workflows/monitor.yml" target="_blank" rel="noopener noreferrer" title="Abre a página do workflow no GitHub Actions — clique em &quot;Run workflow&quot; para disparar a coleta Enjoei (nuvem)">
     ▶ Disparar Enjoei <span class="tip">(GitHub Actions)</span>
   </a>
-  <button type="button" class="trig" data-command="${e(triggerCommands.olx)}" onclick="copyTrigger(this, this.dataset.command)" title="Copia um comando PowerShell com caminho absoluto para rodar o OLX localmente (não roda em CI)">
+  <button type="button" class="trig" data-command="${e(triggerCommands.olx)}" onclick="copyTrigger(this, this.dataset.command)" title="Copia um comando PowerShell para rodar o OLX localmente (não roda em CI)">
     ▶ Disparar OLX <span class="tip">(copia comando local)</span>
   </button>
-  <button type="button" class="trig" data-command="${e(triggerCommands.mercadoLivre)}" onclick="copyTrigger(this, this.dataset.command)" title="Copia um comando PowerShell com caminho absoluto para rodar o Mercado Livre localmente (usa perfil autenticado do navegador)">
+  <button type="button" class="trig" data-command="${e(triggerCommands.mercadoLivre)}" onclick="copyTrigger(this, this.dataset.command)" title="Copia um comando PowerShell para rodar o Mercado Livre localmente (usa perfil autenticado do navegador)">
     ▶ Disparar Mercado Livre <span class="tip">(copia comando local)</span>
   </button>
 </div>
@@ -730,12 +814,11 @@ function copyTrigger(btn, cmd) {
   }
 }
 </script>
+${highlightsHtml}
 <div class="updates">
 ${chipsHtml}
 </div>
-<div class="health-grid">
-${healthHtml}
-</div>
+${healthPanelHtml}
 <div class="ops">
   <section><h2>Preços acompanhados</h2><ul>${insightsHtml}</ul></section>
   <section><h2>Notificações</h2><ul>${notificationsHtml}</ul><button type="button" class="trig" data-command="${e(triggerCommands.notificacoes)}" onclick="copyTrigger(this, this.dataset.command)">Gerenciar pendências <span class="tip">(copia comando)</span></button><p class="hint">Use <code>--retry ID</code> ou <code>--discard ID</code> depois de listar a fila.</p></section>
@@ -743,6 +826,7 @@ ${healthHtml}
 <div class="grid">
 ${cardsHtml}
 </div>
+${emptyCardsHtml}
 </body>
 </html>`;
 }
@@ -754,6 +838,17 @@ function platformsOf(dpath) {
   if (dpath === "data/enjoei" || dpath === "data/enjoei-notebooks") return ["enjoei"];
   if (dpath.startsWith("data/mercadolivre-")) return ["mercadolivre"];
   return ["olx", "enjoei"];
+}
+
+function renderHighlight(item) {
+  const titleHtml = item.url
+    ? `<a href="${e(item.url)}" target="_blank" rel="noopener noreferrer">${e(item.title)}</a>`
+    : e(item.title);
+  const kind = item.isPrice ? "Preço" : "Novo";
+  const value = item.isPrice && item.priceFrom && item.priceTo
+    ? priceChangeHtml(item)
+    : item.price ? `<span class="ip">${e(item.price)}</span>` : "";
+  return `<li class="highlight-item"><span class="highlight-kind ${item.isPrice ? "price" : "new"}">${kind}</span><span class="highlight-title">${titleHtml}<small>${e(item.source)} · ${e(item.runLabel ?? "hoje")}</small></span>${value}</li>`;
 }
 
 function renderSection(title, sub, reports, dpath, stampInfo) {
@@ -777,7 +872,7 @@ function renderCard(r, dpath, showSpecs) {
     ? `<span class="badge bn">${r.current ? "" : "+"}${r.newCount} ${r.current ? "ativo" : "novo"}${r.newCount > 1 ? "s" : ""}</span>`
     : "";
   const bp = r.priceCount > 0 ? `<span class="badge bp">${r.priceCount} preço${r.priceCount > 1 ? "s" : ""}</span>` : "";
-  const bw = r.partial ? `<span class="badge bw">parcial</span>` : "";
+  const bw = r.partial ? `<span class="badge bw" title="A coleta terminou, mas parte dos termos ou itens não pôde ser confirmada.">cobertura parcial</span>` : "";
   const rows = [
     ...r.newItems.map((i) => renderRow(i, false, showSpecs)),
     ...r.priceItems.map((i) => renderRow(i, true, showSpecs)),
@@ -799,8 +894,8 @@ function priceDelta(priceFrom, priceTo) {
   const to = parseBrlPrice(priceTo);
   if (from == null || to == null || from === to) return "";
   const up = to > from;
-  const abs = Math.abs(to - from).toLocaleString("pt-BR");
-  return `<span class="delta ${up ? "up" : "down"}" title="${up ? "subiu" : "desceu"}">${up ? "+" : "-"} R$ ${abs}</span>`;
+  const abs = Math.abs(to - from);
+  return `<span class="delta ${up ? "up" : "down"}" title="${up ? "subiu" : "desceu"}">${up ? "+" : "-"} ${formatBrlPrice(abs)}</span>`;
 }
 
 // Bloco de preco para uma mudanca: linha "de → para" com a diferenca embaixo.
@@ -835,11 +930,7 @@ function renderMachineRow(item, isPrice) {
     <span class="spec">CPU <b>${e(m.cpu)}</b></span>
     <span class="spec">RAM <b>${e(m.ram)}</b></span>
     <span class="spec">SSD <b>${e(m.ssd)}</b></span>
-    <span class="spec">GPU <b>${e(gpu)}</b></span>
+  <span class="spec">GPU <b>${e(gpu)}</b></span>
   </div>
 </div>`;
-}
-
-function formatPrice(value) {
-  return Number(value).toLocaleString("pt-BR");
 }

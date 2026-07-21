@@ -8,6 +8,7 @@ import assert from "node:assert/strict";
 
 import {
   parseBrlPrice,
+  formatBrlPrice,
   extractRamGb,
   extractStorageGb,
   extractGpuLabel,
@@ -28,6 +29,11 @@ describe("parseBrlPrice", () => {
   test("sem centavos", () => assert.equal(parseBrlPrice("R$ 3.500"), 3500));
   test("sem espaço e sem separador de milhar", () => assert.equal(parseBrlPrice("R$3500"), 3500));
   test("valor alto com dois separadores", () => assert.equal(parseBrlPrice("R$ 15.899,00"), 15899));
+  test("preserva centavos com uma ou duas casas", () => {
+    assert.equal(parseBrlPrice("R$ 149,9"), 149.9);
+    assert.equal(parseBrlPrice("R$ 149,90"), 149.9);
+  });
+  test("formata sempre com duas casas decimais", () => assert.equal(formatBrlPrice(2039), "R$ 2.039,00"));
   test("string vazia retorna null", () => assert.equal(parseBrlPrice(""), null));
   test("sem símbolo retorna null", () => assert.equal(parseBrlPrice("3500"), null));
   test("null retorna null", () => assert.equal(parseBrlPrice(null), null));
@@ -410,7 +416,7 @@ describe("parseReport", () => {
   test("newItems — Enjoei Notebooks report", () => {
     const { newItems } = parseReport(enjoeiNbReport);
     assert.equal(newItems.length, 2);
-    assert.equal(newItems[0].price, "R$ 2.000");
+    assert.equal(newItems[0].price, "R$ 2.000,00");
     assert.ok(newItems[0].url?.includes("enjoei.com.br"));
   });
   test("relatório vazio retorna zeros", () => {
@@ -451,11 +457,11 @@ describe("parseReport", () => {
     const { priceItems, priceCount } = parseReport(olxReportAcima10k);
     assert.equal(priceCount, 1);
     assert.equal(priceItems.length, 1);
-    assert.equal(priceItems[0].priceTo, "R$ 8.499");
+    assert.equal(priceItems[0].priceTo, "R$ 8.499,00");
   });
   test("itens até R$ 10 mil são mantidos (novos)", () => {
     const { newItems, newCount } = parseReport(olxReportAcima10k);
     assert.equal(newCount, 1);
-    assert.equal(newItems[0].price, "R$ 7.500");
+    assert.equal(newItems[0].price, "R$ 7.500,00");
   });
 });

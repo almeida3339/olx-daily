@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { commitMonitorRun, readLatestCommittedReport, readLatestValidSnapshot, writeJsonAtomic, writeTextAtomic } from "../scripts/lib/monitor-runtime.mjs";
+import { commitMonitorRun, pruneMonitorArtifacts, readLatestCommittedReport, readLatestValidSnapshot, sanitizeArtifactText, writeJsonAtomic, writeTextAtomic } from "../scripts/lib/monitor-runtime.mjs";
 
 test("I/O atomico grava snapshot validado e texto", async () => {
   const root = await fs.mkdtemp(path.join(os.tmpdir(), "monitor-runtime-"));
@@ -48,4 +48,26 @@ test("item malformado e separado em quarentena sem invalidar a rodada", async ()
   assert.equal(result.snapshot.items.length, 1);
   assert.equal(result.invalidItems.length, 1);
   assert.equal(result.snapshot.run.quarantined_item_count, 1);
+});
+
+test("artefatos publicados não preservam caminhos locais do Chrome", () => {
+  const value = sanitizeArtifactText("C:\\Users\\docra\\Downloads\\olx-daily\\.chrome-olx-profile --user-data-dir=C:\\Users\\docra\\perfil");
+  assert.doesNotMatch(value, /C:\\Users\\docra/);
+  assert.match(value, /redacted-local-path/);
+  assert.match(value, /--user-data-dir=\[redacted\]/);
+});
+
+test("retencao remove artefatos antigos sem tocar no ponteiro atual", async () => {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "monitor-runtime-retention-"));
+  for (const runId of ["2026-07-12T12-00-00-000Z", "2026-07-13T12-00-00-000Z", "2026-07-14T12-00-00-000Z"]) {
+    await commitMonitorRun(root, {
+      runId,
+      snapshot: { schema_version: 2, items: [{ id: runId, url: `https://example.com/${runId}`, status: "active" }] },
+      report: `# ${runId}\n`,
+    });
+  }
+  await pruneMonitorArtifacts(root, { keepRuns: 2 });
+  await assert.rejects(fs.stat(path.join(root, "runs", "2026-07-12T12-00-00-000Z")));
+  await assert.rejects(fs.stat(path.join(root, "snapshot-2026-07-12T12-00-00-000Z.json")));
+  assert.equal((await readLatestValidSnapshot(root)).manifest.run_id, "2026-07-14T12-00-00-000Z");
 });

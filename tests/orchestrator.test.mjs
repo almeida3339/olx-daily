@@ -162,6 +162,7 @@ test.describe("Orquestrador - Integração e Propagação de Erros", () => {
   test("erros de notificacao sao enfileirados em pending_failures e sanitizados", async (t) => {
     const runCommandFn = t.mock.fn(async () => Promise.resolve());
     const sendEmailFn = t.mock.fn(async () => Promise.resolve());
+    const warnings = t.mock.method(console, "warn");
     const sendWhatsAppFn = t.mock.fn(async () => {
       throw new Error("CallMeBot falhou na URL https://api.callmebot.com/whatsapp.php?phone=55419999&apikey=SECRET_KEY");
     });
@@ -193,6 +194,8 @@ test.describe("Orquestrador - Integração e Propagação de Erros", () => {
     assert.doesNotMatch(pending[0].error, /SECRET_KEY/);
     assert.doesNotMatch(pending[0].error, /55419999/);
     assert.match(pending[0].error, /\[redacted\]/);
+    const warningText = warnings.mock.calls.map((call) => String(call.arguments[0])).join("\n");
+    assert.doesNotMatch(warningText, /SECRET_KEY|55419999/);
   });
 
   test("se houver falha de monitor, dry-run define exitCode = 1 sem fazer I/O", async (t) => {

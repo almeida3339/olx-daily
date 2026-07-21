@@ -5,15 +5,23 @@
 import { normalizeMonitorText } from "./monitor-core.mjs";
 
 /**
- * Parse a BRL price string.
- * "R$ 3.500,00" → 3500  |  null/empty → null
+ * Parse a BRL price string, preserving centavos.
+ * "R$ 3.500,00" → 3500  |  "R$ 149,90" → 149.9  |  null/empty → null
  */
 export function parseBrlPrice(text) {
   const raw = (text ?? "").toString();
-  const m = raw.match(/R\$\s*([\d\.]+)(?:,\d{2})?/);
+  const m = raw.match(/R\$\s*([\d\.]+)(?:,(\d{1,2}))?/);
   if (!m) return null;
-  const n = Number(m[1].replace(/\./g, ""));
+  const integer = Number(m[1].replace(/\./g, ""));
+  const cents = m[2] ? Number(`0.${m[2].padEnd(2, "0")}`) : 0;
+  const n = integer + cents;
   return Number.isFinite(n) ? n : null;
+}
+
+export function formatBrlPrice(value) {
+  const number = typeof value === "number" ? value : parseBrlPrice(value);
+  if (!Number.isFinite(number)) return "";
+  return `R$ ${number.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
 /**

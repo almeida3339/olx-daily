@@ -1,11 +1,12 @@
 import path from "node:path";
 import { classifyMonitorError } from "./monitor-errors.mjs";
+import { MONITOR_LABELS } from "./monitor-labels.mjs";
 import { readMonitorHistory, summarizeMonitorHistory } from "./monitor-history.mjs";
 import { readJsonValidated, readLatestValidSnapshot, timestampFromArtifactName } from "./monitor-runtime.mjs";
 
 const HOUR = 60 * 60 * 1000;
 
-export const monitorHealthSources = [
+const monitorHealthSourceDefinitions = [
   ["olx", "OLX Notebooks", 24 * HOUR],
   ["enjoei-notebooks", "Enjoei Notebooks", 24 * HOUR],
   ["enjoei", "Enjoei Tênis", 24 * HOUR],
@@ -27,6 +28,8 @@ export const monitorHealthSources = [
   ["mercadolivre-tenis-42", "ML Tênis 42", 7 * 24 * HOUR],
   ["mercadolivre-oled-monitores", "ML Monitores OLED", 7 * 24 * HOUR],
 ];
+
+export const monitorHealthSources = monitorHealthSourceDefinitions.map(([id, label, maxAgeMs]) => [id, MONITOR_LABELS[id] ?? label, maxAgeMs]);
 
 export async function buildMonitorHealth(root, { now = new Date() } = {}) {
   const sources = [];

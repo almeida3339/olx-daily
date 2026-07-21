@@ -77,7 +77,7 @@ const CALLMEBOT_APIKEY   = process.env.CALLMEBOT_APIKEY;
 import { fileURLToPath as urlToPath } from "node:url";
 const isMain = process.argv[1] === urlToPath(import.meta.url);
 if (isMain) {
-  main().catch((err) => { console.error(`Falha geral: ${err.message}`); process.exitCode = 1; });
+  main().catch((err) => { console.error(`Falha geral: ${sanitizeErrorMessage(err?.message ?? err)}`); process.exitCode = 1; });
 }
 
 export async function main({
@@ -168,17 +168,18 @@ export async function main({
         logger.info("monitor_succeeded", { source: name });
         continue;
       }
-      if (name === "olx") { console.error(`OLX falhou: ${result.reason.message}`); errors.push(`OLX: ${result.reason.message}`); }
-      if (name === "enjoei-tenis") { console.error(`Enjoei tênis falhou: ${result.reason.message}`); errors.push(`Enjoei tênis: ${result.reason.message}`); }
-      if (name === "enjoei-notebooks") { console.error(`Enjoei NB falhou: ${result.reason.message}`); errors.push(`Enjoei NB: ${result.reason.message}`); }
-      if (name === "dockstations") { console.error(`Dockstations falhou: ${result.reason.message}`); errors.push(`Dockstations: ${result.reason.message}`); }
-      if (name === "fitbit") { console.error(`Fitbit falhou: ${result.reason.message}`); errors.push(`Fitbit: ${result.reason.message}`); }
-      if (name === "lifefactory") { console.error(`Lifefactory falhou: ${result.reason.message}`); errors.push(`Lifefactory: ${result.reason.message}`); }
-      if (name === "tela-book3") { console.error(`Tela Book3 falhou: ${result.reason.message}`); errors.push(`Tela Book3: ${result.reason.message}`); }
-      if (name === "melanger") { console.error(`Melanger falhou: ${result.reason.message}`); errors.push(`Melanger: ${result.reason.message}`); }
-      if (name === "buds4-pro") { console.error(`Galaxy Buds4 Pro falhou: ${result.reason.message}`); errors.push(`Galaxy Buds4 Pro: ${result.reason.message}`); }
-      if (name === "oura") { console.error(`Oura Ring 5 falhou: ${result.reason.message}`); errors.push(`Oura Ring 5: ${result.reason.message}`); }
-      if (name === "oled-monitores") { console.error(`Monitores OLED falhou: ${result.reason.message}`); errors.push(`Monitores OLED: ${result.reason.message}`); }
+      const monitorError = sanitizeErrorMessage(result.reason?.message ?? result.reason);
+      if (name === "olx") { console.error(`OLX falhou: ${monitorError}`); errors.push(`OLX: ${monitorError}`); }
+      if (name === "enjoei-tenis") { console.error(`Enjoei tênis falhou: ${monitorError}`); errors.push(`Enjoei tênis: ${monitorError}`); }
+      if (name === "enjoei-notebooks") { console.error(`Enjoei NB falhou: ${monitorError}`); errors.push(`Enjoei NB: ${monitorError}`); }
+      if (name === "dockstations") { console.error(`Dockstations falhou: ${monitorError}`); errors.push(`Dockstations: ${monitorError}`); }
+      if (name === "fitbit") { console.error(`Fitbit falhou: ${monitorError}`); errors.push(`Fitbit: ${monitorError}`); }
+      if (name === "lifefactory") { console.error(`Lifefactory falhou: ${monitorError}`); errors.push(`Lifefactory: ${monitorError}`); }
+      if (name === "tela-book3") { console.error(`Tela Book3 falhou: ${monitorError}`); errors.push(`Tela Book3: ${monitorError}`); }
+      if (name === "melanger") { console.error(`Melanger falhou: ${monitorError}`); errors.push(`Melanger: ${monitorError}`); }
+      if (name === "buds4-pro") { console.error(`Galaxy Buds4 Pro falhou: ${monitorError}`); errors.push(`Galaxy Buds4 Pro: ${monitorError}`); }
+      if (name === "oura") { console.error(`Oura Ring 5 falhou: ${monitorError}`); errors.push(`Oura Ring 5: ${monitorError}`); }
+      if (name === "oled-monitores") { console.error(`Monitores OLED falhou: ${monitorError}`); errors.push(`Monitores OLED: ${monitorError}`); }
       logger.error("monitor_failed", result.reason, { source: name });
     }
   }
@@ -192,7 +193,7 @@ export async function main({
     ? parsedReportMinTime
     : (skipMonitors ? null : runStart);
   const enjoeiOn = !onlyOlx && !onlyMercadoLivre && !skipEnjoei;
-  const [olxStd, enjoeiReport, enjoeiNbStd, dockReport, fitbitReport, lifefactoryReport, telaBook3Report, melangerReport, buds4ProReport, ouraReport] = await Promise.all([
+  const [olxStd, enjoeiReport, enjoeiNbStd, dockReport, fitbitReport, lifefactoryReport, telaBook3Report, melangerReport, buds4ProReport, ouraReport, oledMonitoresReport] = await Promise.all([
     skipOlx || onlyMercadoLivre ? null : readLatestReport(OLX_DIR, reportMinTime).catch(() => null),
     enjoeiOn         ? readLatestReport(ENJOEI_DIR, reportMinTime).catch(() => null) : null,
     enjoeiOn         ? readLatestReport(ENJOEI_NOTEBOOKS_DIR, reportMinTime).catch(() => null) : null,
@@ -203,6 +204,7 @@ export async function main({
     skipMelanger || onlyMercadoLivre     ? null : readLatestReport(MELANGER_DIR, reportMinTime).catch(() => null),
     skipBuds4Pro || onlyMercadoLivre     ? null : readLatestReport(BUDS4PRO_DIR, reportMinTime).catch(() => null),
     skipOura || onlyMercadoLivre         ? null : readLatestReport(OURA_DIR, reportMinTime).catch(() => null),
+    skipOledMonitores || onlyMercadoLivre ? null : readLatestReport(OLED_MONITORES_DIR, reportMinTime).catch(() => null),
   ]);
 
   // Cada fonte conta itens NOVOS e ALTERAÇÕES DE PREÇO (antes só contava novos do range padrão).
@@ -217,6 +219,7 @@ export async function main({
     { label: "Melanger",         report: melangerReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,                  newSec: "## Novos produtos",  priceSec: "## Mudanças de preço" },
     { label: "Galaxy Buds4 Pro", report: buds4ProReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,                  newSec: "## Novos produtos",  priceSec: "## Mudanças de preço" },
     { label: "Oura Ring 5",      report: ouraReport,   newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,                    newSec: "## Novos produtos",  priceSec: "## Mudanças de preço" },
+    { label: "Monitores OLED",   report: oledMonitoresReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,             newSec: "## Novos produtos",  priceSec: "## Mudanças de preço" },
   ]).map((s) => ({
     ...s,
     newCount:   extractNewCount(s.report, s.newRe),
@@ -329,10 +332,10 @@ export async function main({
 
   if (sendingEmail) {
     if (emailResult.status === "fulfilled") console.log(`Email enviado para ${NOTIFY_TO}.`);
-    else console.warn(`Email não enviado: ${emailResult.reason?.message}`);
+    else console.warn(`Email não enviado: ${sanitizeErrorMessage(emailResult.reason?.message)}`);
   }
   if (waResult.status === "fulfilled") console.log("WhatsApp enviado.");
-  else console.warn(`WhatsApp não enviado: ${waResult.reason?.message}`);
+  else console.warn(`WhatsApp não enviado: ${sanitizeErrorMessage(waResult.reason?.message)}`);
 
   const priorIdsInMessage = priorPending.map(f => f.id);
   const newAcks = delivered ? priorIdsInMessage : [];
@@ -364,9 +367,9 @@ export async function main({
     now: runNow,
     sendingEmail,
     email: sendingEmail
-      ? { ok: emailResult.status === "fulfilled", error: emailResult.reason?.message }
+      ? { ok: emailResult.status === "fulfilled", error: sanitizeErrorMessage(emailResult.reason?.message) }
       : undefined,
-    whatsapp: { ok: waResult.status === "fulfilled", error: waResult.reason?.message },
+    whatsapp: { ok: waResult.status === "fulfilled", error: sanitizeErrorMessage(waResult.reason?.message) },
     pendingFailures: finalPending,
     acknowledgedFailureIds: finalAcks,
     notificationOutbox,
@@ -414,7 +417,7 @@ async function writeDeliveryStatus(status) {
       await fsApi.writeFile(filePath, JSON.stringify(status, null, 2), "utf8");
     }
   } catch (err) {
-    console.warn(`Não consegui gravar status de entrega: ${err.message}`);
+    console.warn(`Não consegui gravar status de entrega: ${sanitizeErrorMessage(err?.message ?? err)}`);
   }
 }
 
