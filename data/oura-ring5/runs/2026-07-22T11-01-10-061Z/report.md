@@ -1,11 +1,11 @@
-# Monitor Fitbit Air R$ 300,00–R$ 600,00 — 2026-06-17
+# Monitor Oura Ring 5 R$ 1.800,00–R$ 2.700,00 — 2026-07-22
 
 ## Resumo executivo
 - Novos produtos: **0**
 - Já vistos e ativos: **0**
 - Não vistos nesta rodada: **0**
 - Alterações de preço: **0**
-- Termos: fitbit air
+- Termos: oura ring
 
 ## Novos produtos
 - Nenhum.
