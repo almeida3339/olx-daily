@@ -1,11 +1,11 @@
-# Monitor Tela Galaxy Book3 até R$ 1.000,00 — 2026-06-18
+# Monitor Dockstations até R$ 500,00 — 2026-07-23
 
 ## Resumo executivo
 - Novos produtos: **0**
 - Já vistos e ativos: **0**
 - Não vistos nesta rodada: **0**
 - Alterações de preço: **0**
-- Termos: BA96-08462A
+- Termos: SD25TB4, WD22TB4
 
 ## Novos produtos
 - Nenhum.

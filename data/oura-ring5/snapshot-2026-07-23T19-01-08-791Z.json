@@ -1,29 +1,30 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-06-17T19:00:54.066Z",
+  "generated_at": "2026-07-23T19:01:08.791Z",
   "run": {
-    "date": "2026-06-17",
+    "date": "2026-07-23",
     "timezone": "UTC",
-    "id": "fitbit-air",
-    "label": "Fitbit Air",
-    "partial": true,
+    "id": "oura-ring-5",
+    "label": "Oura Ring 5",
+    "partial": false,
     "errors": [],
     "scheduled_coverage": [
-      "Enjoei:fitbit air"
+      "Enjoei:oura ring"
     ],
     "successful_coverage": [
-      "Enjoei:fitbit air"
+      "Enjoei:oura ring"
     ],
     "failed_coverage": [],
     "configured_coverage": [
-      "Enjoei:fitbit air",
-      "OLX:fitbit air"
-    ]
+      "Enjoei:oura ring",
+      "OLX:oura ring"
+    ],
+    "quarantined_item_count": 0
   },
   "filters": {
     "price_brl": {
-      "min": 300,
-      "max": 600
+      "min": 1800,
+      "max": 2700
     },
     "size_ml": {
       "min": null,
@@ -32,7 +33,7 @@
   },
   "items": [],
   "price_range_brl": {
-    "min": 300,
-    "max": 600
+    "min": 1800,
+    "max": 2700
   }
 }
