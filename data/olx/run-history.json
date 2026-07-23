@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-22T12:46:09.389Z",
+  "updated_at": "2026-07-23T11:48:10.075Z",
   "runs": [
     {
       "run_id": "2026-07-14T13-09-48-321Z",
@@ -73,6 +73,21 @@
       "metadata": {
         "source": "olx-notebooks",
         "collected_count": 40,
+        "transport": "cdp",
+        "quarantined_item_count": 0
+      }
+    },
+    {
+      "run_id": "2026-07-23T11-47-47-777Z",
+      "committed_at": "2026-07-23T11:48:10.059Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": null,
+      "item_count": 110,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "olx-notebooks",
+        "collected_count": 39,
         "transport": "cdp",
         "quarantined_item_count": 0
       }
