@@ -1,4 +1,4 @@
-# Monitor Fitbit Air R$ 300,00–R$ 600,00 — 2026-06-18
+# Monitor Fitbit Air R$ 300,00–R$ 600,00 — 2026-07-24
 
 ## Resumo executivo
 - Novos produtos: **0**

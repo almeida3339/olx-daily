@@ -1,12 +1,12 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-06-18T11:00:56.484Z",
+  "generated_at": "2026-07-24T11:01:41.331Z",
   "run": {
-    "date": "2026-06-18",
+    "date": "2026-07-24",
     "timezone": "UTC",
     "id": "fitbit-air",
     "label": "Fitbit Air",
-    "partial": true,
+    "partial": false,
     "errors": [],
     "scheduled_coverage": [
       "Enjoei:fitbit air"
@@ -18,7 +18,8 @@
     "configured_coverage": [
       "Enjoei:fitbit air",
       "OLX:fitbit air"
-    ]
+    ],
+    "quarantined_item_count": 0
   },
   "filters": {
     "price_brl": {

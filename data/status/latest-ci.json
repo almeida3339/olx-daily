@@ -1,22 +1,11 @@
 {
-  "generated_at": "2026-07-23T19:01:06.823Z",
+  "generated_at": "2026-07-24T11:01:40.854Z",
   "source": "ci",
   "delivery": {
-    "email": "failed",
-    "email_error": "Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to\n535 5.7.8  https://support.google.com/mail/?[redacted] d9443c01a7336-2cf8efa388fsm39094345ad.12 - gsmtp",
+    "email": "skipped",
     "whatsapp": "sent"
   },
-  "pending_failures": [
-    {
-      "id": "4857c7d4-3f9f-4c43-a31f-dfd6fb672704",
-      "fingerprint": "fp-5e69a08730ecfad005801016",
-      "channel": "email",
-      "first_seen_at": "2026-07-23T19:01:06.823Z",
-      "last_seen_at": "2026-07-23T19:01:06.823Z",
-      "error": "Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to\n535 5.7.8  https://support.google.com/mail/?[redacted] d9443c01a7336-2cf8efa388fsm39094345ad.12 - gsmtp",
-      "count": 1
-    }
-  ],
+  "pending_failures": [],
   "acknowledged_failure_ids": [
     "989d7e3b-36d6-48c2-b9c5-8aee4d454fcd",
     "12324b29-8f6b-4842-8855-b57d4d66f06d",
@@ -37,7 +26,8 @@
     "10f52fc4-8975-4215-82d1-8bdbd8dc115e",
     "5e74ffc0-1533-4149-b6c9-8e6e918e471c",
     "0ee031e9-6b54-4f75-af3c-77fc8c69ce90",
-    "298199a1-615d-4a25-b289-78bd5784d74b"
+    "298199a1-615d-4a25-b289-78bd5784d74b",
+    "4857c7d4-3f9f-4c43-a31f-dfd6fb672704"
   ],
   "notification_outbox": [
     {
@@ -232,7 +222,6 @@
       "sending_at": null
     }
   ],
-  "email": "failed",
-  "email_error": "Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to\n535 5.7.8  https://support.google.com/mail/?[redacted] d9443c01a7336-2cf8efa388fsm39094345ad.12 - gsmtp",
+  "email": "skipped",
   "whatsapp": "sent"
 }
