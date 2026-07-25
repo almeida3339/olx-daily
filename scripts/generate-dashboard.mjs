@@ -628,8 +628,8 @@ function buildHtml({ health, priceInsights, olx, enjoeiNb, mercadoLivre, mercado
 
   // Topo: apenas dois chips por plataforma (OLX, Enjoei), cada um agregando a
   // coleta mais recente entre todas as buscas daquela plataforma. As watchlists
-  // combinadas (Dockstations, Fitbit, etc.) contam para as duas. O timestamp de
-  // cada busca específica vai dentro do próprio card (renderSection).
+  // combinadas (Dockstations, Fitbit, etc.) ficam de fora — ver platformsOf(). O
+  // timestamp de cada busca específica vai dentro do próprio card (renderSection).
   const highlightItems = [];
   const seenHighlights = new Set();
   for (const source of sources) {
@@ -825,13 +825,21 @@ ${emptyCardsHtml}
 </html>`;
 }
 
-// Quais plataformas cada busca usa (para os chips agregados do topo).
-// Combinadas (dockstations/fitbit/lifefactory/tela/melanger) contam para as duas.
+// Quais plataformas cada busca representa nos chips agregados do topo.
+//
+// As buscas combinadas (dockstations/fitbit/lifefactory/tela/melanger/buds/oura/
+// oled) NAO alimentam chip nenhum. Elas cobrem OLX+Enjoei quando rodam localmente,
+// mas no CI rodam so o Enjoei (SKIP_OLX=1) — e, ao contarem como "olx", faziam o
+// chip do OLX exibir o horario de uma rodada que so tinha coletado Enjoei. Foi
+// assim que o painel anunciou "OLX 25/07 08:01" enquanto a coleta real do OLX
+// estava parada desde 20/07. Cada plataforma ja tem uma busca dedicada que roda na
+// mesma passada das combinadas (data/olx no local, data/enjoei* no CI), entao
+// restringir os chips a elas mantem o horario honesto sem perder informacao.
 function platformsOf(dpath) {
   if (dpath === "data/olx") return ["olx"];
   if (dpath === "data/enjoei" || dpath === "data/enjoei-notebooks") return ["enjoei"];
   if (dpath.startsWith("data/mercadolivre-")) return ["mercadolivre"];
-  return ["olx", "enjoei"];
+  return [];
 }
 
 function renderHighlight(item) {

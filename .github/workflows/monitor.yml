@@ -102,9 +102,14 @@ jobs:
           # (2) Publica. A cada tentativa: sincroniza com origin usando -X theirs
           # (resolve o index.html sem travar em conflito — era a causa da falha do
           # push das 16h), regenera o dashboard com TUDO e empurra.
+          # merge.renames=false: a rotacao de snapshots (apaga o antigo, grava um novo
+          # com conteudo parecido) faz o git detectar rename. CI e local renomeiam o
+          # MESMO arquivo antigo para nomes diferentes, gerando conflito rename/rename
+          # — que e de arvore, e -X theirs so resolve conteudo. Travou 8 rodadas locais
+          # de OLX entre 21/07 e 25/07.
           for i in 1 2 3 4; do
             git fetch origin
-            if ! git -c core.editor=true rebase -X theirs origin/main; then
+            if ! git -c merge.renames=false -c core.editor=true rebase -X theirs origin/main; then
               git rebase --abort || true
               echo "Rebase falhou (tentativa $i); nova tentativa."
               sleep $((i * 5)); continue

@@ -9,6 +9,21 @@ $ErrorActionPreference = "Stop"
 
 $root = Resolve-Path (Join-Path $PSScriptRoot "..")
 
+# A task agendada roda com -WindowStyle Hidden: sem transcript, toda a saida (e
+# qualquer erro) se perde. Foi por isso que 8 rodadas seguidas morreram no rebase
+# entre 21/07 e 25/07 sem deixar rastro nenhum - o unico sinal era um exit code 1
+# (NAO use travessao/acento neste arquivo: ele nao tem BOM, o PowerShell 5.1 le
+# como CP1252 e o byte 0x94 do travessao vira aspas, quebrando o parser.)
+# no Agendador de Tarefas. Os logs ficam em logs/ (ja coberto por *.log no
+# .gitignore) e sao podados para as 30 rodadas mais recentes.
+$logDir = Join-Path $root "logs"
+if (-not (Test-Path $logDir)) { New-Item -ItemType Directory -Path $logDir | Out-Null }
+$logFile = Join-Path $logDir ("run-local-olx-{0}.log" -f (Get-Date -Format "yyyy-MM-dd_HHmmss"))
+try { Start-Transcript -Path $logFile | Out-Null } catch {}
+Get-ChildItem $logDir -Filter "run-local-olx-*.log" -ErrorAction SilentlyContinue |
+  Sort-Object LastWriteTime -Descending | Select-Object -Skip 30 |
+  Remove-Item -Force -ErrorAction SilentlyContinue
+
 # A tarefa das 07:00 costuma rodar logo apos o PC ligar, quando o Wi-Fi/rede
 # ainda nao conectou. Sem isso, o primeiro acesso de rede (git fetch / scraping)
 # falharia de imediato. Aqui aguardamos a conectividade ficar disponivel (ate
@@ -76,10 +91,21 @@ try {
   # resolvemos qualquer conflito automaticamente com -X theirs (os dados ficam em
   # pastas separadas — data/olx vs data/enjoei* — e nao conflitam entre si).
   # Qualquer falha inesperada: abortar e sair. NUNCA commitar com rebase pela metade.
+  #
+  # merge.renames=false e OBRIGATORIO aqui. Cada rodada apaga o snapshot antigo e
+  # grava um novo, com nome diferente e conteudo parecido - a deteccao de rename do
+  # git enxerga isso como "snapshot-<antigo>.json renomeado para snapshot-<novo>.json".
+  # Como CI e local renomeiam o MESMO arquivo antigo para nomes diferentes, o git
+  # levanta conflito rename/rename, que e de ARVORE: -X theirs so resolve conteudo e
+  # nao cobre esse caso. O rebase entao abortava, o push nunca saia e as rodadas de
+  # OLX ficavam presas so no disco local (21/07 a 25/07 = 8 rodadas perdidas, sem
+  # nenhum rastro porque a task roda -WindowStyle Hidden e nao gravava log).
+  # Sem deteccao de rename, cada lado apenas adiciona/remove seus proprios arquivos
+  # em pastas que nao colidem, e o rebase casa limpo.
   git fetch origin
   if ($LASTEXITCODE -ne 0) { throw "git fetch falhou (exit $LASTEXITCODE)." }
 
-  git -c core.editor=true rebase -X theirs origin/main
+  git -c merge.renames=false -c core.editor=true rebase -X theirs origin/main
   if ($LASTEXITCODE -ne 0) {
     Write-Host "Rebase nao concluiu automaticamente — abortando para nao corromper o historico."
     git rebase --abort 2>$null
@@ -146,7 +172,7 @@ try {
     git fetch origin
     if ($LASTEXITCODE -ne 0) { Write-Host "fetch falhou (tentativa $attempt/4); nova tentativa."; Start-Sleep -Seconds 3; continue }
 
-    git -c core.editor=true rebase -X theirs origin/main
+    git -c merge.renames=false -c core.editor=true rebase -X theirs origin/main
     if ($LASTEXITCODE -ne 0) {
       git rebase --abort 2>$null
       $ErrorActionPreference = $prevEAP
@@ -194,4 +220,5 @@ try {
     (Get-Date -Format "o") | Set-Content (Join-Path $env:USERPROFILE ".monitor-olx-enjoei-last-run")
     Write-Host "Timestamp registrado: $(Get-Date -Format 'dd/MM HH:mm')"
   }
+  try { Stop-Transcript | Out-Null } catch {}
 }
