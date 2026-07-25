@@ -69,6 +69,12 @@ const GMAIL_USER         = process.env.GMAIL_USER;
 // espaço em branco torna a leitura robusta independentemente de como foi salva.
 const GMAIL_APP_PASSWORD = process.env.GMAIL_APP_PASSWORD?.replace(/\s+/g, "");
 const NOTIFY_TO          = process.env.NOTIFY_EMAIL_TO ?? GMAIL_USER;
+// Canal de email desativado a pedido do usuário (credencial SMTP vinha sendo
+// rejeitada — 535-5.7.8 — e enchendo a fila de pendências sem entregar nada).
+// Não removemos o código de envio: só paramos de enfileirar. Reativar é setar
+// NOTIFY_EMAIL_DISABLED=0 (ou remover a env var) depois de trocar a senha de
+// app do Gmail no secret GMAIL_APP_PASSWORD.
+const NOTIFY_EMAIL_DISABLED = process.env.NOTIFY_EMAIL_DISABLED !== "0";
 const CALLMEBOT_PHONE    = process.env.CALLMEBOT_PHONE;
 const CALLMEBOT_APIKEY   = process.env.CALLMEBOT_APIKEY;
 // As variáveis de linha de comando agora são interpretadas dinamicamente dentro de main()
@@ -272,7 +278,8 @@ export async function main({
 
   // WhatsApp sempre (heartbeat de execução).
   // Email quando há novos itens, alterações de preço ou erros (evita caixa cheia com confirmações vazias).
-  const sendingEmail = totalNew > 0 || totalPrice > 0 || errors.length > 0 || forceEmail;
+  // NOTIFY_EMAIL_DISABLED corta o canal inteiro, mesmo com --force-email.
+  const sendingEmail = !NOTIFY_EMAIL_DISABLED && (totalNew > 0 || totalPrice > 0 || errors.length > 0 || forceEmail);
 
   if (dryRun) {
     console.log("\n── DRY-RUN (nada enviado) ──");

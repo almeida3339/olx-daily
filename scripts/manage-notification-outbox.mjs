@@ -6,7 +6,8 @@ import { writeJsonAtomic } from "./lib/monitor-runtime.mjs";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
 const id = option("--retry") ?? option("--discard");
-const action = args.includes("--retry") ? "retry" : args.includes("--discard") ? "discard" : "list";
+const discardChannel = option("--discard-channel");
+const action = args.includes("--retry") ? "retry" : discardChannel ? "discard-channel" : args.includes("--discard") ? "discard" : "list";
 const source = option("--source") ?? "local";
 const filePath = path.join(root, "data", "status", `latest-${source}.json`);
 
@@ -18,6 +19,12 @@ if (action === "list") {
   for (const item of outbox) {
     console.log(`${item.id} | ${item.channel} | ${item.status} | tentativas: ${item.attempts ?? 0} | ${item.last_error ?? ""}`);
   }
+} else if (action === "discard-channel") {
+  const next = outbox.filter((item) => item.channel !== discardChannel);
+  const removed = outbox.length - next.length;
+  status.notification_outbox = next;
+  await save(status);
+  console.log(`${removed} notificacao(oes) do canal "${discardChannel}" descartada(s).`);
 } else if (!id) {
   throw new Error(`Use --${action} <id>.`);
 } else if (action === "retry") {
