@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-06-23T11:04:53.839Z",
+  "generated_at": "2026-07-27T10:29:04.388Z",
   "run": {
-    "date": "2026-06-23",
+    "date": "2026-07-27",
     "timezone": "America/Sao_Paulo",
     "id": "lifefactory",
     "label": "Lifefactory",
@@ -20,7 +20,8 @@
     "configured_coverage": [
       "Enjoei:lifefactory",
       "OLX:lifefactory"
-    ]
+    ],
+    "quarantined_item_count": 0
   },
   "filters": {
     "price_brl": {
@@ -39,13 +40,18 @@
       "title": "garrafa life factory pink 500 ml",
       "source": "Enjoei",
       "term": "lifefactory",
-      "price_brl": 70,
+      "price_brl": 60,
       "store_name": "Melissa",
       "status": "active",
       "first_seen": "2026-06-04",
-      "last_seen": "2026-06-23",
+      "last_seen": "2026-07-27",
       "out_of_scope_at": null,
-      "price_history": []
+      "price_history": [
+        {
+          "at": "2026-07-04T10:00:08.441Z",
+          "price_brl": 60
+        }
+      ]
     }
   ],
   "price_range_brl": {
