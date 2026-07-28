@@ -1,12 +1,12 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-06-25T11:00:53.391Z",
+  "generated_at": "2026-07-28T19:01:13.656Z",
   "run": {
-    "date": "2026-06-25",
+    "date": "2026-07-28",
     "timezone": "UTC",
     "id": "melanger",
     "label": "Melanger",
-    "partial": true,
+    "partial": false,
     "errors": [],
     "scheduled_coverage": [
       "Enjoei:melanger"
@@ -18,7 +18,8 @@
     "configured_coverage": [
       "Enjoei:melanger",
       "OLX:melanger"
-    ]
+    ],
+    "quarantined_item_count": 0
   },
   "filters": {
     "price_brl": {
