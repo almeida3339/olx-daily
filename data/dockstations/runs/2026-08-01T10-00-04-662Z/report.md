@@ -1,11 +1,11 @@
-# Monitor Melanger R$ 1.000,00–R$ 5.000,00 — 2026-06-29
+# Monitor Dockstations até R$ 500,00 — 2026-08-01
 
 ## Resumo executivo
 - Novos produtos: **0**
 - Já vistos e ativos: **0**
 - Não vistos nesta rodada: **0**
 - Alterações de preço: **0**
-- Termos: melanger
+- Termos: SD25TB4, WD22TB4
 
 ## Novos produtos
 - Nenhum.

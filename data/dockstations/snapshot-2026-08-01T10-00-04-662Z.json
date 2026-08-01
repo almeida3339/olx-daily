@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-06-29T10:51:44.480Z",
+  "generated_at": "2026-08-01T10:00:04.662Z",
   "run": {
-    "date": "2026-06-29",
+    "date": "2026-08-01",
     "timezone": "America/Sao_Paulo",
     "id": "dockstations",
     "label": "Dockstations",
@@ -11,28 +11,23 @@
     "scheduled_coverage": [
       "Enjoei:SD25TB4",
       "Enjoei:WD22TB4",
-      "Enjoei:40AY0090BR",
       "OLX:SD25TB4",
-      "OLX:WD22TB4",
-      "OLX:40AY0090BR"
+      "OLX:WD22TB4"
     ],
     "successful_coverage": [
       "Enjoei:SD25TB4",
       "Enjoei:WD22TB4",
-      "Enjoei:40AY0090BR",
       "OLX:SD25TB4",
-      "OLX:WD22TB4",
-      "OLX:40AY0090BR"
+      "OLX:WD22TB4"
     ],
     "failed_coverage": [],
     "configured_coverage": [
       "Enjoei:SD25TB4",
       "Enjoei:WD22TB4",
-      "Enjoei:40AY0090BR",
       "OLX:SD25TB4",
-      "OLX:WD22TB4",
-      "OLX:40AY0090BR"
-    ]
+      "OLX:WD22TB4"
+    ],
+    "quarantined_item_count": 0
   },
   "filters": {
     "price_brl": {
@@ -53,10 +48,10 @@
       "term": "40AY0090BR",
       "price_brl": 500,
       "location": "Maringá -  PR",
-      "status": "active",
+      "status": "out_of_scope",
       "first_seen": "2026-06-29",
       "last_seen": "2026-06-29",
-      "out_of_scope_at": null,
+      "out_of_scope_at": "2026-06-29T19:00:58.612Z",
       "price_history": [
         {
           "at": "2026-06-29T00:16:42.172Z",
