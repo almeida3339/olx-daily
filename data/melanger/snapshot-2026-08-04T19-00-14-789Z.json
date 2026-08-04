@@ -1,0 +1,61 @@
+{
+  "schema_version": 2,
+  "generated_at": "2026-08-04T19:00:14.789Z",
+  "run": {
+    "date": "2026-08-04",
+    "timezone": "America/Sao_Paulo",
+    "id": "melanger",
+    "label": "Melanger",
+    "partial": false,
+    "errors": [],
+    "scheduled_coverage": [
+      "Enjoei:melanger",
+      "OLX:melanger"
+    ],
+    "successful_coverage": [
+      "Enjoei:melanger",
+      "OLX:melanger"
+    ],
+    "failed_coverage": [],
+    "configured_coverage": [
+      "Enjoei:melanger",
+      "OLX:melanger"
+    ],
+    "quarantined_item_count": 0
+  },
+  "filters": {
+    "price_brl": {
+      "min": 1000,
+      "max": 5000
+    },
+    "size_ml": {
+      "min": null,
+      "max": null
+    }
+  },
+  "items": [
+    {
+      "id": "1523726806",
+      "url": "https://sp.olx.com.br/sao-paulo-e-regiao/eletro/eletroportateis-para-cozinha-e-limpeza/melanger-4-5kg-moinho-de-pedra-1523726806",
+      "title": "Melanger 4,5kg - moinho de pedra",
+      "source": "OLX",
+      "term": "melanger",
+      "price_brl": 2800,
+      "location": "São Paulo -  SP",
+      "status": "active",
+      "first_seen": "2026-08-04",
+      "last_seen": "2026-08-04",
+      "out_of_scope_at": null,
+      "price_history": [
+        {
+          "at": "2026-08-04T19:00:14.789Z",
+          "price_brl": 2800
+        }
+      ]
+    }
+  ],
+  "price_range_brl": {
+    "min": 1000,
+    "max": 5000
+  }
+}
