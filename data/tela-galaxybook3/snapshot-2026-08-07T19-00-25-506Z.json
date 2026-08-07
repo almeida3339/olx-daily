@@ -1,24 +1,27 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-07-06T19:01:13.016Z",
+  "generated_at": "2026-08-07T19:00:25.506Z",
   "run": {
-    "date": "2026-07-06",
-    "timezone": "UTC",
+    "date": "2026-08-07",
+    "timezone": "America/Sao_Paulo",
     "id": "tela-galaxy-book3",
     "label": "Tela Galaxy Book3",
-    "partial": true,
+    "partial": false,
     "errors": [],
     "scheduled_coverage": [
-      "Enjoei:BA96-08462A"
+      "Enjoei:BA96-08462A",
+      "OLX:BA96-08462A"
     ],
     "successful_coverage": [
-      "Enjoei:BA96-08462A"
+      "Enjoei:BA96-08462A",
+      "OLX:BA96-08462A"
     ],
     "failed_coverage": [],
     "configured_coverage": [
       "Enjoei:BA96-08462A",
       "OLX:BA96-08462A"
-    ]
+    ],
+    "quarantined_item_count": 0
   },
   "filters": {
     "price_brl": {
