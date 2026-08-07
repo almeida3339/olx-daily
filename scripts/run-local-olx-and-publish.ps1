@@ -2,12 +2,40 @@ param(
   [int]$MaxPerCpu = 12,
   [switch]$NoNotify,
   [switch]$NoPush,
-  [int]$WaitForInternetSeconds = 300
+  [int]$WaitForInternetSeconds = 300,
+  [switch]$Force,
+  [int]$CooldownHours = 3
 )
 
 $ErrorActionPreference = "Stop"
 
 $root = Resolve-Path (Join-Path $PSScriptRoot "..")
+
+# Trava de repeticao: as tarefas Monitor-OLX-0700/1600 repetem a cada 10 min por
+# 2h (retry de seguranca contra o PC acordar do modo suspenso bem na hora do
+# disparo, ver commit deste comentario). O Agendador nao sabe distinguir "ja deu
+# certo, pode parar" de "ainda nao rodou" - ele so repete cego. Sem esta trava,
+# uma rodada bem-sucedida as 07:00 disparava de novo as 07:10, 07:20... ate 09:00
+# (e o mesmo as 16h), rodando o monitor ~12x por gatilho em vez de 1x (visto em
+# 07/08: 6 rodadas completas no dia por causa disso). O cooldown usa o mesmo
+# marcador de sucesso que ja existia (.monitor-olx-enjoei-last-run) - se uma
+# rodada completa (monitor + publicacao) terminou ha menos de $CooldownHours,
+# esta e um no-op instantaneo. 3h cobre a janela de repeticao (2h) com folga sem
+# bloquear o proximo gatilho legitimo 9h depois. -Force ignora a trava (uso
+# manual deliberado, como preencher uma coleta que faltou).
+$lastRunMarker = Join-Path $env:USERPROFILE ".monitor-olx-enjoei-last-run"
+if (-not $Force -and (Test-Path $lastRunMarker)) {
+  try {
+    $lastRun = Get-Date (Get-Content $lastRunMarker -Raw)
+    $elapsedHours = ((Get-Date) - $lastRun).TotalHours
+    if ($elapsedHours -lt $CooldownHours) {
+      Write-Host "Ultima rodada completa ha $([math]::Round($elapsedHours,1))h (< ${CooldownHours}h) - pulando (provavel disparo repetido do Agendador). Use -Force para rodar mesmo assim."
+      exit 0
+    }
+  } catch {
+    Write-Host "Aviso: nao consegui ler o marcador de ultima rodada ($lastRunMarker); seguindo normalmente."
+  }
+}
 
 # A task agendada roda com -WindowStyle Hidden: sem transcript, toda a saida (e
 # qualquer erro) se perde. Foi por isso que 8 rodadas seguidas morreram no rebase
