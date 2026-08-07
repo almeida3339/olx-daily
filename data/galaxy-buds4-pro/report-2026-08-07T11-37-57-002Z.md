@@ -1,0 +1,14 @@
+# Monitor Galaxy Buds4 Pro R$ 500,00–R$ 1.000,00 — 2026-08-07
+
+## Resumo executivo
+- Novos produtos: **1**
+- Já vistos e ativos: **1**
+- Não vistos nesta rodada: **0**
+- Alterações de preço: **0**
+- Termos: galaxy buds4 pro
+
+## Novos produtos
+- R$ 890,00 — [OLX] Galaxy Buds 4 pró - ORIGINAL - torro (galaxy buds4 pro) — Balneário Camboriú -  SC — https://sc.olx.com.br/norte-de-santa-catarina/audio/fones-de-ouvido/galaxy-buds-4-pro-original-torro-1524347572
+
+## Já vistos e ativos
+- R$ 1.000,00 — [OLX] Galaxy Buds4 pro (galaxy buds4 pro) — Goiânia -  GO — https://go.olx.com.br/grande-goiania-e-anapolis/eletronicos-e-celulares/acessorios-de-celular/galaxy-buds4-pro-1520992621
