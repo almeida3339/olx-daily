@@ -1,11 +1,11 @@
-# Monitor Galaxy Buds4 Pro R$ 500,00–R$ 1.000,00 — 2026-07-11
+# Monitor Fitbit Air R$ 300,00–R$ 600,00 — 2026-08-10
 
 ## Resumo executivo
 - Novos produtos: **0**
 - Já vistos e ativos: **0**
 - Não vistos nesta rodada: **0**
 - Alterações de preço: **0**
-- Termos: galaxy buds4 pro
+- Termos: fitbit air
 
 ## Novos produtos
 - Nenhum.
