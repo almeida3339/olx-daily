@@ -1,11 +1,11 @@
-# Monitor Dockstations até R$ 500,00 — 2026-07-10
+# Monitor Lifefactory R$ 25,00–R$ 75,00 — 2026-08-10
 
 ## Resumo executivo
 - Novos produtos: **0**
 - Já vistos e ativos: **0**
 - Não vistos nesta rodada: **0**
 - Alterações de preço: **0**
-- Termos: SD25TB4, WD22TB4
+- Termos: lifefactory
 
 ## Novos produtos
 - Nenhum.
