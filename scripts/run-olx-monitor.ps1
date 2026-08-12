@@ -82,4 +82,21 @@ try {
   }
 } finally {
   Pop-Location
+
+  # Fecha o Chrome de debug ao final: ele ja e reciclado (morto e relancado do
+  # zero, -ForceCloseProfile) no INICIO de toda rodada, entao deixa-lo aberto
+  # entre rodadas nao acelera a proxima execucao em nada - so ocupa memoria o
+  # dia inteiro sem uso. Cookies/Cloudflare ficam salvos em disco no perfil
+  # (.chrome-olx-profile), nao na sessao do processo, entao fechar aqui nao
+  # perde nada. Pulado em -Foreground: quem pediu pra ver a janela
+  # provavelmente ainda quer olhar o Chrome depois que o script termina.
+  if (-not $Foreground) {
+    $olxUserDataDir = Join-Path $root ".chrome-olx-profile"
+    $needle = ("--user-data-dir=`"{0}`"" -f $olxUserDataDir).ToLowerInvariant()
+    Get-CimInstance Win32_Process -Filter "name='chrome.exe'" -ErrorAction SilentlyContinue |
+      Where-Object { $_.CommandLine -and $_.CommandLine.ToLowerInvariant().Contains($needle) } |
+      ForEach-Object {
+        try { Stop-Process -Id $_.ProcessId -Force -ErrorAction Stop } catch {}
+      }
+  }
 }
