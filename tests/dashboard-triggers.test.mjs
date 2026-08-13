@@ -7,7 +7,7 @@ test("comandos com raiz explícita usam caminhos absolutos e independem do diret
 
   assert.equal(
     commands.olx,
-    "node 'C:\\Monitor Local\\olx-daily\\scripts\\run-monitors-and-notify.mjs' --only-olx",
+    "& 'C:\\Monitor Local\\olx-daily\\scripts\\run-local-olx-and-publish.ps1'",
   );
   assert.equal(
     commands.mercadoLivre,

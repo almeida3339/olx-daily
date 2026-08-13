@@ -56,18 +56,24 @@ export function buildLocalTriggerCommands(root = null) {
   // sempre colado num PowerShell do Windows, então a junção é sempre por "\",
   // independente do SO onde esta função roda (ver bug do CI: testes passavam
   // no Windows local e falhavam no Ubuntu por causa disso).
+  // olx usa run-local-olx-and-publish.ps1 (nao o orquestrador puro
+  // run-monitors-and-notify.mjs): esse .ps1 e quem configura os diretorios de
+  // dados, espera a rede subir, publica via git e regenera o dashboard. O
+  // orquestrador sozinho so coleta - sem essas variaveis de ambiente, os dados
+  // caem no fallback (.codex/automations, fora do repo) e a pagina nunca
+  // atualiza, mesmo com o comando "funcionando" sem erro nenhum.
   if (!root) {
     const repoSetup = "$repo = $env:OLX_DAILY_REPO; if (-not $repo) { $repo = Join-Path $HOME 'Downloads\\olx-daily' }; ";
     const scriptPath = (name) => `(Join-Path $repo 'scripts\\${name}')`;
     return {
-      olx: `${repoSetup}node ${scriptPath("run-monitors-and-notify.mjs")} --only-olx`,
+      olx: `${repoSetup}& ${scriptPath("run-local-olx-and-publish.ps1")}`,
       mercadoLivre: `${repoSetup}& ${scriptPath("run-mercadolivre-and-publish.ps1")}`,
       notificacoes: `${repoSetup}node ${scriptPath("manage-notification-outbox.mjs")}`,
     };
   }
   const scriptPath = (name) => `${root.replace(/[\\/]+$/, "")}\\scripts\\${name}`.replace(/'/g, "''");
   return {
-    olx: `node '${scriptPath("run-monitors-and-notify.mjs")}' --only-olx`,
+    olx: `& '${scriptPath("run-local-olx-and-publish.ps1")}'`,
     mercadoLivre: `& '${scriptPath("run-mercadolivre-and-publish.ps1")}'`,
     notificacoes: `node '${scriptPath("manage-notification-outbox.mjs")}'`,
   };
