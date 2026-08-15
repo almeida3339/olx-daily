@@ -1,0 +1,101 @@
+{
+  "schema_version": 2,
+  "generated_at": "2026-08-15T19:01:14.607Z",
+  "run": {
+    "date": "2026-08-15",
+    "timezone": "UTC",
+    "id": "melanger",
+    "label": "Melanger",
+    "partial": false,
+    "errors": [],
+    "scheduled_coverage": [
+      "Enjoei:melanger"
+    ],
+    "successful_coverage": [
+      "Enjoei:melanger"
+    ],
+    "failed_coverage": [],
+    "configured_coverage": [
+      "Enjoei:melanger",
+      "OLX:melanger"
+    ],
+    "quarantined_item_count": 0
+  },
+  "filters": {
+    "price_brl": {
+      "min": 1000,
+      "max": 5000
+    },
+    "size_ml": {
+      "min": null,
+      "max": null
+    }
+  },
+  "items": [
+    {
+      "id": "1524141566",
+      "url": "https://sp.olx.com.br/sao-paulo-e-regiao/eletro/eletroportateis-para-cozinha-e-limpeza/melanger-premier-chocolate-refiner-3-5kg-1524141566",
+      "title": "Melanger Premier Chocolate Refiner 3,5kg",
+      "source": "OLX",
+      "term": "melanger",
+      "price_brl": 3500,
+      "location": "Mauá -  SP",
+      "status": "active",
+      "first_seen": "2026-08-06",
+      "last_seen": "2026-08-15",
+      "out_of_scope_at": null,
+      "price_history": [
+        {
+          "at": "2026-08-06T10:00:17.180Z",
+          "price_brl": 4000
+        },
+        {
+          "at": "2026-08-12T23:16:52.002Z",
+          "price_brl": 3500
+        }
+      ]
+    },
+    {
+      "id": "1526472127",
+      "url": "https://rs.olx.com.br/regioes-de-porto-alegre-torres-e-santa-cruz-do-sul/comercio-e-escritorio/gastronomia/melanger-3-5-kg-1526472127",
+      "title": "Melanger 3,5 kg",
+      "source": "OLX",
+      "term": "melanger",
+      "price_brl": 3000,
+      "location": "Capão da Canoa -  RS",
+      "status": "active",
+      "first_seen": "2026-08-15",
+      "last_seen": "2026-08-15",
+      "out_of_scope_at": null,
+      "price_history": [
+        {
+          "at": "2026-08-15T10:00:25.074Z",
+          "price_brl": 3000
+        }
+      ]
+    },
+    {
+      "id": "1523726806",
+      "url": "https://sp.olx.com.br/sao-paulo-e-regiao/eletro/eletroportateis-para-cozinha-e-limpeza/melanger-4-5kg-moinho-de-pedra-1523726806",
+      "title": "Melanger 4,5kg - moinho de pedra",
+      "source": "OLX",
+      "term": "melanger",
+      "price_brl": 2800,
+      "location": "São Paulo -  SP",
+      "status": "not_seen",
+      "first_seen": "2026-08-04",
+      "last_seen": "2026-08-05",
+      "out_of_scope_at": null,
+      "price_history": [
+        {
+          "at": "2026-08-04T19:00:14.789Z",
+          "price_brl": 2800
+        }
+      ]
+    }
+  ],
+  "price_range_brl": {
+    "min": 1000,
+    "max": 5000
+  }
+}
