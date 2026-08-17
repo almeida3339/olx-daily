@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-17T10:00:32.110Z",
+  "updated_at": "2026-08-17T11:00:58.370Z",
   "runs": [
     {
       "run_id": "2026-07-13T10-34-48-421Z",
@@ -1184,6 +1184,21 @@
         "source": "melanger",
         "label": "Melanger",
         "collected_count": 2,
+        "quarantined_item_count": 0
+      }
+    },
+    {
+      "run_id": "2026-08-17T11-00-58-087Z",
+      "committed_at": "2026-08-17T11:00:58.363Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": null,
+      "item_count": 3,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "melanger",
+        "label": "Melanger",
+        "collected_count": 0,
         "quarantined_item_count": 0
       }
     }
