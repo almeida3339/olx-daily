@@ -231,7 +231,19 @@ try {
   }
   if (-not $pushed) { $ErrorActionPreference = $prevEAP; throw "git push falhou apos 4 tentativas." }
 
-  if (-not $monitorFailed) {
+  # O marcador (usado pela trava de cooldown acima E por startup-catchup.ps1)
+  # so deve depender de $pushed - ja publicamos os dados bons, entao esta
+  # rodada cumpriu seu papel. NAO usar "-not $monitorFailed" aqui: isso exige
+  # ZERO erros pontuais (ex.: 1 termo de CPU entre ~30 dando timeout), o que
+  # raramente acontece numa rodada inteira - o marcador ficava "velho" na
+  # maioria dos dias mesmo com tudo publicado certo. Isso quebrava as duas
+  # travas que dependem dele: o cooldown de repeticao (sem efeito, rodava tudo
+  # de novo) e o startup-catchup.ps1 (disparava rodada completa em qualquer
+  # boot seguinte, achando que passou dos 9h sem sucesso). Explicava rodadas
+  # extras em horarios aleatorios (19:25, 19:43, 20:17...) vistas quase todo
+  # dia entre 10/08 e 26/08. $monitorFailed continua fazendo o script sair
+  # com erro (visivel no Agendador) - so nao bloqueia mais o marcador.
+  if ($pushed) {
     $fullSuccess = $true
   }
 
