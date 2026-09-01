@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-31T11:01:18.671Z",
+  "updated_at": "2026-09-01T11:01:30.038Z",
   "runs": [
     {
       "run_id": "2026-07-14T21-26-04-907Z",
@@ -1415,6 +1415,21 @@
     {
       "run_id": "2026-08-31T11-01-04-162Z",
       "committed_at": "2026-08-31T11:01:18.666Z",
+      "outcome": "partial",
+      "partial": true,
+      "duration_ms": null,
+      "item_count": 17,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "enjoei-notebooks",
+        "collected_count": 2,
+        "failed_term_count": 0,
+        "quarantined_item_count": 0
+      }
+    },
+    {
+      "run_id": "2026-09-01T11-01-11-874Z",
+      "committed_at": "2026-09-01T11:01:30.032Z",
       "outcome": "partial",
       "partial": true,
       "duration_ms": null,
