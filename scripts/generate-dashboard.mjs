@@ -207,12 +207,24 @@ async function gather(dir, prefix, excludePrefix, detailsByUrl = new Map()) {
     .sort()
     .reverse();
   const out = [];
+  const recentItems = new Map();
   const seenNewItems = new Set();
+  const recentCutoff = Date.now() - 24 * 60 * 60 * 1000;
   for (const file of files) {
-    if (out.length >= MAX) break;
     const txt = await fs.readFile(path.join(dir, file), "utf8").catch(() => null);
     if (!txt) continue;
     const p = parseReport(txt, detailsByUrl);
+    const fileTs = runTimestampFromFile(file)?.getTime() ?? null;
+    if (fileTs != null && fileTs >= recentCutoff && fileTs <= Date.now() + 60_000) {
+      const runLabel = formatRunLabelFromFile(file, p.date);
+      for (const [isPrice, items] of [[true, p.allPriceItems], [false, p.allNewItems]]) {
+        for (const item of items) {
+          const key = `${isPrice ? "price" : "new"}:${item.url ?? item.title}`;
+          if (!recentItems.has(key)) recentItems.set(key, { ...item, isPrice, runLabel });
+        }
+      }
+    }
+    if (out.length >= MAX) continue;
     p.newItems = p.newItems.filter((item) => {
       const key = item.url ?? `${item.fullTitle}|${item.price}`;
       if (seenNewItems.has(key)) return false;
@@ -222,6 +234,7 @@ async function gather(dir, prefix, excludePrefix, detailsByUrl = new Map()) {
     p.newCount = p.newItems.length;
     if (p.newCount > 0 || p.priceCount > 0) out.push({ file, ...p, runLabel: formatRunLabelFromFile(file, p.date) });
   }
+  out.recentItems = [...recentItems.values()];
   return out;
 }
 
@@ -279,6 +292,8 @@ function parseReport(txt, detailsByUrl = new Map()) {
     date,
     newItems: newItems.slice(0, MAX),
     priceItems: priceItems.slice(0, MAX),
+    allNewItems: newItems,
+    allPriceItems: priceItems,
     partial: /Cobertura parcial:\s*\*\*sim\*\*/i.test(txt),
   };
 }
@@ -622,10 +637,10 @@ function buildHtml({ health, priceInsights, olx, enjoeiNb, mercadoLivre, mercado
   for (const s of sources) {
     const top = s.data[0];
     const findTs = top ? (runTimestampFromFile(top.file)?.getTime() ?? null) : null;
-    s.hasFind = top != null;
     s.sortTs = findTs ?? s.upd.ts ?? null;
-    s.stampLabel = top ? (top.runLabel ?? top.date) : s.upd.label;
     s.stampFresh = s.sortTs != null && (Date.now() - s.sortTs) < DAY;
+    s.hasFind = top != null && s.stampFresh;
+    s.stampLabel = s.hasFind ? (top.runLabel ?? top.date) : s.upd.label;
   }
   sources.sort((a, b) => {
     if (a.hasFind !== b.hasFind) return (b.hasFind ? 1 : 0) - (a.hasFind ? 1 : 0);  // com achados primeiro
@@ -639,17 +654,14 @@ function buildHtml({ health, priceInsights, olx, enjoeiNb, mercadoLivre, mercado
   const highlightItems = [];
   const seenHighlights = new Set();
   for (const source of sources) {
-    if (!source.stampFresh || !source.data[0]) continue;
-    const report = source.data[0];
-    for (const [isPrice, items] of [[true, report.priceItems ?? []], [false, report.newItems ?? []]]) {
-      for (const item of items) {
-        const key = `${isPrice ? "price" : "new"}:${item.url ?? item.title}`;
-        if (seenHighlights.has(key)) continue;
-        seenHighlights.add(key);
-        const from = parseBrlPrice(item.priceFrom);
-        const to = parseBrlPrice(item.priceTo);
-        highlightItems.push({ ...item, isPrice, priceDrop: isPrice && Number.isFinite(from) && Number.isFinite(to) && to < from, source: source.title, runLabel: report.runLabel ?? report.date });
-      }
+    if (!source.stampFresh) continue;
+    for (const item of source.data.recentItems ?? []) {
+      const key = `${item.isPrice ? "price" : "new"}:${item.url ?? item.title}`;
+      if (seenHighlights.has(key)) continue;
+      seenHighlights.add(key);
+      const from = parseBrlPrice(item.priceFrom);
+      const to = parseBrlPrice(item.priceTo);
+      highlightItems.push({ ...item, priceDrop: item.isPrice && Number.isFinite(from) && Number.isFinite(to) && to < from, source: source.title });
     }
   }
   highlightItems.sort((left, right) => Number(right.priceDrop) - Number(left.priceDrop) || Number(right.isPrice) - Number(left.isPrice));

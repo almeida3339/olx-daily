@@ -9,6 +9,9 @@ export function mergeWithPreviousSnapshot({
   priceMin,
   priceMax,
   failedKeys = new Set(),
+  // Chamadores de produção passam o instante real da execução. O fallback
+  // preserva a compatibilidade dos testes e dos consumidores antigos.
+  now = null,
 }) {
   const allKeys = (previousSnapshot?.items ?? []).map(monitorItemKey).filter(Boolean);
   const collectedKeys = (collected ?? []).map(monitorItemKey).filter(Boolean);
@@ -17,7 +20,7 @@ export function mergeWithPreviousSnapshot({
   const result = mergeMonitorSnapshot({
     previousSnapshot,
     collected,
-    now: new Date(`${runDate}T12:00:00Z`),
+    now: now instanceof Date ? now : new Date(`${runDate}T12:00:00Z`),
     scheduledCoverage: configuredKeys,
     successfulCoverage: successfulKeys,
     failedCoverage: [...failedKeys],

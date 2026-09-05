@@ -136,6 +136,7 @@ async function main() {
 
     const snapshot = mergeWithPreviousSnapshot({
       runDate,
+      now,
       collected,
       previousSnapshot,
     });
@@ -185,6 +186,7 @@ async function runWithRawCdp({ cdpUrl, runDate, runTimestamp, previousSnapshot }
 
   const snapshot = mergeWithPreviousSnapshot({
     runDate,
+    now: new Date(runTimestamp),
     collected,
     previousSnapshot,
   });
@@ -1048,9 +1050,10 @@ function formatItemDetails(item) {
   return `${item.title} (${item.cpu_term}) — ${ram} / ${storage} / ${gpu}${location} — ${item.url}`;
 }
 
-function mergeWithPreviousSnapshot({ runDate, collected, previousSnapshot }) {
+function mergeWithPreviousSnapshot({ runDate, now, collected, previousSnapshot }) {
   return _mergeItems({
     runDate,
+    now,
     collected,
     previousSnapshot,
     priceMin: PRICE_MIN_BRL,

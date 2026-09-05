@@ -77,6 +77,7 @@ async function main() {
   const { items: collected, failedTerms, successfulTerms, incompleteTerms } = await collectProducts(previousSnapshot);
   const snapshot = mergeEnjoeiNotebookSnapshot({
     runDate, collected, previousSnapshot,
+    now,
     scheduledTerms: terms, successfulTerms, failedTerms, incompleteTerms,
     priceMin: minPriceBrl, priceMax: maxPriceBrl,
   });
@@ -430,6 +431,7 @@ function verifyCarriedItems(snapshot) {
 //  - grava run.partial + contagens + coverage arrays.
 export function mergeEnjoeiNotebookSnapshot({
   runDate,
+  now = null,
   collected,
   previousSnapshot,
   scheduledTerms,
@@ -448,7 +450,7 @@ export function mergeEnjoeiNotebookSnapshot({
   const result = mergeMonitorSnapshot({
     previousSnapshot: previousSnapshot ? { ...previousSnapshot, items: previousItems } : null,
     collected,
-    now: new Date(`${runDate}T12:00:00Z`),
+    now: now instanceof Date ? now : new Date(`${runDate}T12:00:00Z`),
     run: {
       partial: failedCoverage.length > 0,
       successful_term_count: successfulTerms.length,

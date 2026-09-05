@@ -62,7 +62,7 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
   }
   const statusDir = path.join(root, "data", "status");
   const statuses = await Promise.all(["latest-local.json", "latest-ci.json"].map(async (file) => readJsonValidated(path.join(statusDir, file)).catch(() => null)));
-  const outbox = statuses.flatMap((status) => asArray(status?.notification_outbox));
+  const outbox = dedupeNotificationOutbox(statuses);
   const blocked = outbox.filter((item) => item.status === "blocked").length;
   const retrying = outbox.filter((item) => ["pending", "retry_wait", "sending"].includes(item.status)).length;
   sources.push({
@@ -83,6 +83,30 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
     })),
   });
   return { schema_version: 2, generated_at: now.toISOString(), sources };
+}
+
+// Local e CI podem carregar o mesmo item persistido no outbox. O ID é a chave
+// de identidade; em caso de divergência, vence o estado mais recente (ou
+// bloqueado, para não esconder uma falha que exige ação).
+function dedupeNotificationOutbox(statuses) {
+  const byId = new Map();
+  for (const status of statuses) {
+    for (const item of asArray(status?.notification_outbox)) {
+      const key = item?.id ?? `${item?.channel ?? "?"}:${item?.dedupe_key ?? item?.last_error ?? "?"}`;
+      const previous = byId.get(key);
+      if (!previous || compareNotificationItems(item, previous) > 0) byId.set(key, item);
+    }
+  }
+  return [...byId.values()];
+}
+
+function compareNotificationItems(left, right) {
+  const leftTs = Date.parse(left?.updated_at ?? left?.created_at ?? "");
+  const rightTs = Date.parse(right?.updated_at ?? right?.created_at ?? "");
+  if (Number.isFinite(leftTs) && Number.isFinite(rightTs) && leftTs !== rightTs) return leftTs - rightTs;
+  if (left?.status === "blocked" && right?.status !== "blocked") return 1;
+  if (right?.status === "blocked" && left?.status !== "blocked") return -1;
+  return 0;
 }
 
 function healthMessage(state) {

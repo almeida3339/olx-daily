@@ -210,7 +210,9 @@ try {
     # Regenera o dashboard com OLX local (ja commitado) + dados do CI recem-trazidos.
     & node (Join-Path $PSScriptRoot "generate-dashboard.mjs")
     if ($LASTEXITCODE -ne 0) { $ErrorActionPreference = $prevEAP; throw "Geracao do dashboard falhou (exit $LASTEXITCODE)." }
-    git add index.html
+    # O dashboard atualiza monitor-health.json em toda rodada. Incluí-lo no
+    # mesmo commit evita deixar a árvore suja e quebrar o rebase seguinte.
+    git add index.html data/status
     if (-not (git diff --staged --quiet)) {
       if ($localCommitExists) {
         git commit --amend --no-edit
