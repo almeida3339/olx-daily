@@ -81,7 +81,7 @@ Remove-Item Env:MONITOR_REPORT_MIN_TIME -ErrorAction SilentlyContinue
 if ($notifyExit -ne 0) { Write-Host "Aviso: notificacao terminou com exit $notifyExit." -ForegroundColor Yellow }
 
 Write-Host "[4/4] Publicando..."
-git add data/mercadolivre-notebooks data/mercadolivre-galaxy-buds4-pro data/mercadolivre-dockstations data/mercadolivre-fitbit-air data/mercadolivre-lifefactory data/mercadolivre-tela-galaxybook3 data/mercadolivre-melanger data/mercadolivre-tenis-42 data/mercadolivre-oled-monitores data/status index.html
+git add data/mercadolivre-notebooks data/mercadolivre-galaxy-buds4-pro data/mercadolivre-oneplus-buds-pro-3 data/mercadolivre-dockstations data/mercadolivre-fitbit-air data/mercadolivre-lifefactory data/mercadolivre-tela-galaxybook3 data/mercadolivre-melanger data/mercadolivre-tenis-42 data/mercadolivre-oled-monitores data/status index.html
 if (git diff --staged --quiet) {
   Write-Host "Nada novo do Mercado Livre para publicar." -ForegroundColor Green
   if ($mlExit -ne 0) { Fail "Coleta do Mercado Livre terminou com exit $mlExit." }

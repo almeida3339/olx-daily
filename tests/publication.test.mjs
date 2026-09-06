@@ -11,6 +11,7 @@ test("publicacao local inclui todas as pastas de producao do Mercado Livre", asy
   for (const folder of [
     "mercadolivre-notebooks",
     "mercadolivre-galaxy-buds4-pro",
+    "mercadolivre-oneplus-buds-pro-3",
     "mercadolivre-dockstations",
     "mercadolivre-fitbit-air",
     "mercadolivre-lifefactory",

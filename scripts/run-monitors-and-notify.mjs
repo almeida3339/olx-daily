@@ -44,11 +44,13 @@ const LIFEFACTORY_DIR      = def("LIFEFACTORY_DATA_DIR",      "monitor-lifefacto
 const TELA_BOOK3_DIR       = def("TELA_GALAXYBOOK3_DATA_DIR", "monitor-tela-galaxybook3");
 const MELANGER_DIR         = def("MELANGER_DATA_DIR",         "monitor-melanger");
 const BUDS4PRO_DIR         = def("GALAXY_BUDS4_PRO_DATA_DIR", "monitor-galaxy-buds4-pro");
+const ONEPLUS_BUDS_DIR     = def("ONEPLUS_BUDS_PRO3_DATA_DIR", "monitor-oneplus-buds-pro-3");
 const OURA_DIR             = def("OURA_RING5_DATA_DIR",       "monitor-oura-ring5");
 const OLED_MONITORES_DIR   = def("OLED_MONITORES_DATA_DIR",   "monitor-oled-monitores");
 const MERCADOLIVRE_DIRS = [
   ["Mercado Livre Notebooks", path.join(workspaceRoot, "data", "mercadolivre-notebooks")],
   ["ML Galaxy Buds4 Pro", path.join(workspaceRoot, "data", "mercadolivre-galaxy-buds4-pro")],
+  ["ML OnePlus Buds Pro 3", path.join(workspaceRoot, "data", "mercadolivre-oneplus-buds-pro-3")],
   ["ML Dockstations", path.join(workspaceRoot, "data", "mercadolivre-dockstations")],
   ["ML Fitbit Air", path.join(workspaceRoot, "data", "mercadolivre-fitbit-air")],
   ["ML Lifefactory", path.join(workspaceRoot, "data", "mercadolivre-lifefactory")],
@@ -113,6 +115,7 @@ export async function main({
     const skipTelaBook3      = args.includes("--skip-tela-book3") || process.env.SKIP_TELA_BOOK3 === "1";
     const skipMelanger       = args.includes("--skip-melanger") || process.env.SKIP_MELANGER === "1";
     const skipBuds4Pro       = args.includes("--skip-buds4-pro") || process.env.SKIP_BUDS4_PRO === "1";
+    const skipOnePlusBuds    = args.includes("--skip-oneplus-buds") || process.env.SKIP_ONEPLUS_BUDS === "1";
     const skipOura           = args.includes("--skip-oura") || process.env.SKIP_OURA === "1";
     const skipOledMonitores  = args.includes("--skip-oled-monitores") || process.env.SKIP_OLED_MONITORES === "1";
     const skipMercadoLivre   = args.includes("--skip-mercadolivre")
@@ -159,6 +162,7 @@ export async function main({
     if (!skipTelaBook3) jobs.push(["tela-book3", () => runScript("monitor-tela-galaxybook3.mjs", []), true]);
     if (!skipMelanger) jobs.push(["melanger", () => runScript("monitor-melanger.mjs", []), true]);
     if (!skipBuds4Pro) jobs.push(["buds4-pro", () => runScript("monitor-galaxy-buds4-pro.mjs", []), true]);
+    if (!skipOnePlusBuds) jobs.push(["oneplus-buds", () => runScript("monitor-oneplus-buds-pro-3.mjs", []), true]);
     if (!skipOura) jobs.push(["oura", () => runScript("monitor-oura-ring5.mjs", []), true]);
     if (!skipOledMonitores) jobs.push(["oled-monitores", () => runScript("monitor-oled-monitores.mjs", []), true]);
     // Mercado Livre NÃO roda aqui: é desacoplado do fluxo do OLX/Enjoei (que
@@ -184,6 +188,7 @@ export async function main({
       if (name === "tela-book3") { console.error(`Tela Book3 falhou: ${monitorError}`); errors.push(`Tela Book3: ${monitorError}`); }
       if (name === "melanger") { console.error(`Melanger falhou: ${monitorError}`); errors.push(`Melanger: ${monitorError}`); }
       if (name === "buds4-pro") { console.error(`Galaxy Buds4 Pro falhou: ${monitorError}`); errors.push(`Galaxy Buds4 Pro: ${monitorError}`); }
+      if (name === "oneplus-buds") { console.error(`OnePlus Buds Pro 3 falhou: ${monitorError}`); errors.push(`OnePlus Buds Pro 3: ${monitorError}`); }
       if (name === "oura") { console.error(`Oura Ring 5 falhou: ${monitorError}`); errors.push(`Oura Ring 5: ${monitorError}`); }
       if (name === "oled-monitores") { console.error(`Monitores OLED falhou: ${monitorError}`); errors.push(`Monitores OLED: ${monitorError}`); }
       logger.error("monitor_failed", result.reason, { source: name });
@@ -199,7 +204,7 @@ export async function main({
     ? parsedReportMinTime
     : (skipMonitors ? null : runStart);
   const enjoeiOn = !onlyOlx && !onlyMercadoLivre && !skipEnjoei;
-  const [olxStd, enjoeiReport, enjoeiNbStd, dockReport, fitbitReport, lifefactoryReport, telaBook3Report, melangerReport, buds4ProReport, ouraReport, oledMonitoresReport] = await Promise.all([
+  const [olxStd, enjoeiReport, enjoeiNbStd, dockReport, fitbitReport, lifefactoryReport, telaBook3Report, melangerReport, buds4ProReport, onePlusBudsReport, ouraReport, oledMonitoresReport] = await Promise.all([
     skipOlx || onlyMercadoLivre ? null : readLatestReport(OLX_DIR, reportMinTime).catch(() => null),
     enjoeiOn         ? readLatestReport(ENJOEI_DIR, reportMinTime).catch(() => null) : null,
     enjoeiOn         ? readLatestReport(ENJOEI_NOTEBOOKS_DIR, reportMinTime).catch(() => null) : null,
@@ -209,6 +214,7 @@ export async function main({
     skipTelaBook3 || onlyMercadoLivre    ? null : readLatestReport(TELA_BOOK3_DIR, reportMinTime).catch(() => null),
     skipMelanger || onlyMercadoLivre     ? null : readLatestReport(MELANGER_DIR, reportMinTime).catch(() => null),
     skipBuds4Pro || onlyMercadoLivre     ? null : readLatestReport(BUDS4PRO_DIR, reportMinTime).catch(() => null),
+    skipOnePlusBuds || onlyMercadoLivre  ? null : readLatestReport(ONEPLUS_BUDS_DIR, reportMinTime).catch(() => null),
     skipOura || onlyMercadoLivre         ? null : readLatestReport(OURA_DIR, reportMinTime).catch(() => null),
     skipOledMonitores || onlyMercadoLivre ? null : readLatestReport(OLED_MONITORES_DIR, reportMinTime).catch(() => null),
   ]);
@@ -224,6 +230,7 @@ export async function main({
     { label: "Tela Book3",       report: telaBook3Report, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,                 newSec: "## Novos produtos",  priceSec: "## Mudanças de preço" },
     { label: "Melanger",         report: melangerReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,                  newSec: "## Novos produtos",  priceSec: "## Mudanças de preço" },
     { label: "Galaxy Buds4 Pro", report: buds4ProReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,                  newSec: "## Novos produtos",  priceSec: "## Mudanças de preço" },
+    { label: "OnePlus Buds Pro 3", report: onePlusBudsReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,             newSec: "## Novos produtos",  priceSec: "## Mudanças de preço" },
     { label: "Oura Ring 5",      report: ouraReport,   newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,                    newSec: "## Novos produtos",  priceSec: "## Mudanças de preço" },
     { label: "Monitores OLED",   report: oledMonitoresReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,             newSec: "## Novos produtos",  priceSec: "## Mudanças de preço" },
   ]).map((s) => ({

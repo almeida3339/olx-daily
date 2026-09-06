@@ -1,13 +1,13 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-09-06T19:01:16.769Z",
+  "generated_at": "2026-09-06T23:48:41.091Z",
   "sources": [
     {
       "id": "olx",
       "label": "OLX Notebooks",
       "state": "healthy",
       "updated_at": "2026-09-06T19:00:27.835Z",
-      "age_ms": 48934,
+      "age_ms": 17293256,
       "invalid_snapshots": 1,
       "history": {
         "sample": 10,
@@ -23,7 +23,7 @@
       "label": "Enjoei Notebooks",
       "state": "partial",
       "updated_at": "2026-09-06T11:01:01.981Z",
-      "age_ms": 28814788,
+      "age_ms": 46059110,
       "invalid_snapshots": 1,
       "history": {
         "sample": 10,
@@ -39,7 +39,7 @@
       "label": "Enjoei Tênis 42",
       "state": "healthy",
       "updated_at": "2026-09-06T11:01:01.972Z",
-      "age_ms": 28814797,
+      "age_ms": 46059119,
       "invalid_snapshots": 1,
       "history": {
         "sample": 10,
@@ -55,7 +55,7 @@
       "label": "Dockstations",
       "state": "healthy",
       "updated_at": "2026-09-06T19:00:20.601Z",
-      "age_ms": 56168,
+      "age_ms": 17300490,
       "invalid_snapshots": 1,
       "history": {
         "sample": 10,
@@ -71,7 +71,7 @@
       "label": "Fitbit Air",
       "state": "healthy",
       "updated_at": "2026-09-06T19:00:20.601Z",
-      "age_ms": 56168,
+      "age_ms": 17300490,
       "invalid_snapshots": 1,
       "history": {
         "sample": 10,
@@ -87,7 +87,7 @@
       "label": "Lifefactory",
       "state": "healthy",
       "updated_at": "2026-09-06T19:00:30.322Z",
-      "age_ms": 46447,
+      "age_ms": 17290769,
       "invalid_snapshots": 1,
       "history": {
         "sample": 10,
@@ -103,7 +103,7 @@
       "label": "Tela Book3",
       "state": "healthy",
       "updated_at": "2026-09-06T19:00:30.323Z",
-      "age_ms": 46446,
+      "age_ms": 17290768,
       "invalid_snapshots": 1,
       "history": {
         "sample": 10,
@@ -119,7 +119,7 @@
       "label": "Melanger",
       "state": "healthy",
       "updated_at": "2026-09-06T19:00:38.224Z",
-      "age_ms": 38545,
+      "age_ms": 17282867,
       "invalid_snapshots": 1,
       "history": {
         "sample": 10,
@@ -135,7 +135,7 @@
       "label": "Galaxy Buds4 Pro",
       "state": "healthy",
       "updated_at": "2026-09-06T19:00:38.223Z",
-      "age_ms": 38546,
+      "age_ms": 17282868,
       "invalid_snapshots": 1,
       "history": {
         "sample": 10,
@@ -147,11 +147,27 @@
       "message": "Saudável"
     },
     {
+      "id": "oneplus-buds-pro-3",
+      "label": "OnePlus Buds Pro 3",
+      "state": "healthy",
+      "updated_at": "2026-09-06T23:47:13.687Z",
+      "age_ms": 87404,
+      "invalid_snapshots": 0,
+      "history": {
+        "sample": 1,
+        "partial": 0,
+        "failed": 0,
+        "success_rate": 1,
+        "median_duration_ms": 0
+      },
+      "message": "Saudável"
+    },
+    {
       "id": "oura-ring5",
       "label": "Oura Ring 5",
       "state": "healthy",
       "updated_at": "2026-09-06T19:00:45.858Z",
-      "age_ms": 30911,
+      "age_ms": 17275233,
       "invalid_snapshots": 1,
       "history": {
         "sample": 10,
@@ -167,7 +183,7 @@
       "label": "Monitores OLED",
       "state": "healthy",
       "updated_at": "2026-09-06T19:00:45.858Z",
-      "age_ms": 30911,
+      "age_ms": 17275233,
       "invalid_snapshots": 1,
       "history": {
         "sample": 10,
@@ -183,7 +199,7 @@
       "label": "Mercado Livre Notebooks",
       "state": "stale",
       "updated_at": "2026-07-13T11:48:56.184Z",
-      "age_ms": 4777940585,
+      "age_ms": 4795184907,
       "invalid_snapshots": 0,
       "history": {
         "sample": 1,
@@ -199,7 +215,7 @@
       "label": "Mercado Livre Galaxy Buds4 Pro",
       "state": "stale",
       "updated_at": "2026-07-13T11:49:11.815Z",
-      "age_ms": 4777924954,
+      "age_ms": 4795169276,
       "invalid_snapshots": 0,
       "history": {
         "sample": 1,
@@ -211,11 +227,27 @@
       "message": "Coleta desatualizada"
     },
     {
+      "id": "mercadolivre-oneplus-buds-pro-3",
+      "label": "Mercado Livre OnePlus Buds Pro 3",
+      "state": "missing",
+      "updated_at": null,
+      "age_ms": null,
+      "invalid_snapshots": 0,
+      "history": {
+        "sample": 0,
+        "partial": 0,
+        "failed": 0,
+        "success_rate": null,
+        "median_duration_ms": null
+      },
+      "message": "Sem snapshot válido"
+    },
+    {
       "id": "mercadolivre-dockstations",
       "label": "Mercado Livre Dockstations",
       "state": "stale",
       "updated_at": "2026-07-13T11:50:11.455Z",
-      "age_ms": 4777865314,
+      "age_ms": 4795109636,
       "invalid_snapshots": 0,
       "history": {
         "sample": 1,
@@ -231,7 +263,7 @@
       "label": "Mercado Livre Fitbit Air",
       "state": "stale",
       "updated_at": "2026-07-13T11:50:29.364Z",
-      "age_ms": 4777847405,
+      "age_ms": 4795091727,
       "invalid_snapshots": 0,
       "history": {
         "sample": 1,
@@ -247,7 +279,7 @@
       "label": "Mercado Livre Lifefactory",
       "state": "stale",
       "updated_at": "2026-07-13T11:50:53.384Z",
-      "age_ms": 4777823385,
+      "age_ms": 4795067707,
       "invalid_snapshots": 0,
       "history": {
         "sample": 1,
@@ -263,7 +295,7 @@
       "label": "Mercado Livre Tela Book3",
       "state": "stale",
       "updated_at": "2026-07-13T11:51:17.970Z",
-      "age_ms": 4777798799,
+      "age_ms": 4795043121,
       "invalid_snapshots": 0,
       "history": {
         "sample": 1,
@@ -279,7 +311,7 @@
       "label": "Mercado Livre Melanger",
       "state": "stale",
       "updated_at": "2026-07-13T11:51:38.632Z",
-      "age_ms": 4777778137,
+      "age_ms": 4795022459,
       "invalid_snapshots": 0,
       "history": {
         "sample": 1,
@@ -295,7 +327,7 @@
       "label": "Mercado Livre Tênis 42",
       "state": "stale",
       "updated_at": "2026-07-02T18:17:32.514Z",
-      "age_ms": 5705024255,
+      "age_ms": 5722268577,
       "invalid_snapshots": 0,
       "history": {
         "sample": 0,
@@ -311,7 +343,7 @@
       "label": "Mercado Livre Monitores OLED",
       "state": "stale",
       "updated_at": "2026-07-13T11:54:09.006Z",
-      "age_ms": 4777627763,
+      "age_ms": 4794872085,
       "invalid_snapshots": 0,
       "history": {
         "sample": 1,

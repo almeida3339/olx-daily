@@ -1,5 +1,12 @@
 import { normalizeMonitorText } from "./monitor-core.mjs";
 import { textMatchesAnyTermVariant } from "./mercadolivre-monitor.mjs";
+import {
+  ONEPLUS_BUDS_PRO3_BRAND_TERMS,
+  ONEPLUS_BUDS_PRO3_EXCLUDE_TERMS,
+  ONEPLUS_BUDS_PRO3_MATCH_VARIANTS,
+  ONEPLUS_BUDS_PRO3_PRICE,
+  ONEPLUS_BUDS_PRO3_SEARCH_TERMS,
+} from "./oneplus-buds-pro-3.mjs";
 
 export const mercadoLivreWatchlists = [
   {
@@ -9,6 +16,22 @@ export const mercadoLivreWatchlists = [
     matchVariants: ["galaxy buds4 pro", "buds4 pro", "buds 4 pro", "buds4pro"],
     minPrice: 500,
     maxPrice: 1000,
+    relevantDetails: ["modelo", "condicao"],
+    searchOptions: { localShipping: true },
+  },
+  {
+    // Regras em lib/oneplus-buds-pro-3.mjs, compartilhadas com o monitor
+    // OLX/Enjoei. Resumo: exclui a linha Nord (o "Nord Buds 3 Pro" tem nome
+    // quase igual, só com os tokens invertidos) e exige a marca, senão
+    // "Galaxy Buds3 Pro" e "Redmi Buds 3 Pro" entrariam.
+    id: "oneplus-buds-pro-3",
+    label: "OnePlus Buds Pro 3",
+    terms: ONEPLUS_BUDS_PRO3_SEARCH_TERMS,
+    matchVariants: ONEPLUS_BUDS_PRO3_MATCH_VARIANTS,
+    minPrice: ONEPLUS_BUDS_PRO3_PRICE.min,
+    maxPrice: ONEPLUS_BUDS_PRO3_PRICE.max,
+    excludeTerms: ONEPLUS_BUDS_PRO3_EXCLUDE_TERMS,
+    requiredAnyTerms: ONEPLUS_BUDS_PRO3_BRAND_TERMS,
     relevantDetails: ["modelo", "condicao"],
     searchOptions: { localShipping: true },
   },

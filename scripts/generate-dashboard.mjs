@@ -18,11 +18,13 @@ const LIFEFACTORY_DIR      = process.env.LIFEFACTORY_DATA_DIR      ?? path.join(
 const TELA_BOOK3_DIR       = process.env.TELA_GALAXYBOOK3_DATA_DIR ?? path.join(ROOT, "data", "tela-galaxybook3");
 const MELANGER_DIR         = process.env.MELANGER_DATA_DIR         ?? path.join(ROOT, "data", "melanger");
 const BUDS4PRO_DIR         = process.env.GALAXY_BUDS4_PRO_DATA_DIR ?? path.join(ROOT, "data", "galaxy-buds4-pro");
+const ONEPLUS_BUDS_DIR     = process.env.ONEPLUS_BUDS_PRO3_DATA_DIR ?? path.join(ROOT, "data", "oneplus-buds-pro-3");
 const OURA_DIR             = process.env.OURA_RING5_DATA_DIR       ?? path.join(ROOT, "data", "oura-ring5");
 const OLED_MONITORES_DIR   = process.env.OLED_MONITORES_DATA_DIR   ?? path.join(ROOT, "data", "oled-monitores");
 const MERCADOLIVRE_NOTEBOOKS_DIR = process.env.MERCADOLIVRE_NOTEBOOKS_DATA_DIR ?? path.join(ROOT, "data", "mercadolivre-notebooks");
 const MERCADOLIVRE_WATCHLISTS = [
   ["Galaxy Buds4 Pro", "Mercado Livre Galaxy Buds4 Pro", "R$ 500 - R$ 1.000", "mercadolivre-galaxy-buds4-pro"],
+  ["OnePlus Buds Pro 3", "Mercado Livre OnePlus Buds Pro 3", "R$ 300 - R$ 800", "mercadolivre-oneplus-buds-pro-3"],
   ["Dockstations", "Mercado Livre Dockstations", "até R$ 500", "mercadolivre-dockstations"],
   ["Fitbit Air", "Mercado Livre Fitbit Air", "R$ 300 - R$ 600", "mercadolivre-fitbit-air"],
   ["Lifefactory", "Mercado Livre Lifefactory", "500 ml-1 L · R$ 25 - R$ 75", "mercadolivre-lifefactory"],
@@ -110,7 +112,7 @@ async function main() {
       updated: await latestRunLabel(dir),
     };
   }));
-  const [olx, enjoeiNb, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, oura, oledMonitores] = await Promise.all([
+  const [olx, enjoeiNb, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, onePlusBuds, oura, oledMonitores] = await Promise.all([
     gather(OLX_DIR, "report-", "report-premium-", olxDetails),
     gather(ENJOEI_NOTEBOOKS_DIR, "report-", "report-premium-", enjoeiNbDetails),
     gather(ENJOEI_DIR, "report-", null),
@@ -120,10 +122,11 @@ async function main() {
     gather(TELA_BOOK3_DIR, "report-", null),
     gather(MELANGER_DIR, "report-", null),
     gather(BUDS4PRO_DIR, "report-", null),
+    gather(ONEPLUS_BUDS_DIR, "report-", null),
     gather(OURA_DIR, "report-", null),
     gather(OLED_MONITORES_DIR, "report-", null),
   ]);
-  const [olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, ouraUpdated, oledMonitoresUpdated] = await Promise.all([
+  const [olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, onePlusBudsUpdated, ouraUpdated, oledMonitoresUpdated] = await Promise.all([
     latestRunLabel(OLX_DIR),
     latestRunLabel(ENJOEI_NOTEBOOKS_DIR),
     latestRunLabel(ENJOEI_DIR),
@@ -133,12 +136,13 @@ async function main() {
     latestRunLabel(TELA_BOOK3_DIR),
     latestRunLabel(MELANGER_DIR),
     latestRunLabel(BUDS4PRO_DIR),
+    latestRunLabel(ONEPLUS_BUDS_DIR),
     latestRunLabel(OURA_DIR),
     latestRunLabel(OLED_MONITORES_DIR),
   ]);
   await writeTextAtomic(
     OUTPUT,
-    buildHtml({ health, priceInsights, olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, oura, oledMonitores, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, ouraUpdated, oledMonitoresUpdated }),
+    buildHtml({ health, priceInsights, olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, onePlusBuds, oura, oledMonitores, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, onePlusBudsUpdated, ouraUpdated, oledMonitoresUpdated }),
   );
   console.log(`Dashboard gerado: ${OUTPUT}`);
 }
@@ -602,7 +606,7 @@ export function groupPendingNotifications(items = []) {
   );
 }
 
-function buildHtml({ health, priceInsights, olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, oura, oledMonitores, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, ouraUpdated, oledMonitoresUpdated }) {
+function buildHtml({ health, priceInsights, olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, onePlusBuds, oura, oledMonitores, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, onePlusBudsUpdated, ouraUpdated, oledMonitoresUpdated }) {
   // Ordenação em dois níveis: primeiro as fontes COM achados recentes (cards com
   // conteúdo), depois as vazias ("Nenhum run com novidades") — sempre no fundo,
   // mesmo que tenham rodado há pouco. Dentro de cada grupo, mais recente primeiro.
@@ -626,6 +630,7 @@ function buildHtml({ health, priceInsights, olx, enjoeiNb, mercadoLivre, mercado
     { chip: "Tela Book3",       title: "Tela Galaxy Book3", sub: "BA96-08462A · OLX + Enjoei · até R$ 1.000",    data: telaBook3,   dpath: "data/tela-galaxybook3", upd: telaBook3Updated },
     { chip: "Melanger",         title: "Melanger",          sub: "110V · OLX + Enjoei · R$ 1.000 – R$ 5.000",    data: melanger,    dpath: "data/melanger",         upd: melangerUpdated },
     { chip: "Galaxy Buds4 Pro", title: "Galaxy Buds4 Pro",  sub: "OLX + Enjoei · R$ 500 – R$ 1.000",             data: buds4Pro,    dpath: "data/galaxy-buds4-pro", upd: buds4ProUpdated },
+    { chip: "OnePlus Buds Pro 3", title: "OnePlus Buds Pro 3", sub: "OLX + Enjoei · R$ 300 – R$ 800",           data: onePlusBuds, dpath: "data/oneplus-buds-pro-3", upd: onePlusBudsUpdated },
     { chip: "Oura Ring 5",      title: "Oura Ring 5",       sub: "OLX + Enjoei · tam 9-11 · R$ 1.800 – R$ 2.700",data: oura,           dpath: "data/oura-ring5",         upd: ouraUpdated },
     { chip: "Monitores OLED",   title: "Monitores OLED",    sub: "OLX c/ entrega + Enjoei · R$ 1.500 – R$ 3.000", data: oledMonitores,  dpath: "data/oled-monitores",     upd: oledMonitoresUpdated },
   ];
