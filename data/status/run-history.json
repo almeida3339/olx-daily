@@ -1,59 +1,101 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-09-08T19:01:30.634Z",
+  "updated_at": "2026-09-10T19:00:55.915Z",
   "runs": [
     {
-      "run_id": "cd7ff40a-009f-4d35-acdf-1bfedffc3f72",
-      "completed_at": "2026-09-08T19:01:30.633Z",
+      "run_id": "7a7a6de7-61fa-440e-a547-a0642b8c9d13",
+      "completed_at": "2026-09-10T19:00:55.914Z",
       "outcome": "success",
       "partial": false,
-      "duration_ms": 17992,
-      "item_count": 0,
+      "duration_ms": 53490,
+      "item_count": 3,
       "quarantined_item_count": 0,
       "metadata": {
-        "source": "ci",
+        "source": "local",
         "monitor_errors": 0,
         "pending_notifications": 1
       }
     },
     {
-      "run_id": "8ba9c378-e166-4a30-8e20-9c771e9a3d04",
-      "completed_at": "2026-09-08T11:01:15.519Z",
+      "run_id": "e3ddf944-c862-4567-b8bd-fa16822ce971",
+      "completed_at": "2026-09-09T19:01:08.544Z",
       "outcome": "success",
       "partial": false,
-      "duration_ms": 13129,
+      "duration_ms": 64259,
+      "item_count": 3,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "local",
+        "monitor_errors": 0,
+        "pending_notifications": 1
+      }
+    },
+    {
+      "run_id": "087ea945-6758-4eb2-8178-9dfa2e40df16",
+      "completed_at": "2026-09-09T10:01:11.958Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 67372,
+      "item_count": 2,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "local",
+        "monitor_errors": 0,
+        "pending_notifications": 1
+      }
+    },
+    {
+      "run_id": "632304c3-4e02-4564-8247-a94da2ee9529",
+      "completed_at": "2026-09-08T19:01:24.315Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 79712,
       "item_count": 1,
       "quarantined_item_count": 0,
       "metadata": {
-        "source": "ci",
+        "source": "local",
         "monitor_errors": 0,
         "pending_notifications": 1
       }
     },
     {
-      "run_id": "06b5fc4d-b501-4c0b-8207-f33e48f3a4fe",
-      "completed_at": "2026-09-07T19:01:14.743Z",
+      "run_id": "31523e7a-7d06-4d92-8596-5b519726b82c",
+      "completed_at": "2026-09-08T10:01:09.425Z",
       "outcome": "success",
       "partial": false,
-      "duration_ms": 18098,
+      "duration_ms": 64488,
       "item_count": 0,
       "quarantined_item_count": 0,
       "metadata": {
-        "source": "ci",
+        "source": "local",
         "monitor_errors": 0,
         "pending_notifications": 1
       }
     },
     {
-      "run_id": "f1aef020-90c9-4267-b70d-531dbd5dba58",
-      "completed_at": "2026-09-07T11:01:28.066Z",
+      "run_id": "eadabdde-f41d-43f9-94b6-2d9fc9e013b5",
+      "completed_at": "2026-09-07T19:00:59.841Z",
       "outcome": "success",
       "partial": false,
-      "duration_ms": 15207,
+      "duration_ms": 54830,
       "item_count": 0,
       "quarantined_item_count": 0,
       "metadata": {
-        "source": "ci",
+        "source": "local",
+        "monitor_errors": 0,
+        "pending_notifications": 1
+      }
+    },
+    {
+      "run_id": "b145db6f-e3fb-45ff-8ad3-8bcf9d5d3ec3",
+      "completed_at": "2026-09-07T10:01:13.506Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 69421,
+      "item_count": 2,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "local",
         "monitor_errors": 0,
         "pending_notifications": 1
       }
@@ -1636,48 +1678,6 @@
       "quarantined_item_count": 0,
       "metadata": {
         "source": "local",
-        "monitor_errors": 0,
-        "pending_notifications": 10
-      }
-    },
-    {
-      "run_id": "af145615-e58c-4b6b-9928-a5ac0531a162",
-      "completed_at": "2026-07-21T21:21:03.092Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 80220,
-      "item_count": 0,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "local",
-        "monitor_errors": 0,
-        "pending_notifications": 10
-      }
-    },
-    {
-      "run_id": "4510761d-7f9d-4e28-b358-6fbfb71c99ec",
-      "completed_at": "2026-07-21T11:31:58.122Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 76027,
-      "item_count": 1,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "local",
-        "monitor_errors": 0,
-        "pending_notifications": 10
-      }
-    },
-    {
-      "run_id": "5d759a83-2ef2-471b-9e4e-0e215b64daa0",
-      "completed_at": "2026-07-21T00:38:35.229Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 13634,
-      "item_count": 0,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "ci",
         "monitor_errors": 0,
         "pending_notifications": 10
       }
