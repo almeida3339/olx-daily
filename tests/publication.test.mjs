@@ -108,7 +108,10 @@ test("publicacao local nao aborta imediatamente em caso de erro do monitor", asy
   assert.match(script, /\$monitorFailed\s*=\s*\$monitorExit\s*-ne\s*0/);
 
   // Verifica a ordem das chamadas: git add < git push < throw final do monitor
-  const gitAddIdx = script.indexOf("git add data/");
+  assert.match(script, /\$stagePaths\s*=\s*@\(/);
+  assert.match(script, /Where-Object \{ Test-Path -LiteralPath/);
+  assert.match(script, /git add -- \$stagePaths/);
+  const gitAddIdx = script.indexOf("git add -- $stagePaths");
   const gitPushIdx = script.indexOf("git push");
   const throwIdx = script.lastIndexOf("Monitor OLX local falhou");
 

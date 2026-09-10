@@ -181,7 +181,41 @@ try {
 
   # (1) Commita os dados coletados localmente (OLX/dockstations/fitbit). O
   # dashboard NAO entra aqui — ele e gerado adiante, ja sincronizado com o CI.
-  git add data/olx data/dockstations data/fitbit data/lifefactory data/tela-galaxybook3 data/melanger data/galaxy-buds4-pro data/oneplus-buds-pro-3 data/oura-ring5 data/oled-monitores data/status data/mercadolivre-notebooks data/mercadolivre-galaxy-buds4-pro data/mercadolivre-oneplus-buds-pro-3 data/mercadolivre-dockstations data/mercadolivre-fitbit-air data/mercadolivre-lifefactory data/mercadolivre-tela-galaxybook3 data/mercadolivre-melanger data/mercadolivre-tenis-42 data/mercadolivre-oled-monitores
+  # Algumas watchlists do Mercado Livre sao opcionais e so criam a pasta no
+  # primeiro ciclo bem-sucedido. Filtrar os caminhos existentes evita que um
+  # pathspec ausente interrompa a publicacao de todos os outros monitores.
+  $stagePaths = @(
+    "data/olx",
+    "data/dockstations",
+    "data/fitbit",
+    "data/lifefactory",
+    "data/tela-galaxybook3",
+    "data/melanger",
+    "data/galaxy-buds4-pro",
+    "data/oneplus-buds-pro-3",
+    "data/oura-ring5",
+    "data/oled-monitores",
+    "data/status",
+    "data/mercadolivre-notebooks",
+    "data/mercadolivre-galaxy-buds4-pro",
+    "data/mercadolivre-oneplus-buds-pro-3",
+    "data/mercadolivre-dockstations",
+    "data/mercadolivre-fitbit-air",
+    "data/mercadolivre-lifefactory",
+    "data/mercadolivre-tela-galaxybook3",
+    "data/mercadolivre-melanger",
+    "data/mercadolivre-tenis-42",
+    "data/mercadolivre-oled-monitores"
+  )
+  $missingStagePaths = @($stagePaths | Where-Object { -not (Test-Path -LiteralPath $_) })
+  if ($missingStagePaths.Count -gt 0) {
+    Write-Host "Ignorando pastas de dados ainda inexistentes: $($missingStagePaths -join ', ')"
+  }
+  $stagePaths = @($stagePaths | Where-Object { Test-Path -LiteralPath $_ })
+  if ($stagePaths.Count -gt 0) {
+    & git add -- $stagePaths
+    if ($LASTEXITCODE -ne 0) { $ErrorActionPreference = $prevEAP; throw "git add falhou (exit $LASTEXITCODE)." }
+  }
   $stamp = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm")
   $localCommitExists = $false
   if (-not (git diff --staged --quiet)) {
