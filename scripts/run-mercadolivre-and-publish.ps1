@@ -81,7 +81,30 @@ Remove-Item Env:MONITOR_REPORT_MIN_TIME -ErrorAction SilentlyContinue
 if ($notifyExit -ne 0) { Write-Host "Aviso: notificacao terminou com exit $notifyExit." -ForegroundColor Yellow }
 
 Write-Host "[4/4] Publicando..."
-git add data/mercadolivre-notebooks data/mercadolivre-galaxy-buds4-pro data/mercadolivre-oneplus-buds-pro-3 data/mercadolivre-dockstations data/mercadolivre-fitbit-air data/mercadolivre-lifefactory data/mercadolivre-tela-galaxybook3 data/mercadolivre-melanger data/mercadolivre-tenis-42 data/mercadolivre-oled-monitores data/status index.html
+$mlStagePaths = @(
+  "data/mercadolivre-notebooks",
+  "data/mercadolivre-galaxy-buds4-pro",
+  "data/mercadolivre-oneplus-buds-pro-3",
+  "data/mercadolivre-google-pixel-watch-4",
+  "data/mercadolivre-dockstations",
+  "data/mercadolivre-fitbit-air",
+  "data/mercadolivre-lifefactory",
+  "data/mercadolivre-tela-galaxybook3",
+  "data/mercadolivre-melanger",
+  "data/mercadolivre-tenis-42",
+  "data/mercadolivre-oled-monitores",
+  "data/status",
+  "index.html"
+)
+$missingMlStagePaths = @($mlStagePaths | Where-Object { -not (Test-Path -LiteralPath $_) })
+if ($missingMlStagePaths.Count -gt 0) {
+  Write-Host "Ignorando pastas do Mercado Livre ainda inexistentes: $($missingMlStagePaths -join ', ')"
+}
+$mlStagePaths = @($mlStagePaths | Where-Object { Test-Path -LiteralPath $_ })
+if ($mlStagePaths.Count -gt 0) {
+  & git add -- $mlStagePaths
+  if ($LASTEXITCODE -ne 0) { Fail "git add falhou exit $LASTEXITCODE." }
+}
 if (git diff --staged --quiet) {
   Write-Host "Nada novo do Mercado Livre para publicar." -ForegroundColor Green
   if ($mlExit -ne 0) { Fail "Coleta do Mercado Livre terminou com exit $mlExit." }

@@ -7,6 +7,13 @@ import {
   ONEPLUS_BUDS_PRO3_PRICE,
   ONEPLUS_BUDS_PRO3_SEARCH_TERMS,
 } from "./oneplus-buds-pro-3.mjs";
+import {
+  GOOGLE_PIXEL_WATCH4_EXCLUDE_TERMS,
+  GOOGLE_PIXEL_WATCH4_MATCH_VARIANTS,
+  GOOGLE_PIXEL_WATCH4_PRICE,
+  GOOGLE_PIXEL_WATCH4_TERMS,
+  matchesGooglePixelWatch4,
+} from "./google-pixel-watch-4.mjs";
 
 export const mercadoLivreWatchlists = [
   {
@@ -17,6 +24,18 @@ export const mercadoLivreWatchlists = [
     minPrice: 500,
     maxPrice: 1000,
     relevantDetails: ["modelo", "condicao"],
+    searchOptions: { localShipping: true },
+  },
+  {
+    id: "google-pixel-watch-4",
+    label: "Google Pixel Watch 4",
+    terms: GOOGLE_PIXEL_WATCH4_TERMS,
+    matchVariants: GOOGLE_PIXEL_WATCH4_MATCH_VARIANTS,
+    minPrice: GOOGLE_PIXEL_WATCH4_PRICE.min,
+    maxPrice: GOOGLE_PIXEL_WATCH4_PRICE.max,
+    excludeTerms: GOOGLE_PIXEL_WATCH4_EXCLUDE_TERMS,
+    itemFilter: matchesGooglePixelWatch4,
+    relevantDetails: ["modelo", "tamanho", "conectividade", "condicao"],
     searchOptions: { localShipping: true },
   },
   {
@@ -126,6 +145,7 @@ export function matchesMercadoLivreWatchlist(item, watchlist) {
   if (exclusions.some((term) => text.includes(term)) && !keep.some((term) => text.includes(term))) return false;
   if ((watchlist.requiredTerms ?? []).some((term) => !text.includes(normalize(term)))) return false;
   if (watchlist.requiredAnyTerms?.length && !watchlist.requiredAnyTerms.some((term) => text.includes(normalize(term)))) return false;
+  if (watchlist.itemFilter && !watchlist.itemFilter(item)) return false;
 
   if (watchlist.minSizeMl != null || watchlist.maxSizeMl != null) {
     const size = extractCapacityMl(text);
