@@ -86,6 +86,7 @@ $mlStagePaths = @(
   "data/mercadolivre-galaxy-buds4-pro",
   "data/mercadolivre-oneplus-buds-pro-3",
   "data/mercadolivre-google-pixel-watch-4",
+  "data/mercadolivre-google-pixel-watch-5",
   "data/mercadolivre-dockstations",
   "data/mercadolivre-fitbit-air",
   "data/mercadolivre-lifefactory",

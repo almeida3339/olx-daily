@@ -13,6 +13,7 @@ test("publicacao local inclui todas as pastas de producao do Mercado Livre", asy
     "mercadolivre-galaxy-buds4-pro",
     "mercadolivre-oneplus-buds-pro-3",
     "mercadolivre-google-pixel-watch-4",
+    "mercadolivre-google-pixel-watch-5",
     "mercadolivre-dockstations",
     "mercadolivre-fitbit-air",
     "mercadolivre-lifefactory",
@@ -108,6 +109,13 @@ test("orquestrador inclui Google Pixel Watch 4 nos achados notificáveis", async
   assert.match(notifier, /GOOGLE_PIXEL_WATCH4_DATA_DIR/);
   assert.match(notifier, /pixelWatch4Report/);
   assert.match(notifier, /label: "Google Pixel Watch 4"/);
+});
+
+test("orquestrador inclui Google Pixel Watch 5 nos achados notificáveis", async () => {
+  const notifier = await fs.readFile(path.join(root, "scripts", "run-monitors-and-notify.mjs"), "utf8");
+  assert.match(notifier, /GOOGLE_PIXEL_WATCH5_DATA_DIR/);
+  assert.match(notifier, /pixelWatch5Report/);
+  assert.match(notifier, /label: "Google Pixel Watch 5"/);
 });
 
 test("publicacao local nao aborta imediatamente em caso de erro do monitor", async () => {

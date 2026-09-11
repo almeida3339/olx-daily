@@ -95,6 +95,7 @@ $env:MELANGER_DATA_DIR = Join-Path $root "data\melanger"
 $env:GALAXY_BUDS4_PRO_DATA_DIR = Join-Path $root "data\galaxy-buds4-pro"
 $env:ONEPLUS_BUDS_PRO3_DATA_DIR = Join-Path $root "data\oneplus-buds-pro-3"
 $env:GOOGLE_PIXEL_WATCH4_DATA_DIR = Join-Path $root "data\google-pixel-watch-4"
+$env:GOOGLE_PIXEL_WATCH5_DATA_DIR = Join-Path $root "data\google-pixel-watch-5"
 $env:OURA_RING5_DATA_DIR = Join-Path $root "data\oura-ring5"
 $env:OLED_MONITORES_DATA_DIR = Join-Path $root "data\oled-monitores"
 $env:MERCADOLIVRE_PROFILE_DIR = Join-Path $root ".chrome-mercadolivre-profile"
@@ -195,6 +196,7 @@ try {
     "data/galaxy-buds4-pro",
     "data/oneplus-buds-pro-3",
     "data/google-pixel-watch-4",
+    "data/google-pixel-watch-5",
     "data/oura-ring5",
     "data/oled-monitores",
     "data/status",
@@ -202,6 +204,7 @@ try {
     "data/mercadolivre-galaxy-buds4-pro",
     "data/mercadolivre-oneplus-buds-pro-3",
     "data/mercadolivre-google-pixel-watch-4",
+    "data/mercadolivre-google-pixel-watch-5",
     "data/mercadolivre-dockstations",
     "data/mercadolivre-fitbit-air",
     "data/mercadolivre-lifefactory",

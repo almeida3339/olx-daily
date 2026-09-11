@@ -14,6 +14,13 @@ import {
   GOOGLE_PIXEL_WATCH4_TERMS,
   matchesGooglePixelWatch4,
 } from "./google-pixel-watch-4.mjs";
+import {
+  GOOGLE_PIXEL_WATCH5_EXCLUDE_TERMS,
+  GOOGLE_PIXEL_WATCH5_MATCH_VARIANTS,
+  GOOGLE_PIXEL_WATCH5_PRICE,
+  GOOGLE_PIXEL_WATCH5_TERMS,
+  matchesGooglePixelWatch5,
+} from "./google-pixel-watch-5.mjs";
 
 export const mercadoLivreWatchlists = [
   {
@@ -35,6 +42,18 @@ export const mercadoLivreWatchlists = [
     maxPrice: GOOGLE_PIXEL_WATCH4_PRICE.max,
     excludeTerms: GOOGLE_PIXEL_WATCH4_EXCLUDE_TERMS,
     itemFilter: matchesGooglePixelWatch4,
+    relevantDetails: ["modelo", "tamanho", "conectividade", "condicao"],
+    searchOptions: { localShipping: true },
+  },
+  {
+    id: "google-pixel-watch-5",
+    label: "Google Pixel Watch 5",
+    terms: GOOGLE_PIXEL_WATCH5_TERMS,
+    matchVariants: GOOGLE_PIXEL_WATCH5_MATCH_VARIANTS,
+    minPrice: GOOGLE_PIXEL_WATCH5_PRICE.min,
+    maxPrice: GOOGLE_PIXEL_WATCH5_PRICE.max,
+    excludeTerms: GOOGLE_PIXEL_WATCH5_EXCLUDE_TERMS,
+    itemFilter: matchesGooglePixelWatch5,
     relevantDetails: ["modelo", "tamanho", "conectividade", "condicao"],
     searchOptions: { localShipping: true },
   },

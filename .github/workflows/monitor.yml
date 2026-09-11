@@ -66,6 +66,7 @@ jobs:
           GALAXY_BUDS4_PRO_DATA_DIR: ${{ github.workspace }}/data/galaxy-buds4-pro
           ONEPLUS_BUDS_PRO3_DATA_DIR: ${{ github.workspace }}/data/oneplus-buds-pro-3
           GOOGLE_PIXEL_WATCH4_DATA_DIR: ${{ github.workspace }}/data/google-pixel-watch-4
+          GOOGLE_PIXEL_WATCH5_DATA_DIR: ${{ github.workspace }}/data/google-pixel-watch-5
           OURA_RING5_DATA_DIR: ${{ github.workspace }}/data/oura-ring5
           OLED_MONITORES_DATA_DIR: ${{ github.workspace }}/data/oled-monitores
         run: node scripts/run-monitors-and-notify.mjs
@@ -88,6 +89,7 @@ jobs:
           GALAXY_BUDS4_PRO_DATA_DIR: ${{ github.workspace }}/data/galaxy-buds4-pro
           ONEPLUS_BUDS_PRO3_DATA_DIR: ${{ github.workspace }}/data/oneplus-buds-pro-3
           GOOGLE_PIXEL_WATCH4_DATA_DIR: ${{ github.workspace }}/data/google-pixel-watch-4
+          GOOGLE_PIXEL_WATCH5_DATA_DIR: ${{ github.workspace }}/data/google-pixel-watch-5
           OURA_RING5_DATA_DIR: ${{ github.workspace }}/data/oura-ring5
           OLED_MONITORES_DATA_DIR: ${{ github.workspace }}/data/oled-monitores
         run: |
