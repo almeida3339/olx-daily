@@ -7,7 +7,7 @@ Sistema modular de monitoramento diário (2× por dia, 07:00 e 16:00 BRT) de 8 m
 - Histórico persistido: distinção novo × mudança de preço, com delta (±R$), teto de R$ 10 mil
 - Multi-fonte unificada (OLX + Enjoei no mesmo card)
 - Zero custo, sem APIs pagas
-- Arquitetura de watchlist extensível: add nova em minutos
+- Arquitetura de watchlist extensível: o registro central em `scripts/lib/watchlists-registry.mjs` alimenta o orquestrador, dashboard, saúde e publicação
 
 ---
 
@@ -24,6 +24,9 @@ Sistema modular de monitoramento diário (2× por dia, 07:00 e 16:00 BRT) de 8 m
 | **Tela Galaxy Book3** | OLX + Enjoei | até R$ 1.000 | Part number BA96-08462A (Galaxy Book3 Ultra) |
 | **Melanger** | OLX (2 categorias) + Enjoei | R$ 1.000–5.000 | Moinho de chocolate 110V (exclui 220V puro, bivolt OK) |
 | **Galaxy Buds4 Pro** | OLX + Enjoei | R$ 500–1.000 | Variantes do modelo e envio local |
+| **OnePlus Buds Pro 3** | OLX + Enjoei | R$ 300–800 | Exclui linha Nord e modelos próximos |
+| **Google Pixel Watch 4** | OLX + Enjoei | Wi‑Fi até R$ 2.000 · LTE até R$ 2.500 | Somente 45 mm |
+| **Google Pixel Watch 5** | OLX + Enjoei | Wi‑Fi até R$ 2.400 · LTE até R$ 3.000 | Somente 45 mm |
 | **Oura Ring 5** | OLX + Enjoei | R$ 1.800–2.700 | Tamanhos 9–11 |
 | **Monitores OLED** | OLX + Enjoei | R$ 1.500–3.000 | Entrega local e filtro de categoria |
 
@@ -343,7 +346,7 @@ Adicionar uma nova: copiar um, mudar config, pronto.
 - Teto de R$ 10 mil retroativo
 - Bivolt vs 220V puro
 
-**Estado atual:** 236 testes passando, incluindo filtros semânticos, integração
+**Estado atual:** 256 testes passando, incluindo filtros semânticos, integração
 de notificações, retenção de artefatos e sanitização de caminhos locais.
 
 ---
@@ -399,17 +402,22 @@ tos)
   run-local-olx-and-publish.ps1    ← automação Windows (espera rede, push)
   run-olx-monitor.ps1              ← wrapper Chrome debug
   start-chrome-debug.ps1           ← inicia Chrome com port 9222
-  generate-dashboard.mjs           ← gera index.html
+  generate-dashboard.mjs           ← coleta dados e gera index.html
+  lib/dashboard-parsing.mjs        ← parsing de relatórios e timestamps
+  lib/dashboard-triggers.mjs       ← comandos dos botões do dashboard
+  lib/watchlists-registry.mjs      ← registro único de fontes e diretórios
 
 tests/
   olx-cache.test.mjs
   olx-detail.test.mjs
   parsers.test.mjs
-  (144 testes, cobertura alta)
+  (suíte distribuída por domínio, cobertura alta)
 
 data/
   olx/, enjoei/, enjoei-notebooks/, dockstations/, fitbit/, 
-  lifefactory/, tela-galaxybook3/, melanger/
+  lifefactory/, tela-galaxybook3/, melanger/, galaxy-buds4-pro/,
+  oneplus-buds-pro-3/, google-pixel-watch-4/, google-pixel-watch-5/,
+  oura-ring5/, oled-monitores/, mercadolivre-*/
   (snapshots + relatórios)
 
 .github/
@@ -472,5 +480,5 @@ Cada coleta nova e promovida por `latest-run.json` apenas depois de snapshot, re
 
 ---
 
-**Última atualização:** 2026-06-14
-**Commit:** `5bd16a3`
+**Última atualização:** 2026-09-20
+**Testes:** 256 passando (`npm test`)

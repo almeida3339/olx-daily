@@ -17,6 +17,7 @@ test.describe("Orquestrador - Integração e Propagação de Erros", () => {
   let originalGmailAppPass;
   let originalCallmebotPhone;
   let originalCallmebotApikey;
+  let originalNotifyEmailDisabled;
   let originalFetch;
   let originalArgv;
 
@@ -27,6 +28,7 @@ test.describe("Orquestrador - Integração e Propagação de Erros", () => {
     originalGmailAppPass = process.env.GMAIL_APP_PASSWORD;
     originalCallmebotPhone = process.env.CALLMEBOT_PHONE;
     originalCallmebotApikey = process.env.CALLMEBOT_APIKEY;
+    originalNotifyEmailDisabled = process.env.NOTIFY_EMAIL_DISABLED;
     originalFetch = globalThis.fetch;
     originalArgv = process.argv;
 
@@ -67,6 +69,9 @@ test.describe("Orquestrador - Integração e Propagação de Erros", () => {
 
     if (originalCallmebotApikey === undefined) delete process.env.CALLMEBOT_APIKEY;
     else process.env.CALLMEBOT_APIKEY = originalCallmebotApikey;
+
+    if (originalNotifyEmailDisabled === undefined) delete process.env.NOTIFY_EMAIL_DISABLED;
+    else process.env.NOTIFY_EMAIL_DISABLED = originalNotifyEmailDisabled;
 
     globalThis.fetch = originalFetch;
     process.argv = originalArgv;
@@ -218,6 +223,50 @@ test.describe("Orquestrador - Integração e Propagação de Erros", () => {
     assert.equal(sendEmailFn.mock.calls.length, 0, "sendEmailFn não deve ser chamado em dry-run");
     assert.equal(sendWhatsAppFn.mock.calls.length, 0, "sendWhatsAppFn não deve ser chamado em dry-run");
     assert.equal(fsApi.writeFile.mock.calls.length, 0, "fsApi.writeFile não deve ser chamado em dry-run");
+  });
+
+  test("email desativado também remove entregas antigas antes do provedor", async (t) => {
+    const email = {
+      id: "email-pendente-antigo",
+      dedupe_key: "old-email",
+      channel: "email",
+      payload: { subject: "antigo", body: "não enviar" },
+      status: "pending",
+      attempts: 0,
+      next_attempt_at: "2026-09-20T15:00:00.000Z",
+      created_at: "2026-09-20T14:00:00.000Z",
+      updated_at: "2026-09-20T14:00:00.000Z",
+    };
+    process.env.NOTIFY_EMAIL_DISABLED = "1";
+    process.env.GITHUB_ACTIONS = "false";
+    const statusWrites = [];
+    const fsApi = {
+      readFile: t.mock.fn(async (filePath) => {
+        if (filePath.endsWith("latest-local.json") || filePath.endsWith("latest-ci.json")) {
+          return JSON.stringify({ notification_outbox: [email] });
+        }
+        return filePath.endsWith(".json") ? "{}" : "";
+      }),
+      writeFile: t.mock.fn(async (filePath, content) => {
+        if (filePath.endsWith("latest-local.json")) statusWrites.push(JSON.parse(content));
+      }),
+      mkdir: t.mock.fn(async () => {}),
+      readdir: t.mock.fn(async () => []),
+    };
+    const sendEmailFn = t.mock.fn(async () => {});
+    const sendWhatsAppFn = t.mock.fn(async () => {});
+
+    await main({
+      args: ["--skip-monitors"],
+      fsApi,
+      sendEmailFn,
+      sendWhatsAppFn,
+      nowFn: () => new Date("2026-09-20T15:00:00.000Z"),
+    });
+
+    assert.equal(sendEmailFn.mock.calls.length, 0);
+    assert.ok(statusWrites.length > 0);
+    assert.ok(statusWrites.at(-1).notification_outbox.every((item) => item.channel !== "email"));
   });
 });
 

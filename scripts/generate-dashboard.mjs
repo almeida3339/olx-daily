@@ -6,37 +6,28 @@ import { extractMercadoLivreNotebookSpecs } from "./lib/mercadolivre-monitor.mjs
 import { isMercadoLivreNotebookDisplayPrice } from "./lib/mercadolivre-notebook-ranges.mjs";
 import { buildMonitorHealth } from "./lib/monitor-health.mjs";
 import { readLatestCommittedRun, readLatestValidSnapshot, writeJsonAtomic, writeTextAtomic } from "./lib/monitor-runtime.mjs";
+import { mercadoLivreDashboardCards, resolveWatchlistDataDir } from "./lib/watchlists-registry.mjs";
+import { buildLocalTriggerCommands } from "./lib/dashboard-triggers.mjs";
+import { createDashboardParser, runTimestampFromFile } from "./lib/dashboard-parsing.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
-const OLX_DIR              = process.env.OLX_DATA_DIR              ?? path.join(ROOT, "data", "olx");
-const ENJOEI_DIR           = process.env.ENJOEI_DATA_DIR           ?? path.join(ROOT, "data", "enjoei");
-const ENJOEI_NOTEBOOKS_DIR = process.env.ENJOEI_NOTEBOOKS_DATA_DIR ?? path.join(ROOT, "data", "enjoei-notebooks");
-const DOCKSTATIONS_DIR     = process.env.DOCKSTATIONS_DATA_DIR     ?? path.join(ROOT, "data", "dockstations");
-const FITBIT_DIR           = process.env.FITBIT_DATA_DIR           ?? path.join(ROOT, "data", "fitbit");
-const LIFEFACTORY_DIR      = process.env.LIFEFACTORY_DATA_DIR      ?? path.join(ROOT, "data", "lifefactory");
-const TELA_BOOK3_DIR       = process.env.TELA_GALAXYBOOK3_DATA_DIR ?? path.join(ROOT, "data", "tela-galaxybook3");
-const MELANGER_DIR         = process.env.MELANGER_DATA_DIR         ?? path.join(ROOT, "data", "melanger");
-const BUDS4PRO_DIR         = process.env.GALAXY_BUDS4_PRO_DATA_DIR ?? path.join(ROOT, "data", "galaxy-buds4-pro");
-const ONEPLUS_BUDS_DIR     = process.env.ONEPLUS_BUDS_PRO3_DATA_DIR ?? path.join(ROOT, "data", "oneplus-buds-pro-3");
-const PIXEL_WATCH4_DIR     = process.env.GOOGLE_PIXEL_WATCH4_DATA_DIR ?? path.join(ROOT, "data", "google-pixel-watch-4");
-const PIXEL_WATCH5_DIR     = process.env.GOOGLE_PIXEL_WATCH5_DATA_DIR ?? path.join(ROOT, "data", "google-pixel-watch-5");
-const OURA_DIR             = process.env.OURA_RING5_DATA_DIR       ?? path.join(ROOT, "data", "oura-ring5");
-const OLED_MONITORES_DIR   = process.env.OLED_MONITORES_DATA_DIR   ?? path.join(ROOT, "data", "oled-monitores");
-const MERCADOLIVRE_NOTEBOOKS_DIR = process.env.MERCADOLIVRE_NOTEBOOKS_DATA_DIR ?? path.join(ROOT, "data", "mercadolivre-notebooks");
-const MERCADOLIVRE_WATCHLISTS = [
-  ["Galaxy Buds4 Pro", "Mercado Livre Galaxy Buds4 Pro", "R$ 500 - R$ 1.000", "mercadolivre-galaxy-buds4-pro"],
-  ["OnePlus Buds Pro 3", "Mercado Livre OnePlus Buds Pro 3", "R$ 300 - R$ 800", "mercadolivre-oneplus-buds-pro-3"],
-  ["Google Pixel Watch 4", "Mercado Livre Google Pixel Watch 4", "45 mm · Wi‑Fi até R$ 2.000 · LTE até R$ 2.500", "mercadolivre-google-pixel-watch-4"],
-  ["Google Pixel Watch 5", "Mercado Livre Google Pixel Watch 5", "45 mm · Wi‑Fi até R$ 2.400 · LTE até R$ 3.000", "mercadolivre-google-pixel-watch-5"],
-  ["Dockstations", "Mercado Livre Dockstations", "até R$ 500", "mercadolivre-dockstations"],
-  ["Fitbit Air", "Mercado Livre Fitbit Air", "R$ 300 - R$ 600", "mercadolivre-fitbit-air"],
-  ["Lifefactory", "Mercado Livre Lifefactory", "500 ml-1 L · R$ 25 - R$ 75", "mercadolivre-lifefactory"],
-  ["Tela Book3", "Mercado Livre Tela Galaxy Book3", "BA96-08462A · até R$ 1.000", "mercadolivre-tela-galaxybook3"],
-  ["Melanger", "Mercado Livre Melanger", "110/127V · R$ 1.000 - R$ 5.000", "mercadolivre-melanger"],
-  ["Tênis 42", "Mercado Livre Tênis 42", "masculino · tamanho 42 · até R$ 500", "mercadolivre-tenis-42"],
-  ["Monitores OLED", "Mercado Livre Monitores OLED", "R$ 1.500 – R$ 3.000", "mercadolivre-oled-monitores"],
-];
+const OLX_DIR              = resolveWatchlistDataDir(ROOT, "olx");
+const ENJOEI_DIR           = resolveWatchlistDataDir(ROOT, "enjoei");
+const ENJOEI_NOTEBOOKS_DIR = resolveWatchlistDataDir(ROOT, "enjoei-notebooks");
+const DOCKSTATIONS_DIR     = resolveWatchlistDataDir(ROOT, "dockstations");
+const FITBIT_DIR           = resolveWatchlistDataDir(ROOT, "fitbit");
+const LIFEFACTORY_DIR      = resolveWatchlistDataDir(ROOT, "lifefactory");
+const TELA_BOOK3_DIR       = resolveWatchlistDataDir(ROOT, "tela-galaxybook3");
+const MELANGER_DIR         = resolveWatchlistDataDir(ROOT, "melanger");
+const BUDS4PRO_DIR         = resolveWatchlistDataDir(ROOT, "galaxy-buds4-pro");
+const ONEPLUS_BUDS_DIR     = resolveWatchlistDataDir(ROOT, "oneplus-buds-pro-3");
+const PIXEL_WATCH4_DIR     = resolveWatchlistDataDir(ROOT, "google-pixel-watch-4");
+const PIXEL_WATCH5_DIR     = resolveWatchlistDataDir(ROOT, "google-pixel-watch-5");
+const OURA_DIR             = resolveWatchlistDataDir(ROOT, "oura-ring5");
+const OLED_MONITORES_DIR   = resolveWatchlistDataDir(ROOT, "oled-monitores");
+const MERCADOLIVRE_NOTEBOOKS_DIR = resolveWatchlistDataDir(ROOT, "mercadolivre-notebooks");
+const MERCADOLIVRE_WATCHLISTS = mercadoLivreDashboardCards();
 const OUTPUT = path.join(ROOT, "index.html");
 const REPO = "almeida3339/olx-daily";
 const BLOB = `https://github.com/${REPO}/blob/main`;
@@ -47,43 +38,18 @@ const HIGHLIGHT_MAX = 8;
 // antigos, que foram gerados antes do filtro existir. Itens acima disso (ex.:
 // notebooks > R$ 10 mil) não aparecem no dashboard.
 const PRICE_CAP_BRL = 10000;
+const { parseReport, formatRunLabelFromFile } = createDashboardParser({
+  summarizeMachine,
+  formatDateTimeBrt,
+  priceCapBrl: PRICE_CAP_BRL,
+  maxItems: MAX,
+});
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   main().catch((e) => { console.error(e.message); process.exitCode = 1; });
 }
 
-export { parseReport, formatRunLabelFromFile, summarizeMachine };
-
-// O dashboard é público. Não embutir o caminho absoluto do usuário nos botões:
-// além de expor PII, ele quebra quando a página é gerada no CI. O comando usa
-// OLX_DAILY_REPO quando configurado e cai no local padrão de Downloads.
-export function buildLocalTriggerCommands(root = null) {
-  // path.join é sensível a plataforma (barra "/" no Linux) — mas o resultado é
-  // sempre colado num PowerShell do Windows, então a junção é sempre por "\",
-  // independente do SO onde esta função roda (ver bug do CI: testes passavam
-  // no Windows local e falhavam no Ubuntu por causa disso).
-  // olx usa run-local-olx-and-publish.ps1 (nao o orquestrador puro
-  // run-monitors-and-notify.mjs): esse .ps1 e quem configura os diretorios de
-  // dados, espera a rede subir, publica via git e regenera o dashboard. O
-  // orquestrador sozinho so coleta - sem essas variaveis de ambiente, os dados
-  // caem no fallback (.codex/automations, fora do repo) e a pagina nunca
-  // atualiza, mesmo com o comando "funcionando" sem erro nenhum.
-  if (!root) {
-    const repoSetup = "$repo = $env:OLX_DAILY_REPO; if (-not $repo) { $repo = Join-Path $HOME 'Downloads\\olx-daily' }; ";
-    const scriptPath = (name) => `(Join-Path $repo 'scripts\\${name}')`;
-    return {
-      olx: `${repoSetup}& ${scriptPath("run-local-olx-and-publish.ps1")}`,
-      mercadoLivre: `${repoSetup}& ${scriptPath("run-mercadolivre-and-publish.ps1")}`,
-      notificacoes: `${repoSetup}node ${scriptPath("manage-notification-outbox.mjs")}`,
-    };
-  }
-  const scriptPath = (name) => `${root.replace(/[\\/]+$/, "")}\\scripts\\${name}`.replace(/'/g, "''");
-  return {
-    olx: `& '${scriptPath("run-local-olx-and-publish.ps1")}'`,
-    mercadoLivre: `& '${scriptPath("run-mercadolivre-and-publish.ps1")}'`,
-    notificacoes: `node '${scriptPath("manage-notification-outbox.mjs")}'`,
-  };
-}
+export { parseReport, formatRunLabelFromFile, summarizeMachine, buildLocalTriggerCommands };
 
 async function main() {
   const health = await buildMonitorHealth(ROOT);
@@ -273,73 +239,7 @@ async function latestRunLabel(dir) {
   return { label: formatRunLabelFromFile(file, null), fresh, ts: ts ? ts.getTime() : null };
 }
 
-// Extrai o instante (UTC) do nome do arquivo de relatório, ou null se não casar.
-function runTimestampFromFile(file) {
-  const m = file.match(/report(?:-premium)?-(\d{4})-(\d{2})-(\d{2})T(\d{2})-(\d{2})-(\d{2})-(\d{3})Z\.md$/);
-  if (!m) return null;
-  const [, y, mo, d, h, mi, s, ms] = m;
-  const date = new Date(`${y}-${mo}-${d}T${h}:${mi}:${s}.${ms}Z`);
-  return Number.isNaN(date.getTime()) ? null : date;
-}
-
 // ── parser ───────────────────────────────────────────────────────────────────
-
-function parseReport(txt, detailsByUrl = new Map()) {
-  const dateM = txt.match(/Data:\s*(\d{4}-\d{2}-\d{2})/) ?? txt.match(/[—\-]\s*(\d{4}-\d{2}-\d{2})/);
-  const date = dateM ? dateM[1] : null;
-
-  // Contagem e itens derivam das próprias seções (já filtradas pelo teto de
-  // preço), em vez do resumo. Assim o badge bate com as linhas exibidas e
-  // relatórios cujos únicos itens estão acima do teto somem do dashboard.
-  const withinCap = (item) => {
-    const p = parseBrlPrice(item.priceTo ?? item.price);
-    return p == null || p <= PRICE_CAP_BRL;
-  };
-  const newItems = extractItems(txt, /^## Novos (an[úu]ncios|produtos|notebooks)/m, detailsByUrl).filter(withinCap);
-  const priceItems = extractItems(txt, /^## Mudan[cç]as? de pre[cç]o/m, detailsByUrl).filter(withinCap);
-
-  return {
-    newCount: newItems.length,
-    priceCount: priceItems.length,
-    date,
-    newItems: newItems.slice(0, MAX),
-    priceItems: priceItems.slice(0, MAX),
-    allNewItems: newItems,
-    allPriceItems: priceItems,
-    partial: /Cobertura parcial:\s*\*\*sim\*\*/i.test(txt),
-  };
-}
-
-function extractItems(txt, sectionRe, detailsByUrl = new Map()) {
-  const m = txt.match(sectionRe);
-  if (!m) return [];
-  const rest = txt.slice(m.index);
-  const nextSec = rest.slice(1).search(/^## /m);
-  const block = nextSec === -1 ? rest : rest.slice(0, nextSec + 1);
-  return block
-    .split("\n")
-    .filter((l) => l.startsWith("- ") && !/Nenhum|Observa[cç]|CPUs? exclu/i.test(l))
-    .map((line) => parseLine(line, detailsByUrl));
-}
-
-function parseLine(line, detailsByUrl = new Map()) {
-  const raw = line.slice(2).trim();
-  const urlM = raw.match(/https?:\/\/\S+/);
-  const url = urlM ? urlM[0].replace(/[.,)]+$/, "") : null;
-  const changeM = raw.match(/(R\$\s*[\d.,]+)\s*(?:→|->)\s*(R\$\s*[\d.,]+)/);
-  const priceM = raw.match(/R\$\s*[\d.,]+/);
-  const priceFrom = changeM ? formatBrlPrice(changeM[1].trim()) : null;
-  const priceTo = changeM ? formatBrlPrice(changeM[2].trim()) : null;
-  const price = priceM ? formatBrlPrice(priceM[0]) : null;
-  let title = raw;
-  if (url) title = title.replace(url, "");
-  if (changeM) title = title.replace(changeM[0], "");
-  else if (priceM) title = title.replace(priceM[0], "");
-  title = title.replace(/^\s*[—–\-,\s]+/, "").replace(/[—–\-,\s]+$/, "");
-  const fullTitle = title || "—";
-  const shortTitle = fullTitle.length > 72 ? fullTitle.slice(0, 72) + "…" : fullTitle;
-  return { title: shortTitle, fullTitle, price, url, priceFrom, priceTo, machine: summarizeMachine(fullTitle, url ? detailsByUrl.get(url) : null) };
-}
 
 function summarizeMachine(text, details = null) {
   const [rawTitle, ...metaParts] = (text ?? "").split(/\s+[—–]\s+/).map((part) => part.trim()).filter(Boolean);
@@ -502,18 +402,6 @@ function toTitleCase(text) {
     if (/^ux\d+$/i.test(word)) return word.toUpperCase();
     return upperWords.has(word.toLowerCase()) ? word.toUpperCase() : word.charAt(0).toUpperCase() + word.slice(1);
   });
-}
-
-function formatRunLabelFromFile(file, fallbackDate) {
-  const m = file.match(/report(?:-premium)?-(\d{4})-(\d{2})-(\d{2})T(\d{2})-(\d{2})-(\d{2})-(\d{3})Z\.md$/);
-  if (!m) {
-    const fallback = String(fallbackDate ?? "").match(/^(\d{4})-(\d{2})-(\d{2})$/);
-    return fallback ? `${fallback[3]}/${fallback[2]}/${fallback[1]}` : "—";
-  }
-
-  const [, year, month, day, hour, minute, second, ms] = m;
-  const date = new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}.${ms}Z`);
-  return Number.isNaN(date.getTime()) ? "—" : formatDateTimeBrt(date);
 }
 
 async function currentMercadoLivreSnapshotReport(dir, displayMax = Infinity) {

@@ -1,28 +1,5 @@
-export const MONITOR_LABELS = Object.freeze({
-  olx: "OLX Notebooks",
-  "enjoei-notebooks": "Enjoei Notebooks",
-  enjoei: "Enjoei Tênis 42",
-  dockstations: "Dockstations",
-  fitbit: "Fitbit Air",
-  lifefactory: "Lifefactory",
-  "tela-galaxybook3": "Tela Book3",
-  melanger: "Melanger",
-  "galaxy-buds4-pro": "Galaxy Buds4 Pro",
-  "oneplus-buds-pro-3": "OnePlus Buds Pro 3",
-  "google-pixel-watch-4": "Google Pixel Watch 4",
-  "google-pixel-watch-5": "Google Pixel Watch 5",
-  "oura-ring5": "Oura Ring 5",
-  "oled-monitores": "Monitores OLED",
-  "mercadolivre-notebooks": "Mercado Livre Notebooks",
-  "mercadolivre-galaxy-buds4-pro": "Mercado Livre Galaxy Buds4 Pro",
-  "mercadolivre-oneplus-buds-pro-3": "Mercado Livre OnePlus Buds Pro 3",
-  "mercadolivre-google-pixel-watch-4": "Mercado Livre Google Pixel Watch 4",
-  "mercadolivre-google-pixel-watch-5": "Mercado Livre Google Pixel Watch 5",
-  "mercadolivre-dockstations": "Mercado Livre Dockstations",
-  "mercadolivre-fitbit-air": "Mercado Livre Fitbit Air",
-  "mercadolivre-lifefactory": "Mercado Livre Lifefactory",
-  "mercadolivre-tela-galaxybook3": "Mercado Livre Tela Book3",
-  "mercadolivre-melanger": "Mercado Livre Melanger",
-  "mercadolivre-tenis-42": "Mercado Livre Tênis 42",
-  "mercadolivre-oled-monitores": "Mercado Livre Monitores OLED",
-});
+import { ALL_WATCHLISTS } from "./watchlists-registry.mjs";
+
+export const MONITOR_LABELS = Object.freeze(
+  Object.fromEntries(ALL_WATCHLISTS.map((watchlist) => [watchlist.id, watchlist.label])),
+);

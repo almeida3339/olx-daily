@@ -3,32 +3,23 @@ import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { ALL_WATCHLISTS } from "../scripts/lib/watchlists-registry.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
-test("publicacao local inclui todas as pastas de producao do Mercado Livre", async () => {
+test("publicacao local inclui automaticamente as pastas registradas", async () => {
   const script = await fs.readFile(path.join(root, "scripts", "run-local-olx-and-publish.ps1"), "utf8");
-  for (const folder of [
-    "mercadolivre-notebooks",
-    "mercadolivre-galaxy-buds4-pro",
-    "mercadolivre-oneplus-buds-pro-3",
-    "mercadolivre-google-pixel-watch-4",
-    "mercadolivre-google-pixel-watch-5",
-    "mercadolivre-dockstations",
-    "mercadolivre-fitbit-air",
-    "mercadolivre-lifefactory",
-    "mercadolivre-tela-galaxybook3",
-    "mercadolivre-melanger",
-    "mercadolivre-tenis-42",
-    "mercadolivre-oled-monitores",
-  ]) {
-    assert.match(script, new RegExp(`data/${folder}`));
+  assert.match(script, /Get-ChildItem -LiteralPath "data" -Directory/);
+  assert.match(script, /list-watchlist-folders\.mjs"\) --all/);
+  assert.match(script, /\$registeredFolders -contains \$_.Name/);
+  for (const watchlist of ALL_WATCHLISTS) {
+    assert.ok(watchlist.repoFolder, `watchlist ${watchlist.id} precisa de pasta publicada`);
   }
 });
 
 test("publicacao dedicada do Mercado Livre inclui Monitores OLED e propaga falha da coleta", async () => {
   const script = await fs.readFile(path.join(root, "scripts", "run-mercadolivre-and-publish.ps1"), "utf8");
-  assert.match(script, /data\/mercadolivre-oled-monitores/);
+  assert.match(script, /\$registeredFolders -contains \$_.Name/);
   assert.match(script, /data\/status/);
   assert.match(script, /Coleta do Mercado Livre terminou com exit \$mlExit/);
 });
@@ -46,8 +37,9 @@ test("painel e notificacoes incluem Galaxy Buds4 Pro do Mercado Livre", async ()
     fs.readFile(path.join(root, "scripts", "generate-dashboard.mjs"), "utf8"),
     fs.readFile(path.join(root, "scripts", "run-monitors-and-notify.mjs"), "utf8"),
   ]);
-  assert.match(dashboard, /mercadolivre-galaxy-buds4-pro/);
-  assert.match(notifier, /mercadolivre-galaxy-buds4-pro/);
+  assert.match(dashboard, /watchlists-registry\.mjs/);
+  assert.ok(ALL_WATCHLISTS.some((watchlist) => watchlist.id === "mercadolivre-galaxy-buds4-pro"));
+  assert.match(notifier, /MERCADOLIVRE_WATCHLISTS/);
 });
 
 test("painel prioriza destaques recentes e recolhe a saúde detalhada", async () => {
@@ -99,23 +91,23 @@ test("timestamps visíveis usam formato brasileiro e fuso explícito", async () 
 
 test("orquestrador inclui Monitores OLED nos achados notificáveis", async () => {
   const notifier = await fs.readFile(path.join(root, "scripts", "run-monitors-and-notify.mjs"), "utf8");
-  assert.match(notifier, /OLED_MONITORES_DIR/);
+  assert.match(notifier, /getWatchlist\("oled-monitores"\)/);
   assert.match(notifier, /oledMonitoresReport/);
-  assert.match(notifier, /label: "Monitores OLED"/);
+  assert.ok(ALL_WATCHLISTS.some((watchlist) => watchlist.id === "oled-monitores" && watchlist.label === "Monitores OLED"));
 });
 
 test("orquestrador inclui Google Pixel Watch 4 nos achados notificáveis", async () => {
   const notifier = await fs.readFile(path.join(root, "scripts", "run-monitors-and-notify.mjs"), "utf8");
-  assert.match(notifier, /GOOGLE_PIXEL_WATCH4_DATA_DIR/);
+  assert.match(notifier, /getWatchlist\("google-pixel-watch-4"\)/);
   assert.match(notifier, /pixelWatch4Report/);
-  assert.match(notifier, /label: "Google Pixel Watch 4"/);
+  assert.ok(ALL_WATCHLISTS.some((watchlist) => watchlist.id === "google-pixel-watch-4" && watchlist.label === "Google Pixel Watch 4"));
 });
 
 test("orquestrador inclui Google Pixel Watch 5 nos achados notificáveis", async () => {
   const notifier = await fs.readFile(path.join(root, "scripts", "run-monitors-and-notify.mjs"), "utf8");
-  assert.match(notifier, /GOOGLE_PIXEL_WATCH5_DATA_DIR/);
+  assert.match(notifier, /getWatchlist\("google-pixel-watch-5"\)/);
   assert.match(notifier, /pixelWatch5Report/);
-  assert.match(notifier, /label: "Google Pixel Watch 5"/);
+  assert.ok(ALL_WATCHLISTS.some((watchlist) => watchlist.id === "google-pixel-watch-5" && watchlist.label === "Google Pixel Watch 5"));
 });
 
 test("publicacao local nao aborta imediatamente em caso de erro do monitor", async () => {

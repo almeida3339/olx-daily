@@ -55,20 +55,6 @@ jobs:
           CALLMEBOT_PHONE: ${{ secrets.CALLMEBOT_PHONE }}
           CALLMEBOT_APIKEY: ${{ secrets.CALLMEBOT_APIKEY }}
           SKIP_OLX: "1"
-          OLX_DATA_DIR: ${{ github.workspace }}/data/olx
-          ENJOEI_DATA_DIR: ${{ github.workspace }}/data/enjoei
-          ENJOEI_NOTEBOOKS_DATA_DIR: ${{ github.workspace }}/data/enjoei-notebooks
-          DOCKSTATIONS_DATA_DIR: ${{ github.workspace }}/data/dockstations
-          FITBIT_DATA_DIR: ${{ github.workspace }}/data/fitbit
-          LIFEFACTORY_DATA_DIR: ${{ github.workspace }}/data/lifefactory
-          TELA_GALAXYBOOK3_DATA_DIR: ${{ github.workspace }}/data/tela-galaxybook3
-          MELANGER_DATA_DIR: ${{ github.workspace }}/data/melanger
-          GALAXY_BUDS4_PRO_DATA_DIR: ${{ github.workspace }}/data/galaxy-buds4-pro
-          ONEPLUS_BUDS_PRO3_DATA_DIR: ${{ github.workspace }}/data/oneplus-buds-pro-3
-          GOOGLE_PIXEL_WATCH4_DATA_DIR: ${{ github.workspace }}/data/google-pixel-watch-4
-          GOOGLE_PIXEL_WATCH5_DATA_DIR: ${{ github.workspace }}/data/google-pixel-watch-5
-          OURA_RING5_DATA_DIR: ${{ github.workspace }}/data/oura-ring5
-          OLED_MONITORES_DATA_DIR: ${{ github.workspace }}/data/oled-monitores
         run: node scripts/run-monitors-and-notify.mjs
 
       # O dashboard NAO e gerado aqui: ele depende de TODOS os dados (OLX do
@@ -77,21 +63,6 @@ jobs:
       # que, no rebase, sobrescreveria o do outro lado (corrida CI x local).
       - name: Salvar snapshots e publicar dashboard
         if: always()
-        env:
-          OLX_DATA_DIR: ${{ github.workspace }}/data/olx
-          ENJOEI_DATA_DIR: ${{ github.workspace }}/data/enjoei
-          ENJOEI_NOTEBOOKS_DATA_DIR: ${{ github.workspace }}/data/enjoei-notebooks
-          DOCKSTATIONS_DATA_DIR: ${{ github.workspace }}/data/dockstations
-          FITBIT_DATA_DIR: ${{ github.workspace }}/data/fitbit
-          LIFEFACTORY_DATA_DIR: ${{ github.workspace }}/data/lifefactory
-          TELA_GALAXYBOOK3_DATA_DIR: ${{ github.workspace }}/data/tela-galaxybook3
-          MELANGER_DATA_DIR: ${{ github.workspace }}/data/melanger
-          GALAXY_BUDS4_PRO_DATA_DIR: ${{ github.workspace }}/data/galaxy-buds4-pro
-          ONEPLUS_BUDS_PRO3_DATA_DIR: ${{ github.workspace }}/data/oneplus-buds-pro-3
-          GOOGLE_PIXEL_WATCH4_DATA_DIR: ${{ github.workspace }}/data/google-pixel-watch-4
-          GOOGLE_PIXEL_WATCH5_DATA_DIR: ${{ github.workspace }}/data/google-pixel-watch-5
-          OURA_RING5_DATA_DIR: ${{ github.workspace }}/data/oura-ring5
-          OLED_MONITORES_DATA_DIR: ${{ github.workspace }}/data/oled-monitores
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

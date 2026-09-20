@@ -18,11 +18,18 @@ import {
   claimNotification,
   notificationDedupeKey,
   readyNotificationItems,
+  skipNotification,
   recoverAbandonedNotifications,
   reconcileNotificationOutbox,
   settleNotification,
 } from "./lib/notification-outbox.mjs";
 import { readLatestCommittedReport, writeJsonAtomic } from "./lib/monitor-runtime.mjs";
+import {
+  MERCADOLIVRE_WATCHLISTS,
+  getWatchlist,
+  resolveAutomationDataDir,
+  resolveWatchlistDataDir,
+} from "./lib/watchlists-registry.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const workspaceRoot = path.resolve(__dirname, "..");
@@ -34,35 +41,25 @@ function getStatusFilePath() {
 let fsApi = fs;
 let runCommandFn = (...args) => runCommand(...args);
 
-const def = (env, fallback) => process.env[env] ?? path.join(process.env.USERPROFILE ?? process.env.HOME ?? "", ".codex", "automations", fallback);
-const OLX_DIR              = def("OLX_DATA_DIR",              "monitor-olx-notebooks-por-cpu");
-const ENJOEI_DIR           = def("ENJOEI_DATA_DIR",           "monitor-enjoei-tenis-42");
-const ENJOEI_NOTEBOOKS_DIR = def("ENJOEI_NOTEBOOKS_DATA_DIR", "monitor-enjoei-notebooks");
-const DOCKSTATIONS_DIR     = def("DOCKSTATIONS_DATA_DIR",     "monitor-dockstations");
-const FITBIT_DIR           = def("FITBIT_DATA_DIR",           "monitor-fitbit");
-const LIFEFACTORY_DIR      = def("LIFEFACTORY_DATA_DIR",      "monitor-lifefactory");
-const TELA_BOOK3_DIR       = def("TELA_GALAXYBOOK3_DATA_DIR", "monitor-tela-galaxybook3");
-const MELANGER_DIR         = def("MELANGER_DATA_DIR",         "monitor-melanger");
-const BUDS4PRO_DIR         = def("GALAXY_BUDS4_PRO_DATA_DIR", "monitor-galaxy-buds4-pro");
-const ONEPLUS_BUDS_DIR     = def("ONEPLUS_BUDS_PRO3_DATA_DIR", "monitor-oneplus-buds-pro-3");
-const PIXEL_WATCH4_DIR     = def("GOOGLE_PIXEL_WATCH4_DATA_DIR", "monitor-google-pixel-watch-4");
-const PIXEL_WATCH5_DIR     = def("GOOGLE_PIXEL_WATCH5_DATA_DIR", "monitor-google-pixel-watch-5");
-const OURA_DIR             = def("OURA_RING5_DATA_DIR",       "monitor-oura-ring5");
-const OLED_MONITORES_DIR   = def("OLED_MONITORES_DATA_DIR",   "monitor-oled-monitores");
-const MERCADOLIVRE_DIRS = [
-  ["Mercado Livre Notebooks", path.join(workspaceRoot, "data", "mercadolivre-notebooks")],
-  ["ML Galaxy Buds4 Pro", path.join(workspaceRoot, "data", "mercadolivre-galaxy-buds4-pro")],
-  ["ML OnePlus Buds Pro 3", path.join(workspaceRoot, "data", "mercadolivre-oneplus-buds-pro-3")],
-  ["ML Google Pixel Watch 4", path.join(workspaceRoot, "data", "mercadolivre-google-pixel-watch-4")],
-  ["ML Google Pixel Watch 5", path.join(workspaceRoot, "data", "mercadolivre-google-pixel-watch-5")],
-  ["ML Dockstations", path.join(workspaceRoot, "data", "mercadolivre-dockstations")],
-  ["ML Fitbit Air", path.join(workspaceRoot, "data", "mercadolivre-fitbit-air")],
-  ["ML Lifefactory", path.join(workspaceRoot, "data", "mercadolivre-lifefactory")],
-  ["ML Tela Book3", path.join(workspaceRoot, "data", "mercadolivre-tela-galaxybook3")],
-  ["ML Melanger", path.join(workspaceRoot, "data", "mercadolivre-melanger")],
-  ["ML Tênis 42", path.join(workspaceRoot, "data", "mercadolivre-tenis-42")],
-  ["ML Monitores OLED", path.join(workspaceRoot, "data", "mercadolivre-oled-monitores")],
-];
+const localDir = (id) => resolveAutomationDataDir(workspaceRoot, id);
+const OLX_DIR              = localDir("olx");
+const ENJOEI_DIR           = localDir("enjoei");
+const ENJOEI_NOTEBOOKS_DIR = localDir("enjoei-notebooks");
+const DOCKSTATIONS_DIR     = localDir("dockstations");
+const FITBIT_DIR           = localDir("fitbit");
+const LIFEFACTORY_DIR      = localDir("lifefactory");
+const TELA_BOOK3_DIR       = localDir("tela-galaxybook3");
+const MELANGER_DIR         = localDir("melanger");
+const BUDS4PRO_DIR         = localDir("galaxy-buds4-pro");
+const ONEPLUS_BUDS_DIR     = localDir("oneplus-buds-pro-3");
+const PIXEL_WATCH4_DIR     = localDir("google-pixel-watch-4");
+const PIXEL_WATCH5_DIR     = localDir("google-pixel-watch-5");
+const OURA_DIR             = localDir("oura-ring5");
+const OLED_MONITORES_DIR   = localDir("oled-monitores");
+const MERCADOLIVRE_DIRS = MERCADOLIVRE_WATCHLISTS.map((watchlist) => [
+  watchlist.healthLabel ?? watchlist.label,
+  resolveWatchlistDataDir(workspaceRoot, watchlist),
+]);
 
 // NUNCA usar defaults hardcoded para credenciais: este repositório é público
 // (GitHub Pages) e qualquer valor aqui vaza para o mundo. As variáveis são
@@ -78,9 +75,9 @@ const NOTIFY_TO          = process.env.NOTIFY_EMAIL_TO ?? GMAIL_USER;
 // Canal de email desativado a pedido do usuário (credencial SMTP vinha sendo
 // rejeitada — 535-5.7.8 — e enchendo a fila de pendências sem entregar nada).
 // Não removemos o código de envio: só paramos de enfileirar. Reativar é setar
-// NOTIFY_EMAIL_DISABLED=0 (ou remover a env var) depois de trocar a senha de
-// app do Gmail no secret GMAIL_APP_PASSWORD.
-const NOTIFY_EMAIL_DISABLED = process.env.NOTIFY_EMAIL_DISABLED !== "0";
+// NOTIFY_EMAIL_DISABLED=0 depois de trocar a senha de app do Gmail no secret
+// GMAIL_APP_PASSWORD. A leitura por rodada também mantém os testes isolados.
+const emailNotificationsDisabled = () => process.env.NOTIFY_EMAIL_DISABLED !== "0";
 const CALLMEBOT_PHONE    = process.env.CALLMEBOT_PHONE;
 const CALLMEBOT_APIKEY   = process.env.CALLMEBOT_APIKEY;
 // As variáveis de linha de comando agora são interpretadas dinamicamente dentro de main()
@@ -233,20 +230,20 @@ export async function main({
 
   // Cada fonte conta itens NOVOS e ALTERAÇÕES DE PREÇO (antes só contava novos do range padrão).
   const sources = (onlyMercadoLivre ? [] : [
-    { label: "OLX Notebooks",    report: olxStd,      newRe: /Novos an[úu]ncios v[aá]lidos[^:]*:\s*\*\*(\d+)\*\*/, newSec: "## Novos anúncios", priceSec: "## Mudanças de preço" },
-    { label: "Enjoei Notebooks", report: enjoeiNbStd, newRe: /Novos notebooks[^:]*:\s*\*\*(\d+)\*\*/,              newSec: "## Novos notebooks", priceSec: "## Mudanças de preço" },
-    { label: "Enjoei Tênis",     report: enjoeiReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,                    newSec: "## Novos produtos",  priceSec: "## Mudancas de preco" },
-    { label: "Dockstations",     report: dockReport,   newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,                    newSec: "## Novos produtos",  priceSec: "## Mudanças de preço" },
-    { label: "Fitbit Air",       report: fitbitReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,                    newSec: "## Novos produtos",  priceSec: "## Mudanças de preço" },
-    { label: "Lifefactory",      report: lifefactoryReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,               newSec: "## Novos produtos",  priceSec: "## Mudanças de preço" },
-    { label: "Tela Book3",       report: telaBook3Report, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,                 newSec: "## Novos produtos",  priceSec: "## Mudanças de preço" },
-    { label: "Melanger",         report: melangerReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,                  newSec: "## Novos produtos",  priceSec: "## Mudanças de preço" },
-    { label: "Galaxy Buds4 Pro", report: buds4ProReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,                  newSec: "## Novos produtos",  priceSec: "## Mudanças de preço" },
-    { label: "OnePlus Buds Pro 3", report: onePlusBudsReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,             newSec: "## Novos produtos",  priceSec: "## Mudanças de preço" },
-    { label: "Google Pixel Watch 4", report: pixelWatch4Report, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,          newSec: "## Novos produtos",  priceSec: "## Mudanças de preço" },
-    { label: "Google Pixel Watch 5", report: pixelWatch5Report, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,          newSec: "## Novos produtos",  priceSec: "## Mudanças de preço" },
-    { label: "Oura Ring 5",      report: ouraReport,   newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,                    newSec: "## Novos produtos",  priceSec: "## Mudanças de preço" },
-    { label: "Monitores OLED",   report: oledMonitoresReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/,             newSec: "## Novos produtos",  priceSec: "## Mudanças de preço" },
+    { label: getWatchlist("olx").label, report: olxStd, newRe: /Novos an[úu]ncios v[aá]lidos[^:]*:\s*\*\*(\d+)\*\*/, newSec: "## Novos anúncios", priceSec: "## Mudanças de preço" },
+    { label: getWatchlist("enjoei-notebooks").label, report: enjoeiNbStd, newRe: /Novos notebooks[^:]*:\s*\*\*(\d+)\*\*/, newSec: "## Novos notebooks", priceSec: "## Mudanças de preço" },
+    { label: getWatchlist("enjoei").label, report: enjoeiReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/, newSec: "## Novos produtos", priceSec: "## Mudancas de preco" },
+    { label: getWatchlist("dockstations").label, report: dockReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/, newSec: "## Novos produtos", priceSec: "## Mudanças de preço" },
+    { label: getWatchlist("fitbit").label, report: fitbitReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/, newSec: "## Novos produtos", priceSec: "## Mudanças de preço" },
+    { label: getWatchlist("lifefactory").label, report: lifefactoryReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/, newSec: "## Novos produtos", priceSec: "## Mudanças de preço" },
+    { label: getWatchlist("tela-galaxybook3").label, report: telaBook3Report, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/, newSec: "## Novos produtos", priceSec: "## Mudanças de preço" },
+    { label: getWatchlist("melanger").label, report: melangerReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/, newSec: "## Novos produtos", priceSec: "## Mudanças de preço" },
+    { label: getWatchlist("galaxy-buds4-pro").label, report: buds4ProReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/, newSec: "## Novos produtos", priceSec: "## Mudanças de preço" },
+    { label: getWatchlist("oneplus-buds-pro-3").label, report: onePlusBudsReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/, newSec: "## Novos produtos", priceSec: "## Mudanças de preço" },
+    { label: getWatchlist("google-pixel-watch-4").label, report: pixelWatch4Report, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/, newSec: "## Novos produtos", priceSec: "## Mudanças de preço" },
+    { label: getWatchlist("google-pixel-watch-5").label, report: pixelWatch5Report, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/, newSec: "## Novos produtos", priceSec: "## Mudanças de preço" },
+    { label: getWatchlist("oura-ring5").label, report: ouraReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/, newSec: "## Novos produtos", priceSec: "## Mudanças de preço" },
+    { label: getWatchlist("oled-monitores").label, report: oledMonitoresReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/, newSec: "## Novos produtos", priceSec: "## Mudanças de preço" },
   ]).map((s) => ({
     ...s,
     newCount:   extractNewCount(s.report, s.newRe),
@@ -300,7 +297,8 @@ export async function main({
   // WhatsApp sempre (heartbeat de execução).
   // Email quando há novos itens, alterações de preço ou erros (evita caixa cheia com confirmações vazias).
   // NOTIFY_EMAIL_DISABLED corta o canal inteiro, mesmo com --force-email.
-  const sendingEmail = !NOTIFY_EMAIL_DISABLED && (totalNew > 0 || totalPrice > 0 || errors.length > 0 || forceEmail);
+  const emailDisabled = emailNotificationsDisabled();
+  const sendingEmail = !emailDisabled && (totalNew > 0 || totalPrice > 0 || errors.length > 0 || forceEmail);
 
   if (dryRun) {
     console.log("\n── DRY-RUN (nada enviado) ──");
@@ -330,6 +328,12 @@ export async function main({
 
   const deliveryByKey = new Map();
   for (const queued of readyNotificationItems(notificationOutbox, runNow)) {
+    if (emailDisabled && queued.channel === "email") {
+      notificationOutbox = skipNotification(notificationOutbox, queued.id);
+      await checkpointNotificationOutbox(notificationOutbox, currentStatus, runNow);
+      logger.info("notification_skipped", { channel: queued.channel, outbox_id: queued.id, reason: "email_disabled" });
+      continue;
+    }
     notificationOutbox = claimNotification(notificationOutbox, queued.id, runNow);
     await checkpointNotificationOutbox(notificationOutbox, currentStatus, runNow);
     try {

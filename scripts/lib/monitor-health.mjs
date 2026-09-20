@@ -3,37 +3,9 @@ import { classifyMonitorError } from "./monitor-errors.mjs";
 import { MONITOR_LABELS } from "./monitor-labels.mjs";
 import { readMonitorHistory, summarizeMonitorHistory } from "./monitor-history.mjs";
 import { readJsonValidated, readLatestValidSnapshot, timestampFromArtifactName } from "./monitor-runtime.mjs";
+import { watchlistHealthDefinitions } from "./watchlists-registry.mjs";
 
-const HOUR = 60 * 60 * 1000;
-
-const monitorHealthSourceDefinitions = [
-  ["olx", "OLX Notebooks", 24 * HOUR],
-  ["enjoei-notebooks", "Enjoei Notebooks", 24 * HOUR],
-  ["enjoei", "Enjoei Tênis", 24 * HOUR],
-  ["dockstations", "Dockstations", 24 * HOUR],
-  ["fitbit", "Fitbit Air", 24 * HOUR],
-  ["lifefactory", "Lifefactory", 24 * HOUR],
-  ["tela-galaxybook3", "Tela Book3", 24 * HOUR],
-  ["melanger", "Melanger", 24 * HOUR],
-  ["galaxy-buds4-pro", "Galaxy Buds4 Pro", 24 * HOUR],
-  ["oneplus-buds-pro-3", "OnePlus Buds Pro 3", 24 * HOUR],
-  ["google-pixel-watch-4", "Google Pixel Watch 4", 24 * HOUR],
-  ["google-pixel-watch-5", "Google Pixel Watch 5", 24 * HOUR],
-  ["oura-ring5", "Oura Ring 5", 24 * HOUR],
-  ["oled-monitores", "Monitores OLED", 24 * HOUR],
-  ["mercadolivre-notebooks", "ML Notebooks", 7 * 24 * HOUR],
-  ["mercadolivre-galaxy-buds4-pro", "ML Galaxy Buds4 Pro", 7 * 24 * HOUR],
-  ["mercadolivre-oneplus-buds-pro-3", "ML OnePlus Buds Pro 3", 7 * 24 * HOUR],
-  ["mercadolivre-google-pixel-watch-4", "ML Google Pixel Watch 4", 7 * 24 * HOUR],
-  ["mercadolivre-google-pixel-watch-5", "ML Google Pixel Watch 5", 7 * 24 * HOUR],
-  ["mercadolivre-dockstations", "ML Dockstations", 7 * 24 * HOUR],
-  ["mercadolivre-fitbit-air", "ML Fitbit Air", 7 * 24 * HOUR],
-  ["mercadolivre-lifefactory", "ML Lifefactory", 7 * 24 * HOUR],
-  ["mercadolivre-tela-galaxybook3", "ML Tela Book3", 7 * 24 * HOUR],
-  ["mercadolivre-melanger", "ML Melanger", 7 * 24 * HOUR],
-  ["mercadolivre-tenis-42", "ML Tênis 42", 7 * 24 * HOUR],
-  ["mercadolivre-oled-monitores", "ML Monitores OLED", 7 * 24 * HOUR],
-];
+const monitorHealthSourceDefinitions = watchlistHealthDefinitions();
 
 export const monitorHealthSources = monitorHealthSourceDefinitions.map(([id, label, maxAgeMs]) => [id, MONITOR_LABELS[id] ?? label, maxAgeMs]);
 

@@ -70,6 +70,13 @@ export function claimNotification(outbox, id, now = new Date()) {
   });
 }
 
+// Remove uma entrega deliberadamente desativada antes que ela alcance o
+// provedor. Isso evita que itens antigos da fila contornem a configuração que
+// desliga um canal inteiro.
+export function skipNotification(outbox, id) {
+  return outbox.filter((item) => item.id !== id);
+}
+
 export function settleNotification(outbox, id, { ok, error }, now = new Date()) {
   return outbox.flatMap((item) => {
     if (item.id !== id) return [item];

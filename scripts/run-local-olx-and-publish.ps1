@@ -186,33 +186,19 @@ try {
   # Algumas watchlists do Mercado Livre sao opcionais e so criam a pasta no
   # primeiro ciclo bem-sucedido. Filtrar os caminhos existentes evita que um
   # pathspec ausente interrompa a publicacao de todos os outros monitores.
-  $stagePaths = @(
-    "data/olx",
-    "data/dockstations",
-    "data/fitbit",
-    "data/lifefactory",
-    "data/tela-galaxybook3",
-    "data/melanger",
-    "data/galaxy-buds4-pro",
-    "data/oneplus-buds-pro-3",
-    "data/google-pixel-watch-4",
-    "data/google-pixel-watch-5",
-    "data/oura-ring5",
-    "data/oled-monitores",
-    "data/status",
-    "data/mercadolivre-notebooks",
-    "data/mercadolivre-galaxy-buds4-pro",
-    "data/mercadolivre-oneplus-buds-pro-3",
-    "data/mercadolivre-google-pixel-watch-4",
-    "data/mercadolivre-google-pixel-watch-5",
-    "data/mercadolivre-dockstations",
-    "data/mercadolivre-fitbit-air",
-    "data/mercadolivre-lifefactory",
-    "data/mercadolivre-tela-galaxybook3",
-    "data/mercadolivre-melanger",
-    "data/mercadolivre-tenis-42",
-    "data/mercadolivre-oled-monitores"
-  )
+  # O registry Node é a fonte única, mas a publicação continua com allowlist:
+  # uma pasta arbitrária em data/ nunca deve ser enviada ao repositório público.
+  # O fluxo local preserva também snapshots ML já existentes no checkout,
+  # como fazia a allowlist anterior; a segurança vem do registry, não de um
+  # filtro por plataforma.
+  $registeredFoldersJson = node (Join-Path $PSScriptRoot "list-watchlist-folders.mjs") --all
+  if ($LASTEXITCODE -ne 0) { $ErrorActionPreference = $prevEAP; throw "Nao foi possivel ler o registry de watchlists." }
+  $registeredFolders = @($registeredFoldersJson | ConvertFrom-Json)
+  $stagePaths = @("data/status")
+  $stagePaths += @(Get-ChildItem -LiteralPath "data" -Directory -ErrorAction SilentlyContinue |
+    Where-Object { $registeredFolders -contains $_.Name } |
+    ForEach-Object { "data/$($_.Name)" })
+  $stagePaths += "index.html"
   $missingStagePaths = @($stagePaths | Where-Object { -not (Test-Path -LiteralPath $_) })
   if ($missingStagePaths.Count -gt 0) {
     Write-Host "Ignorando pastas de dados ainda inexistentes: $($missingStagePaths -join ', ')"

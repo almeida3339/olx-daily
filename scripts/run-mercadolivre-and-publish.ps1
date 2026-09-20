@@ -81,22 +81,15 @@ Remove-Item Env:MONITOR_REPORT_MIN_TIME -ErrorAction SilentlyContinue
 if ($notifyExit -ne 0) { Write-Host "Aviso: notificacao terminou com exit $notifyExit." -ForegroundColor Yellow }
 
 Write-Host "[4/4] Publicando..."
-$mlStagePaths = @(
-  "data/mercadolivre-notebooks",
-  "data/mercadolivre-galaxy-buds4-pro",
-  "data/mercadolivre-oneplus-buds-pro-3",
-  "data/mercadolivre-google-pixel-watch-4",
-  "data/mercadolivre-google-pixel-watch-5",
-  "data/mercadolivre-dockstations",
-  "data/mercadolivre-fitbit-air",
-  "data/mercadolivre-lifefactory",
-  "data/mercadolivre-tela-galaxybook3",
-  "data/mercadolivre-melanger",
-  "data/mercadolivre-tenis-42",
-  "data/mercadolivre-oled-monitores",
-  "data/status",
-  "index.html"
-)
+# O registry Node é a fonte única, mas a publicação usa apenas a allowlist ML;
+# uma pasta arbitrária em data/ nunca deve ser enviada ao repositório público.
+$registeredFoldersJson = node (Join-Path $PSScriptRoot "list-watchlist-folders.mjs") --mercadolivre
+if ($LASTEXITCODE -ne 0) { Fail "Nao foi possivel ler o registry de watchlists." }
+$registeredFolders = @($registeredFoldersJson | ConvertFrom-Json)
+$mlStagePaths = @("data/status", "index.html")
+$mlStagePaths += @(Get-ChildItem -LiteralPath "data" -Directory -ErrorAction SilentlyContinue |
+  Where-Object { $registeredFolders -contains $_.Name } |
+  ForEach-Object { "data/$($_.Name)" })
 $missingMlStagePaths = @($mlStagePaths | Where-Object { -not (Test-Path -LiteralPath $_) })
 if ($missingMlStagePaths.Count -gt 0) {
   Write-Host "Ignorando pastas do Mercado Livre ainda inexistentes: $($missingMlStagePaths -join ', ')"
