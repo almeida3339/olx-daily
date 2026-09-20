@@ -22,6 +22,12 @@ const OLX_BASE_URL = "https://www.olx.com.br/brasil";
 const ENJOEI_SEARCH_ENDPOINT = "https://enjusearch.enjoei.com.br/graphql-search-x";
 const ENJOEI_SITE_ORIGIN = "https://www.enjoei.com.br";
 const NAVIGATION_TIMEOUT_MS = 30_000;
+// A busca do OLX mistura resultados irrelevantes (por exemplo, 41 mm quando
+// procuramos um Pixel Watch de 45 mm). Ler só os 50 cards iniciais fazia o
+// filtro descartar tudo antes de chegar aos anúncios válidos. Mantemos um
+// limite para não transformar cada watchlist em uma varredura infinita.
+const OLX_MAX_CARDS = 150;
+const OLX_SCROLL_STABLE_ROUNDS = 3;
 
 /**
  * @param {object} config
@@ -328,13 +334,19 @@ async function collectOlx({ terms, categoryUrls, userDataDir, headless, visible,
         console.log(`OLX termo: ${term} -> ${url}`);
         try {
           await page.goto(url, { waitUntil: "domcontentloaded", timeout: NAVIGATION_TIMEOUT_MS });
-          await waitOutCloudflare(page, headless);
-          const hasCards = await waitForListing(page);
-          if (!hasCards) {
+          await waitOutCloudflare(page, headless, visible);
+          const listingState = await waitForListing(page);
+          if (listingState === "blocked") {
+            throw new Error("OLX bloqueou a página (Cloudflare/anti-bot)");
+          }
+          if (listingState === "unknown") {
+            throw new Error("OLX não expôs cards nem uma mensagem de busca vazia");
+          }
+          if (listingState === "empty") {
             console.log("  Nenhum card.");
             continue;
           }
-          const cards = await collectCards(page);
+          const cards = await collectCardsFromInfiniteScroll(page, OLX_MAX_CARDS);
           for (const card of cards) {
             if (!inRange(card.price_brl)) continue;
             if (!textMatchesTerm(card.title, term)) continue;
@@ -366,13 +378,22 @@ async function collectOlx({ terms, categoryUrls, userDataDir, headless, visible,
   return { items: out, failedTerms };
 }
 
-async function waitOutCloudflare(page, headless) {
-  const maxWait = headless ? 10_000 : 60_000;
+async function waitOutCloudflare(page, headless, visible = false) {
+  // A janela local fica fora da tela por padrão; esperar 60 s por termo nesse
+  // modo fazia uma rodada com muitos termos parecer travada. Use o prazo longo
+  // apenas quando o usuario pediu uma janela visivel para resolver o desafio.
+  const maxWait = headless ? 10_000 : (visible ? 60_000 : 15_000);
   const started = Date.now();
   while (Date.now() - started < maxWait) {
     const title = await page.title().catch(() => "");
-    if (!/cloudflare|attention required/i.test(title)) return;
+    const body = await page.locator("body").innerText().catch(() => "");
+    if (!isBlockedPage(title, body)) return;
     await page.waitForTimeout(2500);
+  }
+  const title = await page.title().catch(() => "");
+  const body = await page.locator("body").innerText().catch(() => "");
+  if (isBlockedPage(title, body)) {
+    throw new Error(`Cloudflare bloqueando após ${Math.round(maxWait / 1000)}s`);
   }
 }
 
@@ -383,6 +404,7 @@ async function waitForListing(page) {
         const count = document.querySelectorAll("section.olx-adcard").length;
         if (count > 0) return "cards";
         const text = (document.body?.innerText || "").toLowerCase();
+        if (/cloudflare|attention required|you have been blocked|security service|verify you are human|checking your browser/i.test(text)) return "blocked";
         if (/0\s+resultados?|nao encontramos|sem resultados|nenhum resultado|não encontramos/i.test(text)) return "empty";
         if (document.readyState === "complete" && performance.now() > 3500) return "empty";
         return false;
@@ -392,30 +414,59 @@ async function waitForListing(page) {
     )
     .then((handle) => handle.jsonValue())
     .catch(() => null);
-  return outcome === "cards";
+  return outcome === "cards" || outcome === "empty" || outcome === "blocked" ? outcome : "unknown";
 }
 
-async function collectCards(page) {
-  const batch = await page.evaluate(() => {
-    const cards = Array.from(document.querySelectorAll("section.olx-adcard"));
-    return cards.map((card) => {
-      const a = card.querySelector("[data-testid=adcard-link]");
-      return {
-        title: a?.getAttribute("title") || a?.textContent?.trim() || "",
-        url: a?.href || "",
-        priceText: card.querySelector("h3.olx-adcard__price")?.textContent?.trim() || "",
-        location: card.querySelector(".olx-adcard__location")?.textContent?.trim() || "",
-      };
+function isBlockedPage(title, body) {
+  return /cloudflare|attention required|just a moment/i.test(String(title ?? ""))
+    || /you have been blocked|security service|verify you are human|checking your browser/i.test(String(body ?? ""));
+}
+
+async function collectCardsFromInfiniteScroll(page, maxCards = OLX_MAX_CARDS) {
+  const results = [];
+  let lastCount = 0;
+  let stableRounds = 0;
+
+  while (results.length < maxCards && stableRounds < OLX_SCROLL_STABLE_ROUNDS) {
+    const batch = await page.evaluate(() => {
+      const cards = Array.from(document.querySelectorAll("section.olx-adcard"));
+      return cards.map((card) => {
+        const a = card.querySelector("[data-testid=adcard-link]");
+        return {
+          title: a?.getAttribute("title") || a?.textContent?.trim() || "",
+          url: a?.href || "",
+          priceText: card.querySelector("h3.olx-adcard__price")?.textContent?.trim() || "",
+          location: card.querySelector(".olx-adcard__location")?.textContent?.trim() || "",
+        };
+      });
     });
-  });
-  return batch
-    .map((item) => ({
-      title: item.title?.trim(),
-      url: item.url,
-      price_brl: parseBrlPrice(item.priceText),
-      location: item.location?.trim() || null,
-    }))
-    .filter((item) => item.url && item.title && item.price_brl != null);
+
+    const normalized = batch
+      .map((item) => ({
+        title: item.title?.trim(),
+        url: item.url,
+        price_brl: parseBrlPrice(item.priceText),
+        location: item.location?.trim() || null,
+      }))
+      .filter((item) => item.url && item.title && item.price_brl != null);
+
+    const seen = new Set(results.map((item) => item.url));
+    for (const item of normalized) {
+      if (!seen.has(item.url)) {
+        results.push(item);
+        seen.add(item.url);
+      }
+    }
+
+    if (results.length === lastCount) stableRounds += 1;
+    else { stableRounds = 0; lastCount = results.length; }
+
+    if (results.length >= maxCards) break;
+    await page.mouse.wheel(0, 2200).catch(() => {});
+    await page.waitForTimeout(700);
+  }
+
+  return results.slice(0, maxCards);
 }
 
 // ── matching ───────────────────────────────────────────────────────────────────

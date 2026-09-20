@@ -105,6 +105,51 @@ $fullSuccess = $false
 
 Push-Location $root
 try {
+  function Get-RegisteredStagePaths {
+    $foldersJson = node (Join-Path $PSScriptRoot "list-watchlist-folders.mjs") --all
+    if ($LASTEXITCODE -ne 0) { throw "Nao foi possivel ler o registry de watchlists." }
+    $registeredFolders = @($foldersJson | ConvertFrom-Json)
+    $paths = @("data/status")
+    $paths += @(Get-ChildItem -LiteralPath "data" -Directory -ErrorAction SilentlyContinue |
+      Where-Object { $registeredFolders -contains $_.Name } |
+      ForEach-Object { "data/$($_.Name)" })
+    if (Test-Path -LiteralPath "index.html") { $paths += "index.html" }
+    return @($paths | Select-Object -Unique)
+  }
+
+  function Add-RegisteredStagePaths {
+    param([string[]]$Paths)
+    # O antigo `git add -- $stagePaths` era sensivel a expansao de arrays no
+    # PowerShell; a forma equivalente abaixo adiciona cada path explicitamente.
+    foreach ($stagePath in $Paths) {
+      & git add -- $stagePath
+      if ($LASTEXITCODE -ne 0) { throw "git add falhou para $stagePath (exit $LASTEXITCODE)." }
+    }
+  }
+
+  # Uma rodada interrompida depois da coleta deixa snapshots locais na arvore.
+  # Recupere somente os caminhos gerados pelo registry antes do rebase; assim
+  # a proxima tentativa nao fica bloqueada por "unstaged changes" e nunca
+  # incorpora um arquivo de codigo que o usuario esteja editando.
+  $recoveryStagePaths = @(Get-RegisteredStagePaths)
+  $dirtyGeneratedPaths = @($recoveryStagePaths | Where-Object {
+    @((git status --porcelain -- $_)).Count -gt 0
+  })
+  $stagedOutsideRegistry = @(git diff --cached --name-only | Where-Object {
+    $_ -and ($recoveryStagePaths -notcontains $_)
+  })
+  if ($stagedOutsideRegistry.Count -gt 0) {
+    throw "Existem arquivos staged fora dos dados gerados: $($stagedOutsideRegistry -join ', '). Commit/stash manual necessario."
+  }
+  if ($dirtyGeneratedPaths.Count -gt 0) {
+    Add-RegisteredStagePaths -Paths $dirtyGeneratedPaths
+    if (-not (git diff --staged --quiet)) {
+      $recoveryStamp = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm")
+      git commit -m "snapshots olx local recovery $recoveryStamp"
+      if ($LASTEXITCODE -ne 0) { throw "git commit de recuperacao falhou (exit $LASTEXITCODE)." }
+    }
+  }
+
   # ── Guard anti-rebase-preso ───────────────────────────────────────────────
   # Se uma rodada anterior morreu no meio de um rebase (ex.: timeout de 20 min
   # da task agendada), o repositorio fica preso em "rebase in progress". Sem
@@ -191,23 +236,13 @@ try {
   # O fluxo local preserva também snapshots ML já existentes no checkout,
   # como fazia a allowlist anterior; a segurança vem do registry, não de um
   # filtro por plataforma.
-  $registeredFoldersJson = node (Join-Path $PSScriptRoot "list-watchlist-folders.mjs") --all
-  if ($LASTEXITCODE -ne 0) { $ErrorActionPreference = $prevEAP; throw "Nao foi possivel ler o registry de watchlists." }
-  $registeredFolders = @($registeredFoldersJson | ConvertFrom-Json)
-  $stagePaths = @("data/status")
-  $stagePaths += @(Get-ChildItem -LiteralPath "data" -Directory -ErrorAction SilentlyContinue |
-    Where-Object { $registeredFolders -contains $_.Name } |
-    ForEach-Object { "data/$($_.Name)" })
-  $stagePaths += "index.html"
+  $stagePaths = @(Get-RegisteredStagePaths)
   $missingStagePaths = @($stagePaths | Where-Object { -not (Test-Path -LiteralPath $_) })
   if ($missingStagePaths.Count -gt 0) {
     Write-Host "Ignorando pastas de dados ainda inexistentes: $($missingStagePaths -join ', ')"
   }
   $stagePaths = @($stagePaths | Where-Object { Test-Path -LiteralPath $_ })
-  if ($stagePaths.Count -gt 0) {
-    & git add -- $stagePaths
-    if ($LASTEXITCODE -ne 0) { $ErrorActionPreference = $prevEAP; throw "git add falhou (exit $LASTEXITCODE)." }
-  }
+  if ($stagePaths.Count -gt 0) { Add-RegisteredStagePaths -Paths $stagePaths }
   $stamp = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm")
   $localCommitExists = $false
   if (-not (git diff --staged --quiet)) {
