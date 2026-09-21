@@ -1,46 +1,18 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-09-22T11:01:33.825Z",
+  "updated_at": "2026-09-21T10:02:13.327Z",
   "runs": [
     {
-      "run_id": "73b49ff5-42b5-4dd6-9c72-6c48678c834a",
-      "completed_at": "2026-09-22T11:01:33.824Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 18956,
+      "run_id": "b778ba40-cb0d-40cf-b58d-68c1c57d1f95",
+      "completed_at": "2026-09-21T10:02:13.324Z",
+      "outcome": "failed",
+      "partial": true,
+      "duration_ms": 126803,
       "item_count": 0,
       "quarantined_item_count": 0,
       "metadata": {
-        "source": "ci",
-        "monitor_errors": 0,
-        "pending_notifications": 1
-      }
-    },
-    {
-      "run_id": "10affa29-ce44-40d8-86e2-0b6b5c515730",
-      "completed_at": "2026-09-21T19:01:39.369Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 16652,
-      "item_count": 0,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "ci",
-        "monitor_errors": 0,
-        "pending_notifications": 1
-      }
-    },
-    {
-      "run_id": "6018514c-9c9e-4584-8e24-5ea79e5a369b",
-      "completed_at": "2026-09-21T11:01:26.163Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 18644,
-      "item_count": 0,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "ci",
-        "monitor_errors": 0,
+        "source": "local",
+        "monitor_errors": 1,
         "pending_notifications": 1
       }
     },
@@ -1678,6 +1650,34 @@
       "quarantined_item_count": 0,
       "metadata": {
         "source": "ci",
+        "monitor_errors": 0,
+        "pending_notifications": 1
+      }
+    },
+    {
+      "run_id": "412f332c-9681-4e69-a078-a3cd7965b732",
+      "completed_at": "2026-08-03T19:00:57.173Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 11629,
+      "item_count": 0,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "ci",
+        "monitor_errors": 0,
+        "pending_notifications": 1
+      }
+    },
+    {
+      "run_id": "d3315614-30d9-42ff-a3b3-2247326b7859",
+      "completed_at": "2026-08-03T11:01:27.895Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 49546,
+      "item_count": 0,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "local",
         "monitor_errors": 0,
         "pending_notifications": 1
       }
