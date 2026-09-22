@@ -121,8 +121,12 @@ try {
     param([string[]]$Paths)
     # O antigo `git add -- $stagePaths` era sensivel a expansao de arrays no
     # PowerShell; a forma equivalente abaixo adiciona cada path explicitamente.
-    foreach ($stagePath in $Paths) {
-      & git add -- $stagePath
+    $pathsToStage = @($Paths | Where-Object { $_ -and (Test-Path -LiteralPath $_) })
+    Write-Host "Preparando staging de $($pathsToStage.Count) caminho(s) gerado(s)."
+    foreach ($stagePath in $pathsToStage) {
+      # --all inclui arquivos novos e remocoes feitas pelo saneamento de runs.
+      # As aspas mantem cada path como um unico argumento no PowerShell 5.1.
+      & git add --all -- "$stagePath"
       if ($LASTEXITCODE -ne 0) { throw "git add falhou para $stagePath (exit $LASTEXITCODE)." }
     }
   }
@@ -143,6 +147,12 @@ try {
   }
   if ($dirtyGeneratedPaths.Count -gt 0) {
     Add-RegisteredStagePaths -Paths $dirtyGeneratedPaths
+    $unstagedGenerated = @($dirtyGeneratedPaths | Where-Object {
+      @((git status --porcelain -- $_)).Count -gt 0
+    })
+    if ($unstagedGenerated.Count -gt 0) {
+      throw "Nao foi possivel preparar os dados gerados: $($unstagedGenerated -join ', ')."
+    }
     if (-not (git diff --staged --quiet)) {
       $recoveryStamp = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm")
       git commit -m "snapshots olx local recovery $recoveryStamp"
@@ -264,7 +274,10 @@ try {
 
     git -c merge.renames=false -c core.editor=true rebase -X theirs origin/main
     if ($LASTEXITCODE -ne 0) {
-      git rebase --abort 2>$null
+      $rebaseDir = (git rev-parse --git-dir).Trim()
+      if ((Test-Path (Join-Path $rebaseDir "rebase-merge")) -or (Test-Path (Join-Path $rebaseDir "rebase-apply"))) {
+        & git rebase --abort *> $null
+      }
       $ErrorActionPreference = $prevEAP
       throw "Rebase pre-push falhou; estado limpo. Rodada abortada (a proxima tentara de novo)."
     }
