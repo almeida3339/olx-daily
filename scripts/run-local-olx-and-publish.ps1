@@ -255,8 +255,12 @@ try {
   $stagePaths = @($stagePaths | Where-Object { Test-Path -LiteralPath $_ })
   Write-Host "Caminhos registrados para publicar ($($stagePaths.Count)): $($stagePaths -join ', ')"
   if ($stagePaths.Count -gt 0) { Add-RegisteredStagePaths -Paths $stagePaths }
-  $unstagedTrackedGenerated = @(git diff --name-only -- $stagePaths)
-  $untrackedGenerated = @(git ls-files --others --exclude-standard -- $stagePaths)
+  $unstagedTrackedGenerated = @()
+  $untrackedGenerated = @()
+  foreach ($stagePath in $stagePaths) {
+    $unstagedTrackedGenerated += @(git diff --name-only -- "$stagePath")
+    $untrackedGenerated += @(git ls-files --others --exclude-standard -- "$stagePath")
+  }
   $remainingGenerated = @(@($unstagedTrackedGenerated) + @($untrackedGenerated) | Where-Object { $_ } | Select-Object -Unique)
   if ($remainingGenerated.Count -gt 0) {
     throw "Dados gerados ficaram fora do staging; publicacao interrompida antes do rebase: $($remainingGenerated -join ', ')."
