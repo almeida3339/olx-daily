@@ -110,9 +110,10 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "Nao foi possivel ler o registry de watchlists." }
     $registeredFolders = @($foldersJson | ConvertFrom-Json)
     $paths = @("data/status")
-    $paths += @(Get-ChildItem -LiteralPath "data" -Directory -ErrorAction SilentlyContinue |
-      Where-Object { $registeredFolders -contains $_.Name } |
-      ForEach-Object { "data/$($_.Name)" })
+    # Construa os pathspecs diretamente do registry. Enumerar as pastas
+    # existentes pode omitir diretórios criados durante a coleta em outra
+    # sessão/processo, exatamente quando precisam entrar no commit.
+    $paths += @($registeredFolders | ForEach-Object { "data/$_" })
     if (Test-Path -LiteralPath "index.html") { $paths += "index.html" }
     return @($paths | Select-Object -Unique)
   }
@@ -252,7 +253,14 @@ try {
     Write-Host "Ignorando pastas de dados ainda inexistentes: $($missingStagePaths -join ', ')"
   }
   $stagePaths = @($stagePaths | Where-Object { Test-Path -LiteralPath $_ })
+  Write-Host "Caminhos registrados para publicar ($($stagePaths.Count)): $($stagePaths -join ', ')"
   if ($stagePaths.Count -gt 0) { Add-RegisteredStagePaths -Paths $stagePaths }
+  $unstagedTrackedGenerated = @(git diff --name-only -- $stagePaths)
+  $untrackedGenerated = @(git ls-files --others --exclude-standard -- $stagePaths)
+  $remainingGenerated = @(@($unstagedTrackedGenerated) + @($untrackedGenerated) | Where-Object { $_ } | Select-Object -Unique)
+  if ($remainingGenerated.Count -gt 0) {
+    throw "Dados gerados ficaram fora do staging; publicacao interrompida antes do rebase: $($remainingGenerated -join ', ')."
+  }
   $stamp = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm")
   $localCommitExists = $false
   if (-not (git diff --staged --quiet)) {
