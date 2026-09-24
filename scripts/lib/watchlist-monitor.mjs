@@ -142,9 +142,13 @@ export async function runWatchlistMonitor(config) {
       const categoryUrls = (config.olxCategoryUrls && config.olxCategoryUrls.length)
         ? config.olxCategoryUrls
         : [OLX_BASE_URL];
-      const { items, failedTerms } = await collectOlx({ terms, categoryUrls, userDataDir, headless, visible, inRange, sizeOk, notExcluded, itemFilter, olxDeliveryOnly: config.olxDeliveryOnly ?? false });
+      const { items, failedTerms, failedTermErrors } = await collectOlx({ terms, categoryUrls, userDataDir, headless, visible, inRange, sizeOk, notExcluded, itemFilter, olxDeliveryOnly: config.olxDeliveryOnly ?? false });
       collected.push(...items);
-      for (const t of failedTerms) { failedSourceTerms.add(`OLX:${t}`); errors.push(`OLX termo "${t}" falhou`); }
+      for (const t of failedTerms) {
+        failedSourceTerms.add(`OLX:${t}`);
+        const reason = failedTermErrors?.get(t);
+        errors.push(`OLX termo "${t}" falhou${reason ? `: ${reason}` : ""}`);
+      }
     } catch (error) {
       console.warn(`Aviso: coleta OLX falhou — ${error.message}`);
       errors.push(`OLX: ${error.message}`);
@@ -327,6 +331,7 @@ async function collectOlx({ terms, categoryUrls, userDataDir, headless, visible,
 
   const out = [];
   const failedTerms = new Set();
+  const failedTermErrors = new Map();
   try {
     for (const categoryUrl of categoryUrls) {
       for (const term of terms) {
@@ -369,13 +374,14 @@ async function collectOlx({ terms, categoryUrls, userDataDir, headless, visible,
         } catch (error) {
           console.warn(`  Aviso: termo "${term}" em ${categoryUrl} falhou — ${error.message}`);
           failedTerms.add(term);
+          failedTermErrors.set(term, error?.message ?? String(error));
         }
       }
     }
   } finally {
     await context.close().catch(() => {});
   }
-  return { items: out, failedTerms };
+  return { items: out, failedTerms, failedTermErrors };
 }
 
 async function waitOutCloudflare(page, headless, visible = false) {
