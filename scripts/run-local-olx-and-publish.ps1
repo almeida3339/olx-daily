@@ -108,7 +108,10 @@ try {
   function Get-RegisteredStagePaths {
     $foldersJson = node (Join-Path $PSScriptRoot "list-watchlist-folders.mjs") --all
     if ($LASTEXITCODE -ne 0) { throw "Nao foi possivel ler o registry de watchlists." }
-    $registeredFolders = @($foldersJson | ConvertFrom-Json)
+    # Windows PowerShell 5.1 returns a JSON array as one nested Object[] when
+    # wrapped in @(...), turning all watchlist paths into a single space-joined
+    # path. Let ConvertFrom-Json's array output enumerate directly instead.
+    $registeredFolders = $foldersJson | ConvertFrom-Json
     $paths = @("data/status")
     # Construa os pathspecs diretamente do registry. Enumerar as pastas
     # existentes pode omitir diretórios criados durante a coleta em outra
