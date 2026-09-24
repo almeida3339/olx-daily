@@ -88,6 +88,24 @@ const profileDirectory = getOptionValue(args, "--profile-directory") ?? "Default
 const cdpUrl = getOptionValue(args, "--cdp-url") ?? process.env.CHROME_CDP_URL ?? DEFAULT_CDP_URL;
 const blockAssets = !args.includes("--load-assets");
 
+// Espaçamento entre buscas de CPU: em vez de disparar as ~22 buscas em sequência
+// rápida (padrão fácil de reconhecer como automação), agrupa em lotes com pausa
+// curta entre buscas do mesmo lote e pausa longa entre lotes — imita alguém
+// pesquisando aos poucos ao longo da manhã/tarde, não um script varrendo tudo de
+// uma vez. --no-pacing desliga (útil para depuração manual, onde esperar ~40min
+// pra ver o resultado da rodada é impraticável); a tarefa agendada roda sem essa
+// flag, então recebe o espaçamento por padrão.
+const pacingEnabled = !args.includes("--no-pacing") && process.env.OLX_PACING_DISABLED !== "1";
+const olxBatchSize = Number(process.env.OLX_BATCH_SIZE ?? 15);
+const olxIntraBatchDelayMs = [
+  Number(process.env.OLX_INTRA_BATCH_DELAY_MIN_MS ?? 2_000),
+  Number(process.env.OLX_INTRA_BATCH_DELAY_MAX_MS ?? 20_000),
+];
+const olxInterBatchDelayMs = [
+  Number(process.env.OLX_INTER_BATCH_DELAY_MIN_MS ?? 30 * 60_000),
+  Number(process.env.OLX_INTER_BATCH_DELAY_MAX_MS ?? 50 * 60_000),
+];
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   main().catch((error) => {
     console.error(`\nFalha: ${error.stack || error.message}`);
@@ -129,10 +147,10 @@ async function main() {
     }
 
     const collected = [];
-    for (const term of cpuTerms) {
+    await forEachOlxTerm(cpuTerms, async (term) => {
       const results = await collectForCpuTerm(page, term, maxAdsPerCpu, previousSnapshot);
       collected.push(...results);
-    }
+    });
 
     const snapshot = mergeWithPreviousSnapshot({
       runDate,
@@ -176,10 +194,10 @@ async function runWithRawCdp({ cdpUrl, runDate, runTimestamp, previousSnapshot }
       await installRawRequestBlocking(tab);
     }
 
-    for (const term of cpuTerms) {
+    await forEachOlxTerm(cpuTerms, async (term) => {
       const results = await collectForCpuTermRawCdp(tab, term, maxAdsPerCpu, previousSnapshot);
       collected.push(...results);
-    }
+    });
   } finally {
     await tab.closeTab();
   }
@@ -762,6 +780,30 @@ function normalizeComparableUrl(url) {
 
 function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function randomBetween(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// Roda fn(term, index) para cada termo, respeitando o espaçamento configurado
+// (ver pacingEnabled acima): pausa curta (olxIntraBatchDelayMs) entre termos do
+// mesmo lote, pausa longa (olxInterBatchDelayMs) ao cruzar para o próximo lote
+// de olxBatchSize termos. Sem pacing (--no-pacing), roda tudo em sequência como
+// antes — sem pausa nenhuma, igual ao comportamento anterior a esta mudança.
+async function forEachOlxTerm(terms, fn) {
+  for (let index = 0; index < terms.length; index += 1) {
+    if (index > 0 && pacingEnabled) {
+      const crossesBatch = index % olxBatchSize === 0;
+      const [min, max] = crossesBatch ? olxInterBatchDelayMs : olxIntraBatchDelayMs;
+      const waitMs = randomBetween(min, max);
+      if (crossesBatch) {
+        console.log(`\nLote concluído (${index}/${terms.length} termos). Pausa de ${Math.round(waitMs / 60_000)} min antes do próximo lote...`);
+      }
+      await delay(waitMs);
+    }
+    await fn(terms[index], index);
+  }
 }
 
 async function waitOutCloudflareIfNeeded(page) {
