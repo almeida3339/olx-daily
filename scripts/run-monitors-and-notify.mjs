@@ -139,16 +139,21 @@ export async function main({
   } else if (onlyMercadoLivre) {
     console.log("--only-mercadolivre ativo: sem coleta de outros monitores.");
   } else {
-    console.log("Rodando monitores em paralelo...");
+    console.log("Rodando monitores em fila...");
     // Cada job de watchlist (dockstations, fitbit, lifefactory, tela-book3,
-    // melanger, buds4-pro, oura, oled-monitores) e o job "olx" (notebooks por
-    // CPU) abrem sua PRÓPRIA instância de Chromium (perfil isolado). Deixá-los
-    // todos concorrentes satura CPU/rede da máquina e derruba navegações do OLX
-    // por timeout (30s) — incidente observado ao somar o 9º job concorrente
-    // (oled-monitores). Por isso rodam com concorrência limitada
-    // (OLX_JOB_CONCURRENCY, default 3); os jobs Enjoei (API, sem Chrome) seguem
-    // irrestritos.
-    const browserJobConcurrency = Number(process.env.OLX_JOB_CONCURRENCY) || 3;
+    // melanger, buds4-pro, oneplus-buds, pixel-watch-4/5, oura, oled-monitores)
+    // e o job "olx" (notebooks por CPU) abrem sua PRÓPRIA instância de Chromium
+    // (perfil isolado) e cada um faz Enjoei e DEPOIS OLX, nessa ordem. Rodar
+    // vários concorrentes satura CPU/rede da máquina (derrubava navegações por
+    // timeout — incidente ao somar o 9º job concorrente) E significa várias
+    // sessões de Chrome distintas batendo na OLX ao mesmo tempo, o que a OLX lê
+    // como tráfego automatizado e passou a bloquear (relatado pelo usuário em
+    // 24/09). Concorrência 1 (OLX_JOB_CONCURRENCY, default 1) elimina as duas
+    // causas: só um job por vez ocupa Chrome/rede, e só uma sessão por vez
+    // conversa com a OLX — nunca duas em paralelo. Custo: a rodada toda demora
+    // mais (soma dos jobs em vez de dividida por 3); os jobs Enjoei (API, sem
+    // Chrome) seguem irrestritos, sem impacto nisso.
+    const browserJobConcurrency = Number(process.env.OLX_JOB_CONCURRENCY) || 1;
     const jobs = [];
     if (!skipOlx) jobs.push(["olx", () => runOlxMonitor(olxMaxPerCpu), true]);
     else console.log("OLX pulado nesta rodada.");
