@@ -135,6 +135,43 @@ try {
     }
   }
 
+  # Esta rodada pode levar ~1h (pacing do OLX, ver 58ef35a0) com outra
+  # sessao/ferramenta editando arquivos de codigo do repo ao vivo enquanto
+  # isso acontece (observado varias vezes em 25/09 - este proprio arquivo em
+  # edicao bem na hora da publicacao). git rebase recusa rodar com QUALQUER
+  # arquivo rastreado modificado, mesmo fora do allowlist de dados - "cannot
+  # rebase: You have unstaged changes", travando a publicacao apesar dos dados
+  # ja estarem commitados. As duas funcoes abaixo isolam essas edicoes
+  # externas com stash antes do rebase e devolvem depois: a mudanca fica
+  # intacta no disco (git stash nao apaga nada, so tira da arvore de trabalho
+  # temporariamente), so nao atrapalha mais o precondition check do rebase.
+  # A saida do "git stash push" e descartada (*> $null) de proposito: sem
+  # isso ela entra no stream de retorno da funcao e corrompe o [bool] que
+  # Restore-ExternalEdits espera (bug pego em teste isolado antes de publicar).
+  function Backup-ExternalEdits {
+    param([string[]]$RegisteredPaths)
+    $modified = @(git diff --name-only)
+    $external = @($modified | Where-Object { $_ -and ($RegisteredPaths -notcontains $_) })
+    if ($external.Count -eq 0) { return $false }
+    Write-Host "Isolando edicoes externas antes do rebase (nao sao dados gerados por esta rodada): $($external -join ', ')"
+    $stashArgs = @('stash', 'push', '--message', 'run-local-olx: edicoes externas isoladas temporariamente', '--') + $external
+    & git @stashArgs *> $null
+    if ($LASTEXITCODE -ne 0) {
+      Write-Host "Aviso: nao foi possivel isolar as edicoes externas; seguindo mesmo assim (rebase pode falhar)."
+      return $false
+    }
+    return $true
+  }
+
+  function Restore-ExternalEdits {
+    param([bool]$HasStash)
+    if (-not $HasStash) { return }
+    git stash pop *> $null
+    if ($LASTEXITCODE -ne 0) {
+      Write-Host "Aviso: falha ao devolver as edicoes externas isoladas (git stash pop). Rode 'git stash list' manualmente para recuperar."
+    }
+  }
+
   # Uma rodada interrompida depois da coleta deixa snapshots locais na arvore.
   # Recupere somente os caminhos gerados pelo registry antes do rebase; assim
   # a proxima tentativa nao fica bloqueada por "unstaged changes" e nunca
@@ -195,8 +232,11 @@ try {
   git fetch origin
   if ($LASTEXITCODE -ne 0) { throw "git fetch falhou (exit $LASTEXITCODE)." }
 
+  $hasStashedEdits = Backup-ExternalEdits -RegisteredPaths $recoveryStagePaths
   git -c merge.renames=false -c core.editor=true rebase -X theirs origin/main
-  if ($LASTEXITCODE -ne 0) {
+  $rebaseExit = $LASTEXITCODE
+  Restore-ExternalEdits -HasStash $hasStashedEdits
+  if ($rebaseExit -ne 0) {
     Write-Host "Rebase nao concluiu automaticamente — abortando para nao corromper o historico."
     git rebase --abort 2>$null
     throw "Falha ao sincronizar com origin/main; estado limpo. Rodada abortada (a proxima tentara de novo)."
@@ -283,6 +323,12 @@ try {
   # queda de preco de um tenis ja coletada pelo CI (incidente 03/06 16h). O push
   # tambem compete com o CI por main, entao re-sincronizamos a cada tentativa.
   $pushed = $false
+  # Isolado uma vez fora do loop (nao a cada tentativa): a edicao externa que
+  # bloqueia o rebase tende a persistir por toda a publicacao (~alguns
+  # segundos a minutos), entao um unico stash/pop em volta das 4 tentativas
+  # basta e evita empilhar stashes desnecessarios.
+  $hasStashedPublishEdits = Backup-ExternalEdits -RegisteredPaths $stagePaths
+  try {
   for ($attempt = 1; $attempt -le 4 -and -not $pushed; $attempt++) {
     git fetch origin
     if ($LASTEXITCODE -ne 0) { Write-Host "fetch falhou (tentativa $attempt/4); nova tentativa."; Start-Sleep -Seconds 3; continue }
@@ -320,6 +366,9 @@ try {
     git push origin main
     if ($LASTEXITCODE -eq 0) { $pushed = $true; break }
     Write-Host "Push rejeitado (tentativa $attempt/4) - re-sincronizando com origin/main."
+  }
+  } finally {
+    Restore-ExternalEdits -HasStash $hasStashedPublishEdits
   }
   if (-not $pushed) { $ErrorActionPreference = $prevEAP; throw "git push falhou apos 4 tentativas." }
 
