@@ -148,8 +148,18 @@ async function main() {
 
     const collected = [];
     await forEachOlxTerm(cpuTerms, async (term) => {
-      const results = await collectForCpuTerm(page, term, maxAdsPerCpu, previousSnapshot);
-      collected.push(...results);
+      // Isola falha por termo: sem isso, um timeout de navegação num termo só
+      // derruba a coleta inteira (visto na prática logo após a pausa longa do
+      // pacing — a conexão fica ociosa 30-50min e a navegação seguinte pode
+      // estourar o timeout; sem o pacing o mesmo risco existe, só era raro por
+      // as navegações ocorrerem em sequência rápida). Os outros ~21 termos não
+      // deviam pagar pelo problema de um só.
+      try {
+        const results = await collectForCpuTerm(page, term, maxAdsPerCpu, previousSnapshot);
+        collected.push(...results);
+      } catch (error) {
+        console.warn(`  Aviso: termo "${term}" falhou (${error.message}) — pulando para o próximo.`);
+      }
     });
 
     const snapshot = mergeWithPreviousSnapshot({
@@ -195,8 +205,18 @@ async function runWithRawCdp({ cdpUrl, runDate, runTimestamp, previousSnapshot }
     }
 
     await forEachOlxTerm(cpuTerms, async (term) => {
-      const results = await collectForCpuTermRawCdp(tab, term, maxAdsPerCpu, previousSnapshot);
-      collected.push(...results);
+      // Ver comentário equivalente no branch Playwright acima: isola falha por
+      // termo para um timeout de navegação (ex.: logo após a pausa longa do
+      // pacing, com a conexão CDP ociosa por 30-50min) não derrubar os ~21
+      // termos restantes. Foi exatamente o que aconteceu na prática — "timeout
+      // CDP em Page.navigate" no primeiro termo do 2º lote matou a rodada
+      // inteira, deixando 6 termos sem coletar.
+      try {
+        const results = await collectForCpuTermRawCdp(tab, term, maxAdsPerCpu, previousSnapshot);
+        collected.push(...results);
+      } catch (error) {
+        console.warn(`  Aviso: termo "${term}" falhou (${error.message}) — pulando para o próximo.`);
+      }
     });
   } finally {
     await tab.closeTab();
