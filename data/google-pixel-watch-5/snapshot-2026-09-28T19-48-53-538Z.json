@@ -1,0 +1,44 @@
+{
+  "schema_version": 2,
+  "generated_at": "2026-09-28T19:48:53.538Z",
+  "run": {
+    "date": "2026-09-28",
+    "timezone": "America/Sao_Paulo",
+    "id": "google-pixel-watch-5",
+    "label": "Google Pixel Watch 5",
+    "partial": true,
+    "errors": [
+      "Enjoei termo \"pixel watch 5\" falhou",
+      "OLX termo \"pixel watch 5\" falhou: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.olx.com.br/brasil?q=pixel%20watch%205\nCall log:\n\u001b[2m  - navigating to \"https://www.olx.com.br/brasil?q=pixel%20watch%205\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    ],
+    "scheduled_coverage": [
+      "Enjoei:pixel watch 5",
+      "OLX:pixel watch 5"
+    ],
+    "successful_coverage": [],
+    "failed_coverage": [
+      "Enjoei:pixel watch 5",
+      "OLX:pixel watch 5"
+    ],
+    "configured_coverage": [
+      "Enjoei:pixel watch 5",
+      "OLX:pixel watch 5"
+    ],
+    "quarantined_item_count": 0
+  },
+  "filters": {
+    "price_brl": {
+      "min": 0,
+      "max": 3000
+    },
+    "size_ml": {
+      "min": null,
+      "max": null
+    }
+  },
+  "items": [],
+  "price_range_brl": {
+    "min": 0,
+    "max": 3000
+  }
+}

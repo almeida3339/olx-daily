@@ -1,0 +1,44 @@
+{
+  "schema_version": 2,
+  "generated_at": "2026-09-28T19:48:30.975Z",
+  "run": {
+    "date": "2026-09-28",
+    "timezone": "America/Sao_Paulo",
+    "id": "tela-galaxy-book3",
+    "label": "Tela Galaxy Book3",
+    "partial": true,
+    "errors": [
+      "Enjoei termo \"BA96-08462A\" falhou",
+      "OLX termo \"BA96-08462A\" falhou: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.olx.com.br/brasil?q=BA96-08462A\nCall log:\n\u001b[2m  - navigating to \"https://www.olx.com.br/brasil?q=BA96-08462A\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    ],
+    "scheduled_coverage": [
+      "Enjoei:BA96-08462A",
+      "OLX:BA96-08462A"
+    ],
+    "successful_coverage": [],
+    "failed_coverage": [
+      "Enjoei:BA96-08462A",
+      "OLX:BA96-08462A"
+    ],
+    "configured_coverage": [
+      "Enjoei:BA96-08462A",
+      "OLX:BA96-08462A"
+    ],
+    "quarantined_item_count": 0
+  },
+  "filters": {
+    "price_brl": {
+      "min": 0,
+      "max": 1000
+    },
+    "size_ml": {
+      "min": null,
+      "max": null
+    }
+  },
+  "items": [],
+  "price_range_brl": {
+    "min": 0,
+    "max": 1000
+  }
+}
