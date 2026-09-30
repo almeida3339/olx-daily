@@ -1,22 +1,11 @@
 {
-  "generated_at": "2026-09-28T19:00:05.563Z",
+  "generated_at": "2026-09-29T10:00:06.379Z",
   "source": "local",
   "delivery": {
     "email": "skipped",
-    "whatsapp": "failed",
-    "whatsapp_error": "fetch failed"
+    "whatsapp": "sent"
   },
-  "pending_failures": [
-    {
-      "id": "eebed05e-27b5-4d78-b71d-e7227ec7683a",
-      "fingerprint": "fp-6742337b9700fbada1baa2db",
-      "channel": "whatsapp",
-      "first_seen_at": "2026-09-28T19:00:05.563Z",
-      "last_seen_at": "2026-09-28T19:00:05.563Z",
-      "error": "fetch failed",
-      "count": 1
-    }
-  ],
+  "pending_failures": [],
   "acknowledged_failure_ids": [
     "989d7e3b-36d6-48c2-b9c5-8aee4d454fcd",
     "12324b29-8f6b-4842-8855-b57d4d66f06d",
@@ -40,7 +29,8 @@
     "298199a1-615d-4a25-b289-78bd5784d74b",
     "4857c7d4-3f9f-4c43-a31f-dfd6fb672704",
     "28f71145-777c-4218-8ac4-3ee91c932ada",
-    "6742f605-3e3b-4f17-94d0-3deccdd16583"
+    "6742f605-3e3b-4f17-94d0-3deccdd16583",
+    "eebed05e-27b5-4d78-b71d-e7227ec7683a"
   ],
   "notification_outbox": [
     {
@@ -90,6 +80,5 @@
     }
   ],
   "email": "skipped",
-  "whatsapp": "failed",
-  "whatsapp_error": "fetch failed"
+  "whatsapp": "sent"
 }
