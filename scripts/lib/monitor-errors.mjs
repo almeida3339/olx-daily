@@ -2,6 +2,8 @@ const TRANSIENT_PATTERNS = [
   /timeout/i,
   /timed out/i,
   /network/i,
+  /fetch (failed|falhou)/i,
+  /enotfound|eai_again|etimedout|und_err_connect_timeout/i,
   /econnreset/i,
   /econnrefused/i,
   /err_network/i,
@@ -12,7 +14,7 @@ const TRANSIENT_PATTERNS = [
 export function classifyMonitorError(error) {
   const message = String(error?.message ?? error ?? "erro desconhecido");
   const state = error?.pageState;
-  if (state === "challenge" || /captcha|verifica[cç][aã]o|n[aã]o sou um rob[oó]/i.test(message)) {
+  if (state === "challenge" || /cloudflare|anti-bot|captcha|verifica[cç][aã]o|n[aã]o sou um rob[oó]/i.test(message)) {
     return { kind: "challenge", retriable: false, message };
   }
   if (state === "logged_out" || /sess[aã]o expirada|fa[cç]a login|logged.?out/i.test(message)) {

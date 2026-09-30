@@ -104,7 +104,9 @@ $env:OLX_MAX_PER_CPU = "$MaxPerCpu"
 $fullSuccess = $false
 
 Push-Location $root
+$phase = 'preparacao e recuperacao dos dados'
 try {
+  . (Join-Path $PSScriptRoot 'lib\publication-git.ps1')
   function Get-RegisteredStagePaths {
     $foldersJson = node (Join-Path $PSScriptRoot "list-watchlist-folders.mjs") --all
     if ($LASTEXITCODE -ne 0) { throw "Nao foi possivel ler o registry de watchlists." }
@@ -130,7 +132,13 @@ try {
     foreach ($stagePath in $pathsToStage) {
       # --all inclui arquivos novos e remocoes feitas pelo saneamento de runs.
       # As aspas mantem cada path como um unico argumento no PowerShell 5.1.
-      & git add --all -- "$stagePath"
+      $stageEAP = $ErrorActionPreference
+      try {
+        $ErrorActionPreference = 'Continue'
+        & git add --all -- "$stagePath"
+      } finally {
+        $ErrorActionPreference = $stageEAP
+      }
       if ($LASTEXITCODE -ne 0) { throw "git add falhou para $stagePath (exit $LASTEXITCODE)." }
     }
   }
@@ -150,8 +158,8 @@ try {
   # Restore-ExternalEdits espera (bug pego em teste isolado antes de publicar).
   function Backup-ExternalEdits {
     param([string[]]$RegisteredPaths)
-    $modified = @(git diff --name-only)
-    $external = @($modified | Where-Object { $_ -and ($RegisteredPaths -notcontains $_) })
+    $modified = @(git -c core.quotepath=false diff --name-only --no-renames)
+    $external = @($modified | Where-Object { $_ -and -not (Test-RegisteredGeneratedPath -FilePath $_ -RegisteredPaths $RegisteredPaths) })
     if ($external.Count -eq 0) { return $false }
     Write-Host "Isolando edicoes externas antes do rebase (nao sao dados gerados por esta rodada): $($external -join ', ')"
     $stashArgs = @('stash', 'push', '--message', 'run-local-olx: edicoes externas isoladas temporariamente', '--') + $external
@@ -180,21 +188,19 @@ try {
   $dirtyGeneratedPaths = @($recoveryStagePaths | Where-Object {
     @((git status --porcelain -- $_)).Count -gt 0
   })
-  $stagedOutsideRegistry = @(git diff --cached --name-only | Where-Object {
-    $_ -and ($recoveryStagePaths -notcontains $_)
+  $stagedOutsideRegistry = @(git -c core.quotepath=false diff --cached --name-only --no-renames | Where-Object {
+    $_ -and -not (Test-RegisteredGeneratedPath -FilePath $_ -RegisteredPaths $recoveryStagePaths)
   })
   if ($stagedOutsideRegistry.Count -gt 0) {
     throw "Existem arquivos staged fora dos dados gerados: $($stagedOutsideRegistry -join ', '). Commit/stash manual necessario."
   }
   if ($dirtyGeneratedPaths.Count -gt 0) {
     Add-RegisteredStagePaths -Paths $dirtyGeneratedPaths
-    $unstagedGenerated = @($dirtyGeneratedPaths | Where-Object {
-      @((git status --porcelain -- $_)).Count -gt 0
-    })
+    $unstagedGenerated = @(Get-UnstagedGeneratedFiles -Paths $dirtyGeneratedPaths)
     if ($unstagedGenerated.Count -gt 0) {
       throw "Nao foi possivel preparar os dados gerados: $($unstagedGenerated -join ', ')."
     }
-    if (-not (git diff --staged --quiet)) {
+    if (Test-GitStagedChanges) {
       $recoveryStamp = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm")
       git commit -m "snapshots olx local recovery $recoveryStamp"
       if ($LASTEXITCODE -ne 0) { throw "git commit de recuperacao falhou (exit $LASTEXITCODE)." }
@@ -229,6 +235,7 @@ try {
   # nenhum rastro porque a task roda -WindowStyle Hidden e nao gravava log).
   # Sem deteccao de rename, cada lado apenas adiciona/remove seus proprios arquivos
   # em pastas que nao colidem, e o rebase casa limpo.
+  $phase = 'sincronizacao inicial'
   git fetch origin
   if ($LASTEXITCODE -ne 0) { throw "git fetch falhou (exit $LASTEXITCODE)." }
 
@@ -252,10 +259,11 @@ try {
   # Rodamos com 'Continue' e confiamos exclusivamente no $LASTEXITCODE.
   $prevEAP = $ErrorActionPreference
   $ErrorActionPreference = 'Continue'
+  $phase = 'coleta'
   if ($NoNotify) {
-    & (Join-Path $PSScriptRoot "run-olx-monitor.ps1") -MaxPerCpu $MaxPerCpu
+    & (Join-Path $PSScriptRoot "run-olx-monitor.ps1") -MaxPerCpu $MaxPerCpu 2>&1 | ForEach-Object { Write-Host $_ }
   } else {
-    & node (Join-Path $PSScriptRoot "run-monitors-and-notify.mjs") --only-olx --olx-max-per-cpu $MaxPerCpu
+    & node (Join-Path $PSScriptRoot "run-monitors-and-notify.mjs") --only-olx --olx-max-per-cpu $MaxPerCpu 2>&1 | ForEach-Object { Write-Host $_ }
   }
   $monitorExit = $LASTEXITCODE
   $monitorFailed = $monitorExit -ne 0
@@ -291,6 +299,7 @@ try {
   # como fazia a allowlist anterior; a segurança vem do registry, não de um
   # filtro por plataforma.
   $stagePaths = @(Get-RegisteredStagePaths)
+  $phase = 'preparacao da publicacao'
   $missingStagePaths = @($stagePaths | Where-Object { -not (Test-Path -LiteralPath $_) })
   if ($missingStagePaths.Count -gt 0) {
     Write-Host "Ignorando pastas de dados ainda inexistentes: $($missingStagePaths -join ', ')"
@@ -310,7 +319,7 @@ try {
   }
   $stamp = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm")
   $localCommitExists = $false
-  if (-not (git diff --staged --quiet)) {
+  if (Test-GitStagedChanges) {
     git commit -m "snapshots olx local $stamp"
     if ($LASTEXITCODE -ne 0) { $ErrorActionPreference = $prevEAP; throw "git commit falhou (exit $LASTEXITCODE)." }
     $localCommitExists = $true
@@ -328,6 +337,7 @@ try {
   # segundos a minutos), entao um unico stash/pop em volta das 4 tentativas
   # basta e evita empilhar stashes desnecessarios.
   $hasStashedPublishEdits = Backup-ExternalEdits -RegisteredPaths $stagePaths
+  $phase = 'publicacao e geracao do painel'
   try {
   for ($attempt = 1; $attempt -le 4 -and -not $pushed; $attempt++) {
     git fetch origin
@@ -349,7 +359,7 @@ try {
     # O dashboard atualiza monitor-health.json em toda rodada. Incluí-lo no
     # mesmo commit evita deixar a árvore suja e quebrar o rebase seguinte.
     git add index.html data/status
-    if (-not (git diff --staged --quiet)) {
+    if (Test-GitStagedChanges) {
       if ($localCommitExists) {
         git commit --amend --no-edit
       } else {
@@ -393,6 +403,12 @@ try {
   if ($monitorFailed) {
     throw "Monitor OLX local falhou com exit code $monitorExit."
   }
+} catch {
+  # Log before stopping the transcript: hidden scheduled tasks otherwise lose
+  # the terminating exception when PowerShell renders it after finally.
+  Write-Host "FALHA na etapa '$phase': $($_.Exception.Message)"
+  Write-Host $_.InvocationInfo.PositionMessage
+  throw
 } finally {
   Pop-Location
   # Registrar timestamp apenas quando a run completou sem erros de monitor ou publicacao.

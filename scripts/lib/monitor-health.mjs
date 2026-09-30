@@ -24,8 +24,8 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
     let state = "healthy";
     if (!snapshot) state = "missing";
     else if (classifications.some((item) => ["challenge", "authentication", "rate_limited"].includes(item.kind))) state = "blocked";
-    else if (snapshot.run?.partial) state = "partial";
     else if (ageMs != null && ageMs > maxAgeMs) state = "stale";
+    else if (snapshot.run?.partial) state = "partial";
     else if (historySummary.sample >= 3 && (historySummary.partial + historySummary.failed) >= Math.ceil(historySummary.sample / 2)) state = "degraded";
     sources.push({
       id,

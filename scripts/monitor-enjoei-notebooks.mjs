@@ -104,6 +104,9 @@ async function main() {
   if (successfulTerms.length === 0) {
     console.error("Falha total: nenhum termo do Enjoei Notebooks foi coletado nesta rodada; snapshot anterior preservado.");
     process.exitCode = 1;
+  } else if (failedTerms.length) {
+    console.error(`Coleta parcial: ${failedTerms.length} termo(s) do Enjoei Notebooks falharam.`);
+    process.exitCode = 1;
   }
 }
 
@@ -181,7 +184,7 @@ async function fetchWithRetry(url, options) {
   for (let i = 1; i <= maxAttempts; i++) {
     try {
       if (i > 1) console.log(`  Retry ${i}/${maxAttempts}...`);
-      return await fetch(url, options);
+      return await fetch(url, { ...options, signal: AbortSignal.timeout(20_000) });
     } catch (err) {
       lastError = err;
       if (i < maxAttempts) await sleep(750 * i);

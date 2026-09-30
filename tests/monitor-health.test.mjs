@@ -20,6 +20,8 @@ test("saude marca coleta parcial e Mercado Livre desatualizado", async () => {
   const health = await buildMonitorHealth(root, { now: new Date("2026-07-12T12:00:00.000Z") });
   assert.equal(health.sources.find((source) => source.id === "enjoei-notebooks").state, "partial");
   assert.equal(health.sources.find((source) => source.id === "mercadolivre-notebooks").state, "stale");
+  const aged = await buildMonitorHealth(root, { now: new Date("2026-07-14T12:00:00.000Z") });
+  assert.equal(aged.sources.find((source) => source.id === "enjoei-notebooks").state, "stale", "cobertura parcial antiga tambem deve sinalizar coleta desatualizada");
 });
 
 test("saude deduplica a mesma pendencia compartilhada por local e CI", async () => {

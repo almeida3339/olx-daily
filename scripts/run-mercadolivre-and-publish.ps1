@@ -13,6 +13,7 @@ $root = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 $env:MERCADOLIVRE_PROFILE_DIR = Join-Path $root ".chrome-mercadolivre-profile"
 $autoStashRef = $null
 Set-Location $root
+. (Join-Path $PSScriptRoot 'lib\publication-git.ps1')
 
 function Restore-LocalChanges {
   if (-not $script:autoStashRef) { return }
@@ -123,6 +124,6 @@ for ($attempt = 1; $attempt -le 4; $attempt++) {
   if ($LASTEXITCODE -ne 0) { git rebase --abort 2>$null; Fail "Rebase pre-push falhou; estado limpo." }
   node (Join-Path $PSScriptRoot "generate-dashboard.mjs")
   git add index.html
-  if (-not (git diff --staged --quiet)) { git commit --amend --no-edit | Out-Null }
+  if (Test-GitStagedChanges) { git commit --amend --no-edit | Out-Null }
 }
 Fail "git push falhou apos 4 tentativas."

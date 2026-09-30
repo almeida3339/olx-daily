@@ -7,6 +7,9 @@ test("classifica captcha, sessao, limite e erro transitorio sem reabrir busca bl
   assert.equal(classifyMonitorError({ pageState: "logged_out", message: "sessao expirada" }).kind, "authentication");
   assert.equal(classifyMonitorError({ pageState: "limited", message: "HTTP 429" }).kind, "rate_limited");
   assert.equal(classifyMonitorError(new Error("net::ERR_NETWORK_IO_SUSPENDED")).retriable, true);
+  assert.equal(classifyMonitorError(new TypeError("fetch failed")).retriable, true);
+  assert.equal(classifyMonitorError(new Error("getaddrinfo ENOTFOUND")).retriable, true);
+  assert.equal(classifyMonitorError(new Error("Cloudflare bloqueando após 15s")).kind, "challenge");
 });
 
 test("repete uma unica vez apenas erro transitorio", async () => {

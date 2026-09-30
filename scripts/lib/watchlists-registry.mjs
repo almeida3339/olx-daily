@@ -48,13 +48,23 @@ export function resolveWatchlistDataDir(root, watchlist) {
   return process.env[spec.env] ?? path.join(root, "data", spec.repoFolder);
 }
 
-export function resolveAutomationDataDir(root, watchlist) {
+export function resolveAutomationDataDir(root, watchlist, env = process.env) {
   const spec = typeof watchlist === "string" ? getWatchlist(watchlist) : watchlist;
   if (!spec) throw new Error(`Watchlist não registrada: ${watchlist}`);
-  if (process.env[spec.env]) return process.env[spec.env];
-  if (process.env.GITHUB_ACTIONS === "true") return path.join(root, "data", spec.repoFolder);
-  const userRoot = process.env.USERPROFILE ?? process.env.HOME ?? "";
+  if (env[spec.env]) return env[spec.env];
+  if (env.GITHUB_ACTIONS === "true") return path.join(root, "data", spec.repoFolder);
+  const userRoot = env.USERPROFILE ?? env.HOME ?? "";
   return path.join(userRoot, ".codex", "automations", spec.fallback);
+}
+
+// Standalone collectors may default to automation directories. Pass the
+// registry's directories to every child so collection and publication agree.
+export function automationChildEnvironment(root, env = process.env) {
+  const childEnv = { ...env };
+  for (const spec of LOCAL_WATCHLISTS) {
+    childEnv[spec.env] = resolveAutomationDataDir(root, spec, env);
+  }
+  return childEnv;
 }
 
 export function watchlistHealthDefinitions() {

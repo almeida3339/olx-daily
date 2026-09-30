@@ -76,6 +76,7 @@ async function main() {
   console.log(`Snapshot salvo: ${snapshotPath}`);
   console.log(`Relatorio salvo: ${reportPath}`);
   if (committed.invalidItems.length) console.warn(`${committed.invalidItems.length} item(ns) foram para a quarentena.`);
+  if (failedTerms.length) process.exitCode = 1;
 }
 
 async function collectProducts() {
@@ -141,7 +142,7 @@ async function fetchWithRetry(url, options) {
   for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
     try {
       if (attempt > 1) console.log(`  Retry ${attempt}/${maxAttempts}...`);
-      return await fetch(url, options);
+      return await fetch(url, { ...options, signal: AbortSignal.timeout(20_000) });
     } catch (error) {
       lastError = error;
       if (attempt >= maxAttempts) break;

@@ -3,15 +3,14 @@ import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { execFileSync } from "node:child_process";
 import { ALL_WATCHLISTS } from "../scripts/lib/watchlists-registry.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 test("publicacao local inclui automaticamente as pastas registradas", async () => {
-  const script = await fs.readFile(path.join(root, "scripts", "run-local-olx-and-publish.ps1"), "utf8");
-  assert.match(script, /Get-ChildItem -LiteralPath "data" -Directory/);
-  assert.match(script, /list-watchlist-folders\.mjs"\) --all/);
-  assert.match(script, /\$registeredFolders -contains \$_.Name/);
+  const folders = JSON.parse(execFileSync(process.execPath, [path.join(root, "scripts", "list-watchlist-folders.mjs"), "--all"], { encoding: "utf8" }));
+  assert.deepEqual(folders, [...new Set(ALL_WATCHLISTS.map((watchlist) => watchlist.repoFolder))]);
   for (const watchlist of ALL_WATCHLISTS) {
     assert.ok(watchlist.repoFolder, `watchlist ${watchlist.id} precisa de pasta publicada`);
   }

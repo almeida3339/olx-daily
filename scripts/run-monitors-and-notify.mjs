@@ -1,4 +1,3 @@
-import child_process from "node:child_process";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -12,6 +11,7 @@ import {
   mergeAcks
 } from "./lib/notification-status.mjs";
 import { createMonitorLogger } from "./lib/monitor-logger.mjs";
+import { runMonitorProcess } from "./lib/monitor-process.mjs";
 import { appendMonitorHistory } from "./lib/monitor-history.mjs";
 import {
   enqueueNotification,
@@ -28,6 +28,7 @@ import {
   MERCADOLIVRE_WATCHLISTS,
   getWatchlist,
   resolveAutomationDataDir,
+  automationChildEnvironment,
   resolveWatchlistDataDir,
 } from "./lib/watchlists-registry.mjs";
 
@@ -423,7 +424,7 @@ export async function main({
       duration_ms: Date.now() - runStart,
       item_count: totalNew + totalPrice,
       quarantined_item_count: 0,
-      metadata: { source: status.source, monitor_errors: errors.length, pending_notifications: notificationOutbox.length },
+      metadata: { source: status.source, monitor_errors: errors.length, monitor_failures: errors, pending_notifications: notificationOutbox.length },
     });
   }
   logger.done({ errors: errors.length, notification_outbox: notificationOutbox.length });
@@ -533,11 +534,7 @@ function runOlxMonitor(olxMaxPerCpu) {
 }
 
 function runCommand(command, args) {
-  return new Promise((resolve, reject) => {
-    const child = child_process.spawn(command, args, { stdio: "inherit", cwd: workspaceRoot });
-    child.on("close", (code) => (code === 0 ? resolve() : reject(new Error(`Saiu com código ${code}`))));
-    child.on("error", reject);
-  });
+  return runMonitorProcess(command, args, { cwd: workspaceRoot, env: automationChildEnvironment(workspaceRoot) });
 }
 
 function getArgValue(name, args = process.argv) {
@@ -644,7 +641,9 @@ function buildWhatsAppMessage(sources, errors) {
     if (s.priceCount > 0) lines.push(...extractNewItems(s.report, s.priceSec).slice(0, 2));
   }
 
-  lines.push("\nDetalhes completos por email.");
+  lines.push(emailNotificationsDisabled()
+    ? "\nDetalhes completos: https://almeida3339.github.io/olx-daily/"
+    : "\nDetalhes completos por email.");
   return capByWholeLines(lines, 1500);
 }
 
@@ -699,6 +698,6 @@ async function sendEmail(subject, body) {
 async function sendWhatsApp(message) {
   if (!CALLMEBOT_PHONE || !CALLMEBOT_APIKEY) throw new Error("CALLMEBOT_PHONE/CALLMEBOT_APIKEY não definidas");
   const url = `https://api.callmebot.com/whatsapp.php?phone=${CALLMEBOT_PHONE}&text=${encodeURIComponent(message)}&apikey=${CALLMEBOT_APIKEY}`;
-  const response = await fetch(url);
+  const response = await fetch(url, { signal: AbortSignal.timeout(30_000) });
   if (!response.ok) throw new Error(`CallMeBot HTTP ${response.status}`);
 }

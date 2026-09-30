@@ -1,11 +1,13 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import path from "node:path";
 import {
   ALL_WATCHLISTS,
   LOCAL_WATCHLISTS,
   MERCADOLIVRE_WATCHLISTS,
   mercadoLivreDashboardCards,
   resolveAutomationDataDir,
+  automationChildEnvironment,
   watchlistHealthDefinitions,
 } from "../scripts/lib/watchlists-registry.mjs";
 
@@ -38,4 +40,16 @@ test("orquestrador usa data/ do checkout no GitHub Actions sem env duplicada", (
     if (previousDataDir === undefined) delete process.env.GOOGLE_PIXEL_WATCH5_DATA_DIR;
     else process.env.GOOGLE_PIXEL_WATCH5_DATA_DIR = previousDataDir;
   }
+});
+
+test("coletores filhos recebem os mesmos diretorios publicados pelo CI e respeitam override", () => {
+  const root = path.resolve("fixture/repo");
+  const env = { GITHUB_ACTIONS: "true", HOME: "/home/runner", PATH: "fixture-path" };
+  const childEnv = automationChildEnvironment(root, env);
+  for (const watchlist of LOCAL_WATCHLISTS) {
+    assert.equal(childEnv[watchlist.env], path.join(root, "data", watchlist.repoFolder));
+  }
+  assert.equal(childEnv.PATH, env.PATH);
+  assert.equal(env.ENJOEI_DATA_DIR, undefined, "nao altera o ambiente do processo pai");
+  assert.equal(automationChildEnvironment(root, { ...env, ENJOEI_DATA_DIR: "custom-data" }).ENJOEI_DATA_DIR, "custom-data");
 });

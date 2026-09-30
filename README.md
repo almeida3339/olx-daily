@@ -1,6 +1,6 @@
 # Monitor OLX, Enjoei & Mercado Livre — monitoramento de produtos
 
-Sistema modular de monitoramento diário (2× por dia, 07:00 e 16:00 BRT) de 8 marketplaces e categorias. Busca em OLX (scraping + Playwright) e Enjoei (GraphQL API). Envia e-mail (Gmail) e WhatsApp (CallMeBot) quando há itens novos ou mudanças de preço. Dashboard HTML em GitHub Pages.
+Sistema modular de monitoramento diário (2× por dia, 07:00 e 16:00 BRT). Busca em OLX (scraping + Playwright) e Enjoei (GraphQL API). Envia WhatsApp (CallMeBot); e-mail (Gmail) é opcional e está desativado por padrão. O Mercado Livre roda sob demanda. Dashboard HTML em GitHub Pages. Requer Node.js 20 ou superior (CI usa Node 22).
 
 **Principais características:**
 - Filtros semânticos profundos: CPU exatas, voltagem (110V vs 220V), capacidade (ml), termos de exclusão (defeito, mamadeira), part numbers
@@ -85,7 +85,12 @@ npm run data:prune -- --keep-runs 120
 ## Variáveis de ambiente
 
 **Credenciais (notificação):**
+O WhatsApp usa `CALLMEBOT_PHONE` e `CALLMEBOT_APIKEY`. Para ativar o e-mail,
+defina também `NOTIFY_EMAIL_DISABLED=0`, `GMAIL_USER` e `GMAIL_APP_PASSWORD`.
+Sem essa ativação, o e-mail é ignorado inclusive com `--force-email`.
+
 ```powershell
+setx NOTIFY_EMAIL_DISABLED "0"       # somente se quiser reativar e-mail
 setx GMAIL_USER       "seu@gmail.com"
 setx GMAIL_APP_PASSWORD "xxxx xxxx xxxx xxxx"    # senha de app Google
 setx NOTIFY_EMAIL_TO  "destino@email.com"
@@ -106,6 +111,12 @@ setx MELANGER_DATA_DIR               "C:\caminho\data\melanger"
 ```
 
 **GitHub Actions:** mesmas variáveis em `Settings → Secrets and variables → Actions`
+
+Falhas de rede como `fetch failed` são transitórias e entram em nova tentativa.
+Entregas antigas já marcadas como `blocked` exigem revisão com
+`npm run monitor:notificacoes`; use `--retry ID` para reenviar ou `--discard ID`
+para descartar uma mensagem antiga. Bloqueios do Cloudflare exigem atenção e
+ficam identificados no painel; eles não são resolvidos por repetição automática.
 
 **Dashboard público:** os botões locais não publicam o caminho da máquina. Eles
 usam `OLX_DAILY_REPO` quando definido; caso contrário, assumem

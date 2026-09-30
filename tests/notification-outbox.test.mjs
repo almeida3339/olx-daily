@@ -32,3 +32,16 @@ test("tentativa fica marcada como sending e e recuperada depois de abandono", ()
   assert.equal(outbox[0].status, "retry_wait");
   assert.equal(readyNotificationItems(outbox, new Date("2026-07-12T12:06:00.000Z")).length, 1);
 });
+
+test("falha real de fetch agenda nova tentativa sem exigir desbloqueio manual", () => {
+  const now = new Date("2026-09-30T12:00:00.000Z");
+  let outbox = enqueueNotification([], { channel: "whatsapp", payload: { message: "oi" } }, now);
+  const id = outbox[0].id;
+  outbox = claimNotification(outbox, id, now);
+  outbox = settleNotification(outbox, id, { ok: false, error: new TypeError("fetch failed") }, now);
+  assert.equal(outbox[0].status, "retry_wait");
+  assert.equal(readyNotificationItems(outbox, now).length, 0);
+  assert.equal(readyNotificationItems(outbox, new Date(now.getTime() + 60_000)).length, 1);
+  outbox = settleNotification(claimNotification(outbox, id, now), id, { ok: true }, now);
+  assert.equal(outbox.length, 0);
+});
