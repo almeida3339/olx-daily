@@ -401,6 +401,7 @@ try {
   $ErrorActionPreference = $prevEAP
 
   if ($monitorFailed) {
+    $phase = 'coleta parcial (dados ja publicados)'
     throw "Monitor OLX local falhou com exit code $monitorExit."
   }
 } catch {

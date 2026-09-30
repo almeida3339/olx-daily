@@ -93,7 +93,8 @@ jobs:
             fi
 
             node scripts/generate-dashboard.mjs
-            git add index.html
+            # O gerador atualiza o HTML e o arquivo de saude; publicar ambos.
+            git add index.html data/status/monitor-health.json
             if ! git diff --staged --quiet; then
               if [ "$local_commit" -eq 1 ]; then
                 git commit --amend --no-edit
