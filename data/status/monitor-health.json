@@ -1,14 +1,14 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-09-30T19:03:04.215Z",
+  "generated_at": "2026-09-30T19:44:50.141Z",
   "sources": [
     {
       "id": "olx",
       "label": "OLX Notebooks",
-      "state": "stale",
-      "updated_at": "2026-09-29T10:00:25.362Z",
-      "age_ms": 118958853,
-      "invalid_snapshots": 0,
+      "state": "healthy",
+      "updated_at": "2026-09-30T19:00:11.078Z",
+      "age_ms": 2679063,
+      "invalid_snapshots": 1,
       "history": {
         "sample": 10,
         "partial": 0,
@@ -16,14 +16,14 @@
         "success_rate": 1,
         "median_duration_ms": 0
       },
-      "message": "Coleta desatualizada"
+      "message": "Saudável"
     },
     {
       "id": "enjoei-notebooks",
       "label": "Enjoei Notebooks",
-      "state": "stale",
-      "updated_at": "2026-09-08T19:01:12.689Z",
-      "age_ms": 1900911526,
+      "state": "partial",
+      "updated_at": "2026-09-30T19:36:54.157Z",
+      "age_ms": 475984,
       "invalid_snapshots": 1,
       "history": {
         "sample": 10,
@@ -32,14 +32,14 @@
         "success_rate": 1,
         "median_duration_ms": 0
       },
-      "message": "Coleta desatualizada"
+      "message": "Cobertura parcial"
     },
     {
       "id": "enjoei",
       "label": "Enjoei Tênis 42",
-      "state": "stale",
-      "updated_at": "2026-09-08T19:01:12.688Z",
-      "age_ms": 1900911527,
+      "state": "healthy",
+      "updated_at": "2026-09-30T19:36:54.168Z",
+      "age_ms": 475973,
       "invalid_snapshots": 1,
       "history": {
         "sample": 10,
@@ -48,15 +48,15 @@
         "success_rate": 1,
         "median_duration_ms": 0
       },
-      "message": "Coleta desatualizada"
+      "message": "Saudável"
     },
     {
       "id": "dockstations",
       "label": "Dockstations",
-      "state": "stale",
-      "updated_at": "2026-09-29T10:47:46.737Z",
-      "age_ms": 116117478,
-      "invalid_snapshots": 0,
+      "state": "healthy",
+      "updated_at": "2026-09-30T19:42:30.586Z",
+      "age_ms": 139555,
+      "invalid_snapshots": 1,
       "history": {
         "sample": 10,
         "partial": 2,
@@ -64,15 +64,15 @@
         "success_rate": 0.8,
         "median_duration_ms": 0
       },
-      "message": "Coleta desatualizada"
+      "message": "Saudável"
     },
     {
       "id": "fitbit",
       "label": "Fitbit Air",
-      "state": "stale",
-      "updated_at": "2026-09-29T10:47:58.276Z",
-      "age_ms": 116105939,
-      "invalid_snapshots": 0,
+      "state": "healthy",
+      "updated_at": "2026-09-30T19:42:38.399Z",
+      "age_ms": 131742,
+      "invalid_snapshots": 1,
       "history": {
         "sample": 10,
         "partial": 2,
@@ -80,15 +80,15 @@
         "success_rate": 0.8,
         "median_duration_ms": 0
       },
-      "message": "Coleta desatualizada"
+      "message": "Saudável"
     },
     {
       "id": "lifefactory",
       "label": "Lifefactory",
-      "state": "stale",
-      "updated_at": "2026-09-29T10:48:05.702Z",
-      "age_ms": 116098513,
-      "invalid_snapshots": 0,
+      "state": "healthy",
+      "updated_at": "2026-09-30T19:42:44.257Z",
+      "age_ms": 125884,
+      "invalid_snapshots": 1,
       "history": {
         "sample": 10,
         "partial": 2,
@@ -96,15 +96,15 @@
         "success_rate": 0.8,
         "median_duration_ms": 0
       },
-      "message": "Coleta desatualizada"
+      "message": "Saudável"
     },
     {
       "id": "tela-galaxybook3",
       "label": "Tela Book3",
-      "state": "stale",
-      "updated_at": "2026-09-29T10:48:09.765Z",
-      "age_ms": 116094450,
-      "invalid_snapshots": 0,
+      "state": "healthy",
+      "updated_at": "2026-09-30T19:42:46.531Z",
+      "age_ms": 123610,
+      "invalid_snapshots": 1,
       "history": {
         "sample": 10,
         "partial": 2,
@@ -112,15 +112,15 @@
         "success_rate": 0.8,
         "median_duration_ms": 0
       },
-      "message": "Coleta desatualizada"
+      "message": "Saudável"
     },
     {
       "id": "melanger",
       "label": "Melanger",
-      "state": "stale",
-      "updated_at": "2026-09-29T10:48:12.891Z",
-      "age_ms": 116091324,
-      "invalid_snapshots": 0,
+      "state": "healthy",
+      "updated_at": "2026-09-30T19:42:49.105Z",
+      "age_ms": 121036,
+      "invalid_snapshots": 1,
       "history": {
         "sample": 10,
         "partial": 2,
@@ -128,15 +128,15 @@
         "success_rate": 0.8,
         "median_duration_ms": 0
       },
-      "message": "Coleta desatualizada"
+      "message": "Saudável"
     },
     {
       "id": "galaxy-buds4-pro",
       "label": "Galaxy Buds4 Pro",
-      "state": "stale",
-      "updated_at": "2026-09-29T10:48:26.004Z",
-      "age_ms": 116078211,
-      "invalid_snapshots": 0,
+      "state": "healthy",
+      "updated_at": "2026-09-30T19:42:56.153Z",
+      "age_ms": 113988,
+      "invalid_snapshots": 1,
       "history": {
         "sample": 10,
         "partial": 2,
@@ -144,15 +144,15 @@
         "success_rate": 0.8,
         "median_duration_ms": 0
       },
-      "message": "Coleta desatualizada"
+      "message": "Saudável"
     },
     {
       "id": "oneplus-buds-pro-3",
       "label": "OnePlus Buds Pro 3",
-      "state": "stale",
-      "updated_at": "2026-09-29T10:48:34.461Z",
-      "age_ms": 116069754,
-      "invalid_snapshots": 0,
+      "state": "healthy",
+      "updated_at": "2026-09-30T19:43:02.636Z",
+      "age_ms": 107505,
+      "invalid_snapshots": 1,
       "history": {
         "sample": 10,
         "partial": 0,
@@ -160,15 +160,15 @@
         "success_rate": 1,
         "median_duration_ms": 0
       },
-      "message": "Coleta desatualizada"
+      "message": "Saudável"
     },
     {
       "id": "google-pixel-watch-4",
       "label": "Google Pixel Watch 4",
       "state": "blocked",
-      "updated_at": "2026-09-29T10:48:55.199Z",
-      "age_ms": 116049016,
-      "invalid_snapshots": 0,
+      "updated_at": "2026-09-30T19:43:18.959Z",
+      "age_ms": 91182,
+      "invalid_snapshots": 1,
       "history": {
         "sample": 10,
         "partial": 0,
@@ -181,10 +181,10 @@
     {
       "id": "google-pixel-watch-5",
       "label": "Google Pixel Watch 5",
-      "state": "stale",
-      "updated_at": "2026-09-29T10:49:13.267Z",
-      "age_ms": 116030948,
-      "invalid_snapshots": 0,
+      "state": "healthy",
+      "updated_at": "2026-09-30T19:43:35.607Z",
+      "age_ms": 74534,
+      "invalid_snapshots": 1,
       "history": {
         "sample": 10,
         "partial": 0,
@@ -192,15 +192,15 @@
         "success_rate": 1,
         "median_duration_ms": 0
       },
-      "message": "Coleta desatualizada"
+      "message": "Saudável"
     },
     {
       "id": "oura-ring5",
       "label": "Oura Ring 5",
-      "state": "stale",
-      "updated_at": "2026-09-29T10:49:21.330Z",
-      "age_ms": 116022885,
-      "invalid_snapshots": 0,
+      "state": "healthy",
+      "updated_at": "2026-09-30T19:43:41.868Z",
+      "age_ms": 68273,
+      "invalid_snapshots": 1,
       "history": {
         "sample": 10,
         "partial": 2,
@@ -208,15 +208,15 @@
         "success_rate": 0.8,
         "median_duration_ms": 0
       },
-      "message": "Coleta desatualizada"
+      "message": "Saudável"
     },
     {
       "id": "oled-monitores",
       "label": "Monitores OLED",
-      "state": "stale",
-      "updated_at": "2026-09-29T10:49:28.518Z",
-      "age_ms": 116015697,
-      "invalid_snapshots": 0,
+      "state": "healthy",
+      "updated_at": "2026-09-30T19:43:48.050Z",
+      "age_ms": 62091,
+      "invalid_snapshots": 1,
       "history": {
         "sample": 10,
         "partial": 3,
@@ -224,14 +224,14 @@
         "success_rate": 0.7,
         "median_duration_ms": 0
       },
-      "message": "Coleta desatualizada"
+      "message": "Saudável"
     },
     {
       "id": "mercadolivre-notebooks",
       "label": "Mercado Livre Notebooks",
       "state": "stale",
       "updated_at": "2026-07-13T11:48:56.184Z",
-      "age_ms": 6851648031,
+      "age_ms": 6854153957,
       "invalid_snapshots": 0,
       "history": {
         "sample": 1,
@@ -247,7 +247,7 @@
       "label": "Mercado Livre Galaxy Buds4 Pro",
       "state": "stale",
       "updated_at": "2026-07-13T11:49:11.815Z",
-      "age_ms": 6851632400,
+      "age_ms": 6854138326,
       "invalid_snapshots": 0,
       "history": {
         "sample": 1,
@@ -311,7 +311,7 @@
       "label": "Mercado Livre Dockstations",
       "state": "stale",
       "updated_at": "2026-07-13T11:50:11.455Z",
-      "age_ms": 6851572760,
+      "age_ms": 6854078686,
       "invalid_snapshots": 0,
       "history": {
         "sample": 1,
@@ -327,7 +327,7 @@
       "label": "Mercado Livre Fitbit Air",
       "state": "stale",
       "updated_at": "2026-07-13T11:50:29.364Z",
-      "age_ms": 6851554851,
+      "age_ms": 6854060777,
       "invalid_snapshots": 0,
       "history": {
         "sample": 1,
@@ -343,7 +343,7 @@
       "label": "Mercado Livre Lifefactory",
       "state": "stale",
       "updated_at": "2026-07-13T11:50:53.384Z",
-      "age_ms": 6851530831,
+      "age_ms": 6854036757,
       "invalid_snapshots": 0,
       "history": {
         "sample": 1,
@@ -359,7 +359,7 @@
       "label": "Mercado Livre Tela Galaxy Book3",
       "state": "stale",
       "updated_at": "2026-07-13T11:51:17.970Z",
-      "age_ms": 6851506245,
+      "age_ms": 6854012171,
       "invalid_snapshots": 0,
       "history": {
         "sample": 1,
@@ -375,7 +375,7 @@
       "label": "Mercado Livre Melanger",
       "state": "stale",
       "updated_at": "2026-07-13T11:51:38.632Z",
-      "age_ms": 6851485583,
+      "age_ms": 6853991509,
       "invalid_snapshots": 0,
       "history": {
         "sample": 1,
@@ -391,7 +391,7 @@
       "label": "Mercado Livre Tênis 42",
       "state": "stale",
       "updated_at": "2026-07-02T18:17:32.514Z",
-      "age_ms": 7778731701,
+      "age_ms": 7781237627,
       "invalid_snapshots": 0,
       "history": {
         "sample": 0,
@@ -407,7 +407,7 @@
       "label": "Mercado Livre Monitores OLED",
       "state": "stale",
       "updated_at": "2026-07-13T11:54:09.006Z",
-      "age_ms": 6851335209,
+      "age_ms": 6853841135,
       "invalid_snapshots": 0,
       "history": {
         "sample": 1,
