@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-23T11:00:55.801Z",
+  "generated_at": "2026-09-30T19:36:54.132Z",
   "source": "ci",
   "delivery": {
     "email": "skipped",
@@ -28,7 +28,9 @@
     "0ee031e9-6b54-4f75-af3c-77fc8c69ce90",
     "298199a1-615d-4a25-b289-78bd5784d74b",
     "4857c7d4-3f9f-4c43-a31f-dfd6fb672704",
-    "28f71145-777c-4218-8ac4-3ee91c932ada"
+    "28f71145-777c-4218-8ac4-3ee91c932ada",
+    "6742f605-3e3b-4f17-94d0-3deccdd16583",
+    "eebed05e-27b5-4d78-b71d-e7227ec7683a"
   ],
   "notification_outbox": [
     {
@@ -44,6 +46,36 @@
       "last_error": "fetch failed",
       "created_at": "2026-07-14T19:00:01.906Z",
       "updated_at": "2026-07-14T19:00:01.906Z",
+      "sending_at": null
+    },
+    {
+      "id": "5b59576f-dc2a-4477-b9c1-ea904a79280f",
+      "dedupe_key": "0d06ccfcb81b2362bd340429",
+      "channel": "whatsapp",
+      "payload": {
+        "message": "Monitor 23/09 16:03\nErros: Google Pixel Watch 4: Saiu com código 1, Monitores OLED: Saiu com código 1\n\nGalaxy Buds4 Pro: 3 novo(s)\n- R$ 800,00 — [Enjoei] fone de ouvido samsung galaxy buds4 pro (galaxy buds4 pro) —… https://www.enjoei.com.br/p/fone-de-ouvido-samsung-galaxy-buds4-pro-151440039\n… https://pr.olx.com.br/regiao-de-curitiba-e-paranagua/celulares/galaxy-buds4-pro-1538119563\n\nDetalhes completos por email."
+      },
+      "status": "blocked",
+      "attempts": 1,
+      "next_attempt_at": null,
+      "last_error": "fetch failed",
+      "created_at": "2026-09-23T19:00:06.374Z",
+      "updated_at": "2026-09-23T19:00:06.374Z",
+      "sending_at": null
+    },
+    {
+      "id": "8dea8d94-5ccd-42a5-b1a6-4718d6ee1aee",
+      "dedupe_key": "a7cab155dd693a45839c8c9d",
+      "channel": "whatsapp",
+      "payload": {
+        "message": "Monitor 28/09 16:49\nErros: Dockstations: Saiu com código 1, Fitbit: Saiu com código 1, Lifefactory: Saiu com código 1, Tela Book3: Saiu com código 1, Melanger: Saiu com código 1, Galaxy Buds4 Pro: Saiu com código 1, OnePlus Buds Pro 3: Saiu com código 1, Google Pixel Watch 4: Saiu com código 1, Google Pixel Watch 5: Saiu com código 1, Oura Ring 5: Saiu com código 1, Monitores OLED: Saiu com código 1\nSem novos itens nem alterações de preço."
+      },
+      "status": "blocked",
+      "attempts": 1,
+      "next_attempt_at": null,
+      "last_error": "fetch failed",
+      "created_at": "2026-09-28T19:00:05.563Z",
+      "updated_at": "2026-09-28T19:00:05.563Z",
       "sending_at": null
     }
   ],
