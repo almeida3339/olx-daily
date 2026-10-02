@@ -8,6 +8,9 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+# Decode native output as UTF-8 before forwarding it to the terminal/transcript.
+$OutputEncoding = [System.Text.UTF8Encoding]::new($false)
+try { [Console]::OutputEncoding = $OutputEncoding } catch { Write-Warning "Nao foi possivel configurar a codificacao UTF-8 do console." }
 
 $root = Resolve-Path (Join-Path $PSScriptRoot "..")
 

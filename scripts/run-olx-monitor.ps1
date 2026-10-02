@@ -8,6 +8,9 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+# Native Node/npm output is UTF-8; PS 5.1 must decode and forward it as UTF-8.
+$OutputEncoding = [System.Text.UTF8Encoding]::new($false)
+try { [Console]::OutputEncoding = $OutputEncoding } catch { Write-Warning "Nao foi possivel configurar a codificacao UTF-8 do console." }
 
 $root = Resolve-Path (Join-Path $PSScriptRoot "..")
 $versionUrl = "http://127.0.0.1:$Port/json/version"

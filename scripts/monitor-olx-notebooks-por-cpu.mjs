@@ -15,6 +15,9 @@ import {
   normalizeText,
 } from "./lib/parsers.mjs";
 import { mergeWithPreviousSnapshot as _mergeItems } from "./lib/snapshot.mjs";
+import { mergeMonitorSnapshot } from "./lib/monitor-core.mjs";
+import { classifyMonitorError } from "./lib/monitor-errors.mjs";
+import { sanitizeErrorMessage } from "./lib/notification-status.mjs";
 import { DEFAULT_CPU_TERMS, cpuSearchQuery } from "./lib/cpu-terms.mjs";
 import { commitMonitorRun, readLatestValidSnapshot } from "./lib/monitor-runtime.mjs";
 
@@ -117,7 +120,6 @@ async function main() {
   const now = new Date();
   const runDate = now.toISOString().slice(0, 10);
   const runTimestamp = now.toISOString();
-  const runId = runTimestamp.replace(/[:.]/g, "-");
 
   const previousSnapshotResult = await readLatestValidSnapshot(automationRoot);
   const previousSnapshotPath = previousSnapshotResult.file ? path.join(automationRoot, previousSnapshotResult.file) : null;
@@ -146,56 +148,16 @@ async function main() {
       await installPlaywrightRequestBlocking(page.context());
     }
 
-    const collected = [];
-    await forEachOlxTerm(cpuTerms, async (term) => {
-      // Isola falha por termo: sem isso, um timeout de navegação num termo só
-      // derruba a coleta inteira (visto na prática logo após a pausa longa do
-      // pacing — a conexão fica ociosa 30-50min e a navegação seguinte pode
-      // estourar o timeout; sem o pacing o mesmo risco existe, só era raro por
-      // as navegações ocorrerem em sequência rápida). Os outros ~21 termos não
-      // deviam pagar pelo problema de um só.
-      try {
-        const results = await collectForCpuTerm(page, term, maxAdsPerCpu, previousSnapshot);
-        collected.push(...results);
-      } catch (error) {
-        console.warn(`  Aviso: termo "${term}" falhou (${error.message}) — pulando para o próximo.`);
-      }
+    await collectOlxTerms({
+      runDate, runTimestamp, previousSnapshot, transport: "playwright",
+      collectTerm: (term) => collectForCpuTerm(page, term, maxAdsPerCpu, previousSnapshot),
     });
-
-    const snapshot = mergeWithPreviousSnapshot({
-      runDate,
-      now,
-      collected,
-      previousSnapshot,
-    });
-
-    const report = buildReport({
-      runDate,
-      snapshot,
-      previousSnapshot,
-      priceMin: PRICE_MIN_BRL,
-      priceMax: PRICE_MAX_BRL,
-    });
-
-    const committed = await commitMonitorRun(automationRoot, {
-      runId,
-      snapshot,
-      report,
-      metadata: { source: "olx-notebooks", collected_count: collected.length },
-    });
-    const snapshotPath = committed.legacySnapshotPath;
-    const reportPath = committed.legacyReportPath;
-
-    console.log(`Snapshot salvo: ${snapshotPath}`);
-    console.log(`Relatório salvo: ${reportPath}`);
-    if (committed.invalidItems.length) console.warn(`${committed.invalidItems.length} item(ns) foram para a quarentena.`);
   } finally {
     await close();
   }
 }
 
 async function runWithRawCdp({ cdpUrl, runDate, runTimestamp, previousSnapshot }) {
-  const collected = [];
   const tab = await openOrReuseCdpTab(cdpUrl);
   try {
     await tab.send("Page.enable");
@@ -204,52 +166,82 @@ async function runWithRawCdp({ cdpUrl, runDate, runTimestamp, previousSnapshot }
       await installRawRequestBlocking(tab);
     }
 
-    await forEachOlxTerm(cpuTerms, async (term) => {
-      // Ver comentário equivalente no branch Playwright acima: isola falha por
-      // termo para um timeout de navegação (ex.: logo após a pausa longa do
-      // pacing, com a conexão CDP ociosa por 30-50min) não derrubar os ~21
-      // termos restantes. Foi exatamente o que aconteceu na prática — "timeout
-      // CDP em Page.navigate" no primeiro termo do 2º lote matou a rodada
-      // inteira, deixando 6 termos sem coletar.
-      try {
-        const results = await collectForCpuTermRawCdp(tab, term, maxAdsPerCpu, previousSnapshot);
-        collected.push(...results);
-      } catch (error) {
-        console.warn(`  Aviso: termo "${term}" falhou (${error.message}) — pulando para o próximo.`);
-      }
+    await collectOlxTerms({
+      runDate, runTimestamp, previousSnapshot, transport: "cdp",
+      collectTerm: (term) => collectForCpuTermRawCdp(tab, term, maxAdsPerCpu, previousSnapshot),
     });
   } finally {
     await tab.closeTab();
   }
 
-  const snapshot = mergeWithPreviousSnapshot({
-    runDate,
-    now: new Date(runTimestamp),
-    collected,
-    previousSnapshot,
-  });
+}
 
-  const runId = runTimestamp.replace(/[:.]/g, "-");
-  const report = buildReport({
-    runDate,
-    snapshot,
-    previousSnapshot,
-    priceMin: PRICE_MIN_BRL,
-    priceMax: PRICE_MAX_BRL,
-  });
+async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transport, collectTerm }) {
+  const collected = [];
+  const successfulTerms = [];
+  const failedTerms = [];
 
-  const committed = await commitMonitorRun(automationRoot, {
-    runId,
-    snapshot,
-    report,
-    metadata: { source: "olx-notebooks", collected_count: collected.length, transport: "cdp" },
-  });
-  const snapshotPath = committed.legacySnapshotPath;
-  const reportPath = committed.legacyReportPath;
+  const saveProgress = async (inProgress) => {
+    const savedAt = new Date();
+    const unattemptedTerms = cpuTerms.filter((term) => !successfulTerms.includes(term)
+      && !failedTerms.some((failure) => failure.term === term));
+    const snapshot = mergeWithPreviousSnapshot({
+      runDate, now: savedAt, collected, previousSnapshot, successfulTerms, failedTerms,
+      scheduledTerms: cpuTerms,
+      run: {
+        started_at: runTimestamp,
+        completed_at: inProgress ? null : savedAt.toISOString(),
+        in_progress: inProgress,
+        phase: inProgress ? "collecting" : failedTerms.length ? "partial" : "completed",
+        partial: inProgress || failedTerms.length > 0 || unattemptedTerms.length > 0
+          || cpuTerms.length < DEFAULT_CPU_TERMS.length,
+        successful_terms: [...successfulTerms],
+        failed_terms: [...failedTerms],
+        errors: [...failedTerms],
+        unattempted_terms: unattemptedTerms,
+      },
+    });
+    const report = buildReport({
+      runDate, snapshot, previousSnapshot, priceMin: PRICE_MIN_BRL, priceMax: PRICE_MAX_BRL,
+    });
+    // Separate immutable artifacts for each saved batch keep the previous
+    // manifest valid until the new pointer has been promoted atomically.
+    const committed = await commitMonitorRun(automationRoot, {
+      runId: savedAt.toISOString().replace(/[:.]/g, "-"), snapshot, report,
+      metadata: {
+        source: "olx-notebooks", transport, collection_started_at: runTimestamp,
+        collected_count: collected.length, failed_term_count: failedTerms.length,
+        successful_term_count: successfulTerms.length, in_progress: inProgress,
+      },
+    });
+    console.log(`${inProgress ? "Progresso do lote" : "Snapshot"} salvo: ${committed.legacySnapshotPath}`);
+    if (!inProgress) console.log(`Relatório salvo: ${committed.legacyReportPath}`);
+    if (committed.invalidItems.length) console.warn(`${committed.invalidItems.length} item(ns) foram para a quarentena.`);
+  };
 
-  console.log(`Snapshot salvo: ${snapshotPath}`);
-  console.log(`Relatório salvo: ${reportPath}`);
-  if (committed.invalidItems.length) console.warn(`${committed.invalidItems.length} item(ns) foram para a quarentena.`);
+  try {
+    await forEachOlxTerm(cpuTerms, async (term) => {
+      try {
+        const results = await collectTerm(term);
+        collected.push(...results);
+        successfulTerms.push(term);
+        console.log(`  ${results.length} anúncio(s) aceito(s).`);
+      } catch (error) {
+        const message = sanitizeErrorMessage(error?.message ?? error);
+        failedTerms.push({ term, error: message, kind: classifyMonitorError(error).kind });
+        console.warn(`  Aviso: termo "${term}" falhou (${message}) — pulando para o próximo.`);
+      }
+    }, { onBatchCompleted: () => saveProgress(true) });
+  } catch (error) {
+    failedTerms.push({ term: "coleta", error: sanitizeErrorMessage(error?.message ?? error), kind: classifyMonitorError(error).kind });
+    await saveProgress(false);
+    throw error;
+  }
+  await saveProgress(false);
+  if (failedTerms.length) {
+    console.error(`Coleta OLX parcial: ${failedTerms.length} falha(s). Dados coletados e anúncios dos termos sem cobertura foram preservados.`);
+    process.exitCode = 1;
+  }
 }
 
 async function launchDedicatedChromeProfile(headlessMode) {
@@ -811,18 +803,47 @@ function randomBetween(min, max) {
 // mesmo lote, pausa longa (olxInterBatchDelayMs) ao cruzar para o próximo lote
 // de olxBatchSize termos. Sem pacing (--no-pacing), roda tudo em sequência como
 // antes — sem pausa nenhuma, igual ao comportamento anterior a esta mudança.
-async function forEachOlxTerm(terms, fn) {
+async function forEachOlxTerm(terms, fn, { onBatchCompleted = async () => {} } = {}) {
   for (let index = 0; index < terms.length; index += 1) {
+    const crossesBatch = index > 0 && index % olxBatchSize === 0;
+    if (crossesBatch) await onBatchCompleted();
     if (index > 0 && pacingEnabled) {
-      const crossesBatch = index % olxBatchSize === 0;
       const [min, max] = crossesBatch ? olxInterBatchDelayMs : olxIntraBatchDelayMs;
       const waitMs = randomBetween(min, max);
       if (crossesBatch) {
-        console.log(`\nLote concluído (${index}/${terms.length} termos). Pausa de ${Math.round(waitMs / 60_000)} min antes do próximo lote...`);
+        const pausedAt = new Date();
+        const resumeAt = new Date(pausedAt.getTime() + waitMs);
+        console.log(`\nLote concluído (${index}/${terms.length} termos) às ${brasiliaTime(pausedAt)}. Pausa de ${Math.round(waitMs / 60_000)} min antes do próximo lote (por volta de ${resumeTime(resumeAt, pausedAt)})...`);
+        await waitWithPauseProgress(resumeAt);
+        console.log(`Retomando o próximo lote às ${brasiliaTime(new Date())} (${index}/${terms.length} termos já percorridos).`);
+      } else {
+        await delay(waitMs);
       }
-      await delay(waitMs);
     }
     await fn(terms[index], index);
+  }
+}
+
+function brasiliaTime(date) {
+  return date.toLocaleTimeString("pt-BR", { timeZone: "America/Sao_Paulo", hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
+}
+
+function resumeTime(resumeAt, pausedAt) {
+  const dateOptions = { timeZone: "America/Sao_Paulo", day: "2-digit", month: "2-digit" };
+  const date = resumeAt.toLocaleDateString("pt-BR", dateOptions);
+  return date === pausedAt.toLocaleDateString("pt-BR", dateOptions)
+    ? brasiliaTime(resumeAt) : `${brasiliaTime(resumeAt)} de ${date}`;
+}
+
+async function waitWithPauseProgress(resumeAt) {
+  while (Date.now() < resumeAt.getTime()) {
+    const remaining = resumeAt.getTime() - Date.now();
+    const chunk = Math.min(remaining, 5 * 60_000);
+    await delay(chunk);
+    const now = new Date();
+    if (now.getTime() < resumeAt.getTime()) {
+      console.log(`Pausa em andamento às ${brasiliaTime(now)}. Retomada prevista por volta de ${resumeTime(resumeAt, now)} (aproximadamente ${Math.ceil((resumeAt.getTime() - now.getTime()) / 60_000)} min restantes).`);
+    }
   }
 }
 
@@ -1050,11 +1071,25 @@ function buildReport({ runDate, snapshot, previousSnapshot, priceMin, priceMax }
   lines.push(`# Monitor OLX notebooks por CPU — ${runDate}`);
   lines.push("");
   lines.push("## Resumo executivo");
+  if (snapshot.run?.successful_terms) {
+    lines.push(`- Cobertura parcial: **${snapshot.run.partial ? "sim" : "não"}**`);
+    lines.push(`- Coleta em andamento: **${snapshot.run.in_progress ? "sim" : "não"}**`);
+    lines.push(`- Termos concluídos: **${snapshot.run.successful_terms.length}/${snapshot.run.scheduled_coverage.length}**`);
+    lines.push(`- Termos com falha: **${snapshot.run.failed_terms.length}**`);
+    lines.push(`- Termos não consultados: **${snapshot.run.unattempted_terms.length}**`);
+  }
   lines.push(`- Novos anúncios válidos (R$ ${priceMin.toLocaleString("pt-BR")}–R$ ${priceMax.toLocaleString("pt-BR")}): **${newItems.length}**`);
   lines.push(`- Anúncios ainda ativos (já vistos) no range: **${stillActiveSeen.length}**`);
   lines.push(`- Não vistos nesta rodada (sumiram da listagem): **${notSeenThisRun.length}**`);
   lines.push(`- Alterações de preço detectadas: **${priceChanges.length}**`);
   lines.push("");
+
+  if (snapshot.run?.failed_terms?.length) {
+    lines.push("## Falhas parciais", ...snapshot.run.failed_terms.map((failure) => `- ${failure.term}: ${failure.error}`), "");
+  }
+  if (snapshot.run?.in_progress) {
+    lines.push("## Progresso salvo", "- Este relatório contém um lote intermediário. A coleta ainda não terminou; os anúncios dos termos sem cobertura foram preservados.", "");
+  }
 
   lines.push(`## Novos anúncios (R$ ${priceMin.toLocaleString("pt-BR")}–R$ ${priceMax.toLocaleString("pt-BR")})`);
   if (newItems.length === 0) {
@@ -1112,7 +1147,22 @@ function formatItemDetails(item) {
   return `${item.title} (${item.cpu_term}) — ${ram} / ${storage} / ${gpu}${location} — ${item.url}`;
 }
 
-function mergeWithPreviousSnapshot({ runDate, now, collected, previousSnapshot }) {
+function mergeWithPreviousSnapshot({ runDate, now, collected, previousSnapshot, successfulTerms, failedTerms = [], scheduledTerms = cpuTerms, run = {} }) {
+  if (successfulTerms) {
+    const result = mergeMonitorSnapshot({
+      previousSnapshot, collected, now,
+      run: { timezone: "America/Sao_Paulo", ...run },
+      scheduledCoverage: scheduledTerms,
+      successfulCoverage: successfulTerms,
+      failedCoverage: failedTerms.map((failure) => failure.term),
+      configuredCoverage: DEFAULT_CPU_TERMS,
+      itemCoverage: (item) => item.cpu_term ? [item.cpu_term]
+        : DEFAULT_CPU_TERMS.filter((term) => textContainsCpuTerm(item.title ?? "", term)),
+      filters: { price_brl: { min: PRICE_MIN_BRL, max: PRICE_MAX_BRL } },
+    });
+    result.price_range_brl = { min: PRICE_MIN_BRL, max: PRICE_MAX_BRL };
+    return result;
+  }
   return _mergeItems({
     runDate,
     now,

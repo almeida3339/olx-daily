@@ -294,6 +294,10 @@ Adicionar uma nova: copiar um, mudar config, pronto.
 - **Persistência de validação:** marca `desc_checked: true` nos itens verificados, força reabertura se histórico antigo não tem essa marca
 - **Infinite scroll + Cloudflare bypass:** aguarda estabilização de cards na listagem
 - **Deduplicação:** ignora itens já no snapshot em dias anteriores
+- **Progresso por lote:** salva snapshot, relatório e manifesto antes da pausa entre lotes. O lote intermediário fica marcado como coleta em andamento e cobertura parcial; o resultado final é salvo em outro artefato.
+- **Cobertura por CPU:** registra termos concluídos, falhas e termos não consultados. Os anúncios dos termos sem cobertura são preservados. Uma falha de termo retorna código de erro após salvar os dados válidos.
+- **Pausas com horário:** informa a conclusão do lote e a previsão de retomada no fuso de Brasília, com atualização a cada cinco minutos. Exemplo: `Lote concluído (15/22 termos) às 19:33. Pausa de 46 min antes do próximo lote (por volta de 20:20)...`
+- **Saída UTF-8:** os scripts PowerShell configuram a leitura e o encaminhamento da saída do Node para manter os acentos no terminal e no transcript.
 
 ---
 

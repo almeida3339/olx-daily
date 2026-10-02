@@ -28,7 +28,8 @@ export async function readMonitorHistory(dataDir) {
 }
 
 export function summarizeMonitorHistory(runs, { sample = 10 } = {}) {
-  const recent = runs.slice(0, sample);
+  // Intermediate batches are still in progress, not completed failed runs.
+  const recent = runs.filter((run) => !run.metadata?.in_progress).slice(0, sample);
   const partial = recent.filter((run) => run.partial).length;
   const failed = recent.filter((run) => run.outcome === "failed").length;
   const durations = recent.map((run) => Number(run.duration_ms)).filter(Number.isFinite);
