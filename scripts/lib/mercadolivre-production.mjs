@@ -375,6 +375,7 @@ function renderMercadoLivreReport(snapshot, changes) {
     "",
     `Data: ${snapshot.generated_at.slice(0, 10)}`,
     `Cobertura parcial: **${run.partial ? "sim" : "nao"}**`,
+    `Fila interrompida: **${run.aborted ? "sim" : "nao"}**`,
     `Termos concluidos: **${run.successful_terms.length}**`,
     `Termos com falha: **${run.failed_terms.length}**`,
     `Novos produtos: **${changes.newItems.length}**`,

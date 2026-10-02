@@ -469,7 +469,7 @@ README.md
 
 ### Mercado Livre
 
-As buscas agora usam uma cadencia adaptativa: notebooks executam no maximo 6 CPUs e as demais watchlists compartilham 10 termos por rodada. Termos recentes recebem prioridade; termos vazios entram em rotacao mais lenta. Use `--full-sweep` para uma varredura completa, `--force` para ignorar a cadencia e `--clear-cooldown` somente depois de resolver login, challenge ou limite. Challenge e limite ativam pausas persistentes de seguranca.
+As buscas agora usam uma cadencia adaptativa: notebooks executam no maximo 6 CPUs por rodada. Termos recentes recebem prioridade; termos vazios entram em rotacao mais lenta. Use `--full-sweep` para uma varredura completa, `--force` para ignorar a cadencia e `--clear-cooldown` somente depois de resolver login, challenge ou limite. Uma verificacao ativa uma pausa persistente de 24 horas; limite de acessos, 12 horas. As pausas antigas calculadas em dias sao migradas para horas, preservando o instante do bloqueio.
 
 Cada coleta nova e promovida por `latest-run.json` apenas depois de snapshot, relatorio e checksum validados. Itens malformados vao para `quarantine/` sem invalidar os demais resultados. O painel usa o historico limitado de rodadas para sinalizar degradacao recorrente, exibir preco atual versus minimo observado e mostrar pendencias da outbox de notificacoes.
 
@@ -483,6 +483,8 @@ Cada coleta nova e promovida por `latest-run.json` apenas depois de snapshot, re
 - Fichas técnicas são abertas apenas para anúncios novos ou incompletos, com limite por rodada.
 - A rotina automática local de OLX/Enjoei não abre o Mercado Livre. Para o ML, use `npm run mercadolivre:publicar`: a coleta é publicada e os resultados somente daquela rodada são notificados.
 - Falha na coleta do Mercado Livre gera código de saída diferente de zero mesmo quando os dados parciais foram publicados; `-NoPush` não envia notificações.
+- O resumo e o WhatsApp incluem as falhas registradas nos relatorios da rodada. Uma fila impedida por verificacao ou login tambem retorna erro, mesmo sem relatorio novo. Termos nao consultados depois de uma interrupcao mantem seu estado anterior.
+- A publicacao seleciona todas as pastas ML do registry, inclusive no Windows PowerShell 5.1. Snapshot, relatorio, manifesto e historico sao publicados juntos.
 - A publicação manual inclui também `mercadolivre-oled-monitores`.
 - No GitHub Actions o Mercado Livre permanece desativado por não haver perfil autenticado.
 - A visão de notebooks do Mercado Livre está consolidada no `index.html`; o dashboard experimental separado foi removido.

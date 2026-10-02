@@ -54,6 +54,12 @@ for (const watchlist of watchlists) {
   });
   if (!plan.terms.length) {
     console.log(`${watchlist.label}: pulada (${plan.reason}${plan.next_at ? ` ate ${plan.next_at}` : ""}).`);
+    if (["cooldown", "login_required"].includes(plan.reason)) {
+      await writeMercadoLivreSchedule(root, schedule);
+      process.exitCode = 1;
+      console.error("Fila Mercado Livre bloqueada; resolva a verificacao ou login no perfil exclusivo.");
+      break;
+    }
     continue;
   }
   console.log(`${watchlist.label}: ${plan.terms.length}/${configuredTerms.length} termo(s) nesta rodada.`);
@@ -79,6 +85,11 @@ for (const watchlist of watchlists) {
     snapshot: result.snapshot,
   });
   await writeMercadoLivreSchedule(root, schedule);
+  if (result.snapshot.run?.aborted || result.snapshot.run?.failed_terms?.length) {
+    console.error(`${watchlist.label}: coleta incompleta; resultados parciais preservados.`);
+    process.exitCode = 1;
+  }
+  if (result.snapshot.run?.aborted || schedule.global.requires_login || Date.parse(schedule.global.blocked_until ?? "") > Date.now()) break;
   remaining -= plan.terms.length;
   if (remaining <= 0 && !selectedTerm && !fullSweep) {
     console.log("Orcamento de termos desta rodada atingido; as demais buscas ficam para a proxima execucao.");

@@ -259,9 +259,11 @@ export async function main({
     const mlReports = await Promise.all(MERCADOLIVRE_DIRS.map(([, dir]) =>
       readLatestReport(dir, reportMinTime).catch(() => null)
     ));
+    const mlErrors = [];
     for (let index = 0; index < MERCADOLIVRE_DIRS.length; index += 1) {
       const [label] = MERCADOLIVRE_DIRS[index];
       const report = mlReports[index];
+      mlErrors.push(...mercadoLivreReportErrors(label, report));
       sources.push({
         label,
         report,
@@ -272,6 +274,18 @@ export async function main({
         priceCount: extractNewCount(report, PRICE_CHANGE_RE),
       });
     }
+    // A blocked launch produces no new report. Persist and notify the block
+    // instead of presenting an empty collection as a successful search.
+    if (onlyMercadoLivre && mlErrors.length === 0) {
+      const schedule = await readStatusFile(path.join(workspaceRoot, "data", "status", "mercadolivre-schedule.json"));
+      if (schedule?.global?.requires_login) {
+        mlErrors.push("Mercado Livre: login necessario no perfil exclusivo; coleta nao executada.");
+      } else if (Date.parse(schedule?.global?.blocked_until ?? "") > runStart) {
+        mlErrors.push(`Mercado Livre: coleta bloqueada (${schedule.global.block_reason ?? "verificacao"}) ate ${schedule.global.blocked_until}; resolva a verificacao no perfil exclusivo.`);
+      }
+    }
+    errors.push(...mlErrors);
+    for (const error of mlErrors) console.error(error);
   }
 
   const totalNew   = sources.reduce((sum, s) => sum + s.newCount, 0);
@@ -413,6 +427,11 @@ export async function main({
     notificationOutbox,
     source: process.env.GITHUB_ACTIONS === "true" ? "ci" : "local"
   });
+  status.monitoring = {
+    scope: onlyMercadoLivre ? "mercadolivre" : "local-watchlists",
+    partial: errors.length > 0,
+    errors: errors.map(sanitizeErrorMessage),
+  };
 
   await writeDeliveryStatus(status);
   if (fsApi === fs) {
@@ -627,7 +646,9 @@ function buildWhatsAppMessage(sources, errors) {
   const totalPrice = sources.reduce((sum, s) => sum + s.priceCount, 0);
 
   if (totalNew === 0 && totalPrice === 0) {
-    lines.push("Sem novos itens nem alterações de preço.");
+    lines.push(errors.length
+      ? "Coleta incompleta; nenhum novo item ou alteração de preço confirmado nesta rodada."
+      : "Sem novos itens nem alterações de preço.");
     return lines.join("\n");
   }
 
@@ -645,6 +666,22 @@ function buildWhatsAppMessage(sources, errors) {
     ? "\nDetalhes completos: https://almeida3339.github.io/olx-daily/"
     : "\nDetalhes completos por email.");
   return capByWholeLines(lines, 1500);
+}
+
+function mercadoLivreReportErrors(label, report) {
+  if (!report) return [];
+  const failedCount = extractNewCount(report, /Termos com falha:\s*\*\*(\d+)\*\*/);
+  const failures = report.match(/## Falhas parciais\r?\n([\s\S]*?)(?:\r?\n## |$)/)?.[1]
+    .split(/\r?\n/).filter((line) => line.startsWith("- ")) ?? [];
+  if (failedCount > 0 || failures.length) {
+    return failures.length
+      ? failures.map((line) => `${label}: ${sanitizeErrorMessage(line.slice(2))}`)
+      : [`${label}: ${failedCount} termo(s) com falha; coleta incompleta.`];
+  }
+  if (/Fila interrompida:\s*\*\*sim\*\*/i.test(report)) {
+    return [`${label}: fila interrompida; coleta incompleta.`];
+  }
+  return [];
 }
 
 // Limita o tamanho da mensagem sem cortar uma linha (e sua URL) no meio: vai

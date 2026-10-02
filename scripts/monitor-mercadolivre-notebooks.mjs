@@ -42,6 +42,10 @@ const plan = planMercadoLivreTerms(schedule, {
 
 if (!plan.terms.length) {
   console.log(`Notebooks: pulado (${plan.reason}${plan.next_at ? ` ate ${plan.next_at}` : ""}).`);
+  if (["cooldown", "login_required"].includes(plan.reason)) {
+    await writeMercadoLivreSchedule(root, schedule);
+    process.exitCode = 1;
+  }
 } else {
   console.log(`Notebooks: ${plan.terms.length}/${configuredTasks.length} CPU(s) nesta rodada.`);
   const result = await runMercadoLivreBatch({
@@ -70,6 +74,10 @@ if (!plan.terms.length) {
     snapshot: result.snapshot,
   });
   await writeMercadoLivreSchedule(root, schedule);
+  if (result.snapshot.run?.aborted || result.snapshot.run?.failed_terms?.length) {
+    console.error("Mercado Livre Notebooks: coleta incompleta; resultados parciais preservados.");
+    process.exitCode = 1;
+  }
 }
 
 function option(name) {

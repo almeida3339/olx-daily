@@ -86,7 +86,8 @@ Write-Host "[4/4] Publicando..."
 # uma pasta arbitrária em data/ nunca deve ser enviada ao repositório público.
 $registeredFoldersJson = node (Join-Path $PSScriptRoot "list-watchlist-folders.mjs") --mercadolivre
 if ($LASTEXITCODE -ne 0) { Fail "Nao foi possivel ler o registry de watchlists." }
-$registeredFolders = @($registeredFoldersJson | ConvertFrom-Json)
+# PS 5.1 emits the JSON array as one object; @() would nest that array.
+$registeredFolders = $registeredFoldersJson | ConvertFrom-Json
 $mlStagePaths = @("data/status", "index.html")
 $mlStagePaths += @(Get-ChildItem -LiteralPath "data" -Directory -ErrorAction SilentlyContinue |
   Where-Object { $registeredFolders -contains $_.Name } |
@@ -100,9 +101,10 @@ if ($mlStagePaths.Count -gt 0) {
   & git add -- $mlStagePaths
   if ($LASTEXITCODE -ne 0) { Fail "git add falhou exit $LASTEXITCODE." }
 }
-if (git diff --staged --quiet) {
+if (-not (Test-GitStagedChanges)) {
   Write-Host "Nada novo do Mercado Livre para publicar." -ForegroundColor Green
   if ($mlExit -ne 0) { Fail "Coleta do Mercado Livre terminou com exit $mlExit." }
+  if ($notifyExit -ne 0) { Fail "Notificacao ou resumo do Mercado Livre terminou com exit $notifyExit." }
   Restore-LocalChanges
   exit 0
 }
@@ -113,17 +115,21 @@ if ($LASTEXITCODE -ne 0) { Fail "git commit falhou exit $LASTEXITCODE." }
 for ($attempt = 1; $attempt -le 4; $attempt++) {
   git push origin main
   if ($LASTEXITCODE -eq 0) {
-    if ($mlExit -ne 0) { Fail "Coleta do Mercado Livre terminou com exit $mlExit." }
+    if ($mlExit -ne 0) { Fail "Dados publicados; coleta do Mercado Livre incompleta (exit $mlExit)." }
+    if ($notifyExit -ne 0) { Fail "Dados publicados; notificacao ou resumo do Mercado Livre terminou com exit $notifyExit." }
     Restore-LocalChanges
     Write-Host "Publicado com sucesso." -ForegroundColor Green
     exit 0
   }
   Write-Host "Push rejeitado tentativa $attempt de 4 - re-sincronizando."
   git fetch origin
+  if ($LASTEXITCODE -ne 0) { Fail "git fetch pre-push falhou exit $LASTEXITCODE." }
   git -c core.editor=true rebase -X theirs origin/main
   if ($LASTEXITCODE -ne 0) { git rebase --abort 2>$null; Fail "Rebase pre-push falhou; estado limpo." }
   node (Join-Path $PSScriptRoot "generate-dashboard.mjs")
-  git add index.html
+  if ($LASTEXITCODE -ne 0) { Fail "Geracao do dashboard pre-push falhou exit $LASTEXITCODE." }
+  git add index.html data/status/monitor-health.json
+  if ($LASTEXITCODE -ne 0) { Fail "git add pre-push falhou exit $LASTEXITCODE." }
   if (Test-GitStagedChanges) { git commit --amend --no-edit | Out-Null }
 }
 Fail "git push falhou apos 4 tentativas."

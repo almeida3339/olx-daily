@@ -2,7 +2,8 @@ import path from "node:path";
 import { classifyMonitorError } from "./monitor-errors.mjs";
 import { readJsonValidated, writeJsonAtomic } from "./monitor-runtime.mjs";
 
-const DAY = 24 * 60 * 60 * 1000;
+const HOUR = 60 * 60 * 1000;
+const DAY = 24 * HOUR;
 const SCHEDULE_SCHEMA_VERSION = 1;
 
 export function createMercadoLivreSchedule() {
@@ -68,6 +69,14 @@ export function recordMercadoLivreRun(schedule, {
   const run = snapshot?.run ?? {};
   const successful = new Set(run.successful_terms ?? []);
   const failures = new Map((run.failed_terms ?? []).map((entry) => [typeof entry === "string" ? entry : entry.term, entry]));
+  // Clear the previous block once, before processing this run's failures.
+  // A successful term later in the list must not erase a new challenge.
+  if (successful.size > 0) {
+    next.global.requires_login = false;
+    next.global.blocked_at = null;
+    next.global.blocked_until = null;
+    next.global.block_reason = null;
+  }
   const itemsByTerm = new Map();
   for (const item of snapshot?.items ?? []) {
     if (item.status !== "active") continue;
@@ -91,11 +100,10 @@ export function recordMercadoLivreRun(schedule, {
         failures: 0,
         last_error: null,
       };
-      next.global.requires_login = false;
-      next.global.blocked_until = null;
-      next.global.block_reason = null;
       continue;
     }
+    // Terms skipped after an abort were never checked, so retain their state.
+    if (!failures.has(task.matchTerm)) continue;
     const classification = classifyMonitorError(typeof failure === "string" ? failure : failure?.error ?? "coleta incompleta");
     state.terms[task.matchTerm] = {
       ...current,
@@ -105,9 +113,12 @@ export function recordMercadoLivreRun(schedule, {
     };
     if (classification.kind === "authentication") next.global.requires_login = true;
     if (["challenge", "rate_limited"].includes(classification.kind)) {
-      const cooldown = classification.kind === "challenge" ? 24 * DAY : 12 * DAY;
+      const cooldown = classification.kind === "challenge" ? 24 * HOUR : 12 * HOUR;
       const until = new Date(now.getTime() + cooldown).toISOString();
-      if (!next.global.blocked_until || Date.parse(next.global.blocked_until) < Date.parse(until)) next.global.blocked_until = until;
+      if (!next.global.blocked_until || Date.parse(next.global.blocked_until) < Date.parse(until)) {
+        next.global.blocked_at = now.toISOString();
+        next.global.blocked_until = until;
+      }
       next.global.block_reason = classification.kind;
     }
   }
@@ -131,6 +142,7 @@ export function recordMercadoLivreRun(schedule, {
 export function clearMercadoLivreCooldown(schedule) {
   const next = normalizeSchedule(structuredClone(schedule));
   next.global.blocked_until = null;
+  next.global.blocked_at = null;
   next.global.block_reason = null;
   next.global.requires_login = false;
   return next;
@@ -169,10 +181,21 @@ function normalizeTermTask(value) {
 function normalizeSchedule(value) {
   const base = createMercadoLivreSchedule();
   if (!value || typeof value !== "object" || Array.isArray(value)) return base;
+  const global = { ...base.global, ...(value.global ?? {}) };
+  // Migrate only the legacy 24/12-day calculation recorded with this update.
+  const hours = global.block_reason === "challenge" ? 24 : global.block_reason === "rate_limited" ? 12 : null;
+  const until = Date.parse(global.blocked_until ?? "");
+  const updatedAt = Date.parse(value.updated_at ?? "");
+  if (hours && !global.blocked_at && Number.isFinite(until) && Number.isFinite(updatedAt)
+      && Math.abs(until - updatedAt - hours * DAY) < 60_000) {
+    const blockedAt = until - hours * DAY;
+    global.blocked_at = new Date(blockedAt).toISOString();
+    global.blocked_until = new Date(blockedAt + hours * HOUR).toISOString();
+  }
   return {
     ...base,
     ...value,
-    global: { ...base.global, ...(value.global ?? {}) },
+    global,
     watchlists: value.watchlists && typeof value.watchlists === "object" ? value.watchlists : {},
   };
 }
