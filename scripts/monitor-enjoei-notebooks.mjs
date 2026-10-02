@@ -4,7 +4,8 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { extractCpuLabel, extractGpuLabel, extractRamGb, extractStorageGb, textContainsCpuTerm } from "./lib/parsers.mjs";
 import { mergeMonitorSnapshot } from "./lib/monitor-core.mjs";
 import { DEFAULT_CPU_TERMS, cpuSearchQuery } from "./lib/cpu-terms.mjs";
-import { commitMonitorRun, readLatestValidSnapshot } from "./lib/monitor-runtime.mjs";
+import { commitMonitorRun, readLatestValidSnapshot, writeJsonAtomic } from "./lib/monitor-runtime.mjs";
+import { collectEnjoeiPages } from "./lib/enjoei-pagination.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const automationRoot =
@@ -32,12 +33,21 @@ const state = getOptionValue(args, "--state") ?? "pr";
 const city = getOptionValue(args, "--city") ?? "curitiba";
 const first = Number(getOptionValue(args, "--first") ?? 30);
 const detailMax = Number(getOptionValue(args, "--detail-max") ?? process.env.ENJOEI_DETAIL_MAX ?? 50);
+const maxPages = Number(getOptionValue(args, "--max-pages") ?? process.env.ENJOEI_NOTEBOOKS_MAX_PAGES ?? 500);
+const maxMinutes = Number(getOptionValue(args, "--max-minutes") ?? process.env.ENJOEI_NOTEBOOKS_MAX_MINUTES ?? 10);
 const maxPriceBrl = Number(getOptionValue(args, "--max-price") ?? PRICE_MAX_BRL);
 const minPriceBrl = Number(getOptionValue(args, "--min-price") ?? PRICE_MIN_BRL);
 const cpuArg = getOptionValue(args, "--cpu");
 const terms = cpuArg
   ? cpuArg.split(",").map((s) => s.trim().toLowerCase()).filter(Boolean)
   : DEFAULT_CPU_TERMS;
+const progressPath = path.join(automationRoot, "collection-progress.json");
+
+// "notebook" makes this fuzzy query expand to tens of thousands of unrelated
+// notebooks. Keep CPU context; validate actual models in title/description.
+function enjoeiCpuQuery(term) {
+  return term === "aimax395" ? "ryzen ai max 395" : cpuSearchQuery(term);
+}
 
 // Só executa quando rodado diretamente (node monitor-enjoei-notebooks.mjs).
 // Importado por testes, NÃO dispara a coleta de rede.
@@ -60,6 +70,11 @@ function formatError(error) {
 function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
 
 async function main() {
+  if (!Number.isInteger(first) || first < 1 || first > 30) throw new Error("--first deve estar entre 1 e 30 (paginação usa o cursor real da API)");
+  if (!Number.isInteger(maxPages) || maxPages < 1 || !Number.isFinite(maxMinutes) || maxMinutes <= 0
+    || !Number.isInteger(detailMax) || detailMax < 1) throw new Error("Limites de páginas, minutos e detalhes devem ser positivos");
+  if (!terms.length || terms.some((term) => !DEFAULT_CPU_TERMS.includes(term))) throw new Error("Lista de CPUs vazia ou desconhecida");
+  if (!Number.isFinite(minPriceBrl) || !Number.isFinite(maxPriceBrl) || minPriceBrl < 0 || maxPriceBrl < minPriceBrl) throw new Error("Faixa de preço inválida");
   const now = new Date();
   const runDate = now.toISOString().slice(0, 10);
   const runTimestamp = now.toISOString();
@@ -74,13 +89,24 @@ async function main() {
   console.log(`Faixa: R$ ${minPriceBrl}–R$ ${maxPriceBrl}`);
   console.log(`Snapshot anterior: ${previousSnapshotPath ?? "(nenhum)"}\n`);
 
-  const { items: collected, failedTerms, successfulTerms, incompleteTerms } = await collectProducts(previousSnapshot);
+  const { items: collected, failedTerms, successfulTerms, incompleteTerms, progress } = await collectProducts(previousSnapshot);
   const snapshot = mergeEnjoeiNotebookSnapshot({
     runDate, collected, previousSnapshot,
-    now,
+    now: new Date(),
     scheduledTerms: terms, successfulTerms, failedTerms, incompleteTerms,
+    configuredTerms: DEFAULT_CPU_TERMS,
     priceMin: minPriceBrl, priceMax: maxPriceBrl,
   });
+  snapshot.run.started_at = runTimestamp;
+  snapshot.run.completed_at = new Date().toISOString();
+  snapshot.run.collection_started_at = progress.started_at;
+  snapshot.run.pagination = Object.fromEntries(terms.map((term) => [term, {
+    pages: progress.terms[term].pages ?? 0,
+    complete: Boolean(progress.terms[term].complete),
+    next_cursor: progress.terms[term].complete ? null : progress.terms[term].after ?? null,
+    pending_details: progress.pending_items.filter((item) => item.cpu_terms?.includes(term)).length,
+    reason: progress.terms[term].last_error ?? null,
+  }]));
   backfillSpecsFromTitle(snapshot);
   verifyCarriedItems(snapshot);
 
@@ -89,8 +115,13 @@ async function main() {
     runId,
     snapshot,
     report,
-    metadata: { source: "enjoei-notebooks", collected_count: collected.length, failed_term_count: failedTerms.length },
+    metadata: { source: "enjoei-notebooks", collected_count: collected.length, failed_term_count: failedTerms.length,
+      incomplete_term_count: incompleteTerms.length, collection_started_at: progress.started_at },
   });
+  // Keep the checkpoint until publication has succeeded. A crash before this
+  // write retries the same cycle instead of losing its findings.
+  progress.completed = !committed.snapshot.run.partial;
+  await saveCollectionProgress(progress);
   const snapshotPath = committed.legacySnapshotPath;
   const reportPath = committed.legacyReportPath;
 
@@ -101,11 +132,11 @@ async function main() {
   // Falha total: TODOS os termos lançaram erro (nada coletado). Preservamos o
   // snapshot anterior (o merge já mantém os itens), mas saímos com código != 0
   // para o orquestrador e o GitHub Actions detectarem a falha.
-  if (successfulTerms.length === 0) {
+  if (failedTerms.length === terms.length) {
     console.error("Falha total: nenhum termo do Enjoei Notebooks foi coletado nesta rodada; snapshot anterior preservado.");
     process.exitCode = 1;
-  } else if (failedTerms.length) {
-    console.error(`Coleta parcial: ${failedTerms.length} termo(s) do Enjoei Notebooks falharam.`);
+  } else if (committed.snapshot.run.partial) {
+    console.error(`Coleta incompleta Enjoei Notebooks: ${failedTerms.length} termo(s) com falha; ${incompleteTerms.length} com páginas ou detalhes pendentes. Progresso salvo para a próxima rodada.`);
     process.exitCode = 1;
   }
 }
@@ -113,10 +144,18 @@ async function main() {
 // ── coleta ───────────────────────────────────────────────────────────────────
 
 async function collectProducts(previousSnapshot) {
-  const byId = new Map();
+  const progress = await loadCollectionProgress();
+  const pending = new Map(progress.pending_items.map((item) => [item.id, item]));
+  const verified = new Map(progress.verified_items.map((item) => [item.id, item]));
+  const checkpoint = async () => {
+    progress.pending_items = [...pending.values()];
+    progress.verified_items = [...verified.values()];
+    await saveCollectionProgress(progress);
+  };
   const failedTerms = [];
   const successfulTerms = [];
   const incompleteTerms = [];
+  const deadline = Date.now() + maxMinutes * 60_000;
 
   for (let i = 0; i < terms.length; i++) {
     const term = terms[i];
@@ -124,55 +163,105 @@ async function collectProducts(previousSnapshot) {
     console.log(`Termo: ${term}`);
 
     try {
-      const response = await fetchWithRetry(buildApiUrl(term), {
-        headers: {
-          accept: "application/json",
-          origin: SITE_ORIGIN,
-          referer: buildSearchPageUrl(term),
-          "user-agent":
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      const termProgress = progress.terms[term];
+      if (termProgress.pages && !termProgress.complete) console.log(`  Retomando após ${termProgress.pages} página(s), cursor ${termProgress.after ?? "inicial"}.`);
+      const result = await collectEnjoeiPages({
+        progress: termProgress, maxPages, deadline, checkpoint,
+        fetchPage: async (after) => {
+          const response = await fetchWithRetry(buildApiUrl(term, after, progress.session_id), {
+            headers: {
+              accept: "application/json",
+              origin: SITE_ORIGIN,
+              referer: buildSearchPageUrl(term),
+              "user-agent":
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+            },
+          });
+
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const payload = await response.json();
+          if (payload.errors?.length) throw new Error("API retornou erros GraphQL");
+          return payload?.data?.search?.products;
+        },
+        onPage: async (edges) => {
+          for (const edge of edges) {
+            const item = normalizeProduct(edge.node, term);
+            if (!item) continue;
+            if (item.price_brl == null || item.price_brl < minPriceBrl || item.price_brl > maxPriceBrl) continue;
+            if (!itemMatchesCpuTerm(item, term)) continue;
+            if (hasExcludedKeyword(item.title)) continue;
+
+            const existing = pending.get(item.id);
+            if (existing) {
+              existing.cpu_terms = Array.from(new Set([...(existing.cpu_terms ?? []), term]));
+            } else if (verified.has(item.id)) {
+              // A fuzzy query is not CPU evidence: keep already validated labels.
+              const confirmed = verified.get(item.id);
+              verified.set(item.id, { ...item, ...confirmed, price_brl: item.price_brl });
+            } else {
+              pending.set(item.id, item);
+            }
+          }
+          console.log(`  Página ${termProgress.pages + 1}: ${edges.length} resultado(s); salvando progresso.`);
         },
       });
-
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const payload = await response.json();
-      const products = payload?.data?.search?.products;
-      if (!products) throw new Error("Resposta sem data.search.products");
-
-      for (const edge of products.edges ?? []) {
-        const item = normalizeProduct(edge.node, term);
-        if (!item) continue;
-        if (item.price_brl == null || item.price_brl < minPriceBrl || item.price_brl > maxPriceBrl) continue;
-        if (!itemMatchesCpuTerm(item, term)) continue;
-        if (hasExcludedKeyword(item.title)) continue;
-
-        const existing = byId.get(item.id);
-        if (existing) {
-          existing.cpu_terms = Array.from(new Set([...(existing.cpu_terms ?? []), term]));
-        } else {
-          byId.set(item.id, item);
-        }
-      }
-      successfulTerms.push(term);
-      // Cobertura truncada: a busca persistida do Enjoei devolve no máximo `first`
-      // itens e não expõe cursor utilizável. Página cheia (ou hasNextPage) significa
-      // que pode haver itens relevantes além do corte — marcamos o termo como
-      // INCOMPLETO para não marcar como not_seen o que ficou só de fora da página.
-      if (isTruncatedPage(products, first)) incompleteTerms.push(term);
+      if (result.complete) successfulTerms.push(term);
+      else incompleteTerms.push(term);
     } catch (err) {
       console.warn(`  Aviso: falha em "${term}" — ${err.message}`);
       failedTerms.push(term);
+      progress.terms[term].last_error = err.message;
+      await checkpoint();
     }
   }
 
+  await enrichMissingDetails([...pending.values()], previousSnapshot, {
+    onResolution: async (item, outcome, confirmed) => {
+      if (confirmed) verified.set(confirmed.id, confirmed);
+      if (outcome === "rejected") verified.delete(item.id);
+      if (outcome !== "pending") pending.delete(item.id);
+      await checkpoint();
+    },
+  });
+  // Exhausted detail budgets and failed description requests are also partial:
+  // new candidates remain queued, rather than disappearing from the next run.
+  for (const item of pending.values()) {
+    for (const term of item.cpu_terms ?? []) if (terms.includes(term) && !incompleteTerms.includes(term)) incompleteTerms.push(term);
+  }
+  await checkpoint();
   if (failedTerms.length) console.warn(`Termos com falha: ${failedTerms.join(", ")}`);
-  if (incompleteTerms.length) console.warn(`Termos truncados (cobertura incompleta): ${incompleteTerms.join(", ")}`);
-  const items = await enrichMissingDetails(Array.from(byId.values()), previousSnapshot);
-  return { items, failedTerms, successfulTerms, incompleteTerms };
+  if (incompleteTerms.length) console.warn(`Termos com páginas/detalhes pendentes: ${incompleteTerms.join(", ")}`);
+  return { items: [...verified.values()], failedTerms, successfulTerms, incompleteTerms, progress };
 }
 
-// Página truncada: bateu no limite `first` (ou a API sinaliza próxima página).
-// Pura, para teste. Ver collectProducts.
+async function loadCollectionProgress() {
+  const configuration = JSON.stringify({ version: 1, terms, queries: terms.map(enjoeiCpuQuery),
+    first, shippingRange, state, city, minPriceBrl, maxPriceBrl });
+  let saved;
+  try { saved = JSON.parse(await fs.readFile(progressPath, "utf8")); }
+  catch (error) { if (error.code !== "ENOENT") throw new Error(`Progresso Enjoei ilegível: ${error.message}`); }
+  if (saved?.configuration === configuration && !saved.completed) {
+    if (!saved.terms || !Array.isArray(saved.pending_items) || !Array.isArray(saved.verified_items)
+      || terms.some((term) => !saved.terms[term])) throw new Error("Progresso Enjoei inválido");
+    console.log(`Retomando busca iniciada em ${saved.started_at}.`);
+    return saved;
+  }
+  const started = new Date().toISOString();
+  const fresh = { schema_version: 1, configuration, session_id: `codex-notebooks-${Date.now()}`,
+    started_at: started, updated_at: started, completed: false,
+    terms: Object.fromEntries(terms.map((term) => [term, { after: null, pages: 0, complete: false }])),
+    pending_items: [], verified_items: [] };
+  await saveCollectionProgress(fresh);
+  return fresh;
+}
+
+async function saveCollectionProgress(progress) {
+  progress.updated_at = new Date().toISOString();
+  await writeJsonAtomic(progressPath, progress, { validate: null });
+}
+
+// Legacy one-page heuristic, retained for existing callers. Production follows
+// actual cursors through collectEnjoeiPages; page length is not proof of the end.
 export function isTruncatedPage(products, first) {
   const edges = products?.edges ?? [];
   return Boolean(products?.pageInfo?.hasNextPage) || edges.length >= first;
@@ -197,26 +286,26 @@ async function fetchWithRetry(url, options) {
 
 // ── API ──────────────────────────────────────────────────────────────────────
 
-function buildApiUrl(term) {
+function buildApiUrl(term, after = null, sessionId = `codex-notebooks-${Date.now()}`) {
   const url = new URL(SEARCH_ENDPOINT);
-  const ts = Date.now();
-  url.searchParams.set("browser_id", `codex-notebooks-${ts}`);
+  url.searchParams.set("browser_id", sessionId);
   url.searchParams.set("city", city);
   url.searchParams.set("experienced_seller", "true");
   url.searchParams.set("first", String(first));
   url.searchParams.set("operation_name", "searchProducts");
   url.searchParams.set("query_id", "c5faa5f85fb47bf0beaa97b67d8a9189");
   url.searchParams.set("search_context", "products_search");
-  url.searchParams.set("search_id", `codex-search-${ts}`);
+  url.searchParams.set("search_id", sessionId);
   url.searchParams.set("shipping_range", shippingRange);
   url.searchParams.set("state", state);
-  url.searchParams.set("term", cpuSearchQuery(term));
+  url.searchParams.set("term", enjoeiCpuQuery(term));
+  if (after != null) url.searchParams.set("after", after);
   // sem size_types.shoes nem department — busca geral
   return url;
 }
 
 function buildSearchPageUrl(term) {
-  const query = cpuSearchQuery(term);
+  const query = enjoeiCpuQuery(term);
   const url = new URL(`${SITE_ORIGIN}/${encodeURIComponent(query)}/s`);
   url.searchParams.set("ref", "products_search");
   url.searchParams.set("q", query);
@@ -284,6 +373,7 @@ export async function enrichMissingDetails(items, previousSnapshot, {
   fetchDetails = fetchProductDetails,
   detailMax: maxDetails = detailMax,
   cpuTerms = DEFAULT_CPU_TERMS,
+  onResolution = async () => {},
 } = {}) {
   const previousById = new Map((previousSnapshot?.items ?? []).map((item) => [item.id ?? item.url, item]));
   let opened = 0;
@@ -311,6 +401,12 @@ export async function enrichMissingDetails(items, previousSnapshot, {
         console.warn(`  Aviso: não consegui enriquecer "${merged.title}" — ${error.message}`);
         return null;
       });
+      if (details?.unavailable) {
+        dropped += 1;
+        console.log(`  Descartado (anúncio indisponível): "${merged.title}"`);
+        await onResolution(item, "rejected", null);
+        continue;
+      }
       if (details) {
         fetchSucceeded = true;
         merged = mergeCachedDetails(merged, details);
@@ -322,7 +418,9 @@ export async function enrichMissingDetails(items, previousSnapshot, {
     // anúncio que na verdade é outra CPU da lista recebe a etiqueta correta.
     const matched = cpuTerms.filter((t) => textContainsCpuTerm(evidence, t));
     if (matched.length > 0) {
-      verified.push({ ...merged, cpu_terms: matched });
+      const confirmed = { ...merged, cpu_terms: matched };
+      verified.push(confirmed);
+      await onResolution(item, "verified", confirmed);
       continue;
     }
 
@@ -332,6 +430,7 @@ export async function enrichMissingDetails(items, previousSnapshot, {
     if (conclusive) {
       dropped += 1;
       console.log(`  Descartado (CPU não confere): "${merged.title}" [buscado: ${(item.cpu_terms ?? []).join(", ")}]`);
+      await onResolution(item, "rejected", null);
       continue;
     }
     // Inconclusivo nesta rodada (fetch falhou ou orçamento esgotado): preserva se
@@ -339,11 +438,14 @@ export async function enrichMissingDetails(items, previousSnapshot, {
     if (prevTerms.length > 0) {
       preserved += 1;
       console.log(`  Mantido sem reconfirmar (inconclusivo nesta rodada): "${merged.title}" [cpu prévio: ${prevTerms.join(", ")}]`);
-      verified.push({ ...merged, cpu_terms: prevTerms });
+      const confirmed = { ...merged, cpu_terms: prevTerms };
+      verified.push(confirmed);
+      await onResolution(item, "pending", confirmed);
       continue;
     }
     dropped += 1;
     console.log(`  Descartado (não confirmável e sem histórico): "${merged.title}"`);
+    await onResolution(item, "pending", null);
   }
 
   if (opened > 0) console.log(`Detalhes Enjoei abertos: ${opened}`);
@@ -376,6 +478,7 @@ async function fetchProductDetails(item) {
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
     },
   });
+  if (response.status === 404 || response.status === 410) return { unavailable: true };
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
   const product = await response.json();
   const text = `${product.title ?? item.title}\n${product.description ?? ""}\n${product.brand?.name ?? ""}`;
@@ -438,6 +541,7 @@ export function mergeEnjoeiNotebookSnapshot({
   collected,
   previousSnapshot,
   scheduledTerms,
+  configuredTerms = scheduledTerms,
   successfulTerms = [],
   failedTerms = [],
   incompleteTerms = [],
@@ -464,7 +568,7 @@ export function mergeEnjoeiNotebookSnapshot({
     scheduledCoverage: scheduledTerms,
     successfulCoverage: successfulTerms,
     failedCoverage,
-    configuredCoverage: scheduledTerms,
+    configuredCoverage: configuredTerms,
     itemCoverage: (item) => item.cpu_terms ?? [],
   });
   result.price_range_brl = { min: priceMin, max: priceMax };
@@ -508,16 +612,23 @@ function buildReport({ runDate, snapshot, previousSnapshot, failedTerms = [], in
   lines.push(`- Alterações de preço: **${priceChanges.length}**`);
   lines.push(`- Termos: ${terms.join(", ")}`);
   if (snapshot.run?.partial) {
-    lines.push(`- ⚠️ Cobertura parcial: ${failedTerms.length} com falha, ${incompleteTerms.length} truncado(s) — itens desses termos foram preservados (não marcados como não vistos).`);
+    lines.push(`- ⚠️ Cobertura parcial: ${failedTerms.length} com falha, ${incompleteTerms.length} com páginas/detalhes pendentes — itens desses termos foram preservados (não marcados como não vistos).`);
   }
   lines.push("");
 
   if (failedTerms.length || incompleteTerms.length) {
     lines.push("## Cobertura incompleta");
     if (failedTerms.length) lines.push(`- Termos com falha: ${failedTerms.join(", ")}`);
-    if (incompleteTerms.length) lines.push(`- Termos truncados (atingiram o limite de ${first} resultados): ${incompleteTerms.join(", ")}`);
+    if (incompleteTerms.length) lines.push(`- Termos com páginas/detalhes pendentes (retomada automática na próxima rodada): ${incompleteTerms.join(", ")}`);
     lines.push("");
   }
+
+  lines.push("## Progresso da busca");
+  lines.push(`- Busca iniciada em: ${snapshot.run?.collection_started_at ?? "n/d"}`);
+  for (const [term, progress] of Object.entries(snapshot.run?.pagination ?? {})) {
+    lines.push(`- ${term}: ${progress.pages} página(s); ${progress.complete ? "paginação concluída" : "paginação pendente"}; ${progress.pending_details} descrição(ões) pendente(s)${progress.reason ? ` — ${progress.reason}` : ""}.`);
+  }
+  lines.push("");
 
   lines.push(`## Novos notebooks`);
   if (!newItems.length) {

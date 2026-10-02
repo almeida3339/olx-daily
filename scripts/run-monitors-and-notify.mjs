@@ -234,6 +234,15 @@ export async function main({
     skipOledMonitores || onlyMercadoLivre ? null : readLatestReport(OLED_MONITORES_DIR, reportMinTime).catch(() => null),
   ]);
 
+  // Include coverage limits even when reusing an existing report. A successful
+  // HTTP request does not mean that all pages/descriptions were collected.
+  if (enjoeiNbStd?.includes("## Cobertura incompleta") && !errors.some((error) => error.startsWith("Enjoei NB:"))) {
+    const pending = enjoeiNbStd.match(/- Termos com páginas\/detalhes pendentes[^:]*:\s*([^\n]+)/)?.[1]
+      ?? enjoeiNbStd.match(/- Termos truncados[^:]*:\s*([^\n]+)/)?.[1]
+      ?? "consulte o relatório";
+    errors.push(`Enjoei NB: busca incompleta; páginas/detalhes pendentes: ${pending}`);
+  }
+
   // Cada fonte conta itens NOVOS e ALTERAÇÕES DE PREÇO (antes só contava novos do range padrão).
   const sources = (onlyMercadoLivre ? [] : [
     { label: getWatchlist("olx").label, report: olxStd, newRe: /Novos an[úu]ncios v[aá]lidos[^:]*:\s*\*\*(\d+)\*\*/, newSec: "## Novos anúncios", priceSec: "## Mudanças de preço" },

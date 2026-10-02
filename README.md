@@ -311,6 +311,33 @@ Adicionar uma nova: copiar um, mudar config, pronto.
 - **Backfill de specs** do título quando fetch falha
 - **Validação de termos**: confirma que CPU/termo está no título/descrição (evita false positives do fuzzy search)
 
+### Notebooks: paginação e retomada
+
+O coletor `scripts/monitor-enjoei-notebooks.mjs` segue o cursor `after` retornado
+pela API até uma página vazia ou uma indicação explícita de fim. Uma página com
+menos de 30 anúncios também pode ter continuação. Os resultados são deduplicados
+por anúncio e passam pelos filtros de preço e pela confirmação de CPU.
+
+- O cursor, os candidatos e os detalhes já confirmados são salvos atomicamente
+  após cada página/descrição em `data/enjoei-notebooks/collection-progress.json`
+  (ou em `ENJOEI_NOTEBOOKS_DATA_DIR`). O arquivo acompanha a publicação dos dados,
+  permitindo retomar também no próximo GitHub Actions.
+- Por padrão, cada execução permite até 500 páginas por termo e 10 minutos para
+  paginação. `--max-pages` / `ENJOEI_NOTEBOOKS_MAX_PAGES` e `--max-minutes` /
+  `ENJOEI_NOTEBOOKS_MAX_MINUTES` ajustam esses limites. `--first` aceita 1 a 30.
+- Descrições pendentes por falha de rede ou pelo limite `--detail-max` (padrão 50)
+  ficam na fila para a próxima rodada. Elas mantêm a cobertura parcial.
+- Quando há páginas ou descrições pendentes, o relatório detalha o progresso,
+  o coletor retorna código 1 e o aviso aparece na notificação/status da rodada.
+  Os itens antigos desses termos são preservados. A busca só fica completa após
+  confirmar o fim da paginação e resolver os candidatos pendentes.
+- Rodadas interrompidas retomam o mesmo ciclo; depois de um ciclo completo, a
+  próxima execução inicia uma busca nova. Alterações nos termos, consultas,
+  região, tamanho da página ou faixa de preço também iniciam um ciclo novo.
+- Para `aimax395`, o Enjoei usa `ryzen ai max 395`: a palavra `notebook` ampliava
+  a busca difusa para milhares de outros modelos. OLX e Mercado Livre mantêm
+  suas consultas atuais.
+
 ---
 
 ## Automação local (Windows)
