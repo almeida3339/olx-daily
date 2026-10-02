@@ -1,5 +1,6 @@
 param(
   [switch]$Visible,   # mostra a janela do Chrome (login/desafios); padrao = invisivel
+  [switch]$Recover,   # abre o perfil para recuperacao manual e valida a busca antes de coletar
   [switch]$NoPush     # coleta + regenera dashboard, sem commitar/publicar
 )
 
@@ -56,9 +57,25 @@ if ($LASTEXITCODE -ne 0) { Fail "git fetch falhou exit $LASTEXITCODE." }
 git -c core.editor=true rebase -X theirs origin/main
 if ($LASTEXITCODE -ne 0) { git rebase --abort 2>$null; Fail "Falha ao sincronizar com origin/main." }
 
-Write-Host "[2/4] Coletando Mercado Livre - invisivel, pode levar ~15-20 min..." -ForegroundColor Yellow
+if ($Recover) {
+  Write-Host "[2/4] Recuperando o perfil; resolva login/verificacao no Chrome..." -ForegroundColor Yellow
+  node (Join-Path $PSScriptRoot "mercadolivre-recovery.mjs") --recover
+  if ($LASTEXITCODE -ne 0) { Fail "Perfil ainda nao liberado. Coleta nao iniciada." }
+} else {
+  node (Join-Path $PSScriptRoot "mercadolivre-recovery.mjs") --check
+  $checkExit = $LASTEXITCODE
+  if ($checkExit -eq 2) {
+    Write-Host "Disparo encerrado: nenhuma busca feita; nenhuma nova notificacao ou publicacao." -ForegroundColor Yellow
+    Restore-LocalChanges
+    exit 2
+  }
+  if ($checkExit -ne 0) { Fail "Nao foi possivel conferir o estado do perfil." }
+}
+
+$mlMode = if ($Visible -or $Recover) { "visivel" } else { "invisivel" }
+Write-Host "[2/4] Coletando Mercado Livre - $mlMode, pode levar ~15-20 min..." -ForegroundColor Yellow
 $mlStartedAt = [DateTime]::UtcNow.ToString("o")
-$mlArgs = @(); if ($Visible) { $mlArgs += "--visible" }
+$mlArgs = @(); if ($Visible -or $Recover) { $mlArgs += @("--visible", "--load-assets") }
 node (Join-Path $PSScriptRoot "monitor-mercadolivre-all.mjs") @mlArgs
 $mlExit = $LASTEXITCODE
 if ($mlExit -ne 0) { Write-Host "Aviso: coleta terminou com exit $mlExit - cobertura possivelmente parcial." -ForegroundColor Yellow }

@@ -513,6 +513,23 @@ Cada coleta nova e promovida por `latest-run.json` apenas depois de snapshot, re
 - Galaxy Buds4 Pro é uma watchlist oficial na faixa de R$ 500 a R$ 1.000, com variantes de escrita e envio local.
 - Fichas técnicas são abertas apenas para anúncios novos ou incompletos, com limite por rodada.
 - A rotina automática local de OLX/Enjoei não abre o Mercado Livre. Para o ML, use `npm run mercadolivre:publicar`: a coleta é publicada e os resultados somente daquela rodada são notificados.
+- Se já existe bloqueio registrado, o comando encerra antes da coleta e informa
+  o horário em Brasília e o comando de recuperação. Esse disparo não envia uma
+  nova notificação nem publica arquivos gerados sem uma coleta.
+- Para resolver uma verificação/login, use
+  `npm run mercadolivre:publicar -- -Recover` ou, na pasta do projeto,
+  `& .\scripts\run-mercadolivre-and-publish.ps1 -Recover`.
+  O Chrome abre visível no perfil exclusivo. Resolva a verificação/login
+  manualmente, volte à página da busca e pressione Enter no terminal.
+  A pausa só é removida após reconhecer resultados ou uma busca vazia válida;
+  se a verificação continuar, o bloqueio é mantido. Depois, a coleta continua
+  visível e publica normalmente. Feche previamente outras janelas desse perfil.
+  Um limite de acessos ainda ativo exige aguardar a pausa; `-Recover` não o remove.
+- `-Visible` mostra a coleta, mas mantém a pausa registrada. `-Recover` inclui a
+  etapa manual de recuperação; `--clear-cooldown` é uma opção do coletor Node,
+  não um parâmetro do publicador PowerShell.
+- Uma página reconhecida como busca sem resultados conclui o termo com zero
+  anúncios. Falta de cards sem essa indicação continua sendo falha de coleta.
 - Falha na coleta do Mercado Livre gera código de saída diferente de zero mesmo quando os dados parciais foram publicados; `-NoPush` não envia notificações.
 - O resumo e o WhatsApp incluem as falhas registradas nos relatorios da rodada. Uma fila impedida por verificacao ou login tambem retorna erro, mesmo sem relatorio novo. Termos nao consultados depois de uma interrupcao mantem seu estado anterior.
 - A publicacao seleciona todas as pastas ML do registry, inclusive no Windows PowerShell 5.1. Snapshot, relatorio, manifesto e historico sao publicados juntos.

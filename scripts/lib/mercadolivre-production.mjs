@@ -115,6 +115,9 @@ export async function runMercadoLivreBatch({
           }), { waitUntil: "domcontentloaded", timeout: NAVIGATION_TIMEOUT_MS });
           await sleep(randomBetween(delayMinMs, delayMaxMs));
           const state = await detectPageState(page);
+          // A recognized empty search is a completed term. Missing/unrecognized
+          // cards still fail, so layout changes cannot erase previous results.
+          if (state === "empty") return [];
           if (state !== "results") {
             const error = new Error(pageStateMessage(state));
             error.pageState = state;
