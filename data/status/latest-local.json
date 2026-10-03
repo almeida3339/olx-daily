@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-03T10:00:06.951Z",
+  "generated_at": "2026-10-03T19:00:06.150Z",
   "source": "local",
   "delivery": {
     "email": "skipped",
@@ -85,6 +85,7 @@
     "scope": "local-watchlists",
     "partial": true,
     "errors": [
+      "OLX: Saiu com código 1: Falha: TypeError: fetch failed\nMonitor OLX falhou com exit code 1.\r\nNo C:\\Users\\docra\\downloads\\olx-daily\\scripts\\run-olx-monitor.ps1:84 caractere:5\r\n+     throw \"Monitor OLX falhou com exit code $LASTEXITCODE.\"\r\n+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : OperationStopped: (Monitor OLX falhou com exit code 1.:String) [], RuntimeException\r\n    + FullyQualifiedErrorId : Monitor OLX falhou com exit code 1.",
       "Google Pixel Watch 4: Saiu com código 1: Aviso: termo \"pixel watch 4\" em https://www.olx.com.br/brasil falhou — Cloudflare bloqueando após 15s"
     ]
   }
