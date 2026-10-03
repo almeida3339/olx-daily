@@ -1,11 +1,13 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-02T23:42:23.558Z",
+  "updated_at": "2026-10-03T00:14:41.562Z",
   "global": {
     "requires_login": false,
-    "blocked_until": "2026-10-03T22:36:00.503Z",
-    "block_reason": "challenge",
-    "blocked_at": "2026-10-02T22:36:00.503Z"
+    "blocked_until": null,
+    "block_reason": null,
+    "blocked_at": null,
+    "recovery_checked_at": "2026-10-02T23:53:38.562Z",
+    "recovery_search": "https://lista.mercadolivre.com.br/informatica/portateis-acessorios/notebooks/290hx_SHIPPING*ORIGIN_10215068"
   },
   "watchlists": {
     "notebooks": {
@@ -20,44 +22,53 @@
           "last_error": null
         },
         "290hx": {
-          "last_checked_at": "2026-10-02T22:36:00.503Z",
-          "last_success_at": "2026-07-13T11:48:56.217Z",
+          "last_checked_at": "2026-10-02T23:57:00.653Z",
+          "last_success_at": "2026-10-02T23:57:00.653Z",
           "last_result_count": 0,
           "last_change_at": null,
-          "empty_runs": 1,
-          "failures": 1,
-          "last_error": "O Mercado Livre exibiu uma verificacao. Nada foi gravado."
+          "empty_runs": 2,
+          "failures": 0,
+          "last_error": null
         },
         "9955hx": {
-          "last_checked_at": "2026-07-13T11:48:56.217Z",
-          "last_success_at": "2026-07-13T11:48:56.217Z",
+          "last_checked_at": "2026-10-02T23:57:00.653Z",
+          "last_success_at": "2026-10-02T23:57:00.653Z",
           "last_result_count": 0,
           "last_change_at": null,
-          "empty_runs": 1,
+          "empty_runs": 2,
           "failures": 0,
           "last_error": null
         },
         "285hx": {
-          "last_checked_at": "2026-07-13T11:48:56.217Z",
-          "last_success_at": "2026-07-13T11:48:56.217Z",
+          "last_checked_at": "2026-10-02T23:57:00.653Z",
+          "last_success_at": "2026-10-02T23:57:00.653Z",
           "last_result_count": 0,
           "last_change_at": null,
-          "empty_runs": 1,
+          "empty_runs": 2,
           "failures": 0,
           "last_error": null
         },
         "275hx": {
-          "last_checked_at": "2026-07-13T11:48:56.217Z",
-          "last_success_at": "2026-07-13T11:48:56.217Z",
+          "last_checked_at": "2026-10-02T23:57:00.653Z",
+          "last_success_at": "2026-10-02T23:57:00.653Z",
           "last_result_count": 0,
           "last_change_at": null,
-          "empty_runs": 1,
+          "empty_runs": 2,
           "failures": 0,
           "last_error": null
         },
         "aimax395": {
-          "last_checked_at": "2026-07-13T11:48:56.217Z",
-          "last_success_at": "2026-07-13T11:48:56.217Z",
+          "last_checked_at": "2026-10-02T23:57:00.653Z",
+          "last_success_at": "2026-10-02T23:57:00.653Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 2,
+          "failures": 0,
+          "last_error": null
+        },
+        "7945hx": {
+          "last_checked_at": "2026-10-02T23:57:00.653Z",
+          "last_success_at": "2026-10-02T23:57:00.653Z",
           "last_result_count": 0,
           "last_change_at": null,
           "empty_runs": 1,
@@ -65,7 +76,7 @@
           "last_error": null
         }
       },
-      "rotation_cursor": 0,
+      "rotation_cursor": 6,
       "last_full_sweep_at": null,
       "full_sweep_coverage": [
         "9955hx3d",
@@ -73,23 +84,24 @@
         "9955hx",
         "285hx",
         "275hx",
-        "aimax395"
+        "aimax395",
+        "7945hx"
       ]
     },
     "galaxy-buds4-pro": {
       "terms": {
         "galaxy buds4 pro": {
-          "last_checked_at": "2026-07-13T11:49:11.837Z",
-          "last_success_at": "2026-07-13T11:49:11.837Z",
+          "last_checked_at": "2026-10-02T23:57:19.699Z",
+          "last_success_at": "2026-10-02T23:57:19.699Z",
           "last_result_count": 0,
           "last_change_at": null,
-          "empty_runs": 1,
+          "empty_runs": 2,
           "failures": 0,
           "last_error": null
         }
       },
       "rotation_cursor": 0,
-      "last_full_sweep_at": "2026-07-13T11:49:11.837Z",
+      "last_full_sweep_at": "2026-10-02T23:57:19.699Z",
       "full_sweep_coverage": []
     },
     "dockstations": {
@@ -112,33 +124,33 @@
     "fitbit-air": {
       "terms": {
         "fitbit air": {
-          "last_checked_at": "2026-07-13T11:50:29.375Z",
-          "last_success_at": "2026-07-13T11:50:29.375Z",
+          "last_checked_at": "2026-10-02T23:59:30.436Z",
+          "last_success_at": "2026-10-02T23:59:30.436Z",
           "last_result_count": 0,
           "last_change_at": null,
-          "empty_runs": 1,
+          "empty_runs": 2,
           "failures": 0,
           "last_error": null
         }
       },
       "rotation_cursor": 0,
-      "last_full_sweep_at": "2026-07-13T11:50:29.375Z",
+      "last_full_sweep_at": "2026-10-02T23:59:30.436Z",
       "full_sweep_coverage": []
     },
     "lifefactory": {
       "terms": {
         "lifefactory": {
-          "last_checked_at": "2026-07-13T11:50:53.393Z",
-          "last_success_at": "2026-07-13T11:50:53.393Z",
+          "last_checked_at": "2026-10-02T23:59:51.700Z",
+          "last_success_at": "2026-10-02T23:59:51.700Z",
           "last_result_count": 0,
           "last_change_at": null,
-          "empty_runs": 1,
+          "empty_runs": 2,
           "failures": 0,
           "last_error": null
         }
       },
       "rotation_cursor": 0,
-      "last_full_sweep_at": "2026-07-13T11:50:53.393Z",
+      "last_full_sweep_at": "2026-10-02T23:59:51.700Z",
       "full_sweep_coverage": []
     },
     "tela-galaxybook3": {
@@ -156,42 +168,168 @@
     "melanger": {
       "terms": {
         "melanger": {
-          "last_checked_at": "2026-07-13T11:51:38.649Z",
-          "last_success_at": "2026-07-13T11:51:38.649Z",
+          "last_checked_at": "2026-10-03T00:00:29.893Z",
+          "last_success_at": "2026-10-03T00:00:29.893Z",
           "last_result_count": 0,
           "last_change_at": null,
-          "empty_runs": 1,
+          "empty_runs": 2,
           "failures": 0,
           "last_error": null
         }
       },
       "rotation_cursor": 0,
-      "last_full_sweep_at": "2026-07-13T11:51:38.649Z",
+      "last_full_sweep_at": "2026-10-03T00:00:29.893Z",
       "full_sweep_coverage": []
     },
     "oled-monitores": {
       "terms": {
         "aw2726dm": {
-          "last_checked_at": "2026-07-13T11:54:09.025Z",
-          "last_success_at": "2026-07-13T11:54:09.025Z",
+          "last_checked_at": "2026-10-03T00:11:17.990Z",
+          "last_success_at": "2026-10-03T00:11:17.990Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 2,
+          "failures": 0,
+          "last_error": null
+        },
+        "aw2725d": {
+          "last_checked_at": "2026-10-03T00:11:17.990Z",
+          "last_success_at": "2026-10-03T00:11:17.990Z",
+          "last_result_count": 0,
+          "last_change_at": "2026-07-13T11:54:09.025Z",
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        },
+        "aw2725df": {
+          "last_checked_at": "2026-10-03T00:11:17.990Z",
+          "last_success_at": "2026-10-03T00:11:17.990Z",
+          "last_result_count": 1,
+          "last_change_at": "2026-10-03T00:11:17.990Z",
+          "empty_runs": 0,
+          "failures": 0,
+          "last_error": null
+        },
+        "aw3225qf": {
+          "last_checked_at": "2026-10-03T00:11:17.990Z",
+          "last_success_at": "2026-10-03T00:11:17.990Z",
           "last_result_count": 0,
           "last_change_at": null,
           "empty_runs": 1,
           "failures": 0,
           "last_error": null
         },
-        "aw2725d": {
-          "last_checked_at": "2026-07-13T11:54:09.025Z",
-          "last_success_at": "2026-07-13T11:54:09.025Z",
-          "last_result_count": 3,
-          "last_change_at": "2026-07-13T11:54:09.025Z",
+        "aw3423dw": {
+          "last_checked_at": "2026-10-03T00:11:17.990Z",
+          "last_success_at": "2026-10-03T00:11:17.990Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        },
+        "aw3423dwf": {
+          "last_checked_at": "2026-10-03T00:11:17.990Z",
+          "last_success_at": "2026-10-03T00:11:17.990Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        },
+        "aw3425dw": {
+          "last_checked_at": "2026-10-03T00:11:17.990Z",
+          "last_success_at": "2026-10-03T00:11:17.990Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        },
+        "odyssey g6 oled": {
+          "last_checked_at": "2026-10-03T00:11:17.990Z",
+          "last_success_at": "2026-10-03T00:11:17.990Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        },
+        "ls32dg800": {
+          "last_checked_at": "2026-10-03T00:11:17.990Z",
+          "last_success_at": "2026-10-03T00:11:17.990Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        },
+        "odyssey g9 oled": {
+          "last_checked_at": "2026-10-03T00:11:17.990Z",
+          "last_success_at": "2026-10-03T00:11:17.990Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        },
+        "cepheus p1": {
+          "last_checked_at": "2026-10-03T00:11:17.990Z",
+          "last_success_at": "2026-10-03T00:11:17.990Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        },
+        "mag 271qp": {
+          "last_checked_at": "2026-10-03T00:11:17.990Z",
+          "last_success_at": "2026-10-03T00:11:17.990Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        },
+        "mag 274qp": {
+          "last_checked_at": "2026-10-03T00:11:17.990Z",
+          "last_success_at": "2026-10-03T00:11:17.990Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        },
+        "mpg 491cqp": {
+          "last_checked_at": "2026-10-03T00:11:17.990Z",
+          "last_success_at": "2026-10-03T00:11:17.990Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        },
+        "27gx790a": {
+          "last_checked_at": "2026-10-03T00:11:17.990Z",
+          "last_success_at": "2026-10-03T00:11:17.990Z",
+          "last_result_count": 1,
+          "last_change_at": "2026-10-03T00:11:17.990Z",
           "empty_runs": 0,
           "failures": 0,
           "last_error": null
         },
-        "aw2725df": {
-          "last_checked_at": "2026-07-13T11:54:09.025Z",
-          "last_success_at": "2026-07-13T11:54:09.025Z",
+        "27gx704a": {
+          "last_checked_at": "2026-10-03T00:11:17.990Z",
+          "last_success_at": "2026-10-03T00:11:17.990Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        },
+        "xg27acdng": {
+          "last_checked_at": "2026-10-03T00:11:17.990Z",
+          "last_success_at": "2026-10-03T00:11:17.990Z",
           "last_result_count": 0,
           "last_change_at": null,
           "empty_runs": 1,
@@ -200,12 +338,117 @@
         }
       },
       "rotation_cursor": 0,
-      "last_full_sweep_at": null,
-      "full_sweep_coverage": [
-        "aw2726dm",
-        "aw2725d",
-        "aw2725df"
-      ]
+      "last_full_sweep_at": "2026-10-03T00:11:17.990Z",
+      "full_sweep_coverage": []
+    },
+    "google-pixel-watch-4": {
+      "terms": {
+        "pixel watch 4": {
+          "last_checked_at": "2026-10-02T23:57:35.790Z",
+          "last_success_at": "2026-10-02T23:57:35.790Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        }
+      },
+      "rotation_cursor": 0,
+      "last_full_sweep_at": "2026-10-02T23:57:35.790Z",
+      "full_sweep_coverage": []
+    },
+    "google-pixel-watch-5": {
+      "terms": {
+        "pixel watch 5": {
+          "last_checked_at": "2026-10-02T23:58:00.859Z",
+          "last_success_at": "2026-10-02T23:58:00.859Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        }
+      },
+      "rotation_cursor": 0,
+      "last_full_sweep_at": "2026-10-02T23:58:00.859Z",
+      "full_sweep_coverage": []
+    },
+    "oneplus-buds-pro-3": {
+      "terms": {
+        "oneplus buds pro 3": {
+          "last_checked_at": "2026-10-02T23:58:17.668Z",
+          "last_success_at": "2026-10-02T23:58:17.668Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        }
+      },
+      "rotation_cursor": 0,
+      "last_full_sweep_at": "2026-10-02T23:58:17.668Z",
+      "full_sweep_coverage": []
+    },
+    "tenis-42": {
+      "terms": {
+        "vivobarefoot": {
+          "last_checked_at": "2026-10-03T00:14:41.561Z",
+          "last_success_at": "2026-10-03T00:14:41.561Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        },
+        "xero": {
+          "last_checked_at": "2026-10-03T00:14:41.561Z",
+          "last_success_at": "2026-10-03T00:14:41.561Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        },
+        "vibram fivefingers": {
+          "last_checked_at": "2026-10-03T00:14:41.561Z",
+          "last_success_at": "2026-10-03T00:14:41.561Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        },
+        "merrell": {
+          "last_checked_at": "2026-10-03T00:14:41.561Z",
+          "last_success_at": "2026-10-03T00:14:41.561Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        },
+        "lems": {
+          "last_checked_at": "2026-10-03T00:14:41.561Z",
+          "last_success_at": "2026-10-03T00:14:41.561Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        },
+        "feet of tomorrow": {
+          "last_checked_at": "2026-10-03T00:14:41.561Z",
+          "last_success_at": "2026-10-03T00:14:41.561Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        }
+      },
+      "rotation_cursor": 0,
+      "last_full_sweep_at": "2026-10-03T00:14:41.561Z",
+      "full_sweep_coverage": []
     }
   }
 }
