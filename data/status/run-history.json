@@ -1,19 +1,22 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-05T19:01:48.500Z",
+  "updated_at": "2026-10-05T19:47:22.097Z",
   "runs": [
     {
-      "run_id": "a7d1bfc4-faa1-41bf-b65c-365c5efc1a51",
-      "completed_at": "2026-10-05T19:01:48.499Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 18853,
+      "run_id": "ba4d28cc-7534-4573-9386-0c1ec86f5261",
+      "completed_at": "2026-10-05T19:47:22.093Z",
+      "outcome": "failed",
+      "partial": true,
+      "duration_ms": 2835088,
       "item_count": 1,
       "quarantined_item_count": 0,
       "metadata": {
-        "source": "ci",
-        "monitor_errors": 0,
-        "monitor_failures": [],
+        "source": "local",
+        "monitor_errors": 2,
+        "monitor_failures": [
+          "OLX: Saiu com código 1: Aviso: pulei anúncio por falha (não consegui ler o corpo do anúncio): https://es.olx.com.br/norte-do-espirito-santo/informatica/notebooks/notebook-gamer-avell-storm-460-i9-14900hx-rtx-4060-16gb-ram-240hz-1510666124\n  Aviso: termo \"7845hx\" falhou (timeout CDP em Page.navigate) — pulando para o próximo.\n  Aviso: termo \"8840hx\" falhou (timeout CDP em Page.navigate) — pulando para o próximo.\n  Aviso: termo \"aimax390\" falhou (timeout CDP em Page.navigate) — pulando para o próximo.\n  Aviso: termo \"14700hx\" falhou (timeout CDP em Page.navigate) — pulando para o próximo.\n  Aviso: termo \"hx470\" falhou (timeout CDP em Page.navigate) — pulando para o próximo.\n  Aviso: termo \"12900hx\" falhou (timeout CDP em Page.navigate) — pulando para o próximo.\n  Aviso: termo \"12800hx\" falhou (timeout CDP em Page.navigate) — pulando para o próximo.\nColeta OLX parcial: 7 falha(s). Dados coletados e anúncios dos termos sem cobertura foram preservados.\nMonitor OLX falhou com exit code 1.\r\nNo C:…",
+          "Google Pixel Watch 4: Saiu com código 1: Aviso: termo \"pixel watch 4\" em https://www.olx.com.br/brasil falhou — Cloudflare bloqueando após 15s"
+        ],
         "pending_notifications": 3
       }
     },
