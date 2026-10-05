@@ -9,6 +9,11 @@ const dataDir =
   process.env.GALAXY_BUDS4_PRO_DATA_DIR ??
   path.join(process.env.USERPROFILE ?? process.env.HOME ?? "", ".codex", "automations", "monitor-galaxy-buds4-pro");
 
+if (process.env.INCLUDE_PAUSED_WATCHLIST !== "1" && !process.argv.includes("--include-paused")) {
+  console.log("Galaxy Buds4 Pro: busca pausada; nenhum termo consultado. Use --include-paused para uma execucao manual.");
+  process.exit(0);
+}
+
 runWatchlistMonitor({
   label: "Galaxy Buds4 Pro",
   dataDir,

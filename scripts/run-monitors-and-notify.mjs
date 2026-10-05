@@ -57,7 +57,7 @@ const PIXEL_WATCH4_DIR     = localDir("google-pixel-watch-4");
 const PIXEL_WATCH5_DIR     = localDir("google-pixel-watch-5");
 const OURA_DIR             = localDir("oura-ring5");
 const OLED_MONITORES_DIR   = localDir("oled-monitores");
-const MERCADOLIVRE_DIRS = MERCADOLIVRE_WATCHLISTS.map((watchlist) => [
+const MERCADOLIVRE_DIRS = MERCADOLIVRE_WATCHLISTS.filter((watchlist) => !watchlist.paused).map((watchlist) => [
   watchlist.healthLabel ?? watchlist.label,
   resolveWatchlistDataDir(workspaceRoot, watchlist),
 ]);
@@ -116,7 +116,8 @@ export async function main({
     const skipLifefactory    = args.includes("--skip-lifefactory") || process.env.SKIP_LIFEFACTORY === "1";
     const skipTelaBook3      = args.includes("--skip-tela-book3") || process.env.SKIP_TELA_BOOK3 === "1";
     const skipMelanger       = args.includes("--skip-melanger") || process.env.SKIP_MELANGER === "1";
-    const skipBuds4Pro       = args.includes("--skip-buds4-pro") || process.env.SKIP_BUDS4_PRO === "1";
+    const skipBuds4Pro       = !args.includes("--include-paused")
+      || args.includes("--skip-buds4-pro") || process.env.SKIP_BUDS4_PRO === "1";
     const skipOnePlusBuds    = args.includes("--skip-oneplus-buds") || process.env.SKIP_ONEPLUS_BUDS === "1";
     const skipPixelWatch4    = args.includes("--skip-pixel-watch-4") || process.env.SKIP_PIXEL_WATCH4 === "1";
     const skipPixelWatch5    = args.includes("--skip-pixel-watch-5") || process.env.SKIP_PIXEL_WATCH5 === "1";
@@ -170,7 +171,8 @@ export async function main({
     if (!skipLifefactory) jobs.push(["lifefactory", () => runScript("monitor-lifefactory.mjs", []), true]);
     if (!skipTelaBook3) jobs.push(["tela-book3", () => runScript("monitor-tela-galaxybook3.mjs", []), true]);
     if (!skipMelanger) jobs.push(["melanger", () => runScript("monitor-melanger.mjs", []), true]);
-    if (!skipBuds4Pro) jobs.push(["buds4-pro", () => runScript("monitor-galaxy-buds4-pro.mjs", []), true]);
+    if (!skipBuds4Pro) jobs.push(["buds4-pro", () => runScript("monitor-galaxy-buds4-pro.mjs", ["--include-paused"]), true]);
+    else console.log("Galaxy Buds4 Pro pausado; busca local nao executada.");
     if (!skipOnePlusBuds) jobs.push(["oneplus-buds", () => runScript("monitor-oneplus-buds-pro-3.mjs", []), true]);
     if (!skipPixelWatch4) jobs.push(["pixel-watch-4", () => runScript("monitor-google-pixel-watch-4.mjs", []), true]);
     if (!skipPixelWatch5) jobs.push(["pixel-watch-5", () => runScript("monitor-google-pixel-watch-5.mjs", []), true]);

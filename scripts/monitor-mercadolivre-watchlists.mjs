@@ -18,6 +18,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const profileDir = process.env.MERCADOLIVRE_PROFILE_DIR ?? path.join(root, ".chrome-mercadolivre-profile");
 const selected = option("--watchlist");
 const selectedTerm = option("--term");
+const includePaused = process.argv.includes("--include-paused");
 const fullSweep = process.argv.includes("--full-sweep");
 const force = process.argv.includes("--force") || fullSweep;
 // Orçamento padrão cobre todos os termos configurados hoje (30, ver soma de
@@ -27,11 +28,14 @@ const force = process.argv.includes("--force") || fullSweep;
 const DEFAULT_BUDGET = mercadoLivreWatchlists.reduce((sum, w) => sum + w.terms.length, 0) + 10;
 const requestedBudget = Number(option("--max-terms") ?? process.env.ML_WATCHLIST_TERM_BUDGET ?? DEFAULT_BUDGET);
 const budget = Number.isFinite(requestedBudget) && requestedBudget > 0 ? Math.floor(requestedBudget) : DEFAULT_BUDGET;
-const watchlists = selected
-  ? mercadoLivreWatchlists.filter((watchlist) => watchlist.id === selected)
-  : mercadoLivreWatchlists;
-
-if (selected && watchlists.length === 0) throw new Error(`Busca desconhecida: ${selected}`);
+const selectedWatchlist = selected ? mercadoLivreWatchlists.find((watchlist) => watchlist.id === selected) : null;
+const allSelected = selected ? (selectedWatchlist ? [selectedWatchlist] : []) : mercadoLivreWatchlists;
+if (selected && allSelected.length === 0) throw new Error(`Busca desconhecida: ${selected}`);
+if (!includePaused && selectedWatchlist?.paused) {
+  console.log(`${selectedWatchlist.label}: busca pausada; nenhum termo consultado. Use --include-paused para uma execucao manual.`);
+  process.exit(0);
+}
+const watchlists = allSelected.filter((watchlist) => includePaused || !watchlist.paused);
 
 console.log(`Fila Mercado Livre: ${watchlists.map((item) => item.label).join(", ")}`);
 let schedule = await readMercadoLivreSchedule(root);

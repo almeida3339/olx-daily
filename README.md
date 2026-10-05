@@ -23,7 +23,7 @@ Sistema modular de monitoramento diário (2× por dia, 07:00 e 16:00 BRT). Busca
 | **Lifefactory** | OLX + Enjoei | R$ 25–75 | Garrafa térmica 500ml–1L (exclui mamadeira, bivolt OK) |
 | **Tela Galaxy Book3** | OLX + Enjoei | até R$ 1.000 | Part number BA96-08462A (Galaxy Book3 Ultra) |
 | **Melanger** | OLX (2 categorias) + Enjoei | R$ 1.000–5.000 | Moinho de chocolate 110V (exclui 220V puro, bivolt OK) |
-| **Galaxy Buds4 Pro** | OLX + Enjoei | R$ 500–1.000 | Variantes do modelo e envio local |
+| **Galaxy Buds4 Pro** | OLX + Enjoei + Mercado Livre | R$ 500–1.000 | Busca pausada; dados históricos preservados |
 | **OnePlus Buds Pro 3** | OLX + Enjoei | R$ 300–800 | Exclui linha Nord e modelos próximos |
 | **Google Pixel Watch 4** | OLX + Enjoei | Wi‑Fi até R$ 2.000 · LTE até R$ 2.500 | Somente 45 mm |
 | **Google Pixel Watch 5** | OLX + Enjoei | Wi‑Fi até R$ 2.400 · LTE até R$ 3.000 | Somente 45 mm |
@@ -507,6 +507,8 @@ Cada coleta nova e promovida por `latest-run.json` apenas depois de snapshot, re
 - `npm run monitor:mercadolivre:notebooks`: busca consolidada dos processadores.
 - `npm run monitor:mercadolivre:watchlists`: executa as demais listas em sequência.
 - `npm run monitor:mercadolivre`: executa toda a fila do Mercado Livre.
+- A busca Galaxy Buds4 Pro está pausada nas filas automáticas locais e do Mercado Livre. Histórico e anúncios publicados continuam disponíveis; os painéis deixam de sinalizar essa watchlist como desatualizada.
+- Para executar essa watchlist pontualmente, use `node scripts/monitor-mercadolivre-watchlists.mjs --watchlist galaxy-buds4-pro --include-paused` (Mercado Livre) ou `node scripts/monitor-galaxy-buds4-pro.mjs --include-paused` (OLX + Enjoei). A pausa automática permanece ativa.
 - O perfil autenticado fica em `.chrome-mercadolivre-profile` e aceita somente uma coleta por vez.
 - Desafio, limitação ou sessão expirada interrompem a fila sem apagar o histórico anterior.
 - Notebooks são coletados entre R$ 2.000 e R$ 10.000; o painel mostra somente até R$ 8.000.

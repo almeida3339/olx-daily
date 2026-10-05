@@ -525,7 +525,7 @@ function buildHtml({ health, priceInsights, olx, enjoeiNb, mercadoLivre, mercado
     { chip: "Lifefactory",      title: "Lifefactory",       sub: "OLX + Enjoei · 500ml–1L · R$ 25 – R$ 75",      data: lifefactory, dpath: "data/lifefactory",      upd: lifefactoryUpdated },
     { chip: "Tela Book3",       title: "Tela Galaxy Book3", sub: "BA96-08462A · OLX + Enjoei · até R$ 1.000",    data: telaBook3,   dpath: "data/tela-galaxybook3", upd: telaBook3Updated },
     { chip: "Melanger",         title: "Melanger",          sub: "110V · OLX + Enjoei · R$ 1.000 – R$ 5.000",    data: melanger,    dpath: "data/melanger",         upd: melangerUpdated },
-    { chip: "Galaxy Buds4 Pro", title: "Galaxy Buds4 Pro",  sub: "OLX + Enjoei · R$ 500 – R$ 1.000",             data: buds4Pro,    dpath: "data/galaxy-buds4-pro", upd: buds4ProUpdated },
+    { chip: "Buds4 Pro · pausado", title: "Galaxy Buds4 Pro — busca pausada", sub: "Histórico preservado · OLX, Enjoei e Mercado Livre", data: buds4Pro, dpath: "data/galaxy-buds4-pro", upd: buds4ProUpdated },
     { chip: "OnePlus Buds Pro 3", title: "OnePlus Buds Pro 3", sub: "OLX + Enjoei · R$ 300 – R$ 800",           data: onePlusBuds, dpath: "data/oneplus-buds-pro-3", upd: onePlusBudsUpdated },
     { chip: "Google Pixel Watch 4", title: "Google Pixel Watch 4", sub: "OLX + Enjoei · 45 mm · Wi‑Fi até R$ 2.000 · LTE até R$ 2.500", data: pixelWatch4, dpath: "data/google-pixel-watch-4", upd: pixelWatch4Updated },
     { chip: "Google Pixel Watch 5", title: "Google Pixel Watch 5", sub: "OLX + Enjoei · 45 mm · Wi‑Fi até R$ 2.400 · LTE até R$ 3.000", data: pixelWatch5, dpath: "data/google-pixel-watch-5", upd: pixelWatch5Updated },

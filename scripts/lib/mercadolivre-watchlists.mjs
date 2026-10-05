@@ -26,6 +26,7 @@ export const mercadoLivreWatchlists = [
   {
     id: "galaxy-buds4-pro",
     label: "Galaxy Buds4 Pro",
+    paused: true,
     terms: ["galaxy buds4 pro"],
     matchVariants: ["galaxy buds4 pro", "buds4 pro", "buds 4 pro", "buds4pro"],
     minPrice: 500,

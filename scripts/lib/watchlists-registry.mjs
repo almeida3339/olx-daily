@@ -13,7 +13,7 @@ export const LOCAL_WATCHLISTS = Object.freeze([
   { id: "lifefactory", label: "Lifefactory", env: "LIFEFACTORY_DATA_DIR", repoFolder: "lifefactory", fallback: "monitor-lifefactory", maxAgeHours: 24 },
   { id: "tela-galaxybook3", label: "Tela Book3", env: "TELA_GALAXYBOOK3_DATA_DIR", repoFolder: "tela-galaxybook3", fallback: "monitor-tela-galaxybook3", maxAgeHours: 24 },
   { id: "melanger", label: "Melanger", env: "MELANGER_DATA_DIR", repoFolder: "melanger", fallback: "monitor-melanger", maxAgeHours: 24 },
-  { id: "galaxy-buds4-pro", label: "Galaxy Buds4 Pro", env: "GALAXY_BUDS4_PRO_DATA_DIR", repoFolder: "galaxy-buds4-pro", fallback: "monitor-galaxy-buds4-pro", maxAgeHours: 24 },
+  { id: "galaxy-buds4-pro", label: "Galaxy Buds4 Pro", env: "GALAXY_BUDS4_PRO_DATA_DIR", repoFolder: "galaxy-buds4-pro", fallback: "monitor-galaxy-buds4-pro", maxAgeHours: 24, paused: true },
   { id: "oneplus-buds-pro-3", label: "OnePlus Buds Pro 3", env: "ONEPLUS_BUDS_PRO3_DATA_DIR", repoFolder: "oneplus-buds-pro-3", fallback: "monitor-oneplus-buds-pro-3", maxAgeHours: 24 },
   { id: "google-pixel-watch-4", label: "Google Pixel Watch 4", env: "GOOGLE_PIXEL_WATCH4_DATA_DIR", repoFolder: "google-pixel-watch-4", fallback: "monitor-google-pixel-watch-4", maxAgeHours: 24 },
   { id: "google-pixel-watch-5", label: "Google Pixel Watch 5", env: "GOOGLE_PIXEL_WATCH5_DATA_DIR", repoFolder: "google-pixel-watch-5", fallback: "monitor-google-pixel-watch-5", maxAgeHours: 24 },
@@ -23,7 +23,7 @@ export const LOCAL_WATCHLISTS = Object.freeze([
 
 export const MERCADOLIVRE_WATCHLISTS = Object.freeze([
   { id: "mercadolivre-notebooks", label: "Mercado Livre Notebooks", healthLabel: "ML Notebooks", env: "MERCADOLIVRE_NOTEBOOKS_DATA_DIR", repoFolder: "mercadolivre-notebooks", maxAgeHours: 7 * 24 },
-  { id: "mercadolivre-galaxy-buds4-pro", label: "Mercado Livre Galaxy Buds4 Pro", healthLabel: "ML Galaxy Buds4 Pro", repoFolder: "mercadolivre-galaxy-buds4-pro", maxAgeHours: 7 * 24 },
+  { id: "mercadolivre-galaxy-buds4-pro", label: "Mercado Livre Galaxy Buds4 Pro", healthLabel: "ML Galaxy Buds4 Pro", repoFolder: "mercadolivre-galaxy-buds4-pro", maxAgeHours: 7 * 24, paused: true },
   { id: "mercadolivre-oneplus-buds-pro-3", label: "Mercado Livre OnePlus Buds Pro 3", healthLabel: "ML OnePlus Buds Pro 3", repoFolder: "mercadolivre-oneplus-buds-pro-3", maxAgeHours: 7 * 24 },
   { id: "mercadolivre-google-pixel-watch-4", label: "Mercado Livre Google Pixel Watch 4", healthLabel: "ML Google Pixel Watch 4", repoFolder: "mercadolivre-google-pixel-watch-4", maxAgeHours: 7 * 24 },
   { id: "mercadolivre-google-pixel-watch-5", label: "Mercado Livre Google Pixel Watch 5", healthLabel: "ML Google Pixel Watch 5", repoFolder: "mercadolivre-google-pixel-watch-5", maxAgeHours: 7 * 24 },
@@ -68,7 +68,7 @@ export function automationChildEnvironment(root, env = process.env) {
 }
 
 export function watchlistHealthDefinitions() {
-  return ALL_WATCHLISTS.map((spec) => [
+  return ALL_WATCHLISTS.filter((spec) => !spec.paused).map((spec) => [
     spec.id,
     spec.healthLabel ?? spec.label,
     spec.maxAgeHours * 60 * 60 * 1000,
@@ -90,9 +90,9 @@ export function mercadoLivreDashboardCards() {
     "mercadolivre-oled-monitores": "R$ 1.500 – R$ 3.000",
   };
   return MERCADOLIVRE_WATCHLISTS.filter((spec) => spec.id !== "mercadolivre-notebooks").map((spec) => [
-    spec.label.replace(/^Mercado Livre /, ""),
-    spec.label,
-    subtitles[spec.id] ?? "",
+    `${spec.label.replace(/^Mercado Livre /, "")}${spec.paused ? " · pausado" : ""}`,
+    `${spec.label}${spec.paused ? " — busca pausada" : ""}`,
+    `${subtitles[spec.id] ?? ""}${spec.paused ? " · histórico preservado" : ""}`,
     spec.repoFolder,
   ]);
 }
