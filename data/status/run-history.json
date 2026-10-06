@@ -1,7 +1,22 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-06T11:01:43.864Z",
+  "updated_at": "2026-10-06T19:01:31.084Z",
   "runs": [
+    {
+      "run_id": "5b02d352-c7c0-4897-9ee2-c5dc4abfe795",
+      "completed_at": "2026-10-06T19:01:31.084Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 19131,
+      "item_count": 0,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "ci",
+        "monitor_errors": 0,
+        "monitor_failures": [],
+        "pending_notifications": 3
+      }
+    },
     {
       "run_id": "453c1b20-b375-4168-9fbf-ca08ac53abfd",
       "completed_at": "2026-10-06T11:01:43.862Z",
@@ -1706,20 +1721,6 @@
       "partial": false,
       "duration_ms": 51151,
       "item_count": 2,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "local",
-        "monitor_errors": 0,
-        "pending_notifications": 1
-      }
-    },
-    {
-      "run_id": "c73a52cc-fc4b-435b-b0ee-4e0c1fcf3989",
-      "completed_at": "2026-08-14T19:00:57.408Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 53628,
-      "item_count": 1,
       "quarantined_item_count": 0,
       "metadata": {
         "source": "local",
