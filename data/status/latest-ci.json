@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-07T11:01:13.297Z",
+  "generated_at": "2026-10-07T19:01:12.405Z",
   "source": "ci",
   "delivery": {
     "email": "skipped",
@@ -30,7 +30,8 @@
     "4857c7d4-3f9f-4c43-a31f-dfd6fb672704",
     "28f71145-777c-4218-8ac4-3ee91c932ada",
     "6742f605-3e3b-4f17-94d0-3deccdd16583",
-    "eebed05e-27b5-4d78-b71d-e7227ec7683a"
+    "eebed05e-27b5-4d78-b71d-e7227ec7683a",
+    "fc1194cf-7801-4439-bef6-4a5daeeb114e"
   ],
   "notification_outbox": [
     {
@@ -76,6 +77,21 @@
       "last_error": "fetch failed",
       "created_at": "2026-09-28T19:00:05.563Z",
       "updated_at": "2026-09-28T19:00:05.563Z",
+      "sending_at": null
+    },
+    {
+      "id": "84904e9a-fb2d-455f-a4a6-d19355b1be90",
+      "dedupe_key": "86160888f59a7911204a2ed0",
+      "channel": "whatsapp",
+      "payload": {
+        "message": "Monitor 07/10 08:37\nErros: Dockstations: Saiu com código 1: Aviso: termo \"WD22TB4\" em https://www.olx.com.br/brasil falhou — page.goto: net::ERR_ABORTED at https://www.olx.com.br/brasil?[redacted]\nCall log:\n\u001b[2m  - navigating to \"https://www.olx.com.br/brasil?[redacted]\", waiting until \"domcontentloaded\"\u001b[22m, Google Pixel Watch 4: Saiu com código 1: Aviso: termo \"pixel watch 4\" em https://www.olx.com.br/brasil falhou — Cloudflare bloqueando após 15s, Monitores OLED: Saiu com código 1: Aviso: termo \"aw2725df\" em https://www.olx.com.br/brasil falhou — page.goto: net::ERR_ABORTED at https://www.olx.com.br/brasil?[redacted]\nCall log:\n\u001b[2m  - navigating to \"https://www.olx.com.br/brasil?[redacted]\", waiting until \"domcontentloaded\"\u001b[22m\n\n  Aviso: termo \"mpg 491cqp\" em https://www.olx.com.br/brasil falhou — page.goto: net::ERR_ABORTED at https://www.olx.com.br/brasil?[redacted]\nCall log:\n\u001b[2m  - navigating to \"https://www.olx.com.br/brasil?[redacted]\", waiting until \"domcontentloaded\"\u001b[22m\n\nOLX Notebooks: 1 preço(s)\n- R$ 11.490 → R$ 9.500 — Notebook Legion i9 14900HX RTX 4080 16GB RAM 1TB SSD (14900hx) — 16 GB RAM / 1024 GB / GPU RTX 4080 — Rio de Janeiro -  RJ —… https://rj.olx.com.br/rio-de-janeiro-e-regiao/informatica/notebooks/notebook-legion-i9-14900hx-rtx-4080-16gb-ram-1tb-ssd-1535064283\n\nOnePlus Buds Pro 3: 1 novo(s)"
+      },
+      "status": "blocked",
+      "attempts": 1,
+      "next_attempt_at": null,
+      "last_error": "CallMeBot HTTP 403",
+      "created_at": "2026-10-07T10:47:25.440Z",
+      "updated_at": "2026-10-07T10:47:25.440Z",
       "sending_at": null
     }
   ],
