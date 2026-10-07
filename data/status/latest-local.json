@@ -1,11 +1,22 @@
 {
-  "generated_at": "2026-10-05T19:00:07.005Z",
+  "generated_at": "2026-10-07T10:47:25.440Z",
   "source": "local",
   "delivery": {
     "email": "skipped",
-    "whatsapp": "sent"
+    "whatsapp": "failed",
+    "whatsapp_error": "CallMeBot HTTP 403"
   },
-  "pending_failures": [],
+  "pending_failures": [
+    {
+      "id": "fc1194cf-7801-4439-bef6-4a5daeeb114e",
+      "fingerprint": "fp-c4b0d8dc0465cb042dc3bffd",
+      "channel": "whatsapp",
+      "first_seen_at": "2026-10-07T10:47:25.440Z",
+      "last_seen_at": "2026-10-07T10:47:25.440Z",
+      "error": "CallMeBot HTTP 403",
+      "count": 1
+    }
+  ],
   "acknowledged_failure_ids": [
     "989d7e3b-36d6-48c2-b9c5-8aee4d454fcd",
     "12324b29-8f6b-4842-8855-b57d4d66f06d",
@@ -77,16 +88,33 @@
       "created_at": "2026-09-28T19:00:05.563Z",
       "updated_at": "2026-09-28T19:00:05.563Z",
       "sending_at": null
+    },
+    {
+      "id": "84904e9a-fb2d-455f-a4a6-d19355b1be90",
+      "dedupe_key": "86160888f59a7911204a2ed0",
+      "channel": "whatsapp",
+      "payload": {
+        "message": "Monitor 07/10 08:37\nErros: Dockstations: Saiu com código 1: Aviso: termo \"WD22TB4\" em https://www.olx.com.br/brasil falhou — page.goto: net::ERR_ABORTED at https://www.olx.com.br/brasil?[redacted]\nCall log:\n\u001b[2m  - navigating to \"https://www.olx.com.br/brasil?[redacted]\", waiting until \"domcontentloaded\"\u001b[22m, Google Pixel Watch 4: Saiu com código 1: Aviso: termo \"pixel watch 4\" em https://www.olx.com.br/brasil falhou — Cloudflare bloqueando após 15s, Monitores OLED: Saiu com código 1: Aviso: termo \"aw2725df\" em https://www.olx.com.br/brasil falhou — page.goto: net::ERR_ABORTED at https://www.olx.com.br/brasil?[redacted]\nCall log:\n\u001b[2m  - navigating to \"https://www.olx.com.br/brasil?[redacted]\", waiting until \"domcontentloaded\"\u001b[22m\n\n  Aviso: termo \"mpg 491cqp\" em https://www.olx.com.br/brasil falhou — page.goto: net::ERR_ABORTED at https://www.olx.com.br/brasil?[redacted]\nCall log:\n\u001b[2m  - navigating to \"https://www.olx.com.br/brasil?[redacted]\", waiting until \"domcontentloaded\"\u001b[22m\n\nOLX Notebooks: 1 preço(s)\n- R$ 11.490 → R$ 9.500 — Notebook Legion i9 14900HX RTX 4080 16GB RAM 1TB SSD (14900hx) — 16 GB RAM / 1024 GB / GPU RTX 4080 — Rio de Janeiro -  RJ —… https://rj.olx.com.br/rio-de-janeiro-e-regiao/informatica/notebooks/notebook-legion-i9-14900hx-rtx-4080-16gb-ram-1tb-ssd-1535064283\n\nOnePlus Buds Pro 3: 1 novo(s)"
+      },
+      "status": "blocked",
+      "attempts": 1,
+      "next_attempt_at": null,
+      "last_error": "CallMeBot HTTP 403",
+      "created_at": "2026-10-07T10:47:25.440Z",
+      "updated_at": "2026-10-07T10:47:25.440Z",
+      "sending_at": null
     }
   ],
   "email": "skipped",
-  "whatsapp": "sent",
+  "whatsapp": "failed",
+  "whatsapp_error": "CallMeBot HTTP 403",
   "monitoring": {
     "scope": "local-watchlists",
     "partial": true,
     "errors": [
-      "OLX: Saiu com código 1: Aviso: pulei anúncio por falha (não consegui ler o corpo do anúncio): https://es.olx.com.br/norte-do-espirito-santo/informatica/notebooks/notebook-gamer-avell-storm-460-i9-14900hx-rtx-4060-16gb-ram-240hz-1510666124\n  Aviso: termo \"7845hx\" falhou (timeout CDP em Page.navigate) — pulando para o próximo.\n  Aviso: termo \"8840hx\" falhou (timeout CDP em Page.navigate) — pulando para o próximo.\n  Aviso: termo \"aimax390\" falhou (timeout CDP em Page.navigate) — pulando para o próximo.\n  Aviso: termo \"14700hx\" falhou (timeout CDP em Page.navigate) — pulando para o próximo.\n  Aviso: termo \"hx470\" falhou (timeout CDP em Page.navigate) — pulando para o próximo.\n  Aviso: termo \"12900hx\" falhou (timeout CDP em Page.navigate) — pulando para o próximo.\n  Aviso: termo \"12800hx\" falhou (timeout CDP em Page.navigate) — pulando para o próximo.\nColeta OLX parcial: 7 falha(s). Dados coletados e anúncios dos termos sem cobertura foram preservados.\nMonitor OLX falhou com exit code 1.\r\n…",
-      "Google Pixel Watch 4: Saiu com código 1: Aviso: termo \"pixel watch 4\" em https://www.olx.com.br/brasil falhou — Cloudflare bloqueando após 15s"
+      "Dockstations: Saiu com código 1: Aviso: termo \"WD22TB4\" em https://www.olx.com.br/brasil falhou — page.goto: net::ERR_ABORTED at https://www.olx.com.br/brasil?[redacted]\nCall log:\n\u001b[2m  - navigating to \"https://www.olx.com.br/brasil?[redacted]\", waiting until \"domcontentloaded\"\u001b[22m",
+      "Google Pixel Watch 4: Saiu com código 1: Aviso: termo \"pixel watch 4\" em https://www.olx.com.br/brasil falhou — Cloudflare bloqueando após 15s",
+      "Monitores OLED: Saiu com código 1: Aviso: termo \"aw2725df\" em https://www.olx.com.br/brasil falhou — page.goto: net::ERR_ABORTED at https://www.olx.com.br/brasil?[redacted]\nCall log:\n\u001b[2m  - navigating to \"https://www.olx.com.br/brasil?[redacted]\", waiting until \"domcontentloaded\"\u001b[22m\n\n  Aviso: termo \"mpg 491cqp\" em https://www.olx.com.br/brasil falhou — page.goto: net::ERR_ABORTED at https://www.olx.com.br/brasil?[redacted]\nCall log:\n\u001b[2m  - navigating to \"https://www.olx.com.br/brasil?[redacted]\", waiting until \"domcontentloaded\"\u001b[22m"
     ]
   }
 }

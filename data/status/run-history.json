@@ -1,50 +1,24 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-07T11:01:32.221Z",
+  "updated_at": "2026-10-07T11:37:06.555Z",
   "runs": [
     {
-      "run_id": "5ff3b1ad-68f5-4d02-a836-06090ac7c500",
-      "completed_at": "2026-10-07T11:01:32.219Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 18923,
-      "item_count": 1,
+      "run_id": "e75e7a73-41c5-4530-b700-dfc511a03596",
+      "completed_at": "2026-10-07T11:37:06.552Z",
+      "outcome": "failed",
+      "partial": true,
+      "duration_ms": 2981112,
+      "item_count": 2,
       "quarantined_item_count": 0,
       "metadata": {
-        "source": "ci",
-        "monitor_errors": 0,
-        "monitor_failures": [],
-        "pending_notifications": 3
-      }
-    },
-    {
-      "run_id": "5b02d352-c7c0-4897-9ee2-c5dc4abfe795",
-      "completed_at": "2026-10-06T19:01:31.084Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 19131,
-      "item_count": 0,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "ci",
-        "monitor_errors": 0,
-        "monitor_failures": [],
-        "pending_notifications": 3
-      }
-    },
-    {
-      "run_id": "453c1b20-b375-4168-9fbf-ca08ac53abfd",
-      "completed_at": "2026-10-06T11:01:43.862Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 26300,
-      "item_count": 1,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "ci",
-        "monitor_errors": 0,
-        "monitor_failures": [],
-        "pending_notifications": 3
+        "source": "local",
+        "monitor_errors": 3,
+        "monitor_failures": [
+          "Dockstations: Saiu com código 1: Aviso: termo \"WD22TB4\" em https://www.olx.com.br/brasil falhou — page.goto: net::ERR_ABORTED at https://www.olx.com.br/brasil?[redacted]\nCall log:\n\u001b[2m  - navigating to \"https://www.olx.com.br/brasil?[redacted]\", waiting until \"domcontentloaded\"\u001b[22m",
+          "Google Pixel Watch 4: Saiu com código 1: Aviso: termo \"pixel watch 4\" em https://www.olx.com.br/brasil falhou — Cloudflare bloqueando após 15s",
+          "Monitores OLED: Saiu com código 1: Aviso: termo \"aw2725df\" em https://www.olx.com.br/brasil falhou — page.goto: net::ERR_ABORTED at https://www.olx.com.br/brasil?[redacted]\nCall log:\n\u001b[2m  - navigating to \"https://www.olx.com.br/brasil?[redacted]\", waiting until \"domcontentloaded\"\u001b[22m\n\n  Aviso: termo \"mpg 491cqp\" em https://www.olx.com.br/brasil falhou — page.goto: net::ERR_ABORTED at https://www.olx.com.br/brasil?[redacted]\nCall log:\n\u001b[2m  - navigating to \"https://www.olx.com.br/brasil?[redacted]\", waiting until \"domcontentloaded\"\u001b[22m"
+        ],
+        "pending_notifications": 4
       }
     },
     {
@@ -1722,6 +1696,34 @@
       "partial": false,
       "duration_ms": 51280,
       "item_count": 0,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "local",
+        "monitor_errors": 0,
+        "pending_notifications": 1
+      }
+    },
+    {
+      "run_id": "10af6b50-371a-4528-a266-923699d743a1",
+      "completed_at": "2026-08-15T10:00:56.156Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 51151,
+      "item_count": 2,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "local",
+        "monitor_errors": 0,
+        "pending_notifications": 1
+      }
+    },
+    {
+      "run_id": "c73a52cc-fc4b-435b-b0ee-4e0c1fcf3989",
+      "completed_at": "2026-08-14T19:00:57.408Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 53628,
+      "item_count": 1,
       "quarantined_item_count": 0,
       "metadata": {
         "source": "local",
