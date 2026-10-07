@@ -1,20 +1,24 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-07T19:01:31.912Z",
+  "updated_at": "2026-10-07T19:56:09.966Z",
   "runs": [
     {
-      "run_id": "4c267e8b-b299-46e8-b323-5312da1f13a2",
-      "completed_at": "2026-10-07T19:01:31.911Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 19506,
-      "item_count": 0,
+      "run_id": "5f887273-a625-452a-9a79-421df0844e83",
+      "completed_at": "2026-10-07T19:56:09.954Z",
+      "outcome": "failed",
+      "partial": true,
+      "duration_ms": 3363765,
+      "item_count": 1,
       "quarantined_item_count": 0,
       "metadata": {
-        "source": "ci",
-        "monitor_errors": 0,
-        "monitor_failures": [],
-        "pending_notifications": 4
+        "source": "local",
+        "monitor_errors": 3,
+        "monitor_failures": [
+          "Dockstations: Saiu com código 1: Aviso: termo \"WD22TB4\" em https://www.olx.com.br/brasil falhou — page.goto: net::ERR_ABORTED at https://www.olx.com.br/brasil?[redacted]\nCall log:\n\u001b[2m  - navigating to \"https://www.olx.com.br/brasil?[redacted]\", waiting until \"domcontentloaded\"\u001b[22m",
+          "Google Pixel Watch 4: Saiu com código 1: Aviso: termo \"pixel watch 4\" em https://www.olx.com.br/brasil falhou — Cloudflare bloqueando após 15s",
+          "Monitores OLED: Saiu com código 1: Aviso: termo \"aw2725df\" em https://www.olx.com.br/brasil falhou — page.goto: net::ERR_ABORTED at https://www.olx.com.br/brasil?[redacted]\nCall log:\n\u001b[2m  - navigating to \"https://www.olx.com.br/brasil?[redacted]\", waiting until \"domcontentloaded\"\u001b[22m\n\n  Aviso: termo \"mag 274qp\" em https://www.olx.com.br/brasil falhou — page.goto: net::ERR_ABORTED at https://www.olx.com.br/brasil?[redacted]\nCall log:\n\u001b[2m  - navigating to \"https://www.olx.com.br/brasil?[redacted]\", waiting until \"domcontentloaded\"\u001b[22m\n\n  Aviso: termo \"27gx790a\" em https://www.olx.com.br/brasil falhou — page.goto: net::ERR_ABORTED at https://www.olx.com.br/brasil?[redacted]\nCall log:\n\u001b[2m  - navigating to \"https://www.olx.com.br/brasil?[redacted]\", waiting until \"domcontentloaded\"\u001b[22m"
+        ],
+        "pending_notifications": 5
       }
     },
     {
