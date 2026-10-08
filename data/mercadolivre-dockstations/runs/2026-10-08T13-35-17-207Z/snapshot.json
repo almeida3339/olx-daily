@@ -1,0 +1,66 @@
+{
+  "schema_version": 2,
+  "generated_at": "2026-10-08T13:35:17.207Z",
+  "coverage_status": {
+    "SD25TB4": {
+      "checked_at": "2026-10-08T13:35:17.207Z",
+      "last_success_at": "2026-10-08T13:35:17.207Z",
+      "state": "success",
+      "error": null
+    },
+    "WD22TB4": {
+      "checked_at": "2026-10-08T13:35:17.207Z",
+      "last_success_at": "2026-10-08T13:35:17.207Z",
+      "state": "success",
+      "error": null
+    }
+  },
+  "run": {
+    "date": "2026-10-08",
+    "timezone": "America/Sao_Paulo",
+    "id": "dockstations",
+    "label": "Dockstations",
+    "started_at": "2026-10-08T13:34:26.212Z",
+    "completed_at": "2026-10-08T13:35:17.207Z",
+    "partial": false,
+    "aborted": false,
+    "successful_terms": [
+      "SD25TB4",
+      "WD22TB4"
+    ],
+    "scheduled_terms": [
+      "SD25TB4",
+      "WD22TB4"
+    ],
+    "configured_terms": [
+      "SD25TB4",
+      "WD22TB4"
+    ],
+    "failed_terms": [],
+    "scheduled_coverage": [
+      "SD25TB4",
+      "WD22TB4"
+    ],
+    "successful_coverage": [
+      "SD25TB4",
+      "WD22TB4"
+    ],
+    "failed_coverage": [],
+    "configured_coverage": [
+      "SD25TB4",
+      "WD22TB4"
+    ],
+    "quarantined_item_count": 0
+  },
+  "filters": {
+    "collection_price_brl": {
+      "min": 0,
+      "max": 500
+    },
+    "display_price_brl": {
+      "min": 0,
+      "max": 500
+    }
+  },
+  "items": []
+}
