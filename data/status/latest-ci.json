@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-07T19:01:12.405Z",
+  "generated_at": "2026-10-08T11:01:14.832Z",
   "source": "ci",
   "delivery": {
     "email": "skipped",
@@ -92,6 +92,21 @@
       "last_error": "CallMeBot HTTP 403",
       "created_at": "2026-10-07T10:47:25.440Z",
       "updated_at": "2026-10-07T10:47:25.440Z",
+      "sending_at": null
+    },
+    {
+      "id": "ba389d82-208c-40a7-ada6-a22a454a4618",
+      "dedupe_key": "03c6dee89cb34ac2abe99128",
+      "channel": "whatsapp",
+      "payload": {
+        "message": "⚠️ Falhas anteriores de notificação: WhatsApp.\n\nMonitor 07/10 16:56\nErros: Dockstations: Saiu com código 1: Aviso: termo \"WD22TB4\" em https://www.olx.com.br/brasil falhou — page.goto: net::ERR_ABORTED at https://www.olx.com.br/brasil?[redacted]\nCall log:\n\u001b[2m  - navigating to \"https://www.olx.com.br/brasil?[redacted]\", waiting until \"domcontentloaded\"\u001b[22m, Google Pixel Watch 4: Saiu com código 1: Aviso: termo \"pixel watch 4\" em https://www.olx.com.br/brasil falhou — Cloudflare bloqueando após 15s, Monitores OLED: Saiu com código 1: Aviso: termo \"aw2725df\" em https://www.olx.com.br/brasil falhou — page.goto: net::ERR_ABORTED at https://www.olx.com.br/brasil?[redacted]\nCall log:\n\u001b[2m  - navigating to \"https://www.olx.com.br/brasil?[redacted]\", waiting until \"domcontentloaded\"\u001b[22m\n\n  Aviso: termo \"mag 274qp\" em https://www.olx.com.br/brasil falhou — page.goto: net::ERR_ABORTED at https://www.olx.com.br/brasil?[redacted]\nCall log:\n\u001b[2m  - navigating to \"https://www.olx.com.br/brasil?[redacted]\", waiting until \"domcontentloaded\"\u001b[22m\n\n  Aviso: termo \"27gx790a\" em https://www.olx.com.br/brasil falhou — page.goto: net::ERR_ABORTED at https://www.olx.com.br/brasil?[redacted]\nCall log:\n\u001b[2m  - navigating to \"https://www.olx.com.br/brasil?[redacted]\", waiting until \"domcontentloaded\"\u001b[22m\n\nOnePlus Buds Pro 3: 1 preço(s)\n- R$ 780,00 → R$ 700,00 — OnePlus Buds Pro 3 —… https://ba.olx.com.br/grande-salvador/audio/fones-de-ouvido/oneplus-buds-pro-3-1541641393\n\nDetalhes completos: https://almeida3339.github.io/olx-daily/"
+      },
+      "status": "blocked",
+      "attempts": 1,
+      "next_attempt_at": null,
+      "last_error": "CallMeBot HTTP 403",
+      "created_at": "2026-10-07T19:00:06.189Z",
+      "updated_at": "2026-10-07T19:00:06.189Z",
       "sending_at": null
     }
   ],
