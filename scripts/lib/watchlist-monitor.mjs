@@ -440,7 +440,7 @@ async function waitForListing(page) {
         if (count > 0) return "cards";
         const text = (document.body?.innerText || "").toLowerCase();
         if (/cloudflare|attention required|you have been blocked|security service|verify you are human|checking your browser/i.test(text)) return "blocked";
-        if (/0\s+resultados?|nao encontramos|sem resultados|nenhum resultado|não encontramos/i.test(text)) return "empty";
+        if (/\b0\s+resultados?|nao encontramos|sem resultados|nenhum resultado|não encontramos/i.test(text)) return "empty";
         return false;
       },
       null,
