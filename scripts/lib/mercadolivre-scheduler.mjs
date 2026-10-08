@@ -128,7 +128,8 @@ export function recordMercadoLivreRun(schedule, {
   const successfulThisRun = (scheduledTerms ?? [])
     .map((raw) => normalizeTermTask(raw).matchTerm)
     .filter((term) => successful.has(term));
-  const sweepCoverage = new Set([...(state.full_sweep_coverage ?? []), ...successfulThisRun]);
+  const sweepCoverage = new Set([...(state.full_sweep_coverage ?? []), ...successfulThisRun]
+    .filter((term) => Date.parse(state.terms[term]?.last_success_at ?? '') >= now.getTime() - 7 * DAY));
   if (configuredKeys.size > 0 && [...configuredKeys].every((term) => sweepCoverage.has(term))) {
     state.last_full_sweep_at = now.toISOString();
     state.full_sweep_coverage = [];
