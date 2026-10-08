@@ -8,6 +8,7 @@ import crypto from "node:crypto";
 // antes de gravá-las em disco (o repositório é público).
 export function sanitizeErrorMessage(message) {
   let out = String(message ?? "").trim();
+  out = out.replace(/\u001b\[[0-?]*[ -/]*[@-~]/g, '').replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, '');
 
   // 1. Redige Bearer token credentials
   out = out.replace(/bearer\s+[a-zA-Z0-9\-._~+/]+=*/gi, "Bearer [redacted]");

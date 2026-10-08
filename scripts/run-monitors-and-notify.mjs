@@ -12,6 +12,7 @@ import {
   mergeAcks
 } from "./lib/notification-status.mjs";
 import { createMonitorLogger } from "./lib/monitor-logger.mjs";
+import { classifyMonitorError } from "./lib/monitor-errors.mjs";
 import { runMonitorProcess } from "./lib/monitor-process.mjs";
 import { appendMonitorHistory } from "./lib/monitor-history.mjs";
 import {
@@ -319,6 +320,7 @@ export async function main({
   const priorNote    = buildPriorFailureNote(priorPending);
   let notificationOutbox = recoverAbandonedNotifications(reconcileNotificationOutbox(localStatus, ciStatus), runNow);
   const currentStatus = (process.env.GITHUB_ACTIONS === "true" ? ciStatus : localStatus) ?? {};
+  currentStatus.notification_sent_ids = [...new Set([...(localStatus?.notification_sent_ids ?? []), ...(ciStatus?.notification_sent_ids ?? [])])].slice(-500);
 
   const subject     = buildSubject(sources, errors);
   const body        = (priorNote ? `> ${priorNote}\n\n` : "") + buildBody(sources, errors);
@@ -370,6 +372,7 @@ export async function main({
       if (queued.channel === "email") await sendEmailFn(queued.payload.subject, queued.payload.body);
       if (queued.channel === "whatsapp") await sendWhatsAppFn(queued.payload.message);
       notificationOutbox = settleNotification(notificationOutbox, queued.id, { ok: true }, runNow);
+      currentStatus.notification_sent_ids = [...currentStatus.notification_sent_ids, queued.id].slice(-500);
       deliveryByKey.set(queued.dedupe_key, { ok: true });
       logger.info("notification_succeeded", { channel: queued.channel, outbox_id: queued.id });
     } catch (error) {
@@ -442,6 +445,7 @@ export async function main({
     partial: errors.length > 0,
     errors: errors.map(sanitizeErrorMessage),
   };
+  status.notification_sent_ids = currentStatus.notification_sent_ids;
 
   await writeDeliveryStatus(status);
   if (fsApi === fs) {
@@ -650,7 +654,12 @@ function buildWhatsAppMessage(sources, errors) {
   const time = new Date().toLocaleTimeString("pt-BR", { timeZone: "America/Sao_Paulo", hour: "2-digit", minute: "2-digit" });
   const lines = [`Monitor ${date} ${time}`];
 
-  if (errors.length) lines.push(`Erros: ${errors.join(", ")}`);
+  if (errors.length) lines.push(`Erros: ${errors.map((error) => {
+    const label = String(error).split(':')[0].slice(0, 70);
+    const kind = classifyMonitorError(error).kind;
+    const message = { challenge: 'verificação ou bloqueio de acesso', authentication: 'login necessário', rate_limited: 'limite de acessos', transient: 'falha temporária de rede/navegação' }[kind] ?? 'coleta incompleta';
+    return `${label}: ${message}`;
+  }).join('; ')}`);
 
   const totalNew   = sources.reduce((sum, s) => sum + s.newCount, 0);
   const totalPrice = sources.reduce((sum, s) => sum + s.priceCount, 0);

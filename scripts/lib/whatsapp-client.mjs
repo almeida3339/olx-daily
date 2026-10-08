@@ -1,5 +1,14 @@
 import { sanitizeErrorMessage } from './notification-status.mjs';
 
+export function cleanWhatsAppText(message) {
+  return String(message)
+    .replace(/\u001b\[[0-?]*[ -/]*[@-~]/g, '')
+    .replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, '')
+    // Older queued alerts embed complete browser call logs in this section.
+    // Keep the alert and item links; technical details remain in the dashboard.
+    .replace(/\nErros:[\s\S]*?(?=\n\n[^\n:]{1,70}:\s*\d+|\nColeta incompleta|\nSem novos|\nDetalhes completos|$)/, '\nErros: coleta incompleta; consulte os detalhes no painel.');
+}
+
 export async function sendWhatsApp(message, { fetchFn = fetch, env = process.env } = {}) {
   const phone = env.CALLMEBOT_PHONE?.trim().replace(/[\s()-]/g, '');
   const key = env.CALLMEBOT_APIKEY?.trim();
@@ -7,7 +16,7 @@ export async function sendWhatsApp(message, { fetchFn = fetch, env = process.env
   if (!/^\+?\d{10,15}$/.test(phone)) throw new Error('Telefone do WhatsApp inválido; use código do país e DDD');
   const url = new URL('https://api.callmebot.com/whatsapp.php');
   url.searchParams.set('phone', phone);
-  url.searchParams.set('text', String(message));
+  url.searchParams.set('text', cleanWhatsAppText(message));
   url.searchParams.set('apikey', key);
   const response = await fetchFn(url, { signal: AbortSignal.timeout(30_000) });
   // The provider also returns errors with 201. An HTTP success alone does not

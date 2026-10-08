@@ -109,8 +109,10 @@ function coverageHealth(configured, coverage, { now, maxAgeMs, id }) {
 // bloqueado, para não esconder uma falha que exige ação).
 function dedupeNotificationOutbox(statuses) {
   const byId = new Map();
+  const delivered = new Set(statuses.flatMap((status) => status?.notification_sent_ids ?? []));
   for (const status of statuses) {
     for (const item of asArray(status?.notification_outbox)) {
+      if (delivered.has(item.id)) continue;
       const key = item?.id ?? `${item?.channel ?? "?"}:${item?.dedupe_key ?? item?.last_error ?? "?"}`;
       const previous = byId.get(key);
       if (!previous || compareNotificationItems(item, previous) > 0) byId.set(key, item);

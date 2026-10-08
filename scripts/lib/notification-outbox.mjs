@@ -29,9 +29,10 @@ export function enqueueNotification(outbox = [], { channel, payload }, now = new
 
 export function reconcileNotificationOutbox(...statuses) {
   const byId = new Map();
+  const delivered = new Set(statuses.flatMap((status) => status?.notification_sent_ids ?? []));
   for (const status of statuses) {
     for (const item of status?.notification_outbox ?? []) {
-      if (!item?.id || item.status === "sent") continue;
+      if (!item?.id || item.status === "sent" || delivered.has(item.id)) continue;
       const current = byId.get(item.id);
       if (!current || Date.parse(item.updated_at ?? 0) > Date.parse(current.updated_at ?? 0)) byId.set(item.id, item);
     }
