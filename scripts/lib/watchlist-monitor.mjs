@@ -15,7 +15,7 @@ import {
   normalizeMonitorText,
 } from "./monitor-core.mjs";
 import { commitMonitorRun, readLatestValidSnapshot } from "./monitor-runtime.mjs";
-import { retryTransient } from "./monitor-errors.mjs";
+import { classifyMonitorError, retryTransient } from "./monitor-errors.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const workspaceRoot = path.resolve(__dirname, "..", "..");
@@ -125,6 +125,8 @@ export async function runWatchlistMonitor(config) {
   // "source:term" que falharam nesta rodada (cobertura incompleta). Usado para
   // NÃO rebaixar a not_seen os itens correspondentes do snapshot anterior.
   const failedSourceTerms = new Set();
+  const unattemptedSourceTerms = new Set();
+  const sourceBlocks = { ...(previousSnapshot?.source_blocks ?? {}) };
 
   if (!skipEnjoei) {
     try {
@@ -140,10 +142,18 @@ export async function runWatchlistMonitor(config) {
 
   if (!skipOlx) {
     try {
+      const previousBlock = Object.entries(previousSnapshot?.coverage_status ?? {}).find(([key, value]) => key.startsWith('OLX:') && value.state === 'failed' && classifyMonitorError(value.error).kind === 'challenge');
+      if (!sourceBlocks.OLX && previousBlock) sourceBlocks.OLX = { blocked_until: new Date(Date.parse(previousBlock[1].checked_at) + 24 * 60 * 60 * 1000).toISOString() };
+      if (!visible && Date.parse(sourceBlocks.OLX?.blocked_until ?? '') > Date.now()) {
+        throw new Error(`Cloudflare: OLX em pausa até ${sourceBlocks.OLX.blocked_until}; abra o perfil com --visible para recuperação manual.`);
+      }
       const categoryUrls = (config.olxCategoryUrls && config.olxCategoryUrls.length)
         ? config.olxCategoryUrls
         : [OLX_BASE_URL];
-      const { items, failedTerms, failedTermErrors } = await collectOlx({ terms, categoryUrls, userDataDir, headless, visible, inRange, sizeOk, notExcluded, itemFilter, olxDeliveryOnly: config.olxDeliveryOnly ?? false });
+      const { items, failedTerms, failedTermErrors, attemptedTerms, blocked } = await collectOlx({ terms, categoryUrls, userDataDir, headless, visible, inRange, sizeOk, notExcluded, itemFilter, olxDeliveryOnly: config.olxDeliveryOnly ?? false });
+      for (const term of terms) if (!attemptedTerms.has(term)) unattemptedSourceTerms.add(`OLX:${term}`);
+      if (blocked) sourceBlocks.OLX = { blocked_until: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() };
+      else if (!failedTerms.size) delete sourceBlocks.OLX;
       collected.push(...items);
       for (const t of failedTerms) {
         failedSourceTerms.add(`OLX:${t}`);
@@ -175,7 +185,7 @@ export async function runWatchlistMonitor(config) {
   const scheduledCoverage = scheduledSources.flatMap((source) =>
     terms.map((term) => `${source}:${term}`)
   );
-  const successfulCoverage = scheduledCoverage.filter((key) => !failedSourceTerms.has(key));
+  const successfulCoverage = scheduledCoverage.filter((key) => !failedSourceTerms.has(key) && !unattemptedSourceTerms.has(key));
   const snapshot = mergeMonitorSnapshot({
     collected: deduped,
     previousSnapshot: previousSnapshot ? { ...previousSnapshot, items: previousItemsInScope } : null,
@@ -193,6 +203,7 @@ export async function runWatchlistMonitor(config) {
       // nada de errado, degradando a saúde reportada com falso positivo.
       partial: errors.length > 0 || successfulCoverage.length < scheduledCoverage.length,
       errors,
+      unattempted_coverage: [...unattemptedSourceTerms],
     },
     filters: {
       price_brl: { min: minPrice, max: maxPrice },
@@ -205,6 +216,7 @@ export async function runWatchlistMonitor(config) {
     itemCoverage: (item) => item.source && item.term ? [`${item.source}:${item.term}`] : [],
   });
   snapshot.price_range_brl = { min: minPrice, max: maxPrice };
+  snapshot.source_blocks = sourceBlocks;
 
   const report = buildReport({ label, runDate, snapshot, previousItems: previousItemsInScope, errors, terms, minPrice, maxPrice });
   const committed = await commitMonitorRun(dataDir, {
@@ -335,11 +347,14 @@ async function collectOlx({ terms, categoryUrls, userDataDir, headless, visible,
   const out = [];
   const failedTerms = new Set();
   const failedTermErrors = new Map();
+  const attemptedTerms = new Set();
+  let blocked = false;
   try {
-    for (const categoryUrl of categoryUrls) {
+    categories: for (const categoryUrl of categoryUrls) {
       for (const term of terms) {
         const url = `${categoryUrl}?q=${encodeURIComponent(term)}${olxDeliveryOnly ? "&opst=2" : ""}`;
         console.log(`OLX termo: ${term} -> ${url}`);
+        attemptedTerms.add(term);
         try {
           await retryTransient(async () => {
             await page.goto(url, { waitUntil: "domcontentloaded", timeout: NAVIGATION_TIMEOUT_MS });
@@ -380,13 +395,18 @@ async function collectOlx({ terms, categoryUrls, userDataDir, headless, visible,
           console.warn(`  Aviso: termo "${term}" em ${categoryUrl} falhou — ${error.message}`);
           failedTerms.add(term);
           failedTermErrors.set(term, error?.message ?? String(error));
+          if (classifyMonitorError(error).kind === 'challenge') {
+            blocked = true;
+            console.warn('OLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.');
+            break categories;
+          }
         }
       }
     }
   } finally {
     await context.close().catch(() => {});
   }
-  return { items: out, failedTerms, failedTermErrors };
+  return { items: out, failedTerms, failedTermErrors, attemptedTerms, blocked };
 }
 
 async function waitOutCloudflare(page, headless, visible = false) {
@@ -398,6 +418,10 @@ async function waitOutCloudflare(page, headless, visible = false) {
   while (Date.now() - started < maxWait) {
     const title = await page.title().catch(() => "");
     const body = await page.locator("body").innerText().catch(() => "");
+    if (/you have been blocked|you are unable to access/i.test(body)) {
+      const rayId = body.match(/Cloudflare Ray ID:\s*([a-z0-9]+)/i)?.[1];
+      throw new Error(`Cloudflare recusou o acesso à OLX; não há verificação interativa${rayId ? ` (Ray ID: ${rayId})` : ''}.`);
+    }
     if (!isBlockedPage(title, body)) return;
     await page.waitForTimeout(2500);
   }

@@ -561,6 +561,11 @@ Cada coleta nova e promovida por `latest-run.json` apenas depois de snapshot, re
 - Falhas transitórias de navegação OLX têm uma nova tentativa; ausência de cards
   sem mensagem explícita de busca vazia continua sendo falha. Verificação exige
   intervenção humana no perfil da watchlist, com `--visible`.
+- Um bloqueio Cloudflare interrompe as próximas consultas OLX da watchlist e
+  grava uma pausa de 24 horas, sem estendê-la em cada disparo. `--visible` permite
+  tentar a recuperação manual. Se a página disser que o acesso foi bloqueado
+  sem oferecer verificação, é necessária liberação pelo site; o coletor não
+  tenta contornar esse bloqueio.
 - Erros do CallMeBot incluem uma resposta sanitizada do provedor. Credenciais e
   telefone são codificados nos parâmetros e não aparecem em logs públicos.
   Uma resposta HTTP 201 com `ERROR` não é considerada entrega bem-sucedida.

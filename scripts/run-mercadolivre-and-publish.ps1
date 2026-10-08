@@ -89,7 +89,7 @@ if ($Recover) {
 }
 
 $mlMode = if ($Visible -or $Recover) { "visivel" } else { "invisivel" }
-Write-Host "[2/4] Coletando Mercado Livre - $mlMode, pode levar ~15-20 min..." -ForegroundColor Yellow
+Write-Host "[2/4] Coletando Mercado Livre - $mlMode; completando os termos pendentes em lotes..." -ForegroundColor Yellow
 $mlStartedAt = [DateTime]::UtcNow.ToString("o")
 $mlArgs = @('--complete-coverage'); if ($FullSweep) { $mlArgs += '--full-sweep' }; if ($Visible -or $Recover) { $mlArgs += @("--visible", "--load-assets") }
 node (Join-Path $PSScriptRoot "monitor-mercadolivre-all.mjs") @mlArgs

@@ -1,7 +1,10 @@
 // A successful run must not clear failures in sources it did not query.
 export function mergeCoverageStatus(previous = {}, snapshot = {}) {
   const run = snapshot.run ?? {};
-  const states = { ...previous, ...(snapshot.coverage_status ?? {}) };
+  const states = { ...previous };
+  for (const [key, value] of Object.entries(snapshot.coverage_status ?? {})) {
+    if (!states[key] || Date.parse(value.checked_at) >= Date.parse(states[key].checked_at)) states[key] = value;
+  }
   const at = run.completed_at ?? snapshot.generated_at ?? run.started_at;
   const scheduled = run.scheduled_coverage ?? run.scheduled_terms ?? [];
   const successful = new Set(run.successful_coverage ?? run.successful_terms ?? []);
