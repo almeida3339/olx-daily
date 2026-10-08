@@ -64,7 +64,7 @@ export async function runWatchlistMonitor(config) {
   const maxPrice = Number(getOptionValue(args, "--max-price") ?? config.maxPrice);
   const termsArg = getOptionValue(args, "--terms") ?? getOptionValue(args, "--models");
   const terms = termsArg
-    ? termsArg.split(",").map((s) => s.trim()).filter(Boolean)
+    ? termsArg.split(",").map((s) => s.trim()).filter(Boolean).map((term) => config.terms.find((configured) => normalizeCode(configured) === normalizeCode(term)) ?? term)
     : config.terms;
   const configuredTerms = config.terms;
 
