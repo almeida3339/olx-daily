@@ -9,6 +9,7 @@ export function orderOlxCpuTerms(terms) {
 
 export function planOlxCpuTerms(terms, previous, { now = Date.now(), lowPriorityIntervalMs = 24 * 3600_000, fullSweep = false } = {}) {
   return orderOlxCpuTerms(terms).filter(term => fullSweep || OLX_PRIORITY_CPUS.includes(term)
+    || (previous?.coverage_status?.[term]?.state && previous.coverage_status[term].state !== 'success')
     || !Number.isFinite(Date.parse(previous?.coverage_status?.[term]?.last_success_at))
     || now - Date.parse(previous.coverage_status[term].last_success_at) >= lowPriorityIntervalMs);
 }
