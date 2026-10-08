@@ -5,11 +5,7 @@ const MAX_HISTORY = 120;
 
 export async function appendMonitorHistory(dataDir, entry) {
   const filePath = path.join(dataDir, "run-history.json");
-  let history = [];
-  try {
-    const value = await readJsonValidated(filePath);
-    history = Array.isArray(value?.runs) ? value.runs : [];
-  } catch {}
+  const history = await readMonitorHistory(dataDir);
   const runs = [...history.filter((run) => run.run_id !== entry.run_id), entry]
     .sort(newestFirst)
     .slice(0, MAX_HISTORY);

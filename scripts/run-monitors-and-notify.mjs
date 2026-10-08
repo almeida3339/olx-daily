@@ -741,4 +741,3 @@ async function sendEmail(subject, body) {
   });
   await transporter.sendMail({ from: `Monitor <${GMAIL_USER}>`, to: NOTIFY_TO, subject, text: body });
 }
-

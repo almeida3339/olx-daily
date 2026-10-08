@@ -12,6 +12,8 @@ export const monitorHealthSources = monitorHealthSourceDefinitions.map(([id, lab
 
 export async function buildMonitorHealth(root, { now = new Date() } = {}) {
   const sources = [];
+  const mlSchedule = await readJsonValidated(path.join(root, 'data', 'status', 'mercadolivre-schedule.json')).catch(() => null);
+  const mlBlocked = mlSchedule?.global?.requires_login || Date.parse(mlSchedule?.global?.blocked_until ?? '') > now.getTime();
   for (const [id, label, maxAgeMs] of monitorHealthSources) {
     const dataDir = path.join(root, "data", id);
     const result = await readLatestValidSnapshot(dataDir);
@@ -36,6 +38,8 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
     else if (historySummary.sample >= 3 && (historySummary.partial + historySummary.failed) >= Math.ceil(historySummary.sample / 2)) state = "degraded";
     if (marketplaces.length && snapshot) state = worstState(marketplaces.map((source) => source.state));
     if (snapshot?.run?.in_progress && state === 'healthy') state = 'partial';
+    const profileBlocked = id.startsWith('mercadolivre-') && mlBlocked;
+    if (profileBlocked) state = 'blocked';
     sources.push({
       id,
       label,
@@ -45,7 +49,8 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
       invalid_snapshots: result.invalid.length,
       history: historySummary,
       marketplaces,
-      message: snapshot?.run?.in_progress ? 'Coleta em andamento; progresso salvo' : marketplaces.length
+      message: profileBlocked ? `Perfil ML exige login/verificação${mlSchedule.global.blocked_until ? `; pausa até ${new Date(mlSchedule.global.blocked_until).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })}` : ''}`
+        : snapshot?.run?.in_progress ? 'Coleta em andamento; progresso salvo' : marketplaces.length
         ? marketplaces.map((source) => `${source.label}: ${healthMessage(source.state)} (${source.fresh_terms}/${source.total_terms} termos recentes)`).join(' · ')
         : healthMessage(state),
     });
