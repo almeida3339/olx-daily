@@ -1,6 +1,7 @@
 param(
   [switch]$Visible,   # mostra a janela do Chrome (login/desafios); padrao = invisivel
   [switch]$Recover,   # abre o perfil para recuperacao manual e valida a busca antes de coletar
+  [switch]$FullSweep, # consulta todos os termos, mantendo os bloqueios de seguranca
   [switch]$NoPush     # coleta + regenera dashboard, sem commitar/publicar
 )
 
@@ -42,6 +43,21 @@ function Save-LocalChanges {
 function Fail($msg) { Restore-LocalChanges; Write-Host "ERRO: $msg" -ForegroundColor Red; exit 1 }
 
 Write-Host "=== Mercado Livre: coleta sob demanda ===" -ForegroundColor Cyan
+# Stash/rebase cannot run while another publisher is writing this checkout.
+$otherPublisher = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object {
+  $_.ProcessId -ne $PID -and $_.Name -match 'powershell|pwsh|node' -and
+  $_.CommandLine -like "*$root*" -and
+  $_.CommandLine -match 'run-local-olx-and-publish|run-monitors-and-notify' -and
+  $_.CommandLine -notmatch '--only-mercadolivre'
+}
+if ($otherPublisher) {
+  Write-Host 'Outra coleta/publicacao esta em andamento. Aguarde sua conclusao antes de iniciar o ML.' -ForegroundColor Yellow
+  exit 2
+}
+$mutexHash = [System.BitConverter]::ToString([System.Security.Cryptography.SHA256]::Create().ComputeHash([System.Text.Encoding]::UTF8.GetBytes($root.ToLowerInvariant()))).Replace('-', '')
+$publisherMutex = [System.Threading.Mutex]::new($false, "Local\OlxDailyPublisher-$mutexHash")
+try { $publisherAcquired = $publisherMutex.WaitOne(0) } catch [System.Threading.AbandonedMutexException] { $publisherAcquired = $true }
+if (-not $publisherAcquired) { $publisherMutex.Dispose(); Write-Host 'Publicador ocupado. Aguarde a conclusao da outra rodada.'; exit 2 }
 Save-LocalChanges
 
 # Guard anti-rebase-preso (uma rodada anterior pode ter morrido no meio de um rebase).
@@ -75,7 +91,7 @@ if ($Recover) {
 $mlMode = if ($Visible -or $Recover) { "visivel" } else { "invisivel" }
 Write-Host "[2/4] Coletando Mercado Livre - $mlMode, pode levar ~15-20 min..." -ForegroundColor Yellow
 $mlStartedAt = [DateTime]::UtcNow.ToString("o")
-$mlArgs = @(); if ($Visible -or $Recover) { $mlArgs += @("--visible", "--load-assets") }
+$mlArgs = @('--complete-coverage'); if ($FullSweep) { $mlArgs += '--full-sweep' }; if ($Visible -or $Recover) { $mlArgs += @("--visible", "--load-assets") }
 node (Join-Path $PSScriptRoot "monitor-mercadolivre-all.mjs") @mlArgs
 $mlExit = $LASTEXITCODE
 if ($mlExit -ne 0) { Write-Host "Aviso: coleta terminou com exit $mlExit - cobertura possivelmente parcial." -ForegroundColor Yellow }

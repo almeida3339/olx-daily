@@ -30,10 +30,10 @@ export function planMercadoLivreTerms(schedule, { watchlistId, terms, now = new 
   const normalized = normalizeSchedule(schedule);
   const time = now.getTime();
   const blockedUntil = Date.parse(normalized.global.blocked_until ?? "");
-  if (!force && normalized.global.requires_login) {
+  if (normalized.global.requires_login) {
     return { terms: [], reason: "login_required", next_at: null, full_sweep_due: false };
   }
-  if (!force && Number.isFinite(blockedUntil) && blockedUntil > time) {
+  if (Number.isFinite(blockedUntil) && blockedUntil > time) {
     return { terms: [], reason: "cooldown", next_at: new Date(blockedUntil).toISOString(), full_sweep_due: false };
   }
 
@@ -42,7 +42,9 @@ export function planMercadoLivreTerms(schedule, { watchlistId, terms, now = new 
   const due = normalizedTerms
     .map((task, index) => ({ task, index, state: state.terms[task.matchTerm] ?? {} }))
     .filter(({ state: termState }) => force || isTermDue(termState, time));
-  const rotated = rotate(due, state.rotation_cursor ?? 0);
+  // Missing and oldest successful terms take precedence over recent terms.
+  // This lets bounded batches complete coverage rather than repeat a subset.
+  const rotated = due.sort((left, right) => (Date.parse(left.state.last_success_at ?? '') || 0) - (Date.parse(right.state.last_success_at ?? '') || 0));
   const limit = Number.isFinite(Number(maxTerms)) ? Math.max(1, Math.floor(Number(maxTerms))) : 6;
   const selected = rotated.slice(0, limit);
   const nextAt = due.length > selected.length

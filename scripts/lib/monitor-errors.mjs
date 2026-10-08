@@ -7,6 +7,7 @@ const TRANSIENT_PATTERNS = [
   /econnreset/i,
   /econnrefused/i,
   /err_network/i,
+  /net::ERR_ABORTED|net::ERR_CONNECTION/i,
   /http 5\d\d/i,
   /temporar/i,
 ];

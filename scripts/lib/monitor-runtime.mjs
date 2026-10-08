@@ -130,7 +130,7 @@ export async function commitMonitorRun(dataDir, { runId, snapshot, report, metad
   const prepared = quarantineInvalidItems(snapshot);
   prepared.snapshot = sanitizeArtifactValue(prepared.snapshot);
   prepared.invalid = sanitizeArtifactValue(prepared.invalid);
-  const safeReport = sanitizeArtifactText(report);
+  const safeReport = sanitizeArtifactText(report).replace(/\r\n/g, "\n");
   validateStrictMonitorSnapshot(prepared.snapshot);
 
   const runDir = path.join(dataDir, "runs", runId);
@@ -182,6 +182,7 @@ export async function commitMonitorRun(dataDir, { runId, snapshot, report, metad
   await appendMonitorHistory(dataDir, {
     run_id: runId,
     committed_at: manifest.committed_at,
+    completed_at: prepared.snapshot.run?.completed_at ?? manifest.committed_at,
     outcome: prepared.snapshot.run?.partial ? "partial" : "success",
     partial: Boolean(prepared.snapshot.run?.partial),
     duration_ms: Number.isFinite(startedAt) && Number.isFinite(completedAt) ? Math.max(0, completedAt - startedAt) : null,
@@ -347,7 +348,8 @@ async function validateRunManifest(dataDir, manifest) {
   if (manifest.checksums?.snapshot_sha256 && manifest.checksums.snapshot_sha256 !== sha256(JSON.stringify(snapshot))) {
     throw new Error("checksum do snapshot diverge");
   }
-  if (manifest.checksums?.report_sha256 && manifest.checksums.report_sha256 !== sha256(report)) {
+  if (manifest.checksums?.report_sha256 && manifest.checksums.report_sha256 !== sha256(report)
+      && manifest.checksums.report_sha256 !== sha256(report.replace(/\r\n/g, "\n"))) {
     throw new Error("checksum do relatorio diverge");
   }
   return { manifest, snapshot, report, snapshotPath, reportPath };

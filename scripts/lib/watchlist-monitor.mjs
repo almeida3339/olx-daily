@@ -15,6 +15,7 @@ import {
   normalizeMonitorText,
 } from "./monitor-core.mjs";
 import { commitMonitorRun, readLatestValidSnapshot } from "./monitor-runtime.mjs";
+import { retryTransient } from "./monitor-errors.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const workspaceRoot = path.resolve(__dirname, "..", "..");
@@ -57,7 +58,7 @@ export async function runWatchlistMonitor(config) {
   const dataDir = config.dataDir;
   const userDataDir = path.isAbsolute(config.profileDir)
     ? config.profileDir
-    : path.join(workspaceRoot, config.profileDir);
+    : path.join(process.env.WATCHLIST_PROFILE_ROOT ?? workspaceRoot, config.profileDir);
 
   const minPrice = Number(getOptionValue(args, "--min-price") ?? config.minPrice ?? 0);
   const maxPrice = Number(getOptionValue(args, "--max-price") ?? config.maxPrice);
@@ -182,6 +183,8 @@ export async function runWatchlistMonitor(config) {
     run: {
       id: slug,
       label,
+      started_at: now.toISOString(),
+      completed_at: new Date().toISOString(),
       // "parcial" significa "algo AGENDADO nesta rodada falhou" — não "esta
       // rodada não cobriu tudo que o watchlist cobre no total". OLX e Enjoei
       // rodam separados por convenção (Enjoei no CI com SKIP_OLX=1, OLX só
@@ -338,7 +341,9 @@ async function collectOlx({ terms, categoryUrls, userDataDir, headless, visible,
         const url = `${categoryUrl}?q=${encodeURIComponent(term)}${olxDeliveryOnly ? "&opst=2" : ""}`;
         console.log(`OLX termo: ${term} -> ${url}`);
         try {
-          await page.goto(url, { waitUntil: "domcontentloaded", timeout: NAVIGATION_TIMEOUT_MS });
+          await retryTransient(async () => {
+            await page.goto(url, { waitUntil: "domcontentloaded", timeout: NAVIGATION_TIMEOUT_MS });
+          }, { sleep, maxAttempts: 2 });
           await waitOutCloudflare(page, headless, visible);
           const listingState = await waitForListing(page);
           if (listingState === "blocked") {
@@ -412,7 +417,6 @@ async function waitForListing(page) {
         const text = (document.body?.innerText || "").toLowerCase();
         if (/cloudflare|attention required|you have been blocked|security service|verify you are human|checking your browser/i.test(text)) return "blocked";
         if (/0\s+resultados?|nao encontramos|sem resultados|nenhum resultado|não encontramos/i.test(text)) return "empty";
-        if (document.readyState === "complete" && performance.now() > 3500) return "empty";
         return false;
       },
       null,

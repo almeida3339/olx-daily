@@ -1,3 +1,4 @@
+import { mergeCoverageStatus } from "./monitor-coverage.mjs";
 export const MONITOR_SNAPSHOT_SCHEMA_VERSION = 2;
 
 export function normalizeMonitorText(value) {
@@ -93,6 +94,10 @@ export function mergeMonitorSnapshot({
   return {
     schema_version: MONITOR_SNAPSHOT_SCHEMA_VERSION,
     generated_at: timestamp,
+    coverage_status: mergeCoverageStatus(previousSnapshot?.coverage_status, {
+      generated_at: timestamp,
+      run: { ...run, scheduled_coverage: [...scheduled], successful_coverage: [...successful], failed_coverage: [...failed] },
+    }),
     run: {
       date: runDate,
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,

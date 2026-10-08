@@ -23,6 +23,8 @@ const dataDir = process.env.MERCADOLIVRE_NOTEBOOKS_DATA_DIR ?? path.join(root, "
 const requested = option("--cpu");
 const cpuTerms = requested ? [requested.toLowerCase()] : DEFAULT_CPU_TERMS;
 const fullSweep = process.argv.includes("--full-sweep");
+const completeCoverage = process.argv.includes("--complete-coverage") || fullSweep;
+const collectionStart = Date.now();
 const force = process.argv.includes("--force") || fullSweep;
 const requestedBudget = Number(option("--max-terms") ?? process.env.ML_NOTEBOOK_TERM_BUDGET ?? 6);
 const budget = Number.isFinite(requestedBudget) && requestedBudget > 0 ? Math.floor(requestedBudget) : 6;
@@ -33,10 +35,10 @@ if (process.argv.includes("--clear-cooldown")) {
   console.log("Pausa de seguranca do Mercado Livre removida.");
 }
 const configuredTasks = cpuTerms.map((term) => ({ query: cpuSearchQuery(term), matchTerm: term }));
-const plan = planMercadoLivreTerms(schedule, {
+let plan = planMercadoLivreTerms(schedule, {
   watchlistId: "notebooks",
   terms: configuredTasks,
-  maxTerms: fullSweep ? configuredTasks.length : Math.min(budget, configuredTasks.length),
+  maxTerms: Math.min(budget, configuredTasks.length),
   force: force || Boolean(requested),
 });
 
@@ -46,7 +48,7 @@ if (!plan.terms.length) {
     await writeMercadoLivreSchedule(root, schedule);
     process.exitCode = 1;
   }
-} else {
+} else for (let batch = 0; plan.terms.length && batch < Math.ceil(configuredTasks.length / budget); batch++) {
   console.log(`Notebooks: ${plan.terms.length}/${configuredTasks.length} CPU(s) nesta rodada.`);
   const result = await runMercadoLivreBatch({
   id: "notebooks",
@@ -77,7 +79,16 @@ if (!plan.terms.length) {
   if (result.snapshot.run?.aborted || result.snapshot.run?.failed_terms?.length) {
     console.error("Mercado Livre Notebooks: coleta incompleta; resultados parciais preservados.");
     process.exitCode = 1;
+    break;
   }
+  if (!completeCoverage || requested) break;
+  const pending = configuredTasks.filter((task) => Date.parse(schedule.watchlists.notebooks?.terms[task.matchTerm]?.last_success_at ?? '') < collectionStart
+    || !schedule.watchlists.notebooks?.terms[task.matchTerm]?.last_success_at);
+  plan = planMercadoLivreTerms(schedule, {
+    watchlistId: 'notebooks', terms: pending, maxTerms: budget, force,
+  });
+  if (['cooldown', 'login_required'].includes(plan.reason)) { process.exitCode = 1; break; }
+  if (plan.terms.length) console.log(`Lote salvo. Prosseguindo com ${plan.terms.length} CPU(s) pendentes.`);
 }
 
 function option(name) {

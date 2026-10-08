@@ -17,7 +17,7 @@ test("planejador limita bootstrap e alterna os termos de uma watchlist", () => {
   assert.deepEqual(second.terms, ["c"]);
 });
 
-test("challenge ativa pausa persistente ate execucao forcada", () => {
+test("challenge ativa pausa persistente inclusive em execucao forcada", () => {
   let schedule = createMercadoLivreSchedule();
   schedule = recordMercadoLivreRun(schedule, {
     watchlistId: "x", scheduledTerms: ["a"],
@@ -27,5 +27,5 @@ test("challenge ativa pausa persistente ate execucao forcada", () => {
   const blocked = planMercadoLivreTerms(schedule, { watchlistId: "x", terms: ["a"], now: new Date("2026-07-12T13:00:00Z") });
   assert.equal(blocked.reason, "cooldown");
   const forced = planMercadoLivreTerms(schedule, { watchlistId: "x", terms: ["a"], force: true, now: new Date("2026-07-12T13:00:00Z") });
-  assert.deepEqual(forced.terms, ["a"]);
+  assert.equal(forced.reason, "cooldown");
 });

@@ -2,7 +2,8 @@ import path from "node:path";
 import { classifyMonitorError } from "./monitor-errors.mjs";
 import { MONITOR_LABELS } from "./monitor-labels.mjs";
 import { readMonitorHistory, summarizeMonitorHistory } from "./monitor-history.mjs";
-import { readJsonValidated, readLatestValidSnapshot, timestampFromArtifactName } from "./monitor-runtime.mjs";
+import { listCommittedRuns, readJsonValidated, readLatestValidSnapshot, timestampFromArtifactName } from "./monitor-runtime.mjs";
+import { mergeCoverageStatus } from "./monitor-coverage.mjs";
 import { watchlistHealthDefinitions } from "./watchlists-registry.mjs";
 
 const monitorHealthSourceDefinitions = watchlistHealthDefinitions();
@@ -17,6 +18,12 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
     const snapshot = result.snapshot;
     const history = await readMonitorHistory(dataDir);
     const historySummary = summarizeMonitorHistory(history);
+    const artifacts = await listCommittedRuns(dataDir, { limit: 120 });
+    let coverage = {};
+    for (const artifact of artifacts.reverse()) coverage = mergeCoverageStatus(coverage, artifact.snapshot);
+    coverage = mergeCoverageStatus(coverage, snapshot ?? {});
+    const configured = snapshot?.run?.configured_coverage ?? snapshot?.run?.configured_terms ?? [];
+    const marketplaces = coverageHealth(configured, coverage, { now, maxAgeMs, id });
     const timestamp = snapshotTimestamp(snapshot, result.file);
     const ageMs = timestamp == null ? null : Math.max(0, now.getTime() - timestamp);
     const errors = asArray(snapshot?.run?.errors ?? snapshot?.run?.failed_terms);
@@ -27,6 +34,8 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
     else if (ageMs != null && ageMs > maxAgeMs) state = "stale";
     else if (snapshot.run?.partial) state = "partial";
     else if (historySummary.sample >= 3 && (historySummary.partial + historySummary.failed) >= Math.ceil(historySummary.sample / 2)) state = "degraded";
+    if (marketplaces.length && snapshot) state = worstState(marketplaces.map((source) => source.state));
+    if (snapshot?.run?.in_progress && state === 'healthy') state = 'partial';
     sources.push({
       id,
       label,
@@ -35,7 +44,10 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
       age_ms: ageMs,
       invalid_snapshots: result.invalid.length,
       history: historySummary,
-      message: healthMessage(state),
+      marketplaces,
+      message: snapshot?.run?.in_progress ? 'Coleta em andamento; progresso salvo' : marketplaces.length
+        ? marketplaces.map((source) => `${source.label}: ${healthMessage(source.state)} (${source.fresh_terms}/${source.total_terms} termos recentes)`).join(' · ')
+        : healthMessage(state),
     });
   }
   const statusDir = path.join(root, "data", "status");
@@ -61,6 +73,30 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
     })),
   });
   return { schema_version: 2, generated_at: now.toISOString(), sources };
+}
+
+function worstState(states) {
+  return ['blocked', 'missing', 'stale', 'partial', 'degraded', 'healthy'].find((state) => states.includes(state)) ?? 'healthy';
+}
+
+function coverageHealth(configured, coverage, { now, maxAgeMs, id }) {
+  const groups = new Map();
+  for (const key of configured) {
+    const label = key.includes(':') ? key.split(':')[0] : id.startsWith('mercadolivre-') ? 'ML' : id === 'olx' ? 'OLX' : 'Enjoei';
+    const terms = groups.get(label) ?? [];
+    terms.push(coverage[key] ?? {});
+    groups.set(label, terms);
+  }
+  return [...groups].map(([label, terms]) => {
+    const states = terms.map((term) => {
+      if (!term.checked_at) return 'partial';
+      if (term.state === 'failed' && ['challenge', 'authentication', 'rate_limited'].includes(classifyMonitorError(term.error).kind)) return 'blocked';
+      if (now.getTime() - Date.parse(term.checked_at) > maxAgeMs) return 'stale';
+      return term.state === 'failed' ? 'partial' : 'healthy';
+    });
+    return { label, state: worstState(states), total_terms: terms.length, fresh_terms: states.filter((state) => state === 'healthy').length,
+      updated_at: terms.map((term) => term.checked_at).filter(Boolean).sort().at(-1) ?? null };
+  });
 }
 
 // Local e CI podem carregar o mesmo item persistido no outbox. O ID é a chave

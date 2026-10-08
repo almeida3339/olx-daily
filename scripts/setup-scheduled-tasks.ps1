@@ -40,10 +40,11 @@ $catchupAction = New-ScheduledTaskAction `
     -WorkingDirectory $root
 
 # Configurações das tasks principais:
-# - Sem StartWhenAvailable: o catchup cuida de runs perdidas por desligamento
+# - StartWhenAvailable recupera horarios perdidos por desligamento/suspensao.
 # - MultipleInstances IgnoreNew: evita rodar em paralelo se a anterior ainda estiver rodando
 $mainSettings = New-ScheduledTaskSettingsSet `
-    -ExecutionTimeLimit (New-TimeSpan -Minutes 90) `
+    -ExecutionTimeLimit (New-TimeSpan -Hours 4) `
+    -StartWhenAvailable -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries `
     -MultipleInstances IgnoreNew
 
 # ── Task 1: 07:00 ────────────────────────────────────────────────────────────
@@ -73,7 +74,8 @@ $tBoot = New-ScheduledTaskTrigger -AtStartup
 $tBoot.Delay = "PT20M"
 
 $catchupSettings = New-ScheduledTaskSettingsSet `
-    -ExecutionTimeLimit (New-TimeSpan -Minutes 90) `
+    -ExecutionTimeLimit (New-TimeSpan -Hours 4) `
+    -StartWhenAvailable -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries `
     -MultipleInstances IgnoreNew
 
 Register-ScheduledTask `
@@ -86,8 +88,8 @@ Register-ScheduledTask `
 
 Write-Host ""
 Write-Host "Tarefas registradas com sucesso:"
-Write-Host "  Monitor-OLX-0700    — todo dia as 07:00 (se o PC estiver ligado)"
-Write-Host "  Monitor-OLX-1600    — todo dia as 16:00 (se o PC estiver ligado)"
+Write-Host "  Monitor-OLX-0700    — 07:00; recupera horario perdido quando o PC estiver disponivel"
+Write-Host "  Monitor-OLX-1600    — 16:00; recupera horario perdido quando o PC estiver disponivel"
 Write-Host "  Monitor-OLX-Catchup — 20 min apos o boot (so roda se ultima run > 9h atras)"
 Write-Host ""
 Write-Host "VARIAVEIS DE AMBIENTE NECESSARIAS — execute uma vez no terminal:"
@@ -97,7 +99,7 @@ Write-Host '  setx GMAIL_APP_PASSWORD  "sua-senha-de-app-gmail"'
 Write-Host '  setx CALLMEBOT_PHONE     "5541XXXXXXXXX"'
 Write-Host '  setx CALLMEBOT_APIKEY    "XXXXXXXX"'
 Write-Host ""
-Write-Host "  (todas as quatro sao obrigatorias; sem elas as notificacoes falham)"
+Write-Host "  (WhatsApp requer CALLMEBOT_PHONE e CALLMEBOT_APIKEY; Gmail apenas se email estiver habilitado)"
 Write-Host ""
 Write-Host "Para remover todas as tarefas:"
 Write-Host "  .\scripts\setup-scheduled-tasks.ps1 -Remove"

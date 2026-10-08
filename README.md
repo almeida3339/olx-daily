@@ -515,6 +515,11 @@ Cada coleta nova e promovida por `latest-run.json` apenas depois de snapshot, re
 - Galaxy Buds4 Pro é uma watchlist oficial na faixa de R$ 500 a R$ 1.000, com variantes de escrita e envio local.
 - Fichas técnicas são abertas apenas para anúncios novos ou incompletos, com limite por rodada.
 - A rotina automática local de OLX/Enjoei não abre o Mercado Livre. Para o ML, use `npm run mercadolivre:publicar`: a coleta é publicada e os resultados somente daquela rodada são notificados.
+- O disparo padrão completa todos os termos de notebooks que estão vencidos,
+  em lotes de até seis CPUs. Cada lote salva um snapshot e atualiza a agenda.
+  Termos sem sucesso anterior têm prioridade. `-FullSweep` consulta todas as
+  CPUs em lotes, inclusive as recentes; login, limite e desafio continuam
+  interrompendo a fila. Retomar o disparo padrão aproveita os lotes concluídos.
 - Se já existe bloqueio registrado, o comando encerra antes da coleta e informa
   o horário em Brasília e o comando de recuperação. Esse disparo não envia uma
   nova notificação nem publica arquivos gerados sem uma coleta.
@@ -540,6 +545,25 @@ Cada coleta nova e promovida por `latest-run.json` apenas depois de snapshot, re
 - A visão de notebooks do Mercado Livre está consolidada no `index.html`; o dashboard experimental separado foi removido.
 - Reaparecimentos não são tratados como novos; mudanças de preço continuam sendo alertadas.
 - Itens cujos termos saem da configuração são arquivados como `out_of_scope`.
+
+### Saúde, histórico e recuperação local
+
+- A saúde registra a última consulta de cada termo por marketplace. Sucesso no
+  Enjoei não limpa uma falha da OLX, e um lote ML não significa cobertura completa.
+- O histórico retém as 120 rodadas mais recentes. Registros podem ser recuperados
+  dos manifestos salvos com `node scripts/repair-monitor-history.mjs`.
+  Duração desconhecida aparece sem valor, em vez de zero.
+- Relatórios usam LF no Git. A leitura aceita conversão CRLF de checkouts antigos
+  sem aceitar alterações no conteúdo do relatório.
+- Tarefas locais recuperam horários perdidos, continuam na bateria e têm limite
+  de quatro horas. O publicador impede execuções simultâneas no mesmo checkout.
+  O catchup compara a última publicação com o horário previsto mais recente.
+- Falhas transitórias de navegação OLX têm uma nova tentativa; ausência de cards
+  sem mensagem explícita de busca vazia continua sendo falha. Verificação exige
+  intervenção humana no perfil da watchlist, com `--visible`.
+- Erros do CallMeBot incluem uma resposta sanitizada do provedor. Credenciais e
+  telefone são codificados nos parâmetros e não aparecem em logs públicos.
+  Uma resposta HTTP 201 com `ERROR` não é considerada entrega bem-sucedida.
 
 ---
 

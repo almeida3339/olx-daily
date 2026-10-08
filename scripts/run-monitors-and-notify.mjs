@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import nodemailer from "nodemailer";
+import { sendWhatsApp } from "./lib/whatsapp-client.mjs";
 import {
   buildDeliveryStatus,
   buildPriorFailureNote,
@@ -79,8 +80,6 @@ const NOTIFY_TO          = process.env.NOTIFY_EMAIL_TO ?? GMAIL_USER;
 // NOTIFY_EMAIL_DISABLED=0 depois de trocar a senha de app do Gmail no secret
 // GMAIL_APP_PASSWORD. A leitura por rodada também mantém os testes isolados.
 const emailNotificationsDisabled = () => process.env.NOTIFY_EMAIL_DISABLED !== "0";
-const CALLMEBOT_PHONE    = process.env.CALLMEBOT_PHONE;
-const CALLMEBOT_APIKEY   = process.env.CALLMEBOT_APIKEY;
 // As variáveis de linha de comando agora são interpretadas dinamicamente dentro de main()
 
 // Se executado diretamente, roda o main. Caso contrário, exporta para testes.
@@ -743,9 +742,3 @@ async function sendEmail(subject, body) {
   await transporter.sendMail({ from: `Monitor <${GMAIL_USER}>`, to: NOTIFY_TO, subject, text: body });
 }
 
-async function sendWhatsApp(message) {
-  if (!CALLMEBOT_PHONE || !CALLMEBOT_APIKEY) throw new Error("CALLMEBOT_PHONE/CALLMEBOT_APIKEY não definidas");
-  const url = `https://api.callmebot.com/whatsapp.php?phone=${CALLMEBOT_PHONE}&text=${encodeURIComponent(message)}&apikey=${CALLMEBOT_APIKEY}`;
-  const response = await fetch(url, { signal: AbortSignal.timeout(30_000) });
-  if (!response.ok) throw new Error(`CallMeBot HTTP ${response.status}`);
-}

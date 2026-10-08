@@ -14,6 +14,19 @@ try { [Console]::OutputEncoding = $OutputEncoding } catch { Write-Warning "Nao f
 
 $root = Resolve-Path (Join-Path $PSScriptRoot "..")
 
+# Serialize publishers in this checkout, including distinct scheduled tasks.
+$otherPublisher = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object {
+  $_.ProcessId -ne $PID -and $_.Name -match 'node' -and
+  $_.CommandLine -like "*$($root.Path)*" -and
+  $_.CommandLine -match 'run-monitors-and-notify|monitor-mercadolivre-all' -and
+  $_.CommandLine -notmatch '--skip-monitors'
+}
+if ($otherPublisher) { Write-Host 'Outra coleta/publicacao esta em andamento; este disparo foi adiado.'; exit 0 }
+$mutexHash = [System.BitConverter]::ToString([System.Security.Cryptography.SHA256]::Create().ComputeHash([System.Text.Encoding]::UTF8.GetBytes($root.Path.ToLowerInvariant()))).Replace('-', '')
+$publisherMutex = [System.Threading.Mutex]::new($false, "Local\OlxDailyPublisher-$mutexHash")
+try { $publisherAcquired = $publisherMutex.WaitOne(0) } catch [System.Threading.AbandonedMutexException] { $publisherAcquired = $true }
+if (-not $publisherAcquired) { $publisherMutex.Dispose(); Write-Host 'Publicador ocupado; este disparo foi adiado.'; exit 0 }
+
 # Trava de repeticao: as tarefas Monitor-OLX-0700/1600 repetem a cada 10 min por
 # 2h (retry de seguranca contra o PC acordar do modo suspenso bem na hora do
 # disparo, ver commit deste comentario). O Agendador nao sabe distinguir "ja deu
@@ -422,4 +435,5 @@ try {
     Write-Host "Timestamp registrado: $(Get-Date -Format 'dd/MM HH:mm')"
   }
   try { Stop-Transcript | Out-Null } catch {}
+  if ($publisherAcquired) { $publisherMutex.ReleaseMutex(); $publisherMutex.Dispose() }
 }
