@@ -96,7 +96,8 @@ function Wait-ForInternet {
 
 if (-not (Wait-ForInternet -TimeoutSeconds $WaitForInternetSeconds)) {
   Write-Host "Internet indisponivel apos ${WaitForInternetSeconds}s de espera; abortando rodada (a proxima tentara de novo)."
-  exit 0
+  try { Stop-Transcript | Out-Null } catch {}
+  exit 1
 }
 Write-Host "Conexao disponivel. Iniciando rodada."
 
