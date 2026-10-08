@@ -1,7 +1,23 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-08T13:51:28.740Z",
+  "updated_at": "2026-10-08T19:01:17.005Z",
   "runs": [
+    {
+      "run_id": "2026-10-08T19-01-16-163Z",
+      "committed_at": "2026-10-08T19:01:16.956Z",
+      "completed_at": "2026-10-08T19:01:16.910Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 747,
+      "item_count": 3,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "dockstations",
+        "label": "Dockstations",
+        "collected_count": 0,
+        "quarantined_item_count": 0
+      }
+    },
     {
       "run_id": "2026-10-08T13-36-21-478Z",
       "committed_at": "2026-10-08T13:36:29.018Z",
@@ -1902,22 +1918,6 @@
         "source": "dockstations",
         "label": "Dockstations",
         "collected_count": 1,
-        "quarantined_item_count": 0,
-        "in_progress": false
-      }
-    },
-    {
-      "run_id": "2026-08-28T11-01-06-003Z",
-      "committed_at": "2026-08-28T11:01:06.649Z",
-      "completed_at": "2026-08-28T11:01:06.649Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": null,
-      "item_count": 3,
-      "metadata": {
-        "source": "dockstations",
-        "label": "Dockstations",
-        "collected_count": 0,
         "quarantined_item_count": 0,
         "in_progress": false
       }

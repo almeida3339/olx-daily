@@ -1,0 +1,57 @@
+{
+  "schema_version": 2,
+  "generated_at": "2026-10-08T19:01:17.239Z",
+  "coverage_status": {
+    "Enjoei:fitbit air": {
+      "checked_at": "2026-10-08T19:01:17.469Z",
+      "last_success_at": "2026-10-08T19:01:17.469Z",
+      "state": "success",
+      "error": null
+    },
+    "OLX:fitbit air": {
+      "checked_at": "2026-10-08T13:36:34.513Z",
+      "last_success_at": "2026-10-08T13:36:34.513Z",
+      "state": "success",
+      "error": null
+    }
+  },
+  "run": {
+    "date": "2026-10-08",
+    "timezone": "UTC",
+    "id": "fitbit-air",
+    "label": "Fitbit Air",
+    "started_at": "2026-10-08T19:01:17.239Z",
+    "completed_at": "2026-10-08T19:01:17.469Z",
+    "partial": false,
+    "errors": [],
+    "unattempted_coverage": [],
+    "scheduled_coverage": [
+      "Enjoei:fitbit air"
+    ],
+    "successful_coverage": [
+      "Enjoei:fitbit air"
+    ],
+    "failed_coverage": [],
+    "configured_coverage": [
+      "Enjoei:fitbit air",
+      "OLX:fitbit air"
+    ],
+    "quarantined_item_count": 0
+  },
+  "filters": {
+    "price_brl": {
+      "min": 300,
+      "max": 600
+    },
+    "size_ml": {
+      "min": null,
+      "max": null
+    }
+  },
+  "items": [],
+  "price_range_brl": {
+    "min": 300,
+    "max": 600
+  },
+  "source_blocks": {}
+}

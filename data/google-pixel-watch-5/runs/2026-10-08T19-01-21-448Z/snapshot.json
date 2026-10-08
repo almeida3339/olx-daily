@@ -1,0 +1,57 @@
+{
+  "schema_version": 2,
+  "generated_at": "2026-10-08T19:01:21.448Z",
+  "coverage_status": {
+    "Enjoei:pixel watch 5": {
+      "checked_at": "2026-10-08T19:01:21.622Z",
+      "last_success_at": "2026-10-08T19:01:21.622Z",
+      "state": "success",
+      "error": null
+    },
+    "OLX:pixel watch 5": {
+      "checked_at": "2026-10-08T13:37:09.854Z",
+      "last_success_at": "2026-10-08T13:37:09.854Z",
+      "state": "success",
+      "error": null
+    }
+  },
+  "run": {
+    "date": "2026-10-08",
+    "timezone": "UTC",
+    "id": "google-pixel-watch-5",
+    "label": "Google Pixel Watch 5",
+    "started_at": "2026-10-08T19:01:21.448Z",
+    "completed_at": "2026-10-08T19:01:21.622Z",
+    "partial": false,
+    "errors": [],
+    "unattempted_coverage": [],
+    "scheduled_coverage": [
+      "Enjoei:pixel watch 5"
+    ],
+    "successful_coverage": [
+      "Enjoei:pixel watch 5"
+    ],
+    "failed_coverage": [],
+    "configured_coverage": [
+      "Enjoei:pixel watch 5",
+      "OLX:pixel watch 5"
+    ],
+    "quarantined_item_count": 0
+  },
+  "filters": {
+    "price_brl": {
+      "min": 0,
+      "max": 3000
+    },
+    "size_ml": {
+      "min": null,
+      "max": null
+    }
+  },
+  "items": [],
+  "price_range_brl": {
+    "min": 0,
+    "max": 3000
+  },
+  "source_blocks": {}
+}
