@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-08T13:08:21.033Z",
+  "updated_at": "2026-10-08T13:28:28.514Z",
   "global": {
     "requires_login": false,
-    "blocked_until": "2026-10-09T13:08:21.032Z",
-    "block_reason": "challenge",
-    "blocked_at": "2026-10-08T13:08:21.032Z",
-    "recovery_checked_at": "2026-10-02T23:53:38.562Z",
-    "recovery_search": "https://lista.mercadolivre.com.br/informatica/portateis-acessorios/notebooks/290hx_SHIPPING*ORIGIN_10215068"
+    "blocked_until": null,
+    "block_reason": null,
+    "blocked_at": null,
+    "recovery_checked_at": "2026-10-08T13:16:36.871Z",
+    "recovery_search": "https://lista.mercadolivre.com.br/informatica/portateis-acessorios/notebooks/255hx_SHIPPING*ORIGIN_10215068"
   },
   "watchlists": {
     "notebooks": {
@@ -85,12 +85,115 @@
           "last_error": null
         },
         "255hx": {
-          "last_checked_at": "2026-10-08T13:08:21.032Z",
-          "failures": 1,
-          "last_error": "O Mercado Livre exibiu uma verificacao. Nada foi gravado."
+          "last_checked_at": "2026-10-08T13:21:28.378Z",
+          "failures": 0,
+          "last_error": null,
+          "last_success_at": "2026-10-08T13:21:28.378Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1
+        },
+        "13980hx": {
+          "last_checked_at": "2026-10-08T13:21:28.378Z",
+          "last_success_at": "2026-10-08T13:21:28.378Z",
+          "last_result_count": 1,
+          "last_change_at": "2026-10-08T13:21:28.378Z",
+          "empty_runs": 0,
+          "failures": 0,
+          "last_error": null
+        },
+        "8940hx": {
+          "last_checked_at": "2026-10-08T13:21:28.378Z",
+          "last_success_at": "2026-10-08T13:21:28.378Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        },
+        "7940hx": {
+          "last_checked_at": "2026-10-08T13:21:28.378Z",
+          "last_success_at": "2026-10-08T13:21:28.378Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        },
+        "13950hx": {
+          "last_checked_at": "2026-10-08T13:21:28.378Z",
+          "last_success_at": "2026-10-08T13:21:28.378Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        },
+        "14900hx": {
+          "last_checked_at": "2026-10-08T13:21:28.378Z",
+          "last_success_at": "2026-10-08T13:21:28.378Z",
+          "last_result_count": 3,
+          "last_change_at": "2026-10-08T13:21:28.378Z",
+          "empty_runs": 0,
+          "failures": 0,
+          "last_error": null
+        },
+        "13900hx": {
+          "last_checked_at": "2026-10-08T13:28:28.514Z",
+          "last_success_at": "2026-10-08T13:28:28.514Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        },
+        "7845hx": {
+          "last_checked_at": "2026-10-08T13:28:28.514Z",
+          "last_success_at": "2026-10-08T13:28:28.514Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        },
+        "8840hx": {
+          "last_checked_at": "2026-10-08T13:28:28.514Z",
+          "last_success_at": "2026-10-08T13:28:28.514Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        },
+        "aimax390": {
+          "last_checked_at": "2026-10-08T13:28:28.514Z",
+          "last_success_at": "2026-10-08T13:28:28.514Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        },
+        "14700hx": {
+          "last_checked_at": "2026-10-08T13:28:28.514Z",
+          "last_success_at": "2026-10-08T13:28:28.514Z",
+          "last_result_count": 8,
+          "last_change_at": "2026-10-08T13:28:28.514Z",
+          "empty_runs": 0,
+          "failures": 0,
+          "last_error": null
+        },
+        "hx470": {
+          "last_checked_at": "2026-10-08T13:28:28.514Z",
+          "last_success_at": "2026-10-08T13:28:28.514Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
         }
       },
-      "rotation_cursor": 3,
+      "rotation_cursor": 15,
       "last_full_sweep_at": null,
       "full_sweep_coverage": [
         "9955hx3d",
@@ -100,7 +203,19 @@
         "275hx",
         "aimax395",
         "7945hx",
-        "7945hx3d"
+        "7945hx3d",
+        "255hx",
+        "13980hx",
+        "8940hx",
+        "7940hx",
+        "13950hx",
+        "14900hx",
+        "13900hx",
+        "7845hx",
+        "8840hx",
+        "aimax390",
+        "14700hx",
+        "hx470"
       ]
     },
     "galaxy-buds4-pro": {

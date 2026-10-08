@@ -708,12 +708,15 @@ function mercadoLivreReportErrors(label, report) {
 function capByWholeLines(lines, max) {
   const out = [];
   let used = 0;
-  for (const line of lines) {
+  const footer = /Detalhes completos/.test(lines.at(-1) ?? '') ? lines.at(-1) : null;
+  const budget = footer ? max - footer.length - 1 : max;
+  for (const line of footer ? lines.slice(0, -1) : lines) {
     const add = (out.length ? 1 : 0) + line.length; // +1 do "\n"
-    if (used + add > max) break;
+    if (used + add > budget) break;
     out.push(line);
     used += add;
   }
+  if (footer) out.push(footer);
   return out.join("\n");
 }
 

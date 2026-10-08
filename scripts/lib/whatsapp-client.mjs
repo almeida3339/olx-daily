@@ -6,7 +6,8 @@ export function cleanWhatsAppText(message) {
     .replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, '')
     // Older queued alerts embed complete browser call logs in this section.
     // Keep the alert and item links; technical details remain in the dashboard.
-    .replace(/\nErros:[\s\S]*?(?=\n\n[^\n:]{1,70}:\s*\d+|\nColeta incompleta|\nSem novos|\nDetalhes completos|$)/, '\nErros: coleta incompleta; consulte os detalhes no painel.');
+    .replace(/\nErros:[\s\S]*?(?=\n\n[^\n:]{1,70}:\s*\d+|\nColeta incompleta|\nSem novos|\nDetalhes completos|$)/,
+      (section) => /Call log:|page\.goto|net::ERR_|Saiu com c[oó]digo/.test(section) ? '\nErros: coleta incompleta; consulte os detalhes no painel.' : section);
 }
 
 export async function sendWhatsApp(message, { fetchFn = fetch, env = process.env } = {}) {

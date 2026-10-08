@@ -1,13 +1,13 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-10-08T13:15:08.120Z",
+  "generated_at": "2026-10-08T13:29:48.983Z",
   "sources": [
     {
       "id": "olx",
       "label": "OLX Notebooks",
       "state": "healthy",
       "updated_at": "2026-10-07T19:54:03.854Z",
-      "age_ms": 62464266,
+      "age_ms": 63345129,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -32,7 +32,7 @@
       "label": "Enjoei Notebooks",
       "state": "healthy",
       "updated_at": "2026-10-08T11:01:31.922Z",
-      "age_ms": 8016198,
+      "age_ms": 8897061,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -57,7 +57,7 @@
       "label": "Enjoei Tênis 42",
       "state": "healthy",
       "updated_at": "2026-10-08T11:01:14.878Z",
-      "age_ms": 8033242,
+      "age_ms": 8914105,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -82,7 +82,7 @@
       "label": "Dockstations",
       "state": "healthy",
       "updated_at": "2026-10-08T13:08:58.687Z",
-      "age_ms": 369433,
+      "age_ms": 1250296,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -114,7 +114,7 @@
       "label": "Fitbit Air",
       "state": "healthy",
       "updated_at": "2026-10-08T11:01:16.422Z",
-      "age_ms": 8031698,
+      "age_ms": 8912561,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -146,7 +146,7 @@
       "label": "Lifefactory",
       "state": "healthy",
       "updated_at": "2026-10-08T11:01:16.895Z",
-      "age_ms": 8031225,
+      "age_ms": 8912088,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -178,7 +178,7 @@
       "label": "Tela Book3",
       "state": "healthy",
       "updated_at": "2026-10-08T11:01:17.354Z",
-      "age_ms": 8030766,
+      "age_ms": 8911629,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -210,7 +210,7 @@
       "label": "Melanger",
       "state": "healthy",
       "updated_at": "2026-10-08T11:01:17.844Z",
-      "age_ms": 8030276,
+      "age_ms": 8911139,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -242,7 +242,7 @@
       "label": "OnePlus Buds Pro 3",
       "state": "healthy",
       "updated_at": "2026-10-08T11:01:18.337Z",
-      "age_ms": 8029783,
+      "age_ms": 8910646,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -273,15 +273,15 @@
       "id": "google-pixel-watch-4",
       "label": "Google Pixel Watch 4",
       "state": "blocked",
-      "updated_at": "2026-10-08T13:09:26.378Z",
-      "age_ms": 341742,
+      "updated_at": "2026-10-08T13:18:05.251Z",
+      "age_ms": 703732,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
-        "partial": 4,
+        "partial": 5,
         "failed": 0,
-        "success_rate": 0.6,
-        "median_duration_ms": 15920
+        "success_rate": 0.5,
+        "median_duration_ms": 61035
       },
       "marketplaces": [
         {
@@ -296,7 +296,7 @@
           "state": "blocked",
           "total_terms": 1,
           "fresh_terms": 0,
-          "updated_at": "2026-10-08T13:09:26.378Z"
+          "updated_at": "2026-10-08T13:18:05.251Z"
         }
       ],
       "message": "Enjoei: Saudável (1/1 termos recentes) · OLX: Login, limite ou desafio exigem atenção (0/1 termos recentes)"
@@ -306,7 +306,7 @@
       "label": "Google Pixel Watch 5",
       "state": "healthy",
       "updated_at": "2026-10-08T11:01:20.273Z",
-      "age_ms": 8027847,
+      "age_ms": 8908710,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -338,7 +338,7 @@
       "label": "Oura Ring 5",
       "state": "healthy",
       "updated_at": "2026-10-08T11:01:20.717Z",
-      "age_ms": 8027403,
+      "age_ms": 8908266,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -370,7 +370,7 @@
       "label": "Monitores OLED",
       "state": "healthy",
       "updated_at": "2026-10-08T13:15:06.595Z",
-      "age_ms": 1525,
+      "age_ms": 882388,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -400,34 +400,34 @@
     {
       "id": "mercadolivre-notebooks",
       "label": "Mercado Livre Notebooks",
-      "state": "blocked",
-      "updated_at": "2026-10-08T13:08:21.008Z",
-      "age_ms": 407112,
+      "state": "partial",
+      "updated_at": "2026-10-08T13:28:28.484Z",
+      "age_ms": 80499,
       "invalid_snapshots": 0,
       "history": {
-        "sample": 4,
+        "sample": 6,
         "partial": 2,
         "failed": 0,
-        "success_rate": 0.5,
-        "median_duration_ms": 190258
+        "success_rate": 0.6666666666666666,
+        "median_duration_ms": 201554
       },
       "marketplaces": [
         {
           "label": "ML",
           "state": "partial",
           "total_terms": 22,
-          "fresh_terms": 8,
-          "updated_at": "2026-10-08T13:08:21.008Z"
+          "fresh_terms": 20,
+          "updated_at": "2026-10-08T13:28:28.484Z"
         }
       ],
-      "message": "Perfil ML exige login/verificação; pausa até 09/10/2026, 10:08:21"
+      "message": "ML: Cobertura parcial (20/22 termos recentes)"
     },
     {
       "id": "mercadolivre-oneplus-buds-pro-3",
       "label": "Mercado Livre OnePlus Buds Pro 3",
-      "state": "blocked",
+      "state": "healthy",
       "updated_at": "2026-10-02T23:58:17.654Z",
-      "age_ms": 479810466,
+      "age_ms": 480691329,
       "invalid_snapshots": 0,
       "history": {
         "sample": 1,
@@ -445,14 +445,14 @@
           "updated_at": "2026-10-02T23:58:17.654Z"
         }
       ],
-      "message": "Perfil ML exige login/verificação; pausa até 09/10/2026, 10:08:21"
+      "message": "ML: Saudável (1/1 termos recentes)"
     },
     {
       "id": "mercadolivre-google-pixel-watch-4",
       "label": "Mercado Livre Google Pixel Watch 4",
-      "state": "blocked",
+      "state": "healthy",
       "updated_at": "2026-10-02T23:57:35.780Z",
-      "age_ms": 479852340,
+      "age_ms": 480733203,
       "invalid_snapshots": 0,
       "history": {
         "sample": 1,
@@ -470,14 +470,14 @@
           "updated_at": "2026-10-02T23:57:35.780Z"
         }
       ],
-      "message": "Perfil ML exige login/verificação; pausa até 09/10/2026, 10:08:21"
+      "message": "ML: Saudável (1/1 termos recentes)"
     },
     {
       "id": "mercadolivre-google-pixel-watch-5",
       "label": "Mercado Livre Google Pixel Watch 5",
-      "state": "blocked",
+      "state": "healthy",
       "updated_at": "2026-10-02T23:58:00.850Z",
-      "age_ms": 479827270,
+      "age_ms": 480708133,
       "invalid_snapshots": 0,
       "history": {
         "sample": 1,
@@ -495,14 +495,14 @@
           "updated_at": "2026-10-02T23:58:00.850Z"
         }
       ],
-      "message": "Perfil ML exige login/verificação; pausa até 09/10/2026, 10:08:21"
+      "message": "ML: Saudável (1/1 termos recentes)"
     },
     {
       "id": "mercadolivre-dockstations",
       "label": "Mercado Livre Dockstations",
-      "state": "blocked",
+      "state": "healthy",
       "updated_at": "2026-10-02T23:59:13.825Z",
-      "age_ms": 479754295,
+      "age_ms": 480635158,
       "invalid_snapshots": 0,
       "history": {
         "sample": 2,
@@ -520,14 +520,14 @@
           "updated_at": "2026-10-02T23:59:13.825Z"
         }
       ],
-      "message": "Perfil ML exige login/verificação; pausa até 09/10/2026, 10:08:21"
+      "message": "ML: Saudável (2/2 termos recentes)"
     },
     {
       "id": "mercadolivre-fitbit-air",
       "label": "Mercado Livre Fitbit Air",
-      "state": "blocked",
+      "state": "healthy",
       "updated_at": "2026-10-02T23:59:30.426Z",
-      "age_ms": 479737694,
+      "age_ms": 480618557,
       "invalid_snapshots": 0,
       "history": {
         "sample": 2,
@@ -545,14 +545,14 @@
           "updated_at": "2026-10-02T23:59:30.426Z"
         }
       ],
-      "message": "Perfil ML exige login/verificação; pausa até 09/10/2026, 10:08:21"
+      "message": "ML: Saudável (1/1 termos recentes)"
     },
     {
       "id": "mercadolivre-lifefactory",
       "label": "Mercado Livre Lifefactory",
-      "state": "blocked",
+      "state": "healthy",
       "updated_at": "2026-10-02T23:59:51.690Z",
-      "age_ms": 479716430,
+      "age_ms": 480597293,
       "invalid_snapshots": 0,
       "history": {
         "sample": 2,
@@ -570,14 +570,14 @@
           "updated_at": "2026-10-02T23:59:51.690Z"
         }
       ],
-      "message": "Perfil ML exige login/verificação; pausa até 09/10/2026, 10:08:21"
+      "message": "ML: Saudável (1/1 termos recentes)"
     },
     {
       "id": "mercadolivre-tela-galaxybook3",
       "label": "Mercado Livre Tela Galaxy Book3",
-      "state": "blocked",
+      "state": "healthy",
       "updated_at": "2026-10-03T00:00:14.624Z",
-      "age_ms": 479693496,
+      "age_ms": 480574359,
       "invalid_snapshots": 0,
       "history": {
         "sample": 2,
@@ -595,14 +595,14 @@
           "updated_at": "2026-10-03T00:00:14.624Z"
         }
       ],
-      "message": "Perfil ML exige login/verificação; pausa até 09/10/2026, 10:08:21"
+      "message": "ML: Saudável (1/1 termos recentes)"
     },
     {
       "id": "mercadolivre-melanger",
       "label": "Mercado Livre Melanger",
-      "state": "blocked",
+      "state": "healthy",
       "updated_at": "2026-10-03T00:00:29.882Z",
-      "age_ms": 479678238,
+      "age_ms": 480559101,
       "invalid_snapshots": 0,
       "history": {
         "sample": 2,
@@ -620,14 +620,14 @@
           "updated_at": "2026-10-03T00:00:29.882Z"
         }
       ],
-      "message": "Perfil ML exige login/verificação; pausa até 09/10/2026, 10:08:21"
+      "message": "ML: Saudável (1/1 termos recentes)"
     },
     {
       "id": "mercadolivre-tenis-42",
       "label": "Mercado Livre Tênis 42",
-      "state": "blocked",
+      "state": "healthy",
       "updated_at": "2026-10-03T00:14:41.547Z",
-      "age_ms": 478826573,
+      "age_ms": 479707436,
       "invalid_snapshots": 0,
       "history": {
         "sample": 1,
@@ -645,14 +645,14 @@
           "updated_at": "2026-10-03T00:14:41.547Z"
         }
       ],
-      "message": "Perfil ML exige login/verificação; pausa até 09/10/2026, 10:08:21"
+      "message": "ML: Saudável (6/6 termos recentes)"
     },
     {
       "id": "mercadolivre-oled-monitores",
       "label": "Mercado Livre Monitores OLED",
-      "state": "blocked",
+      "state": "healthy",
       "updated_at": "2026-10-03T00:11:17.976Z",
-      "age_ms": 479030144,
+      "age_ms": 479911007,
       "invalid_snapshots": 0,
       "history": {
         "sample": 2,
@@ -670,7 +670,7 @@
           "updated_at": "2026-10-03T00:11:17.976Z"
         }
       ],
-      "message": "Perfil ML exige login/verificação; pausa até 09/10/2026, 10:08:21"
+      "message": "ML: Saudável (17/17 termos recentes)"
     },
     {
       "id": "notifications",
@@ -679,7 +679,7 @@
       "updated_at": null,
       "age_ms": null,
       "invalid_snapshots": 0,
-      "message": "5 entrega(s) bloqueada(s)",
+      "message": "4 entrega(s) bloqueada(s)",
       "outbox": [
         {
           "id": "13310427-7b03-48c4-8f1d-a40c756ef747",
@@ -712,14 +712,6 @@
           "attempts": 1,
           "next_attempt_at": null,
           "last_error": "CallMeBot HTTP 403"
-        },
-        {
-          "id": "ba389d82-208c-40a7-ada6-a22a454a4618",
-          "channel": "whatsapp",
-          "status": "blocked",
-          "attempts": 2,
-          "next_attempt_at": null,
-          "last_error": "CallMeBot HTTP 403: 403 Forbidden Forbidden You don't have permission to access this resource. Apache/2.4.29 (Ubuntu) Server at cmb-app.callmebot.com Port 443. Confira a autorização e a chave do CallMeBot; o provedor recusou a entrega."
         }
       ]
     }
