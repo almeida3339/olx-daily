@@ -11,6 +11,8 @@ try {
     $task.Settings.DisallowStartIfOnBatteries = $false
     $task.Settings.StopIfGoingOnBatteries = $false
     $task.Settings.ExecutionTimeLimit = 'PT4H'
+    $task.Settings.RestartCount = 2
+    $task.Settings.RestartInterval = 'PT15M'
     Set-ScheduledTask -InputObject $task -ErrorAction Stop | Out-Null
   }
   'OK: horarios perdidos recuperados, bateria permitida, limite de quatro horas.' | Set-Content -LiteralPath $logPath

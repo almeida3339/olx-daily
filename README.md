@@ -558,6 +558,9 @@ Cada coleta nova e promovida por `latest-run.json` apenas depois de snapshot, re
 - Tarefas locais recuperam horários perdidos, continuam na bateria e têm limite
   de quatro horas. O publicador impede execuções simultâneas no mesmo checkout.
   O catchup compara a última publicação com o horário previsto mais recente.
+  Falhas têm até duas novas tentativas com intervalo de 15 minutos; ausência de
+  conexão é registrada como falha. O marcador de publicação evita repetir uma
+  rodada que já conseguiu publicar seus dados.
 - Falhas transitórias de navegação OLX têm uma nova tentativa; ausência de cards
   sem mensagem explícita de busca vazia continua sendo falha. Verificação exige
   intervenção humana no perfil da watchlist, com `--visible`.
