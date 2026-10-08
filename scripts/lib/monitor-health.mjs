@@ -112,9 +112,11 @@ function coverageHealth(configured, coverage, { now, maxAgeMs, id, sourceBlocks 
 function dedupeNotificationOutbox(statuses) {
   const byId = new Map();
   const delivered = new Set(statuses.flatMap((status) => status?.notification_sent_ids ?? []));
+  const archived = new Map(statuses.flatMap((status) => status?.notification_archive ?? []).map((item) => [item.id, item.archived_at]));
   for (const status of statuses) {
     for (const item of asArray(status?.notification_outbox)) {
       if (delivered.has(item.id)) continue;
+      if (archived.has(item.id) && Date.parse(archived.get(item.id)) >= Date.parse(item.updated_at ?? item.created_at ?? 0)) continue;
       const key = item?.id ?? `${item?.channel ?? "?"}:${item?.dedupe_key ?? item?.last_error ?? "?"}`;
       const previous = byId.get(key);
       if (!previous || compareNotificationItems(item, previous) > 0) byId.set(key, item);
