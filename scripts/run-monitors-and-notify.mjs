@@ -321,6 +321,7 @@ export async function main({
   let notificationOutbox = recoverAbandonedNotifications(reconcileNotificationOutbox(localStatus, ciStatus), runNow);
   const currentStatus = (process.env.GITHUB_ACTIONS === "true" ? ciStatus : localStatus) ?? {};
   currentStatus.notification_sent_ids = [...new Set([...(localStatus?.notification_sent_ids ?? []), ...(ciStatus?.notification_sent_ids ?? [])])].slice(-500);
+  currentStatus.notification_archive = [...new Map([...(localStatus?.notification_archive ?? []), ...(ciStatus?.notification_archive ?? [])].map((item) => [item.id, item])).values()];
 
   const subject     = buildSubject(sources, errors);
   const body        = (priorNote ? `> ${priorNote}\n\n` : "") + buildBody(sources, errors);
@@ -446,6 +447,7 @@ export async function main({
     errors: errors.map(sanitizeErrorMessage),
   };
   status.notification_sent_ids = currentStatus.notification_sent_ids;
+  status.notification_archive = currentStatus.notification_archive;
 
   await writeDeliveryStatus(status);
   if (fsApi === fs) {

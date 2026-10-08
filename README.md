@@ -572,6 +572,11 @@ Cada coleta nova e promovida por `latest-run.json` apenas depois de snapshot, re
 - Erros do CallMeBot incluem uma resposta sanitizada do provedor. Credenciais e
   telefone são codificados nos parâmetros e não aparecem em logs públicos.
   Uma resposta HTTP 201 com `ERROR` não é considerada entrega bem-sucedida.
+- Para arquivar uma pendência sem apagar seu histórico, use
+  `node scripts/manage-notification-outbox.mjs --archive ID --source local`.
+  `--archive-blocked` seleciona todos os alertas bloqueados do ambiente indicado.
+  Repita com `--source ci` se o alerta estiver nos dois ambientes. `--retry ID`
+  também recupera um alerta arquivado para a fila ativa.
 
 ---
 
