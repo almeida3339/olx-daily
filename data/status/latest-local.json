@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-08T13:44:22.344Z",
+  "generated_at": "2026-10-08T19:00:07.460Z",
   "source": "local",
   "delivery": {
     "email": "skipped",
@@ -40,13 +40,14 @@
     "scope": "local-watchlists",
     "partial": true,
     "errors": [
+      "OLX: Saiu com código 1: Aviso: termo \"7845hx\" falhou (timeout CDP em Page.navigate) — pulando para o próximo.\n  Aviso: termo \"8840hx\" falhou (timeout CDP em Page.navigate) — pulando para o próximo.\n  Aviso: termo \"aimax390\" falhou (timeout CDP em Page.navigate) — pulando para o próximo.\n  Aviso: termo \"14700hx\" falhou (timeout CDP em Page.navigate) — pulando para o próximo.\n  Aviso: termo \"hx470\" falhou (timeout CDP em Page.navigate) — pulando para o próximo.\n  Aviso: termo \"12900hx\" falhou (timeout CDP em Page.navigate) — pulando para o próximo.\n  Aviso: termo \"12800hx\" falhou (timeout CDP em Page.navigate) — pulando para o próximo.\nColeta OLX parcial: 7 falha(s). Dados coletados e anúncios dos termos sem cobertura foram preservados.\nMonitor OLX falhou com exit code 1.\r\nNo C:\\Users\\docra\\downloads\\olx-daily\\scripts\\run-olx-monitor.ps1:84 caractere:5\r\n+     throw \"Monitor OLX falhou com exit code $LASTEXITCODE.\"\r\n+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + Cat…",
       "Google Pixel Watch 4: Saiu com código 1: Aviso: coleta OLX falhou — Cloudflare: OLX em pausa até 2026-10-09T13:09:26.378Z; abra o perfil com --visible para recuperação manual."
     ]
   },
   "notification_sent_ids": [
-    "ba389d82-208c-40a7-ada6-a22a454a4618"
+    "ba389d82-208c-40a7-ada6-a22a454a4618",
+    "a413ccff-b723-4daf-aed0-de0914dadf16"
   ],
-  "notification_recovery_at": "2026-10-08T13:24:21.154Z",
   "notification_archive": [
     {
       "id": "13310427-7b03-48c4-8f1d-a40c756ef747",
@@ -62,7 +63,7 @@
       "created_at": "2026-07-14T19:00:01.906Z",
       "updated_at": "2026-07-14T19:00:01.906Z",
       "sending_at": null,
-      "archived_at": "2026-10-08T13:44:22.344Z"
+      "archived_at": "2026-10-08T13:44:22.398Z"
     },
     {
       "id": "5b59576f-dc2a-4477-b9c1-ea904a79280f",
@@ -78,7 +79,7 @@
       "created_at": "2026-09-23T19:00:06.374Z",
       "updated_at": "2026-09-23T19:00:06.374Z",
       "sending_at": null,
-      "archived_at": "2026-10-08T13:44:22.344Z"
+      "archived_at": "2026-10-08T13:44:22.398Z"
     },
     {
       "id": "8dea8d94-5ccd-42a5-b1a6-4718d6ee1aee",
@@ -94,7 +95,7 @@
       "created_at": "2026-09-28T19:00:05.563Z",
       "updated_at": "2026-09-28T19:00:05.563Z",
       "sending_at": null,
-      "archived_at": "2026-10-08T13:44:22.344Z"
+      "archived_at": "2026-10-08T13:44:22.398Z"
     },
     {
       "id": "84904e9a-fb2d-455f-a4a6-d19355b1be90",
@@ -110,7 +111,7 @@
       "created_at": "2026-10-07T10:47:25.440Z",
       "updated_at": "2026-10-07T10:47:25.440Z",
       "sending_at": null,
-      "archived_at": "2026-10-08T13:44:22.344Z"
+      "archived_at": "2026-10-08T13:44:22.398Z"
     }
   ]
 }
