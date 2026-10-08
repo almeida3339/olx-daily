@@ -1,50 +1,44 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-08-27T19:01:17.487Z",
+  "generated_at": "2026-10-08T13:08:59.114Z",
+  "coverage_status": {
+    "OLX:aw2725df": {
+      "checked_at": "2026-10-08T13:09:10.070Z",
+      "last_success_at": "2026-10-08T13:09:10.070Z",
+      "state": "success",
+      "error": null
+    },
+    "OLX:mag274qp": {
+      "checked_at": "2026-10-08T13:09:10.070Z",
+      "last_success_at": "2026-10-08T13:09:10.070Z",
+      "state": "success",
+      "error": null
+    },
+    "OLX:27gx790a": {
+      "checked_at": "2026-10-08T13:09:10.070Z",
+      "last_success_at": "2026-10-08T13:09:10.070Z",
+      "state": "success",
+      "error": null
+    }
+  },
   "run": {
-    "date": "2026-08-27",
-    "timezone": "UTC",
+    "date": "2026-10-08",
+    "timezone": "America/Sao_Paulo",
     "id": "monitores-oled",
     "label": "Monitores OLED",
+    "started_at": "2026-10-08T13:08:59.114Z",
+    "completed_at": "2026-10-08T13:09:10.070Z",
     "partial": false,
     "errors": [],
     "scheduled_coverage": [
-      "Enjoei:aw2726dm",
-      "Enjoei:aw2725d",
-      "Enjoei:aw2725df",
-      "Enjoei:aw3225qf",
-      "Enjoei:aw3423dw",
-      "Enjoei:aw3423dwf",
-      "Enjoei:aw3425dw",
-      "Enjoei:odyssey g6 oled",
-      "Enjoei:ls32dg800",
-      "Enjoei:odyssey g9 oled",
-      "Enjoei:cepheus p1",
-      "Enjoei:mag 271qp",
-      "Enjoei:mag 274qp",
-      "Enjoei:mpg 491cqp",
-      "Enjoei:27gx790a",
-      "Enjoei:27gx704a",
-      "Enjoei:xg27acdng"
+      "OLX:aw2725df",
+      "OLX:mag274qp",
+      "OLX:27gx790a"
     ],
     "successful_coverage": [
-      "Enjoei:aw2726dm",
-      "Enjoei:aw2725d",
-      "Enjoei:aw2725df",
-      "Enjoei:aw3225qf",
-      "Enjoei:aw3423dw",
-      "Enjoei:aw3423dwf",
-      "Enjoei:aw3425dw",
-      "Enjoei:odyssey g6 oled",
-      "Enjoei:ls32dg800",
-      "Enjoei:odyssey g9 oled",
-      "Enjoei:cepheus p1",
-      "Enjoei:mag 271qp",
-      "Enjoei:mag 274qp",
-      "Enjoei:mpg 491cqp",
-      "Enjoei:27gx790a",
-      "Enjoei:27gx704a",
-      "Enjoei:xg27acdng"
+      "OLX:aw2725df",
+      "OLX:mag274qp",
+      "OLX:27gx790a"
     ],
     "failed_coverage": [],
     "configured_coverage": [
@@ -97,6 +91,25 @@
   },
   "items": [
     {
+      "id": "1540601015",
+      "url": "https://es.olx.com.br/norte-do-espirito-santo/informatica/monitores/monitor-oled-alienware-aw2725df-1540601015",
+      "title": "Monitor Oled Alienware AW2725DF",
+      "source": "OLX",
+      "term": "aw2725df",
+      "price_brl": 3000,
+      "location": "Vila Velha -  ES",
+      "status": "not_seen",
+      "first_seen": "2026-10-02",
+      "last_seen": "2026-10-02",
+      "out_of_scope_at": null,
+      "price_history": [
+        {
+          "at": "2026-10-02T10:37:48.422Z",
+          "price_brl": 3000
+        }
+      ]
+    },
+    {
       "id": "1526156960",
       "url": "https://rj.olx.com.br/rio-de-janeiro-e-regiao/informatica/monitores/monitor-dell-alienware-aw2725df-com-defeito-na-tela-1526156960",
       "title": "Monitor Dell Alienware AW2725DF - Com Defeito na Tela",
@@ -104,7 +117,7 @@
       "term": "aw2725df",
       "price_brl": 1500,
       "location": "Rio de Janeiro -  RJ",
-      "status": "active",
+      "status": "not_seen",
       "first_seen": "2026-08-14",
       "last_seen": "2026-08-27",
       "out_of_scope_at": null,

@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-03T00:14:41.562Z",
+  "updated_at": "2026-10-08T13:08:21.033Z",
   "global": {
     "requires_login": false,
-    "blocked_until": null,
-    "block_reason": null,
-    "blocked_at": null,
+    "blocked_until": "2026-10-09T13:08:21.032Z",
+    "block_reason": "challenge",
+    "blocked_at": "2026-10-08T13:08:21.032Z",
     "recovery_checked_at": "2026-10-02T23:53:38.562Z",
     "recovery_search": "https://lista.mercadolivre.com.br/informatica/portateis-acessorios/notebooks/290hx_SHIPPING*ORIGIN_10215068"
   },
@@ -74,9 +74,23 @@
           "empty_runs": 1,
           "failures": 0,
           "last_error": null
+        },
+        "7945hx3d": {
+          "last_checked_at": "2026-10-08T13:08:21.032Z",
+          "last_success_at": "2026-10-08T13:08:21.032Z",
+          "last_result_count": 0,
+          "last_change_at": null,
+          "empty_runs": 1,
+          "failures": 0,
+          "last_error": null
+        },
+        "255hx": {
+          "last_checked_at": "2026-10-08T13:08:21.032Z",
+          "failures": 1,
+          "last_error": "O Mercado Livre exibiu uma verificacao. Nada foi gravado."
         }
       },
-      "rotation_cursor": 6,
+      "rotation_cursor": 3,
       "last_full_sweep_at": null,
       "full_sweep_coverage": [
         "9955hx3d",
@@ -85,7 +99,8 @@
         "285hx",
         "275hx",
         "aimax395",
-        "7945hx"
+        "7945hx",
+        "7945hx3d"
       ]
     },
     "galaxy-buds4-pro": {

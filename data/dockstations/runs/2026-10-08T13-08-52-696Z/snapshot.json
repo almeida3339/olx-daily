@@ -1,23 +1,27 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-08-27T19:00:16.614Z",
+  "generated_at": "2026-10-08T13:08:52.696Z",
+  "coverage_status": {
+    "OLX:WD22TB4": {
+      "checked_at": "2026-10-08T13:08:58.687Z",
+      "last_success_at": "2026-10-08T13:08:58.687Z",
+      "state": "success",
+      "error": null
+    }
+  },
   "run": {
-    "date": "2026-08-27",
+    "date": "2026-10-08",
     "timezone": "America/Sao_Paulo",
     "id": "dockstations",
     "label": "Dockstations",
+    "started_at": "2026-10-08T13:08:52.696Z",
+    "completed_at": "2026-10-08T13:08:58.687Z",
     "partial": false,
     "errors": [],
     "scheduled_coverage": [
-      "Enjoei:SD25TB4",
-      "Enjoei:WD22TB4",
-      "OLX:SD25TB4",
       "OLX:WD22TB4"
     ],
     "successful_coverage": [
-      "Enjoei:SD25TB4",
-      "Enjoei:WD22TB4",
-      "OLX:SD25TB4",
       "OLX:WD22TB4"
     ],
     "failed_coverage": [],
@@ -41,25 +45,6 @@
   },
   "items": [
     {
-      "id": "1525109030",
-      "url": "https://mg.olx.com.br/regiao-de-uberlandia-e-uberaba/informatica/perifericos-de-computador/dell-thunderbolt-dock-wd22tb4-1525109030",
-      "title": "Dell Thunderbolt Dock WD22TB4",
-      "source": "OLX",
-      "term": "WD22TB4",
-      "price_brl": 500,
-      "location": "Uberlândia -  MG",
-      "status": "active",
-      "first_seen": "2026-08-10",
-      "last_seen": "2026-08-27",
-      "out_of_scope_at": null,
-      "price_history": [
-        {
-          "at": "2026-08-10T19:00:18.947Z",
-          "price_brl": 500
-        }
-      ]
-    },
-    {
       "id": "1524179594",
       "url": "https://am.olx.com.br/regiao-de-manaus/informatica/perifericos-de-computador/dell-thunderbolt-dock-wd22tb4-1524179594",
       "title": "dell thunderbolt dock wd22tb4",
@@ -67,14 +52,33 @@
       "term": "WD22TB4",
       "price_brl": 1,
       "location": "Manaus -  AM",
-      "status": "active",
+      "status": "not_seen",
       "first_seen": "2026-08-09",
-      "last_seen": "2026-08-27",
+      "last_seen": "2026-09-04",
       "out_of_scope_at": null,
       "price_history": [
         {
           "at": "2026-08-09T19:00:19.982Z",
           "price_brl": 1
+        }
+      ]
+    },
+    {
+      "id": "1525109030",
+      "url": "https://mg.olx.com.br/regiao-de-uberlandia-e-uberaba/informatica/perifericos-de-computador/dell-thunderbolt-dock-wd22tb4-1525109030",
+      "title": "Dell Thunderbolt Dock WD22TB4",
+      "source": "OLX",
+      "term": "WD22TB4",
+      "price_brl": 500,
+      "location": "Uberlândia -  MG",
+      "status": "not_seen",
+      "first_seen": "2026-08-10",
+      "last_seen": "2026-08-27",
+      "out_of_scope_at": null,
+      "price_history": [
+        {
+          "at": "2026-08-10T19:00:18.947Z",
+          "price_brl": 500
         }
       ]
     },

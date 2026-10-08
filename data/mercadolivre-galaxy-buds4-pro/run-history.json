@@ -1,37 +1,39 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-02T23:57:19.695Z",
+  "updated_at": "2026-10-08T13:13:29.619Z",
   "runs": [
-    {
-      "run_id": "2026-07-13T11-49-11-815Z",
-      "committed_at": "2026-07-13T11:49:11.826Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 15246,
-      "item_count": 0,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "galaxy-buds4-pro",
-        "label": "Galaxy Buds4 Pro",
-        "collected_count": 0,
-        "failed_term_count": 0,
-        "quarantined_item_count": 0
-      }
-    },
     {
       "run_id": "2026-10-02T23-57-19-682Z",
       "committed_at": "2026-10-02T23:57:19.688Z",
+      "completed_at": "2026-10-02T23:57:19.682Z",
       "outcome": "success",
       "partial": false,
       "duration_ms": 18743,
       "item_count": 0,
-      "quarantined_item_count": 0,
       "metadata": {
         "source": "galaxy-buds4-pro",
         "label": "Galaxy Buds4 Pro",
         "collected_count": 0,
         "failed_term_count": 0,
-        "quarantined_item_count": 0
+        "quarantined_item_count": 0,
+        "in_progress": false
+      }
+    },
+    {
+      "run_id": "2026-07-13T11-49-11-815Z",
+      "committed_at": "2026-07-13T11:49:11.826Z",
+      "completed_at": "2026-07-13T11:49:11.815Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 15246,
+      "item_count": 0,
+      "metadata": {
+        "source": "galaxy-buds4-pro",
+        "label": "Galaxy Buds4 Pro",
+        "collected_count": 0,
+        "failed_term_count": 0,
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     }
   ]
