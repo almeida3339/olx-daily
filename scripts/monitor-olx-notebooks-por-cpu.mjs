@@ -106,7 +106,10 @@ async function main() {
       && savedProgress.baseline_snapshot && savedProgress.quality_version === OLX_QUALITY_VERSION) {
     resumedProgress = savedProgress;
     cpuTerms = savedProgress.scheduled_terms;
-    previousSnapshot = savedProgress.baseline_snapshot;
+    // Uma rodada parcial já finalizada pode ter sido notificada. Comparar com
+    // seu último snapshot evita reapresentar como novos os IDs já publicados.
+    previousSnapshot = savedProgress.state === 'partial' && previousSnapshot
+      ? previousSnapshot : savedProgress.baseline_snapshot;
     runTimestamp = savedProgress.started_at;
     console.log(`Retomando somente ${savedProgress.pending_terms.length} termo(s) pendente(s); ${savedProgress.successful_terms.length} concluído(s) preservado(s).`);
   } else {
