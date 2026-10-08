@@ -18,9 +18,13 @@ export function createDashboardParser({ summarizeMachine, formatDateTimeBrt, pri
     };
     const newItems = extractItems(txt, /^## Novos (an[úu]ncios|produtos|notebooks)/m, detailsByUrl).filter(withinCap);
     const priceItems = extractItems(txt, /^## Mudan[cç]as? de pre[cç]o/m, detailsByUrl).filter(withinCap);
+    const pendingItems = extractItems(txt, /^## Candidatos pendentes de confer[eê]ncia/m, detailsByUrl)
+      .filter(item => item.url).filter(withinCap);
     return {
       newCount: newItems.length,
       priceCount: priceItems.length,
+      pendingCount: pendingItems.length,
+      pendingItems: pendingItems.slice(0, maxItems),
       date,
       newItems: newItems.slice(0, maxItems),
       priceItems: priceItems.slice(0, maxItems),
@@ -58,7 +62,7 @@ export function createDashboardParser({ summarizeMachine, formatDateTimeBrt, pri
     title = title.replace(/^\s*[—–\-,\s]+/, "").replace(/[—–\-,\s]+$/, "");
     const fullTitle = title || "—";
     const shortTitle = fullTitle.length > 72 ? fullTitle.slice(0, 72) + "…" : fullTitle;
-    return { title: shortTitle, fullTitle, price, url, priceFrom, priceTo, machine: summarizeMachine(fullTitle, url ? detailsByUrl.get(url) : null) };
+    return { title: shortTitle, fullTitle, price, url, priceFrom, priceTo, validationReason: raw.match(/Pendente:\s*(.+)$/)?.[1] ?? null, machine: summarizeMachine(fullTitle, url ? detailsByUrl.get(url) : null) };
   }
 
   function formatRunLabelFromFile(file, fallbackDate) {

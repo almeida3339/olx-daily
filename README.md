@@ -1,5 +1,19 @@
 # Monitor OLX, Enjoei & Mercado Livre — monitoramento de produtos
 
+## Validação e retomada de notebooks OLX
+
+- As seis CPUs com ofertas no orçamento observado são consultadas primeiro: 14700HX, 13980HX, 14900HX, 13900HX, 12900HX e 12800HX. As demais têm intervalo de 24 horas desde o último sucesso (`OLX_LOW_PRIORITY_INTERVAL_HOURS`); falhas ou ausência de cobertura não contam como sucesso.
+- `-FullSweep` em `scripts/run-olx-monitor.ps1` consulta todos os termos. O CLI correspondente aceita `--full-sweep`; `--cpu` consulta explicitamente os termos solicitados.
+- Preço é lido do elemento do anúncio ou de sua oferta estruturada, comparado com a listagem. Divergências de preço/especificações, possível parcela/entrada ou falta de evidência deixam o candidato pendente. RAM do sistema é separada da VRAM.
+- Descrição reprovada mantém o anúncio rejeitado e fora das ofertas válidas. Pendentes aparecem em seção própria do relatório/painel e não entram nos alertas de novas ofertas ou alterações de preço válidas. “Validado” é conferência automática dos dados, sem confirmação de estado físico, autenticidade ou entrega.
+- Cache de detalhe só reusa validação da versão atual, com título/preço iguais e leitura de até 12 horas. O histórico anterior precisa de nova leitura; não recebe validação retroativa.
+- A conexão é renovada após a pausa entre lotes. Falha transitória de busca recebe uma tentativa adicional após 30 segundos, com sessão nova; não repete os termos já concluídos.
+- `data/olx/collection-progress.json` grava a fila após cada termo. Uma nova execução pode retomar uma rodada incompleta de até seis horas, com a mesma configuração, preservando resultados concluídos e a referência anterior. Artefatos do relatório continuam sendo salvos por lote e ao final.
+- Verificação, login ou limite interrompem a rodada e preservam os termos restantes. A pausa de acesso é de 24 horas; após liberação manual, `-ResumeAfterVerification` / `--resume-after-verification` permite retomar. `-FullSweep` não contorna esse bloqueio.
+- O desenho aprofundado das futuras buscas por modelos e do ranking está em [docs/olx-discovery-and-opportunity-plan.md](docs/olx-discovery-and-opportunity-plan.md). Esses dois recursos ainda não foram ativados.
+
+## Visão geral
+
 Sistema modular de monitoramento diário (2× por dia, 07:00 e 16:00 BRT). Busca em OLX (scraping + Playwright) e Enjoei (GraphQL API). Envia WhatsApp (CallMeBot); e-mail (Gmail) é opcional e está desativado por padrão. O Mercado Livre roda sob demanda. Dashboard HTML em GitHub Pages. Requer Node.js 20 ou superior (CI usa Node 22).
 
 **Principais características:**

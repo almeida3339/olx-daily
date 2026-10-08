@@ -3,6 +3,8 @@ param(
   [int]$MaxPerCpu = 12,
   [switch]$OpenDetails,
   [switch]$ListingOnly,
+  [switch]$FullSweep,
+  [switch]$ResumeAfterVerification,
   [switch]$Foreground,
   [switch]$ForceRestartChrome
 )
@@ -76,6 +78,8 @@ if ($OpenDetails) {
 if ($ListingOnly) {
   $npmArgs += "--listing-only"
 }
+if ($FullSweep) { $npmArgs += "--full-sweep" }
+if ($ResumeAfterVerification) { $npmArgs += "--resume-after-verification" }
 
 Push-Location $root
 try {

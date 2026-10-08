@@ -7,9 +7,7 @@ import {
   extractRamGb,
   extractStorageGb,
   extractGpuLabel,
-  normalizeCpuText,
   textContainsCpuTerm,
-  has32GbRam,
   isNotebookCategoryUrl,
   extractOlxId,
   normalizeText,
@@ -19,7 +17,8 @@ import { mergeMonitorSnapshot } from "./lib/monitor-core.mjs";
 import { classifyMonitorError } from "./lib/monitor-errors.mjs";
 import { sanitizeErrorMessage } from "./lib/notification-status.mjs";
 import { DEFAULT_CPU_TERMS, cpuSearchQuery } from "./lib/cpu-terms.mjs";
-import { commitMonitorRun, readLatestValidSnapshot } from "./lib/monitor-runtime.mjs";
+import { commitMonitorRun, readLatestValidSnapshot, readJsonValidated, writeJsonAtomic } from "./lib/monitor-runtime.mjs";
+import { OLX_QUALITY_VERSION, orderOlxCpuTerms, planOlxCpuTerms, olxSpecs, pendingOlxItem, validateOlxNotebook, readOlxNotebookDetail, notebookExclusionReason, assertOlxAccessible, isValidatedOlxItem } from "./lib/olx-notebook-quality.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const workspaceRoot = path.resolve(__dirname, "..");
@@ -41,41 +40,6 @@ const RAW_SCROLL_DELAY_MS = Number(process.env.OLX_SCROLL_DELAY_MS ?? 350);
 const RAW_STABLE_ROUNDS = Number(process.env.OLX_STABLE_ROUNDS ?? 2);
 
 
-const EXCLUDE_PATTERNS = [
-  "sucata",
-  "defeito",
-  "avaria",
-  "quebrado",
-  "quebrada",
-  "placa-mãe",
-  "placa mae",
-  "placa mãe",
-  "motherboard",
-  "carcaça",
-  "carcaca",
-  "peças",
-  "pecas",
-  "reparo",
-  "conserto",
-  "não liga",
-  "nao liga",
-  "não ligou",
-  "nao ligou",
-  "não funciona",
-  "nao funciona",
-  "surto elétrico",
-  "surto eletrico",
-  "queimou",
-  "queimada",
-  "retirada de peças",
-  "retirada de pecas",
-  "problema",
-  "mini pc",
-  "mini-pc",
-  "desktop",
-  "computador de mesa",
-];
-
 const args = process.argv.slice(2);
 const headless = args.includes("--headless");
 const visible = args.includes("--visible"); // mostra a janela (padrão: fora da tela, não atrapalha o trabalho)
@@ -84,7 +48,11 @@ const debug = args.includes("--debug");
 const forceOpenDetails = args.includes("--open-details");
 const listingOnly = args.includes("--listing-only");
 const cpuArg = getOptionValue(args, "--cpu");
-const cpuTerms = cpuArg ? cpuArg.split(",").map((s) => s.trim().toLowerCase()).filter(Boolean) : DEFAULT_CPU_TERMS;
+const configuredCpuTerms = cpuArg ? cpuArg.split(",").map((s) => s.trim().toLowerCase()).filter(Boolean) : DEFAULT_CPU_TERMS;
+let cpuTerms = orderOlxCpuTerms(configuredCpuTerms);
+let resumedProgress = null;
+const progressFile = path.join(automationRoot, "collection-progress.json");
+const RESUME_MAX_AGE_MS = 6 * 3600_000;
 const useCurrentChrome = args.includes("--current-chrome");
 const useRealProfile = args.includes("--real-profile");
 const profileDirectory = getOptionValue(args, "--profile-directory") ?? "Default";
@@ -119,11 +87,35 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
 async function main() {
   const now = new Date();
   const runDate = now.toISOString().slice(0, 10);
-  const runTimestamp = now.toISOString();
+  let runTimestamp = now.toISOString();
 
   const previousSnapshotResult = await readLatestValidSnapshot(automationRoot);
   const previousSnapshotPath = previousSnapshotResult.file ? path.join(automationRoot, previousSnapshotResult.file) : null;
-  const previousSnapshot = previousSnapshotResult.snapshot;
+  let previousSnapshot = previousSnapshotResult.snapshot;
+  const savedProgress = await readJsonValidated(progressFile).catch(() => null);
+  if (Date.parse(savedProgress?.blocked_until ?? '') > now.getTime() && !args.includes('--resume-after-verification')) {
+    console.error(`OLX bloqueada até ${savedProgress.blocked_until}. Resolva a verificação antes de usar --resume-after-verification.`);
+    process.exitCode = 1;
+    return;
+  }
+  const sameConfiguration = savedProgress?.configuration === configuredCpuTerms.join(',');
+  if (!args.includes('--full-sweep') && sameConfiguration && savedProgress.pending_terms?.length
+      && now.getTime() - Date.parse(savedProgress.started_at) < RESUME_MAX_AGE_MS
+      && Array.isArray(savedProgress.collected) && Array.isArray(savedProgress.successful_terms)
+      && Array.isArray(savedProgress.scheduled_terms) && savedProgress.scheduled_terms.every(t => configuredCpuTerms.includes(t))
+      && savedProgress.baseline_snapshot && savedProgress.quality_version === OLX_QUALITY_VERSION) {
+    resumedProgress = savedProgress;
+    cpuTerms = savedProgress.scheduled_terms;
+    previousSnapshot = savedProgress.baseline_snapshot;
+    runTimestamp = savedProgress.started_at;
+    console.log(`Retomando somente ${savedProgress.pending_terms.length} termo(s) pendente(s); ${savedProgress.successful_terms.length} concluído(s) preservado(s).`);
+  } else {
+    cpuTerms = planOlxCpuTerms(configuredCpuTerms, previousSnapshot, {
+      now: now.getTime(), fullSweep: Boolean(cpuArg) || args.includes('--full-sweep'),
+      lowPriorityIntervalMs: Number(process.env.OLX_LOW_PRIORITY_INTERVAL_HOURS ?? 24) * 3600_000,
+    });
+  }
+  console.log(`Plano OLX: ${cpuTerms.length}/${configuredCpuTerms.length} termos nesta rodada; CPUs prioritárias primeiro.`);
 
   console.log(`Execução: ${runTimestamp}`);
   console.log(`Snapshot anterior: ${previousSnapshotPath ?? "(nenhum)"}`);
@@ -135,7 +127,7 @@ async function main() {
     return;
   }
 
-  const { page, close } = useCurrentChrome
+  let { page, close } = useCurrentChrome
     ? await connectToCurrentChrome(cdpUrl)
     : useRealProfile
     ? await launchRealChromeProfile(profileDirectory, headless)
@@ -151,35 +143,57 @@ async function main() {
     await collectOlxTerms({
       runDate, runTimestamp, previousSnapshot, transport: "playwright",
       collectTerm: (term) => collectForCpuTerm(page, term, maxAdsPerCpu, previousSnapshot),
+      resetSession: async () => {
+        const context = page.context();
+        await page.close().catch(() => {});
+        page = await context.newPage();
+        page.setDefaultTimeout(30000);
+        page.setDefaultNavigationTimeout(60000);
+      },
     });
   } finally {
+    if (useCurrentChrome) await page.close().catch(() => {});
     await close();
   }
 }
 
 async function runWithRawCdp({ cdpUrl, runDate, runTimestamp, previousSnapshot }) {
-  const tab = await openOrReuseCdpTab(cdpUrl);
-  try {
+  let tab;
+  const resetSession = async () => {
+    await tab?.closeTab().catch(() => {});
+    await fetchJson(`${cdpOrigin(cdpUrl)}/json/version`);
+    tab = await openOrReuseCdpTab(cdpUrl);
     await tab.send("Page.enable");
     await tab.send("Runtime.enable");
-    if (blockAssets) {
-      await installRawRequestBlocking(tab);
-    }
+    if (blockAssets) await installRawRequestBlocking(tab);
+    console.log('Sessão CDP OLX renovada.');
+  };
+  try {
+    await resetSession();
 
     await collectOlxTerms({
       runDate, runTimestamp, previousSnapshot, transport: "cdp",
       collectTerm: (term) => collectForCpuTermRawCdp(tab, term, maxAdsPerCpu, previousSnapshot),
+      resetSession,
     });
   } finally {
-    await tab.closeTab();
+    await tab?.closeTab().catch(() => {});
   }
 
 }
 
-async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transport, collectTerm }) {
-  const collected = [];
-  const successfulTerms = [];
+async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transport, collectTerm, resetSession }) {
+  const collected = [...(resumedProgress?.collected ?? [])];
+  const successfulTerms = [...(resumedProgress?.successful_terms ?? [])];
   const failedTerms = [];
+  let blockedUntil = null;
+  const persistProgress = async (inProgress) => writeJsonAtomic(progressFile, {
+    schema_version: 1, quality_version: OLX_QUALITY_VERSION, configuration: configuredCpuTerms.join(','),
+    started_at: runTimestamp, updated_at: new Date().toISOString(), state: inProgress ? 'collecting' : failedTerms.length ? 'partial' : 'completed',
+    scheduled_terms: cpuTerms, successful_terms: successfulTerms, collected,
+    pending_terms: cpuTerms.filter(term => !successfulTerms.includes(term)),
+    baseline_snapshot: previousSnapshot ?? { items: [] }, blocked_until: blockedUntil,
+  }, { validate: null });
 
   const saveProgress = async (inProgress) => {
     const savedAt = new Date();
@@ -193,8 +207,7 @@ async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transp
         completed_at: inProgress ? null : savedAt.toISOString(),
         in_progress: inProgress,
         phase: inProgress ? "collecting" : failedTerms.length ? "partial" : "completed",
-        partial: inProgress || failedTerms.length > 0 || unattemptedTerms.length > 0
-          || cpuTerms.length < DEFAULT_CPU_TERMS.length,
+        partial: inProgress || failedTerms.length > 0 || unattemptedTerms.length > 0,
         successful_terms: [...successfulTerms],
         failed_terms: [...failedTerms],
         errors: [...failedTerms],
@@ -212,28 +225,47 @@ async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transp
         source: "olx-notebooks", transport, collection_started_at: runTimestamp,
         collected_count: collected.length, failed_term_count: failedTerms.length,
         successful_term_count: successfulTerms.length, in_progress: inProgress,
+        validated_count: collected.filter(isValidatedOlxItem).length,
+        pending_count: collected.filter(item => item.validation?.state === 'pending').length,
+        rejected_count: collected.filter(item => item.validation?.state === 'rejected').length,
       },
     });
     console.log(`${inProgress ? "Progresso do lote" : "Snapshot"} salvo: ${committed.legacySnapshotPath}`);
     if (!inProgress) console.log(`Relatório salvo: ${committed.legacyReportPath}`);
     if (committed.invalidItems.length) console.warn(`${committed.invalidItems.length} item(ns) foram para a quarentena.`);
+    await persistProgress(inProgress);
   };
 
   try {
-    await forEachOlxTerm(cpuTerms, async (term) => {
+    await forEachOlxTerm(cpuTerms.filter(term => !successfulTerms.includes(term)), async (term) => {
       try {
-        const results = await collectTerm(term);
+        let results;
+        try { results = await collectTerm(term); }
+        catch (error) {
+          if (!classifyMonitorError(error).retriable) throw error;
+          console.warn(`Falha transitória em ${term}; renovando sessão e tentando este termo uma vez após 30 s.`);
+          await delay(30_000);
+          try { await resetSession(); }
+          catch (sessionError) { sessionError.sessionUnavailable = true; throw sessionError; }
+          results = await collectTerm(term);
+        }
         collected.push(...results);
         successfulTerms.push(term);
-        console.log(`  ${results.length} anúncio(s) aceito(s).`);
+        console.log(`  ${results.filter(isValidatedOlxItem).length} validado(s), ${results.filter(x => x.validation?.state === 'pending').length} pendente(s), ${results.filter(x => x.validation?.state === 'rejected').length} rejeitado(s).`);
       } catch (error) {
         const message = sanitizeErrorMessage(error?.message ?? error);
         failedTerms.push({ term, error: message, kind: classifyMonitorError(error).kind });
         console.warn(`  Aviso: termo "${term}" falhou (${message}) — pulando para o próximo.`);
+        if (error.sessionUnavailable) throw error;
+        if (['challenge', 'authentication', 'rate_limited'].includes(classifyMonitorError(error).kind)) {
+          blockedUntil = new Date(Date.now() + 24 * 3600_000).toISOString();
+          throw error;
+        }
       }
-    }, { onBatchCompleted: () => saveProgress(true) });
+      await persistProgress(true);
+    }, { onBatchCompleted: () => saveProgress(true), onBatchResumed: resetSession });
   } catch (error) {
-    failedTerms.push({ term: "coleta", error: sanitizeErrorMessage(error?.message ?? error), kind: classifyMonitorError(error).kind });
+    if (!failedTerms.some(f => f.error === sanitizeErrorMessage(error?.message ?? error))) failedTerms.push({ term: "coleta", error: sanitizeErrorMessage(error?.message ?? error), kind: classifyMonitorError(error).kind });
     await saveProgress(false);
     throw error;
   }
@@ -310,7 +342,7 @@ async function connectToCurrentChrome(cdpEndpoint) {
     throw new Error("Conectei ao Chrome, mas não encontrei nenhum contexto de navegador.");
   }
 
-  const page = context.pages()[0] ?? (await context.newPage());
+  const page = await context.newPage();
   return { page, close: async () => {} };
 }
 
@@ -377,12 +409,13 @@ async function collectForCpuTerm(page, cpuTerm, maxCards, previousSnapshot) {
       console.log(`  Abrindo candidato ${index + 1}/${toOpen.length}: R$ ${card.price_brl} - ${card.title}`);
     }
     try {
-      const enriched = await withTimeout(enrichAd(page, card), DETAIL_TIMEOUT_MS, `timeout ao abrir anúncio ${card.url}`);
-      validated.push(enriched ?? listingItem);
+      const enriched = await enrichAd(page, card);
+      validated.push(enriched);
       if (validated.length >= maxCards) break;
     } catch (error) {
       console.warn(`  Aviso: pulei anúncio por falha (${error.message}): ${card.url}`);
-      validated.push(listingItem);
+      if (['challenge', 'authentication', 'rate_limited'].includes(classifyMonitorError(error).kind)) throw error;
+      validated.push(pendingOlxItem(listingItem, sanitizeErrorMessage(error.message)));
       if (validated.length >= maxCards) break;
     }
   }
@@ -450,11 +483,12 @@ async function collectForCpuTermRawCdp(tab, cpuTerm, maxCards, previousSnapshot)
       }
       try {
         const enriched = await enrichAdRawCdp(cdpUrl, card);
-        validated.push(enriched ?? listingItem);
+        validated.push(enriched);
         if (validated.length >= maxCards) break;
       } catch (error) {
         console.warn(`  Aviso: pulei anúncio por falha (${error.message}): ${card.url}`);
-        validated.push(listingItem);
+        if (['challenge', 'authentication', 'rate_limited'].includes(classifyMonitorError(error).kind)) throw error;
+        validated.push(pendingOlxItem(listingItem, sanitizeErrorMessage(error.message)));
         if (validated.length >= maxCards) break;
       }
     }
@@ -484,6 +518,13 @@ async function connectRawCdpTarget(target, origin) {
       resolve(message);
     }
   };
+  ws.onclose = () => {
+    for (const request of pending.values()) {
+      clearTimeout(request.timer);
+      request.reject(new Error('network: conexão CDP encerrada'));
+    }
+    pending.clear();
+  };
 
   await new Promise((resolve, reject) => {
     const timer = setTimeout(() => reject(new Error("timeout ao conectar no WebSocket CDP")), 10_000);
@@ -499,13 +540,15 @@ async function connectRawCdpTarget(target, origin) {
 
   const send = (method, params = {}, timeoutMs = 15_000) =>
     new Promise((resolve, reject) => {
+      if (ws.readyState !== WebSocket.OPEN) return reject(new Error('network: conexão CDP indisponível'));
       const message = { id: ++id, method, params };
       const timer = setTimeout(() => {
         pending.delete(message.id);
         reject(new Error(`timeout CDP em ${method}`));
       }, timeoutMs);
       pending.set(message.id, { resolve, reject, timer });
-      ws.send(JSON.stringify(message));
+      try { ws.send(JSON.stringify(message)); }
+      catch (error) { clearTimeout(timer); pending.delete(message.id); reject(error); }
     });
 
   return {
@@ -525,23 +568,18 @@ async function waitForRawCardsFast(tab) {
   const started = Date.now();
   while (Date.now() - started < 6_000) {
     const title = await rawEvaluate(tab, "document.title").catch(() => "");
-    if (/cloudflare|attention required/i.test(title ?? "")) {
-      await delay(2500);
-      continue;
-    }
+    assertOlxAccessible(title);
 
     const count = await rawEvaluate(tab, "document.querySelectorAll('section.olx-adcard').length").catch(() => 0);
     if (Number(count) > 0) return true;
 
-    const bodyText = await rawEvaluate(tab, "document.body?.innerText?.slice(0, 1500) || ''").catch(() => "");
-    if (/0\s+resultados?|nao encontramos|sem resultados|nenhum resultado/i.test(normalizeText(bodyText))) return false;
-
-    const readyState = await rawEvaluate(tab, "document.readyState").catch(() => "");
-    if (readyState === "complete" && Date.now() - started > 3_500) return false;
+    const bodyText = await rawEvaluate(tab, "document.body?.innerText?.slice(0, 4000) || ''");
+    assertOlxAccessible(bodyText);
+    if (/(?:^|\n)\s*0\s+resultados?\b|nao encontramos|sem resultados|nenhum resultado/i.test(normalizeText(bodyText))) return false;
 
     await delay(700);
   }
-  return false;
+  throw new Error('timeout: OLX não apresentou resultados nem confirmação de busca vazia');
 }
 
 async function collectCardsRawCdp(tab, maxCards) {
@@ -604,29 +642,22 @@ async function enrichAdRawCdp(cdpEndpoint, card) {
     }
     await navigateRawCdp(tab, card.url);
     await waitForRawBody(tab);
-    const bodyText = (await rawEvaluate(tab, "document.body?.innerText || ''")) ?? "";
+    const detail = await rawEvaluate(tab, `(${readOlxNotebookDetail.toString()})()`);
+    const bodyText = detail.body_text;
     const title = card.title;
-    const detailText = `${title}\n${bodyText}`;
-
-    if (hasExcludedKeyword(title) || hasExcludedKeyword(bodyText)) return null;
-    if (!textContainsCpuTerm(detailText, card.cpu_term)) return null;
 
     return {
+      ...validateOlxNotebook(listingCardToItem(card), detail),
       id: extractOlxId(card.url),
       url: card.url,
       title,
       cpu_term: card.cpu_term,
-      price_brl: parseBrlPrice(bodyText) ?? card.price_brl,
-      ram_gb: extractRamGb(detailText),
-      storage_gb: extractStorageGb(detailText),
-      gpu: extractGpuLabel(detailText),
       location: extractLocationFromText(bodyText),
       condition: extractConditionFromText(bodyText),
       status: "active",
       first_seen: null,
       last_seen: null,
       notes: null,
-      desc_checked: true,
     };
   } finally {
     await tab.closeTab();
@@ -636,6 +667,7 @@ async function enrichAdRawCdp(cdpEndpoint, card) {
 async function waitForRawBody(tab) {
   const started = Date.now();
   while (Date.now() - started < DETAIL_TIMEOUT_MS) {
+    assertOlxAccessible(await rawEvaluate(tab, "document.body?.innerText?.slice(0, 4000) || ''"));
     const textLength = await rawEvaluate(tab, "document.body?.innerText?.length || 0").catch(() => 0);
     if (Number(textLength) > 800) return;
     await delay(800);
@@ -651,21 +683,21 @@ function listingCardToItem(card) {
     title: card.title,
     cpu_term: card.cpu_term,
     price_brl: card.price_brl,
-    ram_gb: card.ram_gb ?? extractRamGb(listingText),
-    storage_gb: card.storage_gb ?? extractStorageGb(listingText),
-    gpu: card.gpu ?? extractGpuLabel(listingText),
+    ...olxSpecs(listingText),
     location: card.location ?? null,
     condition: null,
     status: "active",
     first_seen: null,
     last_seen: null,
     notes: listingOnly ? "Validado apenas pela página de listagem; descrição do anúncio não foi aberta." : null,
+    desc_checked: false,
+    validation: { version: OLX_QUALITY_VERSION, state: 'pending', reasons: ['Descrição e preço integral ainda não conferidos'] },
   };
 }
 
 function needsDetailEnrichment(item) {
-  // GPU is opportunistic: capture it from listing or cached details, but do not open an ad only for GPU.
-  return item.ram_gb == null || item.storage_gb == null;
+  // A qualidade exige RAM, armazenamento e GPU para classificar a oferta.
+  return item.ram_gb == null || item.storage_gb == null || item.gpu == null;
 }
 
 function getReusablePreviousEnrichedItem(previousSnapshot, card) {
@@ -673,6 +705,10 @@ function getReusablePreviousEnrichedItem(previousSnapshot, card) {
   const key = current.id ?? current.url;
   const previous = (previousSnapshot?.items ?? []).find((item) => (item.id ?? item.url) === key);
   if (!previous) return null;
+  if (!isValidatedOlxItem(previous)) return null;
+  if (previous.title !== current.title || previous.price_brl !== current.price_brl) return null;
+  if (Date.now() - Date.parse(previous.validation.checked_at ?? '') > 12 * 3600_000
+      || !Number.isFinite(Date.parse(previous.validation.checked_at ?? ''))) return null;
   if ((previous.notes ?? "").includes("Validado apenas")) return null;
 
   // Não reusa item da faixa do relatório cuja descrição nunca foi verificada
@@ -684,12 +720,13 @@ function getReusablePreviousEnrichedItem(previousSnapshot, card) {
   const merged = {
     ...previous,
     ...current,
-    ram_gb: current.ram_gb ?? previous.ram_gb ?? null,
-    storage_gb: current.storage_gb ?? previous.storage_gb ?? null,
-    gpu: current.gpu ?? previous.gpu ?? null,
+    ram_gb: previous.ram_gb,
+    storage_gb: previous.storage_gb,
+    gpu: previous.gpu,
     condition: previous.condition ?? current.condition ?? null,
     notes: previous.notes,
     desc_checked: previous.desc_checked ?? false,
+    validation: previous.validation,
     status: "active",
   };
   return needsDetailEnrichment(merged) ? null : merged;
@@ -803,7 +840,7 @@ function randomBetween(min, max) {
 // mesmo lote, pausa longa (olxInterBatchDelayMs) ao cruzar para o próximo lote
 // de olxBatchSize termos. Sem pacing (--no-pacing), roda tudo em sequência como
 // antes — sem pausa nenhuma, igual ao comportamento anterior a esta mudança.
-async function forEachOlxTerm(terms, fn, { onBatchCompleted = async () => {} } = {}) {
+async function forEachOlxTerm(terms, fn, { onBatchCompleted = async () => {}, onBatchResumed = async () => {} } = {}) {
   for (let index = 0; index < terms.length; index += 1) {
     const crossesBatch = index > 0 && index % olxBatchSize === 0;
     if (crossesBatch) await onBatchCompleted();
@@ -815,6 +852,7 @@ async function forEachOlxTerm(terms, fn, { onBatchCompleted = async () => {} } =
         const resumeAt = new Date(pausedAt.getTime() + waitMs);
         console.log(`\nLote concluído (${index}/${terms.length} termos) às ${brasiliaTime(pausedAt)}. Pausa de ${Math.round(waitMs / 60_000)} min antes do próximo lote (por volta de ${resumeTime(resumeAt, pausedAt)})...`);
         await waitWithPauseProgress(resumeAt);
+        await onBatchResumed();
         console.log(`Retomando o próximo lote às ${brasiliaTime(new Date())} (${index}/${terms.length} termos já percorridos).`);
       } else {
         await delay(waitMs);
@@ -883,8 +921,7 @@ async function waitForListingReadinessPlaywright(page) {
           .normalize("NFD")
           .replace(/[\u0300-\u036f]/g, "")
           .toLowerCase();
-        if (/0\s+resultados?|nao encontramos|sem resultados|nenhum resultado/i.test(text)) return "empty";
-        if (document.readyState === "complete" && performance.now() > 3500) return "empty";
+        if (/(?:^|\n)\s*0\s+resultados?\b|nao encontramos|sem resultados|nenhum resultado/i.test(text)) return "empty";
 
         return false;
       },
@@ -894,6 +931,8 @@ async function waitForListingReadinessPlaywright(page) {
     .then((handle) => handle.jsonValue())
     .catch(() => null);
 
+  assertOlxAccessible(await page.locator('body').innerText().catch(() => ''));
+  if (!outcome) throw new Error('timeout: OLX não apresentou resultados nem confirmação de busca vazia');
   return outcome === "cards";
 }
 
@@ -976,46 +1015,12 @@ async function enrichAd(listingPage, card) {
         polling: 150,
       })
       .catch(() => {});
-    const bodyText = await bodyLocator.innerText().catch(() => "");
-    const title = card.title;
-
-    if (hasExcludedKeyword(title) || hasExcludedKeyword(bodyText)) {
-      return null;
-    }
-
-    const detailText = `${title}\n${bodyText}`;
-
-    // Confirm CPU term exists explicitly in title or body.
-    if (!textContainsCpuTerm(detailText, card.cpu_term)) {
-      return null;
-    }
-
-    const price_brl = parseBrlPrice(bodyText) ?? card.price_brl;
-    const location = extractLocationFromText(bodyText);
-    const condition = extractConditionFromText(bodyText);
-
-    const ram_gb = extractRamGb(detailText);
-    const storage_gb = extractStorageGb(detailText);
-    const gpu = extractGpuLabel(detailText);
-
-    const id = extractOlxId(url);
-
+    const detail = await page.evaluate(readOlxNotebookDetail);
     return {
-      id,
-      url,
-      title,
-      cpu_term: card.cpu_term,
-      price_brl,
-      ram_gb,
-      storage_gb,
-      gpu,
-      location: location || null,
-      condition: condition || null,
-      status: "active",
-      first_seen: null,
-      last_seen: null,
-      notes: null,
-      desc_checked: true,
+      ...validateOlxNotebook(listingCardToItem(card), detail),
+      id: extractOlxId(card.url), url: card.url, title: card.title, cpu_term: card.cpu_term,
+      location: extractLocationFromText(detail.body_text), condition: extractConditionFromText(detail.body_text),
+      status: "active", first_seen: null, last_seen: null, notes: null,
     };
   } finally {
     await page.close().catch(() => {});
@@ -1043,24 +1048,26 @@ function extractConditionFromText(text) {
 }
 
 function buildReport({ runDate, snapshot, previousSnapshot, priceMin, priceMax }) {
-  const currentItems = snapshot.items.filter((x) => x.status === "active");
+  const currentItems = snapshot.items.filter((x) => x.status === "active" && isValidatedOlxItem(x));
+  const pending = snapshot.items.filter(x => x.status === 'active' && !isValidatedOlxItem(x)
+    && x.validation?.state !== 'rejected' && x.price_brl >= priceMin && x.price_brl <= priceMax);
+  const rejected = snapshot.items.filter(x => x.validation?.state === 'rejected');
   const inRange = currentItems.filter((x) => x.price_brl != null && x.price_brl >= priceMin && x.price_brl <= priceMax);
 
   const previousById = new Map((previousSnapshot?.items ?? []).map((x) => [x.id ?? x.url, x]));
-  const currentById = new Map(currentItems.map((x) => [x.id ?? x.url, x]));
 
-  const newItems = inRange.filter((x) => !previousById.has(x.id ?? x.url));
-  const stillActiveSeen = inRange.filter((x) => previousById.has(x.id ?? x.url));
+  const newItems = inRange.filter((x) => !isValidatedOlxItem(previousById.get(x.id ?? x.url)));
+  const stillActiveSeen = inRange.filter((x) => isValidatedOlxItem(previousById.get(x.id ?? x.url)));
 
   // Listing-based crawler: absence only means "not seen in this run's listing results" (not necessarily offline).
   const notSeenThisRun = (previousSnapshot?.items ?? [])
     .filter((x) => x.status === "active")
-    .filter((x) => !currentById.has(x.id ?? x.url));
+    .filter((x) => !snapshot.items.some(item => (item.id ?? item.url) === (x.id ?? x.url) && item.status === 'active'));
 
   const priceChanges = [];
   for (const item of currentItems) {
     const prev = previousById.get(item.id ?? item.url);
-    if (!prev) continue;
+    if (!isValidatedOlxItem(prev)) continue;
     if (item.price_brl != null && item.price_brl > PRICE_CHANGE_MAX_BRL) continue;
     if (prev.price_brl != null && item.price_brl != null && prev.price_brl !== item.price_brl) {
       priceChanges.push({ item, from: prev.price_brl, to: item.price_brl });
@@ -1082,6 +1089,9 @@ function buildReport({ runDate, snapshot, previousSnapshot, priceMin, priceMax }
   lines.push(`- Anúncios ainda ativos (já vistos) no range: **${stillActiveSeen.length}**`);
   lines.push(`- Não vistos nesta rodada (sumiram da listagem): **${notSeenThisRun.length}**`);
   lines.push(`- Alterações de preço detectadas: **${priceChanges.length}**`);
+  lines.push(`- Candidatos pendentes de conferência na faixa: **${pending.length}**`);
+  lines.push(`- Anúncios rejeitados pela validação: **${rejected.length}**`);
+  lines.push('- Validado significa leitura automática do anúncio; não comprova autenticidade, estado físico ou entrega.');
   lines.push("");
 
   if (snapshot.run?.failed_terms?.length) {
@@ -1128,6 +1138,15 @@ function buildReport({ runDate, snapshot, previousSnapshot, priceMin, priceMax }
     lines.push("");
   }
 
+  if (pending.length) {
+    lines.push('## Candidatos pendentes de conferência', '- Estes candidatos não entram nos alertas de ofertas válidas.');
+    for (const item of pending) lines.push(`${formatItemLine(item)} — Pendente: ${(item.validation?.reasons ?? ['Precisa de nova leitura']).join('; ')}`);
+    lines.push('');
+  }
+  if (rejected.length) {
+    lines.push('## Anúncios rejeitados');
+    for (const item of rejected) lines.push(`- ${item.title} — ${(item.validation.reasons ?? []).join('; ')} — ${item.url}`);
+  }
   return lines.join("\n");
 }
 
@@ -1161,6 +1180,8 @@ function mergeWithPreviousSnapshot({ runDate, now, collected, previousSnapshot, 
       filters: { price_brl: { min: PRICE_MIN_BRL, max: PRICE_MAX_BRL } },
     });
     result.price_range_brl = { min: PRICE_MIN_BRL, max: PRICE_MAX_BRL };
+    result.items = result.items.map(item => item.validation?.state === 'rejected'
+      ? { ...item, status: 'out_of_scope', out_of_scope_at: item.out_of_scope_at ?? now.toISOString() } : item);
     return result;
   }
   return _mergeItems({
@@ -1176,8 +1197,7 @@ function mergeWithPreviousSnapshot({ runDate, now, collected, previousSnapshot, 
 export { mergeWithPreviousSnapshot, getReusablePreviousEnrichedItem, needsDetailEnrichment };
 
 function hasExcludedKeyword(text) {
-  const normalized = (text ?? "").toString().toLowerCase();
-  return EXCLUDE_PATTERNS.some((term) => normalized.includes(term));
+  return Boolean(notebookExclusionReason(text));
 }
 
 

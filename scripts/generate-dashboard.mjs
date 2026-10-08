@@ -9,6 +9,7 @@ import { readLatestCommittedRun, readLatestValidSnapshot, writeJsonAtomic, write
 import { mercadoLivreDashboardCards, resolveWatchlistDataDir } from "./lib/watchlists-registry.mjs";
 import { buildLocalTriggerCommands } from "./lib/dashboard-triggers.mjs";
 import { createDashboardParser, runTimestampFromFile } from "./lib/dashboard-parsing.mjs";
+import { isValidatedOlxItem } from './lib/olx-notebook-quality.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -142,6 +143,7 @@ async function buildPriceInsights(descriptors) {
   for (const [source, dir] of descriptors) {
     const { snapshot } = await readLatestValidSnapshot(dir);
     for (const item of snapshot?.items ?? []) {
+      if (source === 'OLX' && !isValidatedOlxItem(item)) continue;
       if (item.status !== "active" || !item.url || !Number.isFinite(Number(item.price_brl))) continue;
       const observations = [...(item.price_history ?? [])]
         .map((entry) => Number(entry?.price_brl))
@@ -192,6 +194,14 @@ async function gather(dir, prefix, excludePrefix, detailsByUrl = new Map()) {
     const txt = await fs.readFile(path.join(dir, file), "utf8").catch(() => null);
     if (!txt) continue;
     const p = parseReport(txt, detailsByUrl);
+    if (dir === OLX_DIR) {
+      const allowed = item => !detailsByUrl.get(item.url)?.validation || isValidatedOlxItem(detailsByUrl.get(item.url));
+      p.newItems = p.newItems.filter(allowed);
+      p.allNewItems = p.allNewItems.filter(allowed);
+      p.priceItems = p.priceItems.filter(allowed);
+      p.allPriceItems = p.allPriceItems.filter(allowed);
+      p.priceCount = p.allPriceItems.length;
+    }
     const fileTs = runTimestampFromFile(file)?.getTime() ?? null;
     if (fileTs != null && fileTs >= recentCutoff && fileTs <= Date.now() + 60_000) {
       const runLabel = formatRunLabelFromFile(file, p.date);
@@ -210,7 +220,7 @@ async function gather(dir, prefix, excludePrefix, detailsByUrl = new Map()) {
       return true;
     });
     p.newCount = p.newItems.length;
-    if (p.newCount > 0 || p.priceCount > 0) out.push({ file, ...p, runLabel: formatRunLabelFromFile(file, p.date) });
+    if (p.newCount > 0 || p.priceCount > 0 || p.pendingCount > 0) out.push({ file, ...p, runLabel: formatRunLabelFromFile(file, p.date) });
   }
   out.recentItems = [...recentItems.values()];
   return out;
@@ -249,9 +259,9 @@ function summarizeMachine(text, details = null) {
   const all = `${title} ${meta} ${detailMeta}`;
   const brand = extractBrand(title);
   const cpu = extractCpu(title) ?? extractCpu(meta) ?? extractCpu(detailMeta) ?? details?.cpu ?? extractCpuFromMeta(meta);
-  const ram = extractRam(all);
-  const ssd = extractSsd(all);
-  const gpu = extractGpu(title) ?? extractGpu(meta) ?? extractGpu(detailMeta);
+  const ram = details?.validation ? (details.ram_gb ? `${details.ram_gb} GB` : 'n/d') : extractRam(all);
+  const ssd = details?.validation ? (details.storage_gb ? `${details.storage_gb} GB` : 'n/d') : extractSsd(all);
+  const gpu = details?.validation ? details.gpu : extractGpu(title) ?? extractGpu(meta) ?? extractGpu(detailMeta);
   const model = cleanModel(title, brand, cpu, gpu, ram, ssd);
   return { brand, model, cpu, ram, ssd, gpu };
 }
@@ -796,18 +806,21 @@ function renderCard(r, dpath, showSpecs) {
     : "";
   const bp = r.priceCount > 0 ? `<span class="badge bp">${r.priceCount} preço${r.priceCount > 1 ? "s" : ""}</span>` : "";
   const bw = r.partial ? `<span class="badge bw" title="A coleta terminou, mas parte dos termos ou itens não pôde ser confirmada.">cobertura parcial</span>` : "";
+  const bPending = r.pendingCount > 0 ? `<span class="badge bw">${r.pendingCount} pendente(s)</span>` : '';
   const rows = [
     ...r.newItems.map((i) => renderRow(i, false, showSpecs)),
     ...r.priceItems.map((i) => renderRow(i, true, showSpecs)),
   ].join("\n");
+  const pendingRows = (r.pendingItems ?? []).map(i => renderRow(i, false, showSpecs)).join('\n');
   const runDate = runTimestampFromFile(r.file);
   const datetime = runDate ? ` datetime="${e(runDate.toISOString())}"` : "";
   return `<div class="card">
   <div class="ch">
     <time class="cd"${datetime}>${e(r.runLabel ?? r.date ?? "—")}<a class="rl" href="${e(url)}" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
-    <div class="badges">${bw}${bn}${bp}</div>
+    <div class="badges">${bw}${bn}${bp}${bPending}</div>
   </div>
   ${rows ? `<div class="ci">${rows}</div>` : ""}
+  ${pendingRows ? `<details><summary>Pendentes de conferência — sem alerta de oferta válida</summary><div class="ci">${pendingRows}</div></details>` : ''}
 </div>`;
 }
 
@@ -829,7 +842,7 @@ function priceChangeHtml(item) {
 }
 
 function renderRow(item, isPrice, showSpecs) {
-  if (showSpecs && item.machine) return renderMachineRow(item, isPrice);
+  if (showSpecs && item.machine) return renderMachineRow(item, isPrice) + (item.validationReason ? `<p class="empty">${e(item.validationReason)}</p>` : '');
   const titleHtml = item.url
     ? `<a href="${e(item.url)}" target="_blank" rel="noopener noreferrer">${e(item.title)}</a>`
     : e(item.title);
