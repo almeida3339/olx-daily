@@ -125,6 +125,17 @@ export function recordMercadoLivreRun(schedule, {
     }
   }
   const configuredKeys = new Set((configuredTerms ?? []).map((raw) => normalizeTermTask(raw).matchTerm));
+  // A verification during product details blocks the same profile, even when
+  // all search terms already succeeded. Preserve this block for the next queue.
+  if (run.blocked_error) {
+    const classification = classifyMonitorError(run.blocked_error.error);
+    if (classification.kind === 'authentication') next.global.requires_login = true;
+    if (['challenge', 'rate_limited'].includes(classification.kind)) {
+      next.global.blocked_at = now.toISOString();
+      next.global.blocked_until = new Date(now.getTime() + (classification.kind === 'challenge' ? 24 : 12) * HOUR).toISOString();
+      next.global.block_reason = classification.kind;
+    }
+  }
   const successfulThisRun = (scheduledTerms ?? [])
     .map((raw) => normalizeTermTask(raw).matchTerm)
     .filter((term) => successful.has(term));

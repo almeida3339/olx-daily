@@ -65,6 +65,7 @@ export async function runMercadoLivreBatch({
   const collected = [];
   let consolidated = [];
   let aborted = false;
+  let blockedError = null;
   let context;
 
   console.log(`Mercado Livre: ${label}`);
@@ -180,6 +181,7 @@ export async function runMercadoLivreBatch({
         console.warn(`  Ficha nao coletada: ${error.message}`);
         if (/verificacao|limitou|sessao expirada/i.test(error.message)) {
           aborted = true;
+          blockedError = { stage: 'details', error: error.message, kind: classifyMonitorError(error).kind };
           break;
         }
       }
@@ -209,6 +211,7 @@ export async function runMercadoLivreBatch({
       completed_at: completedAt.toISOString(),
       partial: failedTerms.length > 0 || aborted,
       aborted,
+      blocked_error: blockedError,
       successful_terms: successfulTerms,
       scheduled_terms: terms.map((term) => normalizeTask(term).matchTerm),
       configured_terms: allTerms.map((term) => normalizeTask(term).matchTerm),
