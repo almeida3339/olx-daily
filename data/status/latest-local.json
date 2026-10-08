@@ -1,21 +1,11 @@
 {
-  "generated_at": "2026-10-07T19:00:06.189Z",
+  "generated_at": "2026-10-08T12:42:32.864Z",
   "source": "local",
   "delivery": {
     "email": "skipped",
     "whatsapp": "sent"
   },
-  "pending_failures": [
-    {
-      "id": "fc1194cf-7801-4439-bef6-4a5daeeb114e",
-      "fingerprint": "fp-c4b0d8dc0465cb042dc3bffd",
-      "channel": "whatsapp",
-      "first_seen_at": "2026-10-07T10:47:25.440Z",
-      "last_seen_at": "2026-10-07T19:00:06.189Z",
-      "error": "CallMeBot HTTP 403",
-      "count": 2
-    }
-  ],
+  "pending_failures": [],
   "acknowledged_failure_ids": [
     "989d7e3b-36d6-48c2-b9c5-8aee4d454fcd",
     "12324b29-8f6b-4842-8855-b57d4d66f06d",
@@ -40,7 +30,8 @@
     "4857c7d4-3f9f-4c43-a31f-dfd6fb672704",
     "28f71145-777c-4218-8ac4-3ee91c932ada",
     "6742f605-3e3b-4f17-94d0-3deccdd16583",
-    "eebed05e-27b5-4d78-b71d-e7227ec7683a"
+    "eebed05e-27b5-4d78-b71d-e7227ec7683a",
+    "fc1194cf-7801-4439-bef6-4a5daeeb114e"
   ],
   "notification_outbox": [
     {
@@ -110,9 +101,7 @@
     "scope": "local-watchlists",
     "partial": true,
     "errors": [
-      "Dockstations: Saiu com código 1: Aviso: termo \"WD22TB4\" em https://www.olx.com.br/brasil falhou — page.goto: net::ERR_ABORTED at https://www.olx.com.br/brasil?[redacted]\nCall log:\n\u001b[2m  - navigating to \"https://www.olx.com.br/brasil?[redacted]\", waiting until \"domcontentloaded\"\u001b[22m",
-      "Google Pixel Watch 4: Saiu com código 1: Aviso: termo \"pixel watch 4\" em https://www.olx.com.br/brasil falhou — Cloudflare bloqueando após 15s",
-      "Monitores OLED: Saiu com código 1: Aviso: termo \"aw2725df\" em https://www.olx.com.br/brasil falhou — page.goto: net::ERR_ABORTED at https://www.olx.com.br/brasil?[redacted]\nCall log:\n\u001b[2m  - navigating to \"https://www.olx.com.br/brasil?[redacted]\", waiting until \"domcontentloaded\"\u001b[22m\n\n  Aviso: termo \"mag 274qp\" em https://www.olx.com.br/brasil falhou — page.goto: net::ERR_ABORTED at https://www.olx.com.br/brasil?[redacted]\nCall log:\n\u001b[2m  - navigating to \"https://www.olx.com.br/brasil?[redacted]\", waiting until \"domcontentloaded\"\u001b[22m\n\n  Aviso: termo \"27gx790a\" em https://www.olx.com.br/brasil falhou — page.goto: net::ERR_ABORTED at https://www.olx.com.br/brasil?[redacted]\nCall log:\n\u001b[2m  - navigating to \"https://www.olx.com.br/brasil?[redacted]\", waiting until \"domcontentloaded\"\u001b[22m"
+      "Google Pixel Watch 4: Saiu com código 1: Aviso: coleta OLX falhou — Cloudflare: OLX em pausa até 2026-10-09T13:09:26.378Z; abra o perfil com --visible para recuperação manual."
     ]
   },
   "notification_sent_ids": [
