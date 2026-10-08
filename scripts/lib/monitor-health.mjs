@@ -25,7 +25,7 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
     for (const artifact of artifacts.reverse()) coverage = mergeCoverageStatus(coverage, artifact.snapshot);
     coverage = mergeCoverageStatus(coverage, snapshot ?? {});
     const configured = snapshot?.run?.configured_coverage ?? snapshot?.run?.configured_terms ?? [];
-    const marketplaces = coverageHealth(configured, coverage, { now, maxAgeMs, id });
+    const marketplaces = coverageHealth(configured, coverage, { now, maxAgeMs, id, sourceBlocks: snapshot?.source_blocks ?? {} });
     const timestamp = snapshotTimestamp(snapshot, result.file);
     const ageMs = timestamp == null ? null : Math.max(0, now.getTime() - timestamp);
     const errors = asArray(snapshot?.run?.errors ?? snapshot?.run?.failed_terms);
@@ -85,7 +85,7 @@ function worstState(states) {
   return ['blocked', 'missing', 'stale', 'partial', 'degraded', 'healthy'].find((state) => states.includes(state)) ?? 'healthy';
 }
 
-function coverageHealth(configured, coverage, { now, maxAgeMs, id }) {
+function coverageHealth(configured, coverage, { now, maxAgeMs, id, sourceBlocks }) {
   const groups = new Map();
   for (const key of configured) {
     const label = key.includes(':') ? key.split(':')[0] : id.startsWith('mercadolivre-') ? 'ML' : id === 'olx' ? 'OLX' : 'Enjoei';
@@ -100,7 +100,8 @@ function coverageHealth(configured, coverage, { now, maxAgeMs, id }) {
       if (now.getTime() - Date.parse(term.checked_at) > maxAgeMs) return 'stale';
       return term.state === 'failed' ? 'partial' : 'healthy';
     });
-    return { label, state: worstState(states), total_terms: terms.length, fresh_terms: states.filter((state) => state === 'healthy').length,
+    const blocked = Date.parse(sourceBlocks[label]?.blocked_until ?? '') > now.getTime();
+    return { label, state: blocked ? 'blocked' : worstState(states), total_terms: terms.length, fresh_terms: states.filter((state) => state === 'healthy').length,
       updated_at: terms.map((term) => term.checked_at).filter(Boolean).sort().at(-1) ?? null };
   });
 }
