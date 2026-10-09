@@ -1,4 +1,5 @@
 import fs from "node:fs/promises";
+import { createDescriptionQueue, cardCpuState, cardKey } from "./lib/olx-description-queue.mjs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
@@ -51,6 +52,7 @@ const cpuArg = getOptionValue(args, "--cpu");
 const configuredCpuTerms = cpuArg ? cpuArg.split(",").map((s) => s.trim().toLowerCase()).filter(Boolean) : DEFAULT_CPU_TERMS;
 let cpuTerms = orderOlxCpuTerms(configuredCpuTerms);
 let resumedProgress = null;
+let descriptionQueue;
 const progressFile = path.join(automationRoot, "collection-progress.json");
 const RESUME_MAX_AGE_MS = 6 * 3600_000;
 const useCurrentChrome = args.includes("--current-chrome");
@@ -118,6 +120,7 @@ async function main() {
       lowPriorityIntervalMs: Number(process.env.OLX_LOW_PRIORITY_INTERVAL_HOURS ?? 24) * 3600_000,
     });
   }
+  descriptionQueue = await createDescriptionQueue(path.join(automationRoot, 'description-candidates.json'), runTimestamp);
   console.log(`Plano OLX: ${cpuTerms.length}/${configuredCpuTerms.length} termos nesta rodada; CPUs prioritárias primeiro.`);
 
   console.log(`Execução: ${runTimestamp}`);
@@ -196,6 +199,7 @@ async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transp
     scheduled_terms: cpuTerms, successful_terms: successfulTerms, collected,
     pending_terms: cpuTerms.filter(term => !successfulTerms.includes(term)),
     baseline_snapshot: previousSnapshot ?? { items: [] }, blocked_until: blockedUntil,
+    description_discovery: descriptionQueue.summary(),
   }, { validate: null });
 
   const saveProgress = async (inProgress) => {
@@ -215,6 +219,7 @@ async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transp
         failed_terms: [...failedTerms],
         errors: [...failedTerms],
         unattempted_terms: unattemptedTerms,
+        description_discovery: descriptionQueue.summary(),
       },
     });
     const report = buildReport({
@@ -252,7 +257,11 @@ async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transp
           catch (sessionError) { sessionError.sessionUnavailable = true; throw sessionError; }
           results = await collectTerm(term);
         }
-        collected.push(...results);
+        for (const item of results) {
+          const existing = collected.findIndex(x => (x.id ?? x.url) === (item.id ?? item.url));
+          if (existing < 0) collected.push(item);
+          else collected[existing] = item;
+        }
         successfulTerms.push(term);
         console.log(`  ${results.filter(isValidatedOlxItem).length} validado(s), ${results.filter(x => x.validation?.state === 'pending').length} pendente(s), ${results.filter(x => x.validation?.state === 'rejected').length} rejeitado(s).`);
       } catch (error) {
@@ -359,7 +368,7 @@ async function collectForCpuTerm(page, cpuTerm, maxCards, previousSnapshot) {
   const hasCards = await waitForListingReadinessPlaywright(page);
   if (!hasCards) {
     if (debug) console.log("  Nenhum card encontrado na primeira pagina.");
-    return [];
+    return processCpuCards([], cpuTerm, maxCards, previousSnapshot, card => enrichAd(page, card));
   }
 
   const cards = await collectCardsFromInfiniteScroll(page, maxCards);
@@ -367,135 +376,71 @@ async function collectForCpuTerm(page, cpuTerm, maxCards, previousSnapshot) {
     console.log(`  Cards brutos: ${cards.length}`);
   }
 
-  const candidates = [];
-  for (const card of cards) {
-    if (!card.url || !card.title || card.price_brl == null) continue;
-    if (!isNotebookCategoryUrl(card.url)) continue;
-    if (hasExcludedKeyword(`${card.title}\n${card.text ?? ""}`)) continue;
-    if (!textContainsCpuTerm(`${card.title}\n${card.text ?? ""}`, cpuTerm)) continue;
-    candidates.push({ ...card, cpu_term: cpuTerm });
-  }
-
-  candidates.sort((a, b) => (a.price_brl ?? 0) - (b.price_brl ?? 0));
-
-  const inRange = candidates.filter((c) => c.price_brl >= PRICE_MIN_BRL && c.price_brl <= PRICE_MAX_BRL);
-  const aboveRange = candidates.filter((c) => c.price_brl > PRICE_MAX_BRL);
-  const openLimit = Math.min(maxCards, Math.max(inRange.length, 6) + 10);
-  const toOpen = [...inRange, ...aboveRange.slice(0, 12)].slice(0, openLimit);
-
-  if (listingOnly) {
-    return toOpen.map(listingCardToItem).sort((a, b) => (a.price_brl ?? 0) - (b.price_brl ?? 0));
-  }
-
-  const validated = [];
-  for (let index = 0; index < toOpen.length; index += 1) {
-    const card = toOpen[index];
-    const listingItem = listingCardToItem(card);
-    const reusable = forceOpenDetails ? null : getReusablePreviousEnrichedItem(previousSnapshot, card);
-    if (reusable) {
-      validated.push(reusable);
-      if (validated.length >= maxCards) break;
-      continue;
-    }
-    // Abre o detalhe também quando o item está na faixa do relatório, mesmo com
-    // specs completas, para verificar a descrição contra defeitos (EXCLUDE_PATTERNS).
-    // Muitos anúncios só declaram "não liga / defeito / avaria" no corpo, não no
-    // título — sem abrir, passariam direto para a notificação.
-    const inReportRange = listingItem.price_brl != null && listingItem.price_brl >= PRICE_MIN_BRL && listingItem.price_brl <= PRICE_MAX_BRL;
-    const shouldOpen = forceOpenDetails || needsDetailEnrichment(listingItem) || inReportRange;
-    if (!shouldOpen) {
-      validated.push(listingItem);
-      if (validated.length >= maxCards) break;
-      continue;
-    }
-    if (debug) {
-      console.log(`  Abrindo candidato ${index + 1}/${toOpen.length}: R$ ${card.price_brl} - ${card.title}`);
-    }
-    try {
-      const enriched = await enrichAd(page, card);
-      validated.push(enriched);
-      if (validated.length >= maxCards) break;
-    } catch (error) {
-      console.warn(`  Aviso: pulei anúncio por falha (${error.message}): ${card.url}`);
-      if (['challenge', 'authentication', 'rate_limited'].includes(classifyMonitorError(error).kind)) throw error;
-      validated.push(pendingOlxItem(listingItem, sanitizeErrorMessage(error.message)));
-      if (validated.length >= maxCards) break;
-    }
-  }
-
-  // If OLX is sorted by lowest price, we can stop early when the cheapest valid is already > 4k and we already captured a few.
-  validated.sort((a, b) => (a.price_brl ?? 0) - (b.price_brl ?? 0));
-  return validated;
+  return processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, card => enrichAd(page, card));
 }
 
 async function collectForCpuTermRawCdp(tab, cpuTerm, maxCards, previousSnapshot) {
-  const query = encodeURIComponent(cpuSearchQuery(cpuTerm));
-  const url = `${BASE_URL}?q=${query}&sp=1&opst=2`;
+  const url = `${BASE_URL}?q=${encodeURIComponent(cpuSearchQuery(cpuTerm))}&sp=1&opst=2`;
   console.log(`\nCPU: ${cpuTerm} -> ${url}`);
-
   await navigateRawCdp(tab, url);
   await waitForRawLocation(tab, url);
-    const hasCards = await waitForRawCardsFast(tab);
-    if (!hasCards) {
-      if (debug) console.log("  Nenhum card encontrado na primeira página.");
-      return [];
-    }
-    const cards = await collectCardsRawCdp(tab, maxCards);
-    if (debug) {
-      console.log(`  Cards brutos: ${cards.length}`);
-    }
+  const hasCards = await waitForRawCardsFast(tab);
+  const cards = hasCards ? await collectCardsRawCdp(tab, maxCards) : [];
+  return processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, card => enrichAdRawCdp(cdpUrl, card));
+}
 
-    const candidates = cards
-      .filter((card) => card.url && card.title && card.price_brl != null)
-      .filter((card) => isNotebookCategoryUrl(card.url))
-      .filter((card) => !hasExcludedKeyword(`${card.title}\n${card.text ?? ""}`))
-      .filter((card) => textContainsCpuTerm(`${card.title}\n${card.text ?? ""}`, cpuTerm))
-      .map((card) => ({ ...card, cpu_term: cpuTerm }))
-      .sort((a, b) => (a.price_brl ?? 0) - (b.price_brl ?? 0));
-
-    const inRange = candidates.filter((c) => c.price_brl >= PRICE_MIN_BRL && c.price_brl <= PRICE_MAX_BRL);
-    const aboveRange = candidates.filter((c) => c.price_brl > PRICE_MAX_BRL);
-    const openLimit = Math.min(maxCards, Math.max(inRange.length, 6) + 10);
-    const toOpen = [...inRange, ...aboveRange.slice(0, 12)].slice(0, openLimit);
-
-    if (listingOnly) {
-      return toOpen.map(listingCardToItem).sort((a, b) => (a.price_brl ?? 0) - (b.price_brl ?? 0));
+async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openDetail) {
+  const eligible = [...new Map(cards.filter(card => card.url && card.title && card.price_brl != null
+    && isNotebookCategoryUrl(card.url) && !hasExcludedKeyword(`${card.title}\n${card.text ?? ''}`))
+    .map(card => [cardKey(card), { ...card, cpu_term: cpuTerm }])).values()];
+  const matches = eligible.filter(card => cardCpuState(`${card.title}\n${card.text ?? ''}`, cpuTerm) === 'match')
+    .filter(card => card.price_brl >= PRICE_MIN_BRL && card.price_brl <= PRICE_CHANGE_MAX_BRL)
+    .sort((a, b) => a.price_brl - b.price_brl);
+  const unknown = eligible.filter(card => cardCpuState(`${card.title}\n${card.text ?? ''}`, cpuTerm) === 'unknown'
+    && card.price_brl >= PRICE_MIN_BRL && card.price_brl <= PRICE_MAX_BRL);
+  if (!listingOnly) await descriptionQueue.enqueue(unknown, cpuTerm);
+  const waiting = listingOnly ? [] : descriptionQueue.pending(cpuTerm);
+  // Reserve at most two of the existing item slots; no additional scrolling.
+  const reserveSlots = Math.min(2, waiting.length, maxCards);
+  const toProcess = [...matches.slice(0, maxCards - reserveSlots), ...waiting, ...matches.slice(maxCards - reserveSlots)];
+  const items = [], seen = new Set();
+  for (const card of toProcess) {
+    if (items.length >= maxCards) break;
+    const key = cardKey(card);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    const listingItem = listingCardToItem(card);
+    if (listingOnly) { items.push(listingItem); continue; }
+    const current = descriptionQueue.result(card);
+    const cached = descriptionQueue.cached(card);
+    const reusable = current ?? (!forceOpenDetails ? cached ?? getReusablePreviousEnrichedItem(previousSnapshot, card) : null);
+    if (reusable) {
+      // Preserve the CPU confirmed in the description, not the discovery query.
+      items.push(reusable);
+      if (!current) await descriptionQueue.useCached(card, reusable);
+      continue;
     }
-
-    const validated = [];
-    for (let index = 0; index < toOpen.length; index += 1) {
-      const card = toOpen[index];
-      const listingItem = listingCardToItem(card);
-      const reusable = forceOpenDetails ? null : getReusablePreviousEnrichedItem(previousSnapshot, card);
-      if (reusable) {
-        validated.push(reusable);
-        if (validated.length >= maxCards) break;
-        continue;
-      }
-      // Mesmo motivo da versão Playwright: in-range sempre abre para checar
-      // defeitos declarados apenas na descrição.
-      const inReportRange = listingItem.price_brl != null && listingItem.price_brl >= PRICE_MIN_BRL && listingItem.price_brl <= PRICE_MAX_BRL;
-      const shouldOpen = forceOpenDetails || needsDetailEnrichment(listingItem) || inReportRange;
-      if (!shouldOpen) {
-        validated.push(listingItem);
-        if (validated.length >= maxCards) break;
-        continue;
-      }
-      if (debug) {
-        console.log(`  Abrindo candidato ${index + 1}/${toOpen.length}: R$ ${card.price_brl} - ${card.title}`);
-      }
-      try {
-        const enriched = await enrichAdRawCdp(cdpUrl, card);
-        validated.push(enriched);
-        if (validated.length >= maxCards) break;
-      } catch (error) {
-        console.warn(`  Aviso: pulei anúncio por falha (${error.message}): ${card.url}`);
-        if (['challenge', 'authentication', 'rate_limited'].includes(classifyMonitorError(error).kind)) throw error;
-        validated.push(pendingOlxItem(listingItem, sanitizeErrorMessage(error.message)));
-        if (validated.length >= maxCards) break;
-      }
+    const inRange = card.price_brl >= PRICE_MIN_BRL && card.price_brl <= PRICE_MAX_BRL;
+    if (!(card.description_discovery || forceOpenDetails || needsDetailEnrichment(listingItem) || inRange)) {
+      items.push(listingItem); continue;
     }
-    return validated.sort((a, b) => (a.price_brl ?? 0) - (b.price_brl ?? 0));
+    if (card.description_discovery && !await descriptionQueue.reserve(cpuTerm)) continue;
+    const started = Date.now();
+    try {
+      const item = await openDetail(card);
+      await descriptionQueue.remember(card, item, Date.now() - started);
+      items.push(item);
+    } catch (error) {
+      if (['challenge', 'authentication', 'rate_limited'].includes(classifyMonitorError(error).kind)) throw error;
+      const item = pendingOlxItem(listingItem, sanitizeErrorMessage(error.message));
+      await descriptionQueue.remember(card, item, Date.now() - started);
+      items.push(item);
+      console.warn(`  Anúncio pendente: ${card.url} (${sanitizeErrorMessage(error.message)})`);
+    }
+  }
+  const metrics = descriptionQueue.summary();
+  console.log(`  Descrições adicionais: ${metrics.extra_details}/8 nesta rodada; ${metrics.queued_candidates} candidato(s) na fila.`);
+  return items.sort((a, b) => a.price_brl - b.price_brl);
 }
 
 async function openOrReuseCdpTab(cdpEndpoint, url = "about:blank") {
@@ -654,7 +599,6 @@ async function enrichAdRawCdp(cdpEndpoint, card) {
       id: extractOlxId(card.url),
       url: card.url,
       title,
-      cpu_term: card.cpu_term,
       location: extractLocationFromText(bodyText),
       condition: extractConditionFromText(bodyText),
       status: "active",
@@ -685,6 +629,7 @@ function listingCardToItem(card) {
     url: card.url,
     title: card.title,
     cpu_term: card.cpu_term,
+    description_discovery: Boolean(card.description_discovery),
     price_brl: card.price_brl,
     ...olxSpecs(listingText),
     location: card.location ?? null,
@@ -723,6 +668,7 @@ function getReusablePreviousEnrichedItem(previousSnapshot, card) {
   const merged = {
     ...previous,
     ...current,
+    cpu_term: previous.cpu_term,
     ram_gb: previous.ram_gb,
     storage_gb: previous.storage_gb,
     gpu: previous.gpu,
@@ -1021,7 +967,7 @@ async function enrichAd(listingPage, card) {
     const detail = await page.evaluate(readOlxNotebookDetail);
     return {
       ...validateOlxNotebook(listingCardToItem(card), detail),
-      id: extractOlxId(card.url), url: card.url, title: card.title, cpu_term: card.cpu_term,
+      id: extractOlxId(card.url), url: card.url, title: card.title,
       location: extractLocationFromText(detail.body_text), condition: extractConditionFromText(detail.body_text),
       status: "active", first_seen: null, last_seen: null, notes: null,
     };
@@ -1087,6 +1033,11 @@ function buildReport({ runDate, snapshot, previousSnapshot, priceMin, priceMax }
     lines.push(`- Termos concluídos: **${snapshot.run.successful_terms.length}/${snapshot.run.scheduled_coverage.length}**`);
     lines.push(`- Termos com falha: **${snapshot.run.failed_terms.length}**`);
     lines.push(`- Termos não consultados: **${snapshot.run.unattempted_terms.length}**`);
+  }
+  if (snapshot.run?.description_discovery) {
+    const d = snapshot.run.description_discovery;
+    lines.push(`- Consultas adicionais de descrição: **${d.extra_details}/${d.per_round_limit}**; tempo: **${Math.round(d.detail_ms / 1000)} s**; ofertas válidas recuperadas: **${d.recovered_validated}**.`);
+    lines.push(`- Candidatos aguardando descrição: **${d.queued_candidates}**. Validação da fila completa: **${d.validation_complete ? 'sim' : 'não'}**.`);
   }
   lines.push(`- Novos anúncios válidos (R$ ${priceMin.toLocaleString("pt-BR")}–R$ ${priceMax.toLocaleString("pt-BR")}): **${newItems.length}**`);
   lines.push(`- Anúncios ainda ativos (já vistos) no range: **${stillActiveSeen.length}**`);

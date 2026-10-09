@@ -596,3 +596,14 @@ Cada coleta nova e promovida por `latest-run.json` apenas depois de snapshot, re
 
 **Última atualização:** 2026-09-20
 **Testes:** 256 passando (`npm test`)
+
+### OLX: processador presente somente na descrição
+
+A busca por CPU também aproveita resultados cujo cartão não identifica o processador. Esses candidatos precisam estar entre R$ 2.000 e R$ 8.000 e passar pelo filtro de categoria, peças e defeitos. Um modelo de CPU explicitamente diferente no cartão é descartado; “i7” ou “Ryzen 9” sem modelo não bastam para descartar.
+
+- No máximo **2 consultas adicionais por termo** e **8 por rodada**, incluindo a retomada. Elas ocupam posições dentro do limite atual `--max-per-cpu`; não há paginação ou buscas adicionais.
+- Os candidatos aguardam em `description-candidates.json`, deduplicados pelo ID/URL e atendidos pela ordem de entrada nos termos consultados. A fila guarda até 500 candidatos; entradas sem observação por sete dias expiram.
+- Leituras são reutilizadas por até 12 horas quando título e preço do cartão permanecem iguais, inclusive resultados pendentes ou rejeitados. Alterações exigem nova leitura; na mesma rodada, um anúncio repetido não abre novamente enquanto esses campos permanecem iguais.
+- O CPU confirmado na descrição define a classificação, desde que pertença à lista existente. CPU não identificado ou descrição com mais de um CPU fica pendente; modelo identificado fora da lista é rejeitado. Os critérios de preço integral e configuração continuam necessários para validar.
+- O console e o relatório registram consultas adicionais, tempo gasto, ofertas válidas recuperadas e tamanho da fila. Termos pesquisados e fila totalmente validada são indicadores separados: concluir as buscas não significa ter aberto todos os candidatos.
+- `--listing-only` não abre descrições nem alimenta a fila. `--open-details` força a renovação das leituras, mantendo os limites adicionais. Bloqueios interrompem a coleta e preservam a fila.

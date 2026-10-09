@@ -1,3 +1,5 @@
+import { DEFAULT_CPU_TERMS } from "./cpu-terms.mjs";
+import { cardCpuState } from "./olx-description-queue.mjs";
 import { extractRamGb, extractStorageGb, extractGpuLabel, normalizeText, parseBrlPrice, textContainsCpuTerm } from './parsers.mjs';
 
 export const OLX_QUALITY_VERSION = 1;
@@ -106,7 +108,11 @@ export function validateOlxNotebook(card, detail, now = new Date()) {
   }
   if (detail.url && new URL(detail.url).pathname.match(/\d{8,}$/)?.[0] !== new URL(card.url).pathname.match(/\d{8,}$/)?.[0]) reasons.push('Página aberta não corresponde ao anúncio');
   const excluded = notebookExclusionReason(text);
-  const cpuConfirmed = textContainsCpuTerm(`${detail.title}\n${detail.description}`, card.cpu_term);
+  const detailText = `${detail.title}\n${detail.description}`;
+  const confirmedTerms = DEFAULT_CPU_TERMS.filter(cpu => textContainsCpuTerm(detailText, cpu));
+  if (card.description_discovery && confirmedTerms.length === 1) card = { ...card, cpu_term: confirmedTerms[0] };
+  const cpuConfirmed = card.description_discovery
+    ? confirmedTerms.length === 1 : textContainsCpuTerm(detailText, card.cpu_term);
   const domPrice = numericPrice(detail.price_text), jsonPrice = numericPrice(detail.structured_price);
   const price = domPrice ?? jsonPrice;
   const discrepancy = (a, b) => a != null && b != null && Math.abs(a - b) > 1;
@@ -125,7 +131,9 @@ export function validateOlxNotebook(card, detail, now = new Date()) {
     if (specs[key] == null) reasons.push(`Especificação não confirmada: ${label}`);
   }
   if (!cpuConfirmed) reasons.push('CPU não confirmada no anúncio');
-  const rejected = excluded || (detail.description.trim() && detail.title && !cpuConfirmed);
+  if (card.description_discovery && confirmedTerms.length > 1) reasons.push('Mais de um processador informado no anúncio');
+  const rejected = excluded || (detail.description.trim() && detail.title && !cpuConfirmed
+    && (!card.description_discovery || (confirmedTerms.length === 0 && cardCpuState(detailText, card.cpu_term) === 'other')));
   if (rejected) reasons.unshift(excluded ?? 'CPU fora da busca');
   return {
     ...card, ...specs, price_brl: price ?? card.price_brl, desc_checked: Boolean(detail.description.trim()),
