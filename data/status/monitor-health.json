@@ -1,20 +1,20 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-10-09T12:17:25.279Z",
+  "generated_at": "2026-10-09T19:03:43.163Z",
   "sources": [
     {
       "id": "olx",
       "label": "OLX Notebooks",
       "state": "healthy",
-      "updated_at": "2026-10-09T10:02:28.953Z",
-      "age_ms": 8096326,
+      "updated_at": "2026-10-09T19:01:32.435Z",
+      "age_ms": 130728,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
         "partial": 2,
         "failed": 0,
         "success_rate": 0.8,
-        "median_duration_ms": 2814052
+        "median_duration_ms": 2776312
       },
       "marketplaces": [
         {
@@ -22,7 +22,7 @@
           "state": "healthy",
           "total_terms": 22,
           "fresh_terms": 22,
-          "updated_at": "2026-10-09T10:02:28.953Z"
+          "updated_at": "2026-10-09T19:01:32.435Z"
         }
       ],
       "message": "OLX: Saudável (22/22 termos recentes)"
@@ -30,9 +30,9 @@
     {
       "id": "enjoei-notebooks",
       "label": "Enjoei Notebooks",
-      "state": "healthy",
+      "state": "stale",
       "updated_at": "2026-10-08T19:01:34.185Z",
-      "age_ms": 62151094,
+      "age_ms": 86528978,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -44,20 +44,20 @@
       "marketplaces": [
         {
           "label": "Enjoei",
-          "state": "healthy",
+          "state": "stale",
           "total_terms": 22,
-          "fresh_terms": 22,
+          "fresh_terms": 0,
           "updated_at": "2026-10-08T19:01:34.185Z"
         }
       ],
-      "message": "Enjoei: Saudável (22/22 termos recentes)"
+      "message": "Enjoei: Coleta desatualizada (0/22 termos recentes)"
     },
     {
       "id": "enjoei",
       "label": "Enjoei Tênis 42",
-      "state": "healthy",
+      "state": "stale",
       "updated_at": "2026-10-08T19:01:15.940Z",
-      "age_ms": 62169339,
+      "age_ms": 86547223,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -69,27 +69,27 @@
       "marketplaces": [
         {
           "label": "Enjoei",
-          "state": "healthy",
+          "state": "stale",
           "total_terms": 9,
-          "fresh_terms": 9,
+          "fresh_terms": 0,
           "updated_at": "2026-10-08T19:01:15.940Z"
         }
       ],
-      "message": "Enjoei: Saudável (9/9 termos recentes)"
+      "message": "Enjoei: Coleta desatualizada (0/9 termos recentes)"
     },
     {
       "id": "dockstations",
       "label": "Dockstations",
-      "state": "partial",
-      "updated_at": "2026-10-09T10:03:11.802Z",
-      "age_ms": 8053477,
+      "state": "healthy",
+      "updated_at": "2026-10-09T19:01:43.300Z",
+      "age_ms": 119863,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
         "partial": 3,
         "failed": 0,
         "success_rate": 0.7,
-        "median_duration_ms": 7504
+        "median_duration_ms": 8263
       },
       "marketplaces": [
         {
@@ -97,31 +97,31 @@
           "state": "healthy",
           "total_terms": 2,
           "fresh_terms": 2,
-          "updated_at": "2026-10-09T10:03:11.802Z"
+          "updated_at": "2026-10-09T19:01:43.300Z"
         },
         {
           "label": "OLX",
-          "state": "partial",
+          "state": "healthy",
           "total_terms": 2,
-          "fresh_terms": 1,
-          "updated_at": "2026-10-09T10:03:11.802Z"
+          "fresh_terms": 2,
+          "updated_at": "2026-10-09T19:01:43.300Z"
         }
       ],
-      "message": "Enjoei: Saudável (2/2 termos recentes) · OLX: Cobertura parcial (1/2 termos recentes)"
+      "message": "Enjoei: Saudável (2/2 termos recentes) · OLX: Saudável (2/2 termos recentes)"
     },
     {
       "id": "fitbit",
       "label": "Fitbit Air",
       "state": "healthy",
-      "updated_at": "2026-10-09T10:03:18.696Z",
-      "age_ms": 8046583,
+      "updated_at": "2026-10-09T19:01:49.531Z",
+      "age_ms": 113632,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
         "partial": 0,
         "failed": 0,
         "success_rate": 1,
-        "median_duration_ms": 5807
+        "median_duration_ms": 5222
       },
       "marketplaces": [
         {
@@ -129,14 +129,14 @@
           "state": "healthy",
           "total_terms": 1,
           "fresh_terms": 1,
-          "updated_at": "2026-10-09T10:03:18.696Z"
+          "updated_at": "2026-10-09T19:01:49.531Z"
         },
         {
           "label": "OLX",
           "state": "healthy",
           "total_terms": 1,
           "fresh_terms": 1,
-          "updated_at": "2026-10-09T10:03:18.696Z"
+          "updated_at": "2026-10-09T19:01:49.531Z"
         }
       ],
       "message": "Enjoei: Saudável (1/1 termos recentes) · OLX: Saudável (1/1 termos recentes)"
@@ -144,16 +144,16 @@
     {
       "id": "lifefactory",
       "label": "Lifefactory",
-      "state": "partial",
-      "updated_at": "2026-10-09T10:03:29.192Z",
-      "age_ms": 8036087,
+      "state": "healthy",
+      "updated_at": "2026-10-09T19:01:52.447Z",
+      "age_ms": 110716,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
         "partial": 1,
         "failed": 0,
         "success_rate": 0.9,
-        "median_duration_ms": 3076
+        "median_duration_ms": 1873
       },
       "marketplaces": [
         {
@@ -161,24 +161,24 @@
           "state": "healthy",
           "total_terms": 1,
           "fresh_terms": 1,
-          "updated_at": "2026-10-09T10:03:29.192Z"
+          "updated_at": "2026-10-09T19:01:52.447Z"
         },
         {
           "label": "OLX",
-          "state": "partial",
+          "state": "healthy",
           "total_terms": 1,
-          "fresh_terms": 0,
-          "updated_at": "2026-10-09T10:03:29.192Z"
+          "fresh_terms": 1,
+          "updated_at": "2026-10-09T19:01:52.447Z"
         }
       ],
-      "message": "Enjoei: Saudável (1/1 termos recentes) · OLX: Cobertura parcial (0/1 termos recentes)"
+      "message": "Enjoei: Saudável (1/1 termos recentes) · OLX: Saudável (1/1 termos recentes)"
     },
     {
       "id": "tela-galaxybook3",
       "label": "Tela Book3",
       "state": "healthy",
-      "updated_at": "2026-10-09T10:03:31.559Z",
-      "age_ms": 8033720,
+      "updated_at": "2026-10-09T19:01:55.748Z",
+      "age_ms": 107415,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -193,14 +193,14 @@
           "state": "healthy",
           "total_terms": 1,
           "fresh_terms": 1,
-          "updated_at": "2026-10-09T10:03:31.559Z"
+          "updated_at": "2026-10-09T19:01:55.748Z"
         },
         {
           "label": "OLX",
           "state": "healthy",
           "total_terms": 1,
           "fresh_terms": 1,
-          "updated_at": "2026-10-09T10:03:31.559Z"
+          "updated_at": "2026-10-09T19:01:55.748Z"
         }
       ],
       "message": "Enjoei: Saudável (1/1 termos recentes) · OLX: Saudável (1/1 termos recentes)"
@@ -209,8 +209,8 @@
       "id": "melanger",
       "label": "Melanger",
       "state": "healthy",
-      "updated_at": "2026-10-09T10:03:38.570Z",
-      "age_ms": 8026709,
+      "updated_at": "2026-10-09T19:02:03.876Z",
+      "age_ms": 99287,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -225,14 +225,14 @@
           "state": "healthy",
           "total_terms": 1,
           "fresh_terms": 1,
-          "updated_at": "2026-10-09T10:03:38.570Z"
+          "updated_at": "2026-10-09T19:02:03.876Z"
         },
         {
           "label": "OLX",
           "state": "healthy",
           "total_terms": 1,
           "fresh_terms": 1,
-          "updated_at": "2026-10-09T10:03:38.570Z"
+          "updated_at": "2026-10-09T19:02:03.876Z"
         }
       ],
       "message": "Enjoei: Saudável (1/1 termos recentes) · OLX: Saudável (1/1 termos recentes)"
@@ -241,15 +241,15 @@
       "id": "oneplus-buds-pro-3",
       "label": "OnePlus Buds Pro 3",
       "state": "healthy",
-      "updated_at": "2026-10-09T10:03:56.326Z",
-      "age_ms": 8008953,
+      "updated_at": "2026-10-09T19:02:20.419Z",
+      "age_ms": 82744,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
         "partial": 0,
         "failed": 0,
         "success_rate": 1,
-        "median_duration_ms": 16691
+        "median_duration_ms": 15498
       },
       "marketplaces": [
         {
@@ -257,14 +257,14 @@
           "state": "healthy",
           "total_terms": 3,
           "fresh_terms": 3,
-          "updated_at": "2026-10-09T10:03:56.326Z"
+          "updated_at": "2026-10-09T19:02:20.419Z"
         },
         {
           "label": "OLX",
           "state": "healthy",
           "total_terms": 3,
           "fresh_terms": 3,
-          "updated_at": "2026-10-09T10:03:56.326Z"
+          "updated_at": "2026-10-09T19:02:20.419Z"
         }
       ],
       "message": "Enjoei: Saudável (3/3 termos recentes) · OLX: Saudável (3/3 termos recentes)"
@@ -273,8 +273,8 @@
       "id": "google-pixel-watch-4",
       "label": "Google Pixel Watch 4",
       "state": "blocked",
-      "updated_at": "2026-10-09T10:03:57.284Z",
-      "age_ms": 8007995,
+      "updated_at": "2026-10-09T19:02:22.635Z",
+      "age_ms": 80528,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -289,14 +289,14 @@
           "state": "healthy",
           "total_terms": 1,
           "fresh_terms": 1,
-          "updated_at": "2026-10-09T10:03:57.284Z"
+          "updated_at": "2026-10-09T19:02:22.635Z"
         },
         {
           "label": "OLX",
           "state": "blocked",
           "total_terms": 1,
           "fresh_terms": 0,
-          "updated_at": "2026-10-09T10:03:57.284Z"
+          "updated_at": "2026-10-09T19:02:22.635Z"
         }
       ],
       "message": "Enjoei: Saudável (1/1 termos recentes) · OLX: Login, limite ou desafio exigem atenção (0/1 termos recentes)"
@@ -305,8 +305,8 @@
       "id": "google-pixel-watch-5",
       "label": "Google Pixel Watch 5",
       "state": "healthy",
-      "updated_at": "2026-10-09T10:04:04.676Z",
-      "age_ms": 8000603,
+      "updated_at": "2026-10-09T19:02:30.260Z",
+      "age_ms": 72903,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -321,14 +321,14 @@
           "state": "healthy",
           "total_terms": 1,
           "fresh_terms": 1,
-          "updated_at": "2026-10-09T10:04:04.676Z"
+          "updated_at": "2026-10-09T19:02:30.260Z"
         },
         {
           "label": "OLX",
           "state": "healthy",
           "total_terms": 1,
           "fresh_terms": 1,
-          "updated_at": "2026-10-09T10:04:04.676Z"
+          "updated_at": "2026-10-09T19:02:30.260Z"
         }
       ],
       "message": "Enjoei: Saudável (1/1 termos recentes) · OLX: Saudável (1/1 termos recentes)"
@@ -337,8 +337,8 @@
       "id": "oura-ring5",
       "label": "Oura Ring 5",
       "state": "healthy",
-      "updated_at": "2026-10-09T10:04:10.519Z",
-      "age_ms": 7994760,
+      "updated_at": "2026-10-09T19:02:36.529Z",
+      "age_ms": 66634,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -353,14 +353,14 @@
           "state": "healthy",
           "total_terms": 1,
           "fresh_terms": 1,
-          "updated_at": "2026-10-09T10:04:10.519Z"
+          "updated_at": "2026-10-09T19:02:36.529Z"
         },
         {
           "label": "OLX",
           "state": "healthy",
           "total_terms": 1,
           "fresh_terms": 1,
-          "updated_at": "2026-10-09T10:04:10.519Z"
+          "updated_at": "2026-10-09T19:02:36.529Z"
         }
       ],
       "message": "Enjoei: Saudável (1/1 termos recentes) · OLX: Saudável (1/1 termos recentes)"
@@ -369,14 +369,14 @@
       "id": "oled-monitores",
       "label": "Monitores OLED",
       "state": "healthy",
-      "updated_at": "2026-10-09T10:06:49.805Z",
-      "age_ms": 7835474,
+      "updated_at": "2026-10-09T19:03:35.365Z",
+      "age_ms": 7798,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
-        "partial": 2,
+        "partial": 1,
         "failed": 0,
-        "success_rate": 0.8,
+        "success_rate": 0.9,
         "median_duration_ms": 56254
       },
       "marketplaces": [
@@ -385,14 +385,14 @@
           "state": "healthy",
           "total_terms": 17,
           "fresh_terms": 17,
-          "updated_at": "2026-10-09T10:06:49.805Z"
+          "updated_at": "2026-10-09T19:03:35.365Z"
         },
         {
           "label": "OLX",
           "state": "healthy",
           "total_terms": 17,
           "fresh_terms": 17,
-          "updated_at": "2026-10-09T10:06:49.805Z"
+          "updated_at": "2026-10-09T19:03:35.365Z"
         }
       ],
       "message": "Enjoei: Saudável (17/17 termos recentes) · OLX: Saudável (17/17 termos recentes)"
@@ -402,7 +402,7 @@
       "label": "Mercado Livre Notebooks",
       "state": "healthy",
       "updated_at": "2026-10-08T13:33:27.200Z",
-      "age_ms": 81838079,
+      "age_ms": 106215963,
       "invalid_snapshots": 0,
       "history": {
         "sample": 8,
@@ -427,7 +427,7 @@
       "label": "Mercado Livre OnePlus Buds Pro 3",
       "state": "healthy",
       "updated_at": "2026-10-08T13:34:26.195Z",
-      "age_ms": 81779084,
+      "age_ms": 106156968,
       "invalid_snapshots": 0,
       "history": {
         "sample": 2,
@@ -452,7 +452,7 @@
       "label": "Mercado Livre Google Pixel Watch 4",
       "state": "healthy",
       "updated_at": "2026-10-08T13:33:48.982Z",
-      "age_ms": 81816297,
+      "age_ms": 106194181,
       "invalid_snapshots": 0,
       "history": {
         "sample": 2,
@@ -477,7 +477,7 @@
       "label": "Mercado Livre Google Pixel Watch 5",
       "state": "healthy",
       "updated_at": "2026-10-08T13:34:04.837Z",
-      "age_ms": 81800442,
+      "age_ms": 106178326,
       "invalid_snapshots": 0,
       "history": {
         "sample": 2,
@@ -502,7 +502,7 @@
       "label": "Mercado Livre Dockstations",
       "state": "healthy",
       "updated_at": "2026-10-08T13:35:17.207Z",
-      "age_ms": 81728072,
+      "age_ms": 106105956,
       "invalid_snapshots": 0,
       "history": {
         "sample": 3,
@@ -527,7 +527,7 @@
       "label": "Mercado Livre Fitbit Air",
       "state": "healthy",
       "updated_at": "2026-10-08T13:35:33.926Z",
-      "age_ms": 81711353,
+      "age_ms": 106089237,
       "invalid_snapshots": 0,
       "history": {
         "sample": 3,
@@ -552,7 +552,7 @@
       "label": "Mercado Livre Lifefactory",
       "state": "healthy",
       "updated_at": "2026-10-08T13:35:59.407Z",
-      "age_ms": 81685872,
+      "age_ms": 106063756,
       "invalid_snapshots": 0,
       "history": {
         "sample": 3,
@@ -577,7 +577,7 @@
       "label": "Mercado Livre Tela Galaxy Book3",
       "state": "healthy",
       "updated_at": "2026-10-08T13:36:20.803Z",
-      "age_ms": 81664476,
+      "age_ms": 106042360,
       "invalid_snapshots": 0,
       "history": {
         "sample": 3,
@@ -602,7 +602,7 @@
       "label": "Mercado Livre Melanger",
       "state": "healthy",
       "updated_at": "2026-10-08T13:36:42.233Z",
-      "age_ms": 81643046,
+      "age_ms": 106020930,
       "invalid_snapshots": 0,
       "history": {
         "sample": 3,
@@ -627,7 +627,7 @@
       "label": "Mercado Livre Tênis 42",
       "state": "healthy",
       "updated_at": "2026-10-08T13:50:52.181Z",
-      "age_ms": 80793098,
+      "age_ms": 105170982,
       "invalid_snapshots": 0,
       "history": {
         "sample": 2,
@@ -652,7 +652,7 @@
       "label": "Mercado Livre Monitores OLED",
       "state": "healthy",
       "updated_at": "2026-10-08T13:47:19.980Z",
-      "age_ms": 81005299,
+      "age_ms": 105383183,
       "invalid_snapshots": 0,
       "history": {
         "sample": 3,

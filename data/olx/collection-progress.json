@@ -2,8 +2,8 @@
   "schema_version": 1,
   "quality_version": 1,
   "configuration": "9955hx3d,290hx,9955hx,285hx,275hx,aimax395,7945hx,7945hx3d,255hx,13980hx,8940hx,7940hx,13950hx,14900hx,13900hx,7845hx,8840hx,aimax390,14700hx,hx470,12900hx,12800hx",
-  "started_at": "2026-10-09T10:00:27.258Z",
-  "updated_at": "2026-10-09T10:02:29.519Z",
+  "started_at": "2026-10-09T19:00:28.097Z",
+  "updated_at": "2026-10-09T19:01:33.533Z",
   "state": "completed",
   "scheduled_terms": [
     "14700hx",
@@ -11,11 +11,7 @@
     "14900hx",
     "13900hx",
     "12900hx",
-    "12800hx",
-    "7845hx",
-    "8840hx",
-    "aimax390",
-    "hx470"
+    "12800hx"
   ],
   "successful_terms": [
     "14700hx",
@@ -23,56 +19,9 @@
     "14900hx",
     "13900hx",
     "12900hx",
-    "12800hx",
-    "7845hx",
-    "8840hx",
-    "aimax390",
-    "hx470"
+    "12800hx"
   ],
   "collected": [
-    {
-      "id": "1538894993",
-      "url": "https://pa.olx.com.br/regiao-de-belem/informatica/notebooks/helios-neo-i7-14700hx-16gb-1-4tb-ssd-4070-1538894993",
-      "title": "Helios Neo I7 14700HX, 16Gb, 1,4tb SSD, 4070",
-      "cpu_term": "14700hx",
-      "description_discovery": false,
-      "price_brl": 8300,
-      "ram_gb": 16,
-      "storage_gb": 1024,
-      "gpu": null,
-      "location": null,
-      "condition": "novo",
-      "status": "active",
-      "first_seen": null,
-      "last_seen": null,
-      "notes": null,
-      "desc_checked": true,
-      "validation": {
-        "version": 1,
-        "state": "pending",
-        "checked_at": "2026-10-09T10:00:30.530Z",
-        "reasons": [
-          "Especificação divergente: SSD/armazenamento",
-          "Especificação não confirmada: GPU"
-        ],
-        "listing_price_brl": 8300,
-        "detail_price_brl": 8300,
-        "visible_price_brl": null,
-        "structured_price_brl": 8300,
-        "title_specs": {
-          "ram_gb": 16,
-          "storage_gb": 1434,
-          "gpu": null
-        },
-        "description_specs": {
-          "ram_gb": null,
-          "storage_gb": 1024,
-          "gpu": null
-        },
-        "cpu_confirmed": true,
-        "description_checked": true
-      }
-    },
     {
       "id": "1522141686",
       "url": "https://sc.olx.com.br/florianopolis-e-regiao/informatica/notebooks/notebook-gamer-nave-estelar-i7-14700hx-32gb-rtx-4060-8gb-1522141686",
@@ -231,49 +180,6 @@
         "description_specs": {
           "ram_gb": 32,
           "storage_gb": 1024,
-          "gpu": "RTX 4060"
-        },
-        "cpu_confirmed": true,
-        "description_checked": true
-      }
-    },
-    {
-      "id": "1510666124",
-      "url": "https://es.olx.com.br/norte-do-espirito-santo/informatica/notebooks/notebook-gamer-avell-storm-460-i9-14900hx-rtx-4060-16gb-ram-240hz-1510666124",
-      "title": "Notebook Gamer Avell Storm 460 - i9 14900HX | RTX 4060 | 16GB RAM | 240Hz",
-      "cpu_term": "14900hx",
-      "description_discovery": false,
-      "price_brl": 8500,
-      "ram_gb": 16,
-      "storage_gb": null,
-      "gpu": "RTX 4060",
-      "location": null,
-      "condition": "novo",
-      "status": "active",
-      "first_seen": null,
-      "last_seen": null,
-      "notes": null,
-      "desc_checked": true,
-      "validation": {
-        "version": 1,
-        "state": "rejected",
-        "checked_at": "2026-10-09T10:01:03.789Z",
-        "reasons": [
-          "Defeito ou avaria declarados no anúncio",
-          "Especificação não confirmada: SSD/armazenamento"
-        ],
-        "listing_price_brl": 8500,
-        "detail_price_brl": 8500,
-        "visible_price_brl": null,
-        "structured_price_brl": 8500,
-        "title_specs": {
-          "ram_gb": 16,
-          "storage_gb": null,
-          "gpu": "RTX 4060"
-        },
-        "description_specs": {
-          "ram_gb": 16,
-          "storage_gb": null,
           "gpu": "RTX 4060"
         },
         "cpu_confirmed": true,
@@ -517,7 +423,7 @@
   "pending_terms": [],
   "baseline_snapshot": {
     "schema_version": 2,
-    "generated_at": "2026-10-08T19:56:27.824Z",
+    "generated_at": "2026-10-09T10:02:28.953Z",
     "coverage_status": {
       "9955hx3d": {
         "checked_at": "2026-10-08T19:56:27.824Z",
@@ -574,8 +480,8 @@
         "error": null
       },
       "13980hx": {
-        "checked_at": "2026-10-08T19:56:27.824Z",
-        "last_success_at": "2026-10-08T19:56:27.824Z",
+        "checked_at": "2026-10-09T10:02:28.953Z",
+        "last_success_at": "2026-10-09T10:02:28.953Z",
         "state": "success",
         "error": null
       },
@@ -598,210 +504,119 @@
         "error": null
       },
       "14900hx": {
-        "checked_at": "2026-10-08T19:56:27.824Z",
-        "last_success_at": "2026-10-08T19:56:27.824Z",
+        "checked_at": "2026-10-09T10:02:28.953Z",
+        "last_success_at": "2026-10-09T10:02:28.953Z",
         "state": "success",
         "error": null
       },
       "13900hx": {
-        "checked_at": "2026-10-08T19:56:27.824Z",
-        "last_success_at": "2026-10-08T19:56:27.824Z",
+        "checked_at": "2026-10-09T10:02:28.953Z",
+        "last_success_at": "2026-10-09T10:02:28.953Z",
         "state": "success",
         "error": null
       },
       "7845hx": {
-        "checked_at": "2026-10-08T19:56:27.824Z",
-        "last_success_at": null,
-        "state": "failed",
-        "error": "Coleta incompleta"
+        "checked_at": "2026-10-09T10:02:28.953Z",
+        "last_success_at": "2026-10-09T10:02:28.953Z",
+        "state": "success",
+        "error": null
       },
       "8840hx": {
-        "checked_at": "2026-10-08T19:56:27.824Z",
-        "last_success_at": null,
-        "state": "failed",
-        "error": "Coleta incompleta"
+        "checked_at": "2026-10-09T10:02:28.953Z",
+        "last_success_at": "2026-10-09T10:02:28.953Z",
+        "state": "success",
+        "error": null
       },
       "aimax390": {
-        "checked_at": "2026-10-08T19:56:27.824Z",
-        "last_success_at": null,
-        "state": "failed",
-        "error": "Coleta incompleta"
+        "checked_at": "2026-10-09T10:02:28.953Z",
+        "last_success_at": "2026-10-09T10:02:28.953Z",
+        "state": "success",
+        "error": null
       },
       "14700hx": {
-        "checked_at": "2026-10-08T19:56:27.824Z",
-        "last_success_at": null,
-        "state": "failed",
-        "error": "Coleta incompleta"
+        "checked_at": "2026-10-09T10:02:28.953Z",
+        "last_success_at": "2026-10-09T10:02:28.953Z",
+        "state": "success",
+        "error": null
       },
       "hx470": {
-        "checked_at": "2026-10-08T19:56:27.824Z",
-        "last_success_at": null,
-        "state": "failed",
-        "error": "Coleta incompleta"
+        "checked_at": "2026-10-09T10:02:28.953Z",
+        "last_success_at": "2026-10-09T10:02:28.953Z",
+        "state": "success",
+        "error": null
       },
       "12900hx": {
-        "checked_at": "2026-10-08T19:56:27.824Z",
-        "last_success_at": null,
-        "state": "failed",
-        "error": "Coleta incompleta"
+        "checked_at": "2026-10-09T10:02:28.953Z",
+        "last_success_at": "2026-10-09T10:02:28.953Z",
+        "state": "success",
+        "error": null
       },
       "12800hx": {
-        "checked_at": "2026-10-08T19:56:27.824Z",
-        "last_success_at": null,
-        "state": "failed",
-        "error": "Coleta incompleta"
+        "checked_at": "2026-10-09T10:02:28.953Z",
+        "last_success_at": "2026-10-09T10:02:28.953Z",
+        "state": "success",
+        "error": null
       }
     },
     "run": {
-      "date": "2026-10-08",
+      "date": "2026-10-09",
       "timezone": "America/Sao_Paulo",
-      "started_at": "2026-10-08T19:00:24.228Z",
-      "completed_at": "2026-10-08T19:56:27.824Z",
+      "started_at": "2026-10-09T10:00:27.258Z",
+      "completed_at": "2026-10-09T10:02:28.953Z",
       "in_progress": false,
-      "phase": "partial",
-      "partial": true,
+      "phase": "completed",
+      "partial": false,
       "successful_terms": [
-        "9955hx3d",
-        "290hx",
-        "9955hx",
-        "285hx",
-        "275hx",
-        "aimax395",
-        "7945hx",
-        "7945hx3d",
-        "255hx",
+        "14700hx",
         "13980hx",
-        "8940hx",
-        "7940hx",
-        "13950hx",
-        "14900hx",
-        "13900hx"
-      ],
-      "failed_terms": [
-        {
-          "term": "7845hx",
-          "error": "timeout CDP em Page.navigate",
-          "kind": "transient"
-        },
-        {
-          "term": "8840hx",
-          "error": "timeout CDP em Page.navigate",
-          "kind": "transient"
-        },
-        {
-          "term": "aimax390",
-          "error": "timeout CDP em Page.navigate",
-          "kind": "transient"
-        },
-        {
-          "term": "14700hx",
-          "error": "timeout CDP em Page.navigate",
-          "kind": "transient"
-        },
-        {
-          "term": "hx470",
-          "error": "timeout CDP em Page.navigate",
-          "kind": "transient"
-        },
-        {
-          "term": "12900hx",
-          "error": "timeout CDP em Page.navigate",
-          "kind": "transient"
-        },
-        {
-          "term": "12800hx",
-          "error": "timeout CDP em Page.navigate",
-          "kind": "transient"
-        }
-      ],
-      "errors": [
-        {
-          "term": "7845hx",
-          "error": "timeout CDP em Page.navigate",
-          "kind": "transient"
-        },
-        {
-          "term": "8840hx",
-          "error": "timeout CDP em Page.navigate",
-          "kind": "transient"
-        },
-        {
-          "term": "aimax390",
-          "error": "timeout CDP em Page.navigate",
-          "kind": "transient"
-        },
-        {
-          "term": "14700hx",
-          "error": "timeout CDP em Page.navigate",
-          "kind": "transient"
-        },
-        {
-          "term": "hx470",
-          "error": "timeout CDP em Page.navigate",
-          "kind": "transient"
-        },
-        {
-          "term": "12900hx",
-          "error": "timeout CDP em Page.navigate",
-          "kind": "transient"
-        },
-        {
-          "term": "12800hx",
-          "error": "timeout CDP em Page.navigate",
-          "kind": "transient"
-        }
-      ],
-      "unattempted_terms": [],
-      "scheduled_coverage": [
-        "9955hx3d",
-        "290hx",
-        "9955hx",
-        "285hx",
-        "275hx",
-        "aimax395",
-        "7945hx",
-        "7945hx3d",
-        "255hx",
-        "13980hx",
-        "8940hx",
-        "7940hx",
-        "13950hx",
         "14900hx",
         "13900hx",
+        "12900hx",
+        "12800hx",
         "7845hx",
         "8840hx",
         "aimax390",
+        "hx470"
+      ],
+      "failed_terms": [],
+      "errors": [],
+      "unattempted_terms": [],
+      "description_discovery": {
+        "extra_details": 0,
+        "detail_ms": 0,
+        "recovered_validated": 0,
+        "cache_hits": 0,
+        "by_term": {},
+        "queued_candidates": 0,
+        "validation_complete": true,
+        "per_term_limit": 2,
+        "per_round_limit": 8
+      },
+      "scheduled_coverage": [
         "14700hx",
-        "hx470",
+        "13980hx",
+        "14900hx",
+        "13900hx",
         "12900hx",
-        "12800hx"
+        "12800hx",
+        "7845hx",
+        "8840hx",
+        "aimax390",
+        "hx470"
       ],
       "successful_coverage": [
-        "9955hx3d",
-        "290hx",
-        "9955hx",
-        "285hx",
-        "275hx",
-        "aimax395",
-        "7945hx",
-        "7945hx3d",
-        "255hx",
+        "14700hx",
         "13980hx",
-        "8940hx",
-        "7940hx",
-        "13950hx",
         "14900hx",
-        "13900hx"
-      ],
-      "failed_coverage": [
+        "13900hx",
+        "12900hx",
+        "12800hx",
         "7845hx",
         "8840hx",
         "aimax390",
-        "14700hx",
-        "hx470",
-        "12900hx",
-        "12800hx"
+        "hx470"
       ],
+      "failed_coverage": [],
       "configured_coverage": [
         "9955hx3d",
         "290hx",
@@ -835,6 +650,616 @@
       }
     },
     "items": [
+      {
+        "id": "1538894993",
+        "url": "https://pa.olx.com.br/regiao-de-belem/informatica/notebooks/helios-neo-i7-14700hx-16gb-1-4tb-ssd-4070-1538894993",
+        "title": "Helios Neo I7 14700HX, 16Gb, 1,4tb SSD, 4070",
+        "cpu_term": "14700hx",
+        "price_brl": 8300,
+        "ram_gb": 16,
+        "storage_gb": 1024,
+        "gpu": null,
+        "location": null,
+        "condition": "novo",
+        "status": "active",
+        "first_seen": "2026-09-25",
+        "last_seen": "2026-10-09",
+        "notes": null,
+        "out_of_scope_at": null,
+        "price_history": [
+          {
+            "at": "2026-09-25T20:30:51.540Z",
+            "price_brl": 8300
+          }
+        ],
+        "desc_checked": true,
+        "description_discovery": false,
+        "validation": {
+          "version": 1,
+          "state": "pending",
+          "checked_at": "2026-10-09T10:00:30.530Z",
+          "reasons": [
+            "Especificação divergente: SSD/armazenamento",
+            "Especificação não confirmada: GPU"
+          ],
+          "listing_price_brl": 8300,
+          "detail_price_brl": 8300,
+          "visible_price_brl": null,
+          "structured_price_brl": 8300,
+          "title_specs": {
+            "ram_gb": 16,
+            "storage_gb": 1434,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": 1024,
+            "gpu": null
+          },
+          "cpu_confirmed": true,
+          "description_checked": true
+        }
+      },
+      {
+        "id": "1522141686",
+        "url": "https://sc.olx.com.br/florianopolis-e-regiao/informatica/notebooks/notebook-gamer-nave-estelar-i7-14700hx-32gb-rtx-4060-8gb-1522141686",
+        "title": "Notebook Gamer NAVE Estelar (i7-14700HX  / 32GB / RTX 4060 8GB)",
+        "cpu_term": "14700hx",
+        "price_brl": 8399,
+        "ram_gb": 32,
+        "storage_gb": 1536,
+        "gpu": "RTX 4060",
+        "location": null,
+        "condition": "novo",
+        "status": "active",
+        "first_seen": "2026-07-30",
+        "last_seen": "2026-10-09",
+        "notes": null,
+        "desc_checked": true,
+        "out_of_scope_at": null,
+        "price_history": [
+          {
+            "at": "2026-07-30T12:00:00.000Z",
+            "price_brl": 11
+          },
+          {
+            "at": "2026-07-31T12:00:00.000Z",
+            "price_brl": 8999
+          },
+          {
+            "at": "2026-08-10T12:00:00.000Z",
+            "price_brl": 8499
+          },
+          {
+            "at": "2026-08-18T12:00:00.000Z",
+            "price_brl": 8699
+          },
+          {
+            "at": "2026-09-13T10:00:18.245Z",
+            "price_brl": 8499
+          },
+          {
+            "at": "2026-10-09T10:02:28.953Z",
+            "price_brl": 8399
+          }
+        ],
+        "description_discovery": false,
+        "validation": {
+          "version": 1,
+          "state": "validated",
+          "checked_at": "2026-10-09T10:00:31.708Z",
+          "reasons": [],
+          "listing_price_brl": 8399,
+          "detail_price_brl": 8399,
+          "visible_price_brl": null,
+          "structured_price_brl": 8399,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "description_specs": {
+            "ram_gb": 32,
+            "storage_gb": 1536,
+            "gpu": "RTX 4060"
+          },
+          "cpu_confirmed": true,
+          "description_checked": true
+        }
+      },
+      {
+        "id": "1495856782",
+        "url": "https://pr.olx.com.br/regiao-de-curitiba-e-paranagua/informatica/notebooks/notebook-acer-predator-rtx-4070-intel-core-i7-14700hx-tela-240hz-aceito-trocas-1495856782",
+        "title": "Notebook Acer Predator - RTX 4070 / Intel Core i7 14700HX / Tela 240Hz (Aceito Trocas)",
+        "cpu_term": "14700hx",
+        "price_brl": 8999,
+        "ram_gb": null,
+        "storage_gb": 512,
+        "gpu": "RTX 4070",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": "2026-06-01",
+        "last_seen": "2026-10-09",
+        "notes": null,
+        "desc_checked": true,
+        "out_of_scope_at": null,
+        "price_history": [],
+        "description_discovery": false,
+        "validation": {
+          "version": 1,
+          "state": "pending",
+          "checked_at": "2026-10-09T10:00:34.073Z",
+          "reasons": [
+            "Especificação não confirmada: RAM"
+          ],
+          "listing_price_brl": 8999,
+          "detail_price_brl": 8999,
+          "visible_price_brl": null,
+          "structured_price_brl": 8999,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 4070"
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": 512,
+            "gpu": "RTX 4070"
+          },
+          "cpu_confirmed": true,
+          "description_checked": true
+        }
+      },
+      {
+        "id": "1542357974",
+        "url": "https://pi.olx.com.br/regiao-de-teresina-e-parnaiba/informatica/notebooks/asus-rog-strix-g16-i9-13980hx-rtx-4060-8gb-ssds-1-5tb-165hz-1542357974",
+        "title": "ASUS ROG STRIX G16 - i9-13980HX + RTX 4060 8GB | SSDs 1.5TB | 165Hz",
+        "cpu_term": "13980hx",
+        "price_brl": 7990,
+        "ram_gb": 16,
+        "storage_gb": 1024,
+        "gpu": "RTX 4060",
+        "location": null,
+        "condition": "novo",
+        "status": "active",
+        "first_seen": "2026-10-08",
+        "last_seen": "2026-10-09",
+        "notes": null,
+        "desc_checked": true,
+        "out_of_scope_at": null,
+        "price_history": [
+          {
+            "at": "2026-10-08T13:36:19.953Z",
+            "price_brl": 7490
+          },
+          {
+            "at": "2026-10-08T19:56:27.824Z",
+            "price_brl": 7990
+          }
+        ],
+        "description_discovery": false,
+        "validation": {
+          "version": 1,
+          "state": "pending",
+          "checked_at": "2026-10-09T10:00:53.104Z",
+          "reasons": [
+            "Especificação divergente: SSD/armazenamento"
+          ],
+          "listing_price_brl": 7990,
+          "detail_price_brl": 7990,
+          "visible_price_brl": null,
+          "structured_price_brl": 7990,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": 1536,
+            "gpu": "RTX 4060"
+          },
+          "description_specs": {
+            "ram_gb": 16,
+            "storage_gb": 1024,
+            "gpu": "RTX 4060"
+          },
+          "cpu_confirmed": true,
+          "description_checked": true
+        }
+      },
+      {
+        "id": "1542265350",
+        "url": "https://sp.olx.com.br/regiao-de-sorocaba/informatica/notebooks/notebook-gamer-rog-strix-core-i9-13980hx-rtx-4060-com-garantia-em-ate-18x-1542265350",
+        "title": "Notebook Gamer Rog Strix, Core i9-13980Hx + RTX 4060 com garantia - Em até 18x",
+        "cpu_term": "13980hx",
+        "price_brl": 9399,
+        "ram_gb": 32,
+        "storage_gb": 1024,
+        "gpu": "RTX 4060",
+        "location": "Jardim Piazza di Roma, Sorocaba - SP",
+        "condition": "novo",
+        "status": "active",
+        "first_seen": "2026-10-08",
+        "last_seen": "2026-10-09",
+        "notes": null,
+        "desc_checked": true,
+        "out_of_scope_at": null,
+        "price_history": [
+          {
+            "at": "2026-10-08T13:36:19.953Z",
+            "price_brl": 9399
+          }
+        ],
+        "description_discovery": false,
+        "validation": {
+          "version": 1,
+          "state": "validated",
+          "checked_at": "2026-10-09T10:00:54.253Z",
+          "reasons": [],
+          "listing_price_brl": 9399,
+          "detail_price_brl": 9399,
+          "visible_price_brl": null,
+          "structured_price_brl": 9399,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "description_specs": {
+            "ram_gb": 32,
+            "storage_gb": 1024,
+            "gpu": "RTX 4060"
+          },
+          "cpu_confirmed": true,
+          "description_checked": true
+        }
+      },
+      {
+        "id": "1510666124",
+        "url": "https://es.olx.com.br/norte-do-espirito-santo/informatica/notebooks/notebook-gamer-avell-storm-460-i9-14900hx-rtx-4060-16gb-ram-240hz-1510666124",
+        "title": "Notebook Gamer Avell Storm 460 - i9 14900HX | RTX 4060 | 16GB RAM | 240Hz",
+        "cpu_term": "14900hx",
+        "price_brl": 8500,
+        "ram_gb": 16,
+        "storage_gb": null,
+        "gpu": "RTX 4060",
+        "location": null,
+        "condition": "novo",
+        "status": "out_of_scope",
+        "first_seen": "2026-06-27",
+        "last_seen": "2026-10-09",
+        "notes": null,
+        "out_of_scope_at": "2026-10-09T10:02:28.953Z",
+        "price_history": [
+          {
+            "at": "2026-06-27T12:00:00.000Z",
+            "price_brl": 9500
+          },
+          {
+            "at": "2026-08-27T12:00:00.000Z",
+            "price_brl": 8500
+          }
+        ],
+        "description_discovery": false,
+        "desc_checked": true,
+        "validation": {
+          "version": 1,
+          "state": "rejected",
+          "checked_at": "2026-10-09T10:01:03.789Z",
+          "reasons": [
+            "Defeito ou avaria declarados no anúncio",
+            "Especificação não confirmada: SSD/armazenamento"
+          ],
+          "listing_price_brl": 8500,
+          "detail_price_brl": 8500,
+          "visible_price_brl": null,
+          "structured_price_brl": 8500,
+          "title_specs": {
+            "ram_gb": 16,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "description_specs": {
+            "ram_gb": 16,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "cpu_confirmed": true,
+          "description_checked": true
+        }
+      },
+      {
+        "id": "1531014028",
+        "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-gamer-asus-rog-strix-g16-rtx-5060-core-i9-14900hx-16gb-512gb-w11-240hz-1531014028",
+        "title": "Notebook Gamer ASUS ROG Strix G16 RTX 5060 Core I9 14900HX 16GB 512GB W11 240Hz",
+        "cpu_term": "14900hx",
+        "price_brl": 9000,
+        "ram_gb": 16,
+        "storage_gb": 512,
+        "gpu": "RTX 5060",
+        "location": null,
+        "condition": "novo",
+        "status": "active",
+        "first_seen": "2026-10-02",
+        "last_seen": "2026-10-09",
+        "notes": null,
+        "desc_checked": true,
+        "out_of_scope_at": null,
+        "price_history": [
+          {
+            "at": "2026-10-02T10:00:30.855Z",
+            "price_brl": 9000
+          }
+        ],
+        "description_discovery": false,
+        "validation": {
+          "version": 1,
+          "state": "validated",
+          "checked_at": "2026-10-09T10:01:05.103Z",
+          "reasons": [],
+          "listing_price_brl": 9000,
+          "detail_price_brl": 9000,
+          "visible_price_brl": null,
+          "structured_price_brl": 9000,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 5060"
+          },
+          "description_specs": {
+            "ram_gb": 16,
+            "storage_gb": 512,
+            "gpu": "RTX 5060"
+          },
+          "cpu_confirmed": true,
+          "description_checked": true
+        }
+      },
+      {
+        "id": "1521846168",
+        "url": "https://sp.olx.com.br/regiao-de-ribeirao-preto/informatica/notebooks/avell-a65-ion-rtx-4060-intel-core-i9-12900hx-32gb-ram-tela-2-5k-240hz-excelente-es-1521846168",
+        "title": "Avell A65 ION RTX 4060 | Intel Core i9-12900HX | 32GB RAM | Tela 2.5K 240Hz | Excelente Es",
+        "cpu_term": "12900hx",
+        "price_brl": 7850,
+        "ram_gb": 16,
+        "storage_gb": null,
+        "gpu": "RTX 4060",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "out_of_scope",
+        "first_seen": "2026-08-02",
+        "last_seen": "2026-10-09",
+        "notes": null,
+        "out_of_scope_at": "2026-10-09T10:02:28.953Z",
+        "price_history": [
+          {
+            "at": "2026-08-02T12:00:00.000Z",
+            "price_brl": 8000
+          },
+          {
+            "at": "2026-08-11T12:00:00.000Z",
+            "price_brl": 7600
+          },
+          {
+            "at": "2026-08-14T12:00:00.000Z",
+            "price_brl": 7500
+          },
+          {
+            "at": "2026-08-18T12:00:00.000Z",
+            "price_brl": 7850
+          }
+        ],
+        "description_discovery": false,
+        "desc_checked": true,
+        "validation": {
+          "version": 1,
+          "state": "rejected",
+          "checked_at": "2026-10-09T10:01:37.334Z",
+          "reasons": [
+            "Defeito ou avaria declarados no anúncio",
+            "Especificação divergente: RAM",
+            "Especificação não confirmada: SSD/armazenamento"
+          ],
+          "listing_price_brl": 7850,
+          "detail_price_brl": 7850,
+          "visible_price_brl": null,
+          "structured_price_brl": 7850,
+          "title_specs": {
+            "ram_gb": 32,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "description_specs": {
+            "ram_gb": 16,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "cpu_confirmed": true,
+          "description_checked": true
+        }
+      },
+      {
+        "id": "1532250801",
+        "url": "https://sp.olx.com.br/regiao-de-ribeirao-preto/informatica/notebooks/avell-a65-ion-rtx-4060-intel-core-i9-12900hx-32gb-ram-tela-2-5k-240hz-1532250801",
+        "title": "Avell A65 ION RTX 4060 | Intel Core i9-12900HX | 32GB RAM | Tela 2.5K 240Hz",
+        "cpu_term": "12900hx",
+        "price_brl": 7950,
+        "ram_gb": 32,
+        "storage_gb": null,
+        "gpu": "RTX 4060",
+        "location": null,
+        "condition": "Usado - Bom",
+        "status": "active",
+        "first_seen": "2026-09-04",
+        "last_seen": "2026-10-09",
+        "notes": null,
+        "desc_checked": true,
+        "out_of_scope_at": null,
+        "price_history": [
+          {
+            "at": "2026-09-04T12:00:00.000Z",
+            "price_brl": 7950
+          }
+        ],
+        "description_discovery": false,
+        "validation": {
+          "version": 1,
+          "state": "pending",
+          "checked_at": "2026-10-09T10:01:38.597Z",
+          "reasons": [
+            "Especificação não confirmada: SSD/armazenamento"
+          ],
+          "listing_price_brl": 7950,
+          "detail_price_brl": 7950,
+          "visible_price_brl": null,
+          "structured_price_brl": 7950,
+          "title_specs": {
+            "ram_gb": 32,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "description_specs": {
+            "ram_gb": 32,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "cpu_confirmed": true,
+          "description_checked": true
+        }
+      },
+      {
+        "id": "1526921057",
+        "url": "https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/notebooks/notebook-gamer-avell-ion-65-intel-core-i9-12900hx-32gb-ddr5-nvme-512gb-rtx-4060-8gb-1526921057",
+        "title": "Notebook gamer Avell ion 65, intel core i9 12900hx, 32GB ddr5, nvme 512GB, rtx 4060 8GB",
+        "cpu_term": "12900hx",
+        "price_brl": 9000,
+        "ram_gb": 32,
+        "storage_gb": null,
+        "gpu": "RTX 4060",
+        "location": null,
+        "condition": "novo",
+        "status": "active",
+        "first_seen": "2026-08-17",
+        "last_seen": "2026-10-09",
+        "notes": null,
+        "desc_checked": true,
+        "out_of_scope_at": null,
+        "price_history": [
+          {
+            "at": "2026-08-17T12:00:00.000Z",
+            "price_brl": 9000
+          }
+        ],
+        "description_discovery": false,
+        "validation": {
+          "version": 1,
+          "state": "pending",
+          "checked_at": "2026-10-09T10:01:40.081Z",
+          "reasons": [
+            "Especificação não confirmada: SSD/armazenamento"
+          ],
+          "listing_price_brl": 9000,
+          "detail_price_brl": 9000,
+          "visible_price_brl": null,
+          "structured_price_brl": 9000,
+          "title_specs": {
+            "ram_gb": 32,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "description_specs": {
+            "ram_gb": 32,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "cpu_confirmed": true,
+          "description_checked": true
+        }
+      },
+      {
+        "id": "1496477947",
+        "url": "https://pr.olx.com.br/regiao-de-curitiba-e-paranagua/informatica/notebooks/notebook-gamer-msi-rtx-3070-ti-intel-core-i7-12800hx-oled-240hz-qhd-aceito-trocas-1496477947",
+        "title": "Notebook Gamer MSI - RTX 3070 Ti / Intel Core i7 12800HX / OLED 240Hz QHD (Aceito Trocas)",
+        "cpu_term": "12800hx",
+        "price_brl": 7999,
+        "ram_gb": 8,
+        "storage_gb": 1024,
+        "gpu": "RTX 3070 TI",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": "2026-06-01",
+        "last_seen": "2026-10-09",
+        "notes": null,
+        "desc_checked": true,
+        "out_of_scope_at": null,
+        "price_history": [
+          {
+            "at": "2026-06-27T12:00:00.000Z",
+            "price_brl": 10000
+          },
+          {
+            "at": "2026-07-02T12:00:00.000Z",
+            "price_brl": 7499
+          },
+          {
+            "at": "2026-07-14T12:00:00.000Z",
+            "price_brl": 7999
+          }
+        ],
+        "description_discovery": false,
+        "validation": {
+          "version": 1,
+          "state": "validated",
+          "checked_at": "2026-10-09T10:01:46.139Z",
+          "reasons": [],
+          "listing_price_brl": 7999,
+          "detail_price_brl": 7999,
+          "visible_price_brl": null,
+          "structured_price_brl": 7999,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 3070 TI"
+          },
+          "description_specs": {
+            "ram_gb": 8,
+            "storage_gb": 1024,
+            "gpu": "RTX 3070 TI"
+          },
+          "cpu_confirmed": true,
+          "description_checked": true
+        }
+      },
+      {
+        "id": "1542538297",
+        "url": "https://rj.olx.com.br/serra-angra-dos-reis-e-regiao/informatica/notebooks/notebook-gamer-msi-raider-ge67hx-i7-12800hx-rtx-3070-ti-8gb-32gb-ddr5-ssd-1tb-ol-1542538297",
+        "title": "Notebook Gamer MSI Raider GE67HX | i7-12800HX | RTX 3070 Ti 8GB | 32GB DDR5 | SSD 1TB | OL",
+        "cpu_term": "12800hx",
+        "description_discovery": false,
+        "price_brl": 8990,
+        "ram_gb": 32,
+        "storage_gb": 1024,
+        "gpu": "RTX 3070 TI",
+        "location": "Petrópolis, Posse",
+        "condition": null,
+        "status": "active",
+        "first_seen": "2026-10-09",
+        "last_seen": "2026-10-09",
+        "notes": null,
+        "desc_checked": false,
+        "validation": {
+          "version": 1,
+          "state": "pending",
+          "reasons": [
+            "Descrição e preço integral ainda não conferidos"
+          ]
+        },
+        "out_of_scope_at": null,
+        "price_history": [
+          {
+            "at": "2026-10-09T10:02:28.953Z",
+            "price_brl": 8990
+          }
+        ]
+      },
       {
         "id": "1537347112",
         "url": "https://go.olx.com.br/grande-goiania-e-anapolis/informatica/notebooks/alienware-aurora-16x-ultra-9-290hx-plus-oled-novo-trago-dos-eua-modelo-nao-vendido-no-br-1537347112",
@@ -1384,58 +1809,6 @@
         "desc_checked": false
       },
       {
-        "id": "1542357974",
-        "url": "https://pi.olx.com.br/regiao-de-teresina-e-parnaiba/informatica/notebooks/asus-rog-strix-g16-i9-13980hx-rtx-4060-8gb-ssds-1-5tb-165hz-1542357974",
-        "title": "ASUS ROG STRIX G16 - i9-13980HX + RTX 4060 8GB | SSDs 1.5TB | 165Hz",
-        "cpu_term": "13980hx",
-        "price_brl": 7990,
-        "ram_gb": 8,
-        "storage_gb": 1536,
-        "gpu": "RTX 4060",
-        "location": "Parnaíba, Planalto de Monteserra The",
-        "condition": "novo",
-        "status": "active",
-        "first_seen": "2026-10-08",
-        "last_seen": "2026-10-08",
-        "notes": null,
-        "desc_checked": true,
-        "out_of_scope_at": null,
-        "price_history": [
-          {
-            "at": "2026-10-08T13:36:19.953Z",
-            "price_brl": 7490
-          },
-          {
-            "at": "2026-10-08T19:56:27.824Z",
-            "price_brl": 7990
-          }
-        ]
-      },
-      {
-        "id": "1542265350",
-        "url": "https://sp.olx.com.br/regiao-de-sorocaba/informatica/notebooks/notebook-gamer-rog-strix-core-i9-13980hx-rtx-4060-com-garantia-em-ate-18x-1542265350",
-        "title": "Notebook Gamer Rog Strix, Core i9-13980Hx + RTX 4060 com garantia - Em até 18x",
-        "cpu_term": "13980hx",
-        "price_brl": 9399,
-        "ram_gb": 32,
-        "storage_gb": 1024,
-        "gpu": "RTX 4060",
-        "location": "Sorocaba, Jardim Piazza di Roma",
-        "condition": "novo",
-        "status": "active",
-        "first_seen": "2026-10-08",
-        "last_seen": "2026-10-08",
-        "notes": null,
-        "desc_checked": true,
-        "out_of_scope_at": null,
-        "price_history": [
-          {
-            "at": "2026-10-08T13:36:19.953Z",
-            "price_brl": 9399
-          }
-        ]
-      },
-      {
         "id": "1531615578",
         "url": "https://ms.olx.com.br/mato-grosso-do-sul/informatica/notebooks/notebook-gamer-asus-rog-strix-g16-i9-13980hx-32gb-ram-ssd-1tb-rtx-4070-1531615578",
         "title": "Notebook Gamer Asus Rog Strix G16 i9-13980HX, 32gb Ram, SSD 1Tb, RTX 4070",
@@ -1446,7 +1819,7 @@
         "gpu": "RTX 4070",
         "location": "Campo Grande, Residencial Ana Maria do Couto",
         "condition": null,
-        "status": "active",
+        "status": "not_seen",
         "first_seen": "2026-09-02",
         "last_seen": "2026-10-08",
         "notes": null,
@@ -1470,7 +1843,7 @@
         "gpu": null,
         "location": "Franca, Chácara Santo Antônio",
         "condition": null,
-        "status": "active",
+        "status": "not_seen",
         "first_seen": "2026-06-01",
         "last_seen": "2026-10-08",
         "notes": null,
@@ -1489,7 +1862,7 @@
         "gpu": "RTX 4080",
         "location": "Palmas, Plano Diretor Norte",
         "condition": "Usado - Excelente",
-        "status": "active",
+        "status": "not_seen",
         "first_seen": "2026-09-21",
         "last_seen": "2026-10-08",
         "notes": null,
@@ -1521,7 +1894,7 @@
         "gpu": "RTX 4080",
         "location": "Mirassol, Industrial Alto Mirassol",
         "condition": null,
-        "status": "active",
+        "status": "not_seen",
         "first_seen": "2026-06-27",
         "last_seen": "2026-10-08",
         "notes": null,
@@ -1683,57 +2056,6 @@
         ]
       },
       {
-        "id": "1510666124",
-        "url": "https://es.olx.com.br/norte-do-espirito-santo/informatica/notebooks/notebook-gamer-avell-storm-460-i9-14900hx-rtx-4060-16gb-ram-240hz-1510666124",
-        "title": "Notebook Gamer Avell Storm 460 - i9 14900HX | RTX 4060 | 16GB RAM | 240Hz",
-        "cpu_term": "14900hx",
-        "price_brl": 8500,
-        "ram_gb": 16,
-        "storage_gb": null,
-        "gpu": "RTX 4060",
-        "location": "Vila Velha, Jockey de Itaparica",
-        "condition": null,
-        "status": "active",
-        "first_seen": "2026-06-27",
-        "last_seen": "2026-10-08",
-        "notes": null,
-        "out_of_scope_at": null,
-        "price_history": [
-          {
-            "at": "2026-06-27T12:00:00.000Z",
-            "price_brl": 9500
-          },
-          {
-            "at": "2026-08-27T12:00:00.000Z",
-            "price_brl": 8500
-          }
-        ]
-      },
-      {
-        "id": "1531014028",
-        "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-gamer-asus-rog-strix-g16-rtx-5060-core-i9-14900hx-16gb-512gb-w11-240hz-1531014028",
-        "title": "Notebook Gamer ASUS ROG Strix G16 RTX 5060 Core I9 14900HX 16GB 512GB W11 240Hz",
-        "cpu_term": "14900hx",
-        "price_brl": 9000,
-        "ram_gb": 16,
-        "storage_gb": 512,
-        "gpu": "RTX 5060",
-        "location": "São Paulo, Vila Regente Feijó",
-        "condition": "novo",
-        "status": "active",
-        "first_seen": "2026-10-02",
-        "last_seen": "2026-10-08",
-        "notes": null,
-        "desc_checked": true,
-        "out_of_scope_at": null,
-        "price_history": [
-          {
-            "at": "2026-10-02T10:00:30.855Z",
-            "price_brl": 9000
-          }
-        ]
-      },
-      {
         "id": "1480164961",
         "url": "https://pr.olx.com.br/regiao-de-curitiba-e-paranagua/informatica/notebooks/notebook-msi-raider-intel-core-i9-14900hx-rtx-4070-32gb-ddr5-ssd-1tb-aceito-trocas-1480164961",
         "title": "Notebook MSI Raider - Intel Core i9 14900HX / RTX 4070/ 32GB DDR5/ SSD 1TB (Aceito Trocas)",
@@ -1744,7 +2066,7 @@
         "gpu": "RTX 4070",
         "location": "Curitiba, Cajuru",
         "condition": null,
-        "status": "active",
+        "status": "not_seen",
         "first_seen": "2026-06-01",
         "last_seen": "2026-10-08",
         "notes": null,
@@ -1768,7 +2090,7 @@
         "gpu": "RTX 4070",
         "location": "Cariacica, Morada de Santa Fé",
         "condition": null,
-        "status": "active",
+        "status": "not_seen",
         "first_seen": "2026-10-07",
         "last_seen": "2026-10-08",
         "notes": null,
@@ -1792,7 +2114,7 @@
         "gpu": "RTX 4080",
         "location": "Niterói, Icaraí",
         "condition": null,
-        "status": "active",
+        "status": "not_seen",
         "first_seen": "2026-10-06",
         "last_seen": "2026-10-08",
         "notes": null,
@@ -1816,7 +2138,7 @@
         "gpu": "RTX 4080",
         "location": "Niterói, Serra Grande",
         "condition": "novo",
-        "status": "active",
+        "status": "not_seen",
         "first_seen": "2026-09-30",
         "last_seen": "2026-10-08",
         "notes": null,
@@ -1844,7 +2166,7 @@
         "gpu": "RTX 5070",
         "location": "Horizontina",
         "condition": "Usado - Excelente",
-        "status": "active",
+        "status": "not_seen",
         "first_seen": "2026-10-03",
         "last_seen": "2026-10-08",
         "notes": null,
@@ -1876,7 +2198,7 @@
         "gpu": "RTX 5070",
         "location": "Curitiba, Cajuru",
         "condition": "Novo",
-        "status": "active",
+        "status": "not_seen",
         "first_seen": "2026-10-02",
         "last_seen": "2026-10-08",
         "notes": null,
@@ -1900,7 +2222,7 @@
         "gpu": "RTX 5070",
         "location": "Curitiba, Umbará",
         "condition": "Novo",
-        "status": "active",
+        "status": "not_seen",
         "first_seen": "2026-09-29",
         "last_seen": "2026-10-08",
         "notes": null,
@@ -1924,7 +2246,7 @@
         "gpu": "RTX 5070",
         "location": "Curitiba, Cajuru",
         "condition": "Novo",
-        "status": "active",
+        "status": "not_seen",
         "first_seen": "2026-10-02",
         "last_seen": "2026-10-08",
         "notes": null,
@@ -1948,7 +2270,7 @@
         "gpu": "RTX 5070",
         "location": "Contagem, Sapucaia",
         "condition": null,
-        "status": "active",
+        "status": "not_seen",
         "first_seen": "2026-10-04",
         "last_seen": "2026-10-08",
         "notes": null,
@@ -1972,7 +2294,7 @@
         "gpu": "RTX 4080",
         "location": "Curitiba, Cajuru",
         "condition": "Usado - Excelente",
-        "status": "active",
+        "status": "not_seen",
         "first_seen": "2026-06-01",
         "last_seen": "2026-10-08",
         "notes": null,
@@ -1991,7 +2313,7 @@
         "gpu": "RTX 4080",
         "location": "Sorocaba, Vila Independência",
         "condition": null,
-        "status": "active",
+        "status": "not_seen",
         "first_seen": "2026-06-27",
         "last_seen": "2026-10-08",
         "notes": null,
@@ -2071,7 +2393,7 @@
         "gpu": null,
         "location": "São Sebastião, Praia Deserta",
         "condition": "Usado - Excelente",
-        "status": "active",
+        "status": "not_seen",
         "first_seen": "2026-09-25",
         "last_seen": "2026-10-08",
         "notes": null,
@@ -2093,89 +2415,6 @@
         ]
       },
       {
-        "id": "1538894993",
-        "url": "https://pa.olx.com.br/regiao-de-belem/informatica/notebooks/helios-neo-i7-14700hx-16gb-1-4tb-ssd-4070-1538894993",
-        "title": "Helios Neo I7 14700HX, 16Gb, 1,4tb SSD, 4070",
-        "cpu_term": "14700hx",
-        "price_brl": 8300,
-        "ram_gb": 16,
-        "storage_gb": 1434,
-        "gpu": null,
-        "location": "Belém, Parque Verde",
-        "condition": null,
-        "status": "active",
-        "first_seen": "2026-09-25",
-        "last_seen": "2026-10-08",
-        "notes": null,
-        "out_of_scope_at": null,
-        "price_history": [
-          {
-            "at": "2026-09-25T20:30:51.540Z",
-            "price_brl": 8300
-          }
-        ],
-        "desc_checked": false
-      },
-      {
-        "id": "1522141686",
-        "url": "https://sc.olx.com.br/florianopolis-e-regiao/informatica/notebooks/notebook-gamer-nave-estelar-i7-14700hx-32gb-rtx-4060-8gb-1522141686",
-        "title": "Notebook Gamer NAVE Estelar (i7-14700HX  / 32GB / RTX 4060 8GB)",
-        "cpu_term": "14700hx",
-        "price_brl": 8499,
-        "ram_gb": 32,
-        "storage_gb": 1536,
-        "gpu": "RTX 4060",
-        "location": "Florianópolis, Cachoeira do Bom Jesus",
-        "condition": "novo",
-        "status": "active",
-        "first_seen": "2026-07-30",
-        "last_seen": "2026-10-08",
-        "notes": null,
-        "desc_checked": true,
-        "out_of_scope_at": null,
-        "price_history": [
-          {
-            "at": "2026-07-30T12:00:00.000Z",
-            "price_brl": 11
-          },
-          {
-            "at": "2026-07-31T12:00:00.000Z",
-            "price_brl": 8999
-          },
-          {
-            "at": "2026-08-10T12:00:00.000Z",
-            "price_brl": 8499
-          },
-          {
-            "at": "2026-08-18T12:00:00.000Z",
-            "price_brl": 8699
-          },
-          {
-            "at": "2026-09-13T10:00:18.245Z",
-            "price_brl": 8499
-          }
-        ]
-      },
-      {
-        "id": "1495856782",
-        "url": "https://pr.olx.com.br/regiao-de-curitiba-e-paranagua/informatica/notebooks/notebook-acer-predator-rtx-4070-intel-core-i7-14700hx-tela-240hz-aceito-trocas-1495856782",
-        "title": "Notebook Acer Predator - RTX 4070 / Intel Core i7 14700HX / Tela 240Hz (Aceito Trocas)",
-        "cpu_term": "14700hx",
-        "price_brl": 8999,
-        "ram_gb": 16,
-        "storage_gb": 512,
-        "gpu": "RTX 4070",
-        "location": "Curitiba, Cajuru",
-        "condition": "Usado - Excelente",
-        "status": "active",
-        "first_seen": "2026-06-01",
-        "last_seen": "2026-10-08",
-        "notes": null,
-        "desc_checked": false,
-        "out_of_scope_at": null,
-        "price_history": []
-      },
-      {
         "id": "1509150113",
         "url": "https://ba.olx.com.br/grande-salvador/informatica/notebooks/legion-7i-4060-14700hx-1509150113",
         "title": "Legion 7i 4060 - 14700HX",
@@ -2186,7 +2425,7 @@
         "gpu": null,
         "location": "Salvador, Luiz Anselmo",
         "condition": "novo",
-        "status": "active",
+        "status": "not_seen",
         "first_seen": "2026-06-27",
         "last_seen": "2026-10-08",
         "notes": null,
@@ -2196,121 +2435,6 @@
           {
             "at": "2026-06-27T12:00:00.000Z",
             "price_brl": 10900
-          }
-        ]
-      },
-      {
-        "id": "1521846168",
-        "url": "https://sp.olx.com.br/regiao-de-ribeirao-preto/informatica/notebooks/avell-a65-ion-rtx-4060-intel-core-i9-12900hx-32gb-ram-tela-2-5k-240hz-excelente-es-1521846168",
-        "title": "Avell A65 ION RTX 4060 | Intel Core i9-12900HX | 32GB RAM | Tela 2.5K 240Hz | Excelente Es",
-        "cpu_term": "12900hx",
-        "price_brl": 7850,
-        "ram_gb": 32,
-        "storage_gb": null,
-        "gpu": "RTX 4060",
-        "location": "Ribeirão Preto, Jardim Joaquim Procópio de Araújo Ferraz",
-        "condition": null,
-        "status": "active",
-        "first_seen": "2026-08-02",
-        "last_seen": "2026-10-08",
-        "notes": null,
-        "out_of_scope_at": null,
-        "price_history": [
-          {
-            "at": "2026-08-02T12:00:00.000Z",
-            "price_brl": 8000
-          },
-          {
-            "at": "2026-08-11T12:00:00.000Z",
-            "price_brl": 7600
-          },
-          {
-            "at": "2026-08-14T12:00:00.000Z",
-            "price_brl": 7500
-          },
-          {
-            "at": "2026-08-18T12:00:00.000Z",
-            "price_brl": 7850
-          }
-        ]
-      },
-      {
-        "id": "1532250801",
-        "url": "https://sp.olx.com.br/regiao-de-ribeirao-preto/informatica/notebooks/avell-a65-ion-rtx-4060-intel-core-i9-12900hx-32gb-ram-tela-2-5k-240hz-1532250801",
-        "title": "Avell A65 ION RTX 4060 | Intel Core i9-12900HX | 32GB RAM | Tela 2.5K 240Hz",
-        "cpu_term": "12900hx",
-        "price_brl": 7950,
-        "ram_gb": 32,
-        "storage_gb": 512,
-        "gpu": "RTX 4060",
-        "location": "Ribeirão Preto, Jardim Joaquim Procópio de Araújo Ferraz",
-        "condition": "Usado - Bom",
-        "status": "active",
-        "first_seen": "2026-09-04",
-        "last_seen": "2026-10-08",
-        "notes": null,
-        "desc_checked": true,
-        "out_of_scope_at": null,
-        "price_history": [
-          {
-            "at": "2026-09-04T12:00:00.000Z",
-            "price_brl": 7950
-          }
-        ]
-      },
-      {
-        "id": "1526921057",
-        "url": "https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/notebooks/notebook-gamer-avell-ion-65-intel-core-i9-12900hx-32gb-ddr5-nvme-512gb-rtx-4060-8gb-1526921057",
-        "title": "Notebook gamer Avell ion 65, intel core i9 12900hx, 32GB ddr5, nvme 512GB, rtx 4060 8GB",
-        "cpu_term": "12900hx",
-        "price_brl": 9000,
-        "ram_gb": 32,
-        "storage_gb": 512,
-        "gpu": "RTX 4060",
-        "location": "Vespasiano, Célvia",
-        "condition": "novo",
-        "status": "active",
-        "first_seen": "2026-08-17",
-        "last_seen": "2026-10-08",
-        "notes": null,
-        "desc_checked": true,
-        "out_of_scope_at": null,
-        "price_history": [
-          {
-            "at": "2026-08-17T12:00:00.000Z",
-            "price_brl": 9000
-          }
-        ]
-      },
-      {
-        "id": "1496477947",
-        "url": "https://pr.olx.com.br/regiao-de-curitiba-e-paranagua/informatica/notebooks/notebook-gamer-msi-rtx-3070-ti-intel-core-i7-12800hx-oled-240hz-qhd-aceito-trocas-1496477947",
-        "title": "Notebook Gamer MSI - RTX 3070 Ti / Intel Core i7 12800HX / OLED 240Hz QHD (Aceito Trocas)",
-        "cpu_term": "12800hx",
-        "price_brl": 7999,
-        "ram_gb": 8,
-        "storage_gb": 1024,
-        "gpu": "RTX 3070 TI",
-        "location": "Curitiba, Cajuru",
-        "condition": "Usado - Excelente",
-        "status": "active",
-        "first_seen": "2026-06-01",
-        "last_seen": "2026-10-08",
-        "notes": null,
-        "desc_checked": true,
-        "out_of_scope_at": null,
-        "price_history": [
-          {
-            "at": "2026-06-27T12:00:00.000Z",
-            "price_brl": 10000
-          },
-          {
-            "at": "2026-07-02T12:00:00.000Z",
-            "price_brl": 7499
-          },
-          {
-            "at": "2026-07-14T12:00:00.000Z",
-            "price_brl": 7999
           }
         ]
       },
@@ -7925,7 +8049,7 @@
     "extra_details": 0,
     "detail_ms": 0,
     "recovered_validated": 0,
-    "cache_hits": 0,
+    "cache_hits": 9,
     "by_term": {},
     "queued_candidates": 0,
     "validation_complete": true,
