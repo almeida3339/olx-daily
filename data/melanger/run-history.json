@@ -1,7 +1,23 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-08T19:57:14.221Z",
+  "updated_at": "2026-10-09T10:03:39.118Z",
   "runs": [
+    {
+      "run_id": "2026-10-09T10-03-32-631Z",
+      "committed_at": "2026-10-09T10:03:38.593Z",
+      "completed_at": "2026-10-09T10:03:38.570Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 5939,
+      "item_count": 5,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "melanger",
+        "label": "Melanger",
+        "collected_count": 1,
+        "quarantined_item_count": 0
+      }
+    },
     {
       "run_id": "2026-10-08T19-57-04-100Z",
       "committed_at": "2026-10-08T19:57:13.490Z",
@@ -10,12 +26,28 @@
       "partial": false,
       "duration_ms": 9338,
       "item_count": 5,
-      "quarantined_item_count": 0,
       "metadata": {
         "source": "melanger",
         "label": "Melanger",
         "collected_count": 1,
-        "quarantined_item_count": 0
+        "quarantined_item_count": 0,
+        "in_progress": false
+      }
+    },
+    {
+      "run_id": "2026-10-08T19-01-18-960Z",
+      "committed_at": "2026-10-08T19:01:19.203Z",
+      "completed_at": "2026-10-08T19:01:19.185Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 225,
+      "item_count": 5,
+      "metadata": {
+        "source": "melanger",
+        "label": "Melanger",
+        "collected_count": 0,
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     },
     {
@@ -1878,38 +1910,6 @@
       "run_id": "2026-08-28T19-00-23-368Z",
       "committed_at": "2026-08-28T19:00:27.846Z",
       "completed_at": "2026-08-28T19:00:27.846Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": null,
-      "item_count": 4,
-      "metadata": {
-        "source": "melanger",
-        "label": "Melanger",
-        "collected_count": 0,
-        "quarantined_item_count": 0,
-        "in_progress": false
-      }
-    },
-    {
-      "run_id": "2026-08-28T11-23-32-897Z",
-      "committed_at": "2026-08-28T11:23:37.005Z",
-      "completed_at": "2026-08-28T11:23:37.005Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": null,
-      "item_count": 4,
-      "metadata": {
-        "source": "melanger",
-        "label": "Melanger",
-        "collected_count": 0,
-        "quarantined_item_count": 0,
-        "in_progress": false
-      }
-    },
-    {
-      "run_id": "2026-08-28T11-01-06-747Z",
-      "committed_at": "2026-08-28T11:01:07.011Z",
-      "completed_at": "2026-08-28T11:01:07.011Z",
       "outcome": "success",
       "partial": false,
       "duration_ms": null,

@@ -1,0 +1,15 @@
+# Monitor Dockstations até R$ 500,00 — 2026-10-09
+
+## Resumo executivo
+- Novos produtos: **0**
+- Já vistos e ativos: **0**
+- Não vistos nesta rodada: **0**
+- Alterações de preço: **0**
+- Termos: SD25TB4, WD22TB4
+- Erros de coleta: OLX termo "WD22TB4" falhou: OLX não expôs cards nem uma mensagem de busca vazia
+
+## Novos produtos
+- Nenhum.
+
+## Já vistos e ativos
+- Nenhum.

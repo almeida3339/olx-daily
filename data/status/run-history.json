@@ -1,7 +1,26 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-08T19:59:07.199Z",
+  "updated_at": "2026-10-09T10:06:51.770Z",
   "runs": [
+    {
+      "run_id": "4dfba284-8808-4025-a722-e868f899b551",
+      "completed_at": "2026-10-09T10:06:51.758Z",
+      "outcome": "failed",
+      "partial": true,
+      "duration_ms": 404679,
+      "item_count": 1,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "local",
+        "monitor_errors": 3,
+        "monitor_failures": [
+          "Dockstations: Saiu com código 1: Aviso: termo \"WD22TB4\" em https://www.olx.com.br/brasil falhou — OLX não expôs cards nem uma mensagem de busca vazia",
+          "Lifefactory: Saiu com código 1: Aviso: termo \"lifefactory\" em https://www.olx.com.br/brasil falhou — OLX não expôs cards nem uma mensagem de busca vazia",
+          "Google Pixel Watch 4: Saiu com código 1: Aviso: coleta OLX falhou — Cloudflare: OLX em pausa até 2026-10-09T13:09:26.378Z; abra o perfil com --visible para recuperação manual."
+        ],
+        "pending_notifications": 0
+      }
+    },
     {
       "run_id": "1fb26027-6d4a-48b1-bd22-ea785ec405bf",
       "completed_at": "2026-10-08T19:59:07.188Z",
@@ -1722,20 +1741,6 @@
       "outcome": "success",
       "partial": false,
       "duration_ms": 56820,
-      "item_count": 0,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "local",
-        "monitor_errors": 0,
-        "pending_notifications": 1
-      }
-    },
-    {
-      "run_id": "120d00ff-6fe0-43bf-b956-89bb19a4a6aa",
-      "completed_at": "2026-08-16T19:00:56.803Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 53206,
       "item_count": 0,
       "quarantined_item_count": 0,
       "metadata": {

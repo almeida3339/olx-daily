@@ -1,7 +1,23 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-08T19:56:46.550Z",
+  "updated_at": "2026-10-09T10:03:12.153Z",
   "runs": [
+    {
+      "run_id": "2026-10-09T10-02-30-519Z",
+      "committed_at": "2026-10-09T10:03:11.821Z",
+      "completed_at": "2026-10-09T10:03:11.802Z",
+      "outcome": "partial",
+      "partial": true,
+      "duration_ms": 41283,
+      "item_count": 3,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "dockstations",
+        "label": "Dockstations",
+        "collected_count": 0,
+        "quarantined_item_count": 0
+      }
+    },
     {
       "run_id": "2026-10-08T19-56-32-489Z",
       "committed_at": "2026-10-08T19:56:45.531Z",
@@ -10,12 +26,28 @@
       "partial": false,
       "duration_ms": 12959,
       "item_count": 3,
-      "quarantined_item_count": 0,
       "metadata": {
         "source": "dockstations",
         "label": "Dockstations",
         "collected_count": 0,
-        "quarantined_item_count": 0
+        "quarantined_item_count": 0,
+        "in_progress": false
+      }
+    },
+    {
+      "run_id": "2026-10-08T19-01-16-163Z",
+      "committed_at": "2026-10-08T19:01:16.956Z",
+      "completed_at": "2026-10-08T19:01:16.910Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 747,
+      "item_count": 3,
+      "metadata": {
+        "source": "dockstations",
+        "label": "Dockstations",
+        "collected_count": 0,
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     },
     {
@@ -1886,38 +1918,6 @@
         "source": "dockstations",
         "label": "Dockstations",
         "collected_count": 0,
-        "quarantined_item_count": 0,
-        "in_progress": false
-      }
-    },
-    {
-      "run_id": "2026-08-28T19-00-14-796Z",
-      "committed_at": "2026-08-28T19:00:20.779Z",
-      "completed_at": "2026-08-28T19:00:20.779Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": null,
-      "item_count": 3,
-      "metadata": {
-        "source": "dockstations",
-        "label": "Dockstations",
-        "collected_count": 1,
-        "quarantined_item_count": 0,
-        "in_progress": false
-      }
-    },
-    {
-      "run_id": "2026-08-28T11-23-17-674Z",
-      "committed_at": "2026-08-28T11:23:27.006Z",
-      "completed_at": "2026-08-28T11:23:27.006Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": null,
-      "item_count": 3,
-      "metadata": {
-        "source": "dockstations",
-        "label": "Dockstations",
-        "collected_count": 1,
         "quarantined_item_count": 0,
         "in_progress": false
       }
