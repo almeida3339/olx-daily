@@ -607,3 +607,7 @@ A busca por CPU também aproveita resultados cujo cartão não identifica o proc
 - O CPU confirmado na descrição define a classificação, desde que pertença à lista existente. CPU não identificado ou descrição com mais de um CPU fica pendente; modelo identificado fora da lista é rejeitado. Os critérios de preço integral e configuração continuam necessários para validar.
 - O console e o relatório registram consultas adicionais, tempo gasto, ofertas válidas recuperadas e tamanho da fila. Termos pesquisados e fila totalmente validada são indicadores separados: concluir as buscas não significa ter aberto todos os candidatos.
 - `--listing-only` não abre descrições nem alimenta a fila. `--open-details` força a renovação das leituras, mantendo os limites adicionais. Bloqueios interrompem a coleta e preservam a fila.
+
+### Preferência de RAM dos notebooks
+
+OLX, Enjoei Notebooks e Mercado Livre Notebooks só apresentam ofertas e enviam alertas quando o anúncio informa pelo menos **32 GB de RAM instalada**. RAM desconhecida ou capacidades conflitantes não atendem ao filtro até confirmação. VRAM e capacidade máxima de expansão não contam como RAM instalada. O filtro vale também para ofertas antigas exibidas no dashboard e relatórios reutilizados para notificação; o histórico bruto permanece preservado.

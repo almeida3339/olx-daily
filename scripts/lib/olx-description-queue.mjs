@@ -1,3 +1,4 @@
+import { extractNotebookRamText, NOTEBOOK_MIN_RAM_GB } from './notebook-policy.mjs';
 import { extractOlxId, textContainsCpuTerm } from './parsers.mjs';
 import { DEFAULT_CPU_TERMS } from './cpu-terms.mjs';
 import { readJsonValidated, writeJsonAtomic } from './monitor-runtime.mjs';
@@ -16,7 +17,8 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
   const now = Date.now();
   const state = {
     schema_version: 1, round,
-    queue: (old?.queue ?? []).filter(entry => now - Date.parse(entry.last_observed_at) < 7 * 86400_000),
+    queue: (old?.queue ?? []).filter(entry => now - Date.parse(entry.last_observed_at) < 7 * 86400_000
+      && (extractNotebookRamText(`${entry.card.title}\n${entry.card.text ?? ''}`) ?? NOTEBOOK_MIN_RAM_GB) >= NOTEBOOK_MIN_RAM_GB),
     cache: (old?.cache ?? []).filter(entry => now - Date.parse(entry.checked_at) < 12 * 3600_000),
     metrics: old?.round === round ? old.metrics : { extra_details: 0, detail_ms: 0, recovered_validated: 0, cache_hits: 0, by_term: {} },
   };

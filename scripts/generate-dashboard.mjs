@@ -1,3 +1,4 @@
+import { meetsNotebookRamMinimum } from './lib/notebook-policy.mjs';
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -117,7 +118,7 @@ async function main() {
   ]);
   await writeTextAtomic(
     OUTPUT,
-    buildHtml({ health, priceInsights, olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, onePlusBuds, pixelWatch4, pixelWatch5, oura, oledMonitores, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, onePlusBudsUpdated, pixelWatch4Updated, pixelWatch5Updated, ouraUpdated, oledMonitoresUpdated }),
+    buildHtml({ health, priceInsights, olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, onePlusBuds, pixelWatch4, pixelWatch5, oura, oledMonitores, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, onePlusBudsUpdated, pixelWatch4Updated, pixelWatch5Updated, ouraUpdated, oledMonitoresUpdated }).replace(/[ \t]+$/gm, ""),
   );
   console.log(`Dashboard gerado: ${OUTPUT}`);
 }
@@ -143,6 +144,7 @@ async function buildPriceInsights(descriptors) {
   for (const [source, dir] of descriptors) {
     const { snapshot } = await readLatestValidSnapshot(dir);
     for (const item of snapshot?.items ?? []) {
+      if (['OLX', 'Enjoei Notebooks', 'Mercado Livre Notebooks'].includes(source) && !meetsNotebookRamMinimum(item)) continue;
       if (source === 'OLX' && !isValidatedOlxItem(item)) continue;
       if (item.status !== "active" || !item.url || !Number.isFinite(Number(item.price_brl))) continue;
       const observations = [...(item.price_history ?? [])]
@@ -201,6 +203,16 @@ async function gather(dir, prefix, excludePrefix, detailsByUrl = new Map()) {
       p.priceItems = p.priceItems.filter(allowed);
       p.allPriceItems = p.allPriceItems.filter(allowed);
       p.priceCount = p.allPriceItems.length;
+    }
+    if ([OLX_DIR, ENJOEI_NOTEBOOKS_DIR, MERCADOLIVRE_NOTEBOOKS_DIR].includes(dir)) {
+      const allowedRam = item => meetsNotebookRamMinimum(detailsByUrl.get(item.url) ?? { title: item.fullTitle });
+      for (const field of ['allNewItems', 'allPriceItems', 'allPendingItems']) p[field] = p[field].filter(allowedRam);
+      p.newItems = p.allNewItems.slice(0, MAX);
+      p.priceItems = p.allPriceItems.slice(0, MAX);
+      p.pendingItems = p.allPendingItems.slice(0, MAX);
+      p.newCount = p.allNewItems.length;
+      p.priceCount = p.allPriceItems.length;
+      p.pendingCount = p.allPendingItems.length;
     }
     const fileTs = runTimestampFromFile(file)?.getTime() ?? null;
     if (fileTs != null && fileTs >= recentCutoff && fileTs <= Date.now() + 60_000) {
@@ -422,7 +434,8 @@ async function currentMercadoLivreSnapshotReport(dir, displayMax = Infinity) {
   if (!raw) return null;
   const snapshot = JSON.parse(raw);
   const items = (snapshot.items ?? [])
-    .filter((item) => item.status === "active" && Number(item.price_brl) <= displayMax)
+    .filter((item) => item.status === "active" && Number(item.price_brl) <= displayMax
+      && (dir !== MERCADOLIVRE_NOTEBOOKS_DIR || meetsNotebookRamMinimum(item)))
     .slice(0, MAX)
     .map((item) => ({
       title: item.title,
@@ -518,7 +531,7 @@ function buildHtml({ health, priceInsights, olx, enjoeiNb, mercadoLivre, mercado
   // mesmo que tenham rodado há pouco. Dentro de cada grupo, mais recente primeiro.
   // Tanto os chips quanto os cards seguem esta ordem.
   const sources = [
-    { chip: "Mercado Livre", title: "Mercado Livre Notebooks", sub: "R$ 2.000 - R$ 8.000", data: mercadoLivre.reports, dpath: "data/mercadolivre-notebooks", upd: mercadoLivre.updated },
+    { chip: "Mercado Livre", title: "Mercado Livre Notebooks", sub: "R$ 2.000 - R$ 8.000 · RAM ≥ 32 GB", data: mercadoLivre.reports, dpath: "data/mercadolivre-notebooks", upd: mercadoLivre.updated },
     ...mercadoLivreWatchlists.map((source) => ({
       chip: source.chip,
       title: source.title,
@@ -527,8 +540,8 @@ function buildHtml({ health, priceInsights, olx, enjoeiNb, mercadoLivre, mercado
       dpath: source.dpath,
       upd: source.updated,
     })),
-    { chip: "OLX",              title: "OLX Notebooks",     sub: "R$ 2.000 – R$ 8.000",                          data: olx,         dpath: "data/olx",              upd: olxUpdated },
-    { chip: "Enjoei Notebooks", title: "Enjoei Notebooks",  sub: "R$ 1.500 – R$ 8.000",                          data: enjoeiNb,    dpath: "data/enjoei-notebooks", upd: enjoeiNbUpdated },
+    { chip: "OLX",              title: "OLX Notebooks",     sub: "R$ 2.000 – R$ 8.000 · RAM ≥ 32 GB",                          data: olx,         dpath: "data/olx",              upd: olxUpdated },
+    { chip: "Enjoei Notebooks", title: "Enjoei Notebooks",  sub: "R$ 1.500 – R$ 8.000 · RAM ≥ 32 GB",                          data: enjoeiNb,    dpath: "data/enjoei-notebooks", upd: enjoeiNbUpdated },
     { chip: "Enjoei Tênis",     title: "Enjoei Tênis 42",   sub: "até R$ 500,00",                                data: enjoei,      dpath: "data/enjoei",           upd: enjoeiTenisUpdated },
     { chip: "Dockstations",     title: "Dockstations",      sub: "OLX + Enjoei · até R$ 500,00",                 data: dock,        dpath: "data/dockstations",     upd: dockUpdated },
     { chip: "Fitbit Air",       title: "Fitbit Air",        sub: "OLX + Enjoei · R$ 300 – R$ 600",               data: fitbit,      dpath: "data/fitbit",           upd: fitbitUpdated },

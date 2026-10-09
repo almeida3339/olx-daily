@@ -1,3 +1,4 @@
+import { meetsNotebookRamMinimum, NOTEBOOK_MIN_RAM_GB } from './notebook-policy.mjs';
 import fs from "node:fs/promises";
 import path from "node:path";
 import { chromium } from "playwright";
@@ -207,6 +208,7 @@ export async function runMercadoLivreBatch({
     run: {
       id,
       label,
+      kind,
       started_at: startedAt.toISOString(),
       completed_at: completedAt.toISOString(),
       partial: failedTerms.length > 0 || aborted,
@@ -218,7 +220,7 @@ export async function runMercadoLivreBatch({
       failed_terms: failedTerms,
     },
   });
-  const changes = buildMercadoLivreChanges(previous, snapshot, { displayMinPrice, displayMaxPrice });
+  const changes = buildMercadoLivreChanges(previous, snapshot, { displayMinPrice, displayMaxPrice, kind });
   const runId = completedAt.toISOString().replace(/[:.]/g, "-");
   const committed = await commitMonitorRun(dataDir, {
     runId,
@@ -281,17 +283,20 @@ export function mergeMercadoLivreBatch({
     itemCoverage: (item) => item.terms ?? (item.term ? [item.term] : []),
     dedupe: dedupeMercadoLivreItems,
     filters: {
+      ...(run?.kind === 'notebook' ? { ram_gb: { min: NOTEBOOK_MIN_RAM_GB } } : {}),
       collection_price_brl: { min: minPrice, max: maxPrice },
       display_price_brl: { min: displayMinPrice, max: displayMaxPrice },
     },
   });
 }
 
-export function buildMercadoLivreChanges(previous, current, { displayMinPrice, displayMaxPrice }) {
-  const visible = (item) => item.status === "active"
+export function buildMercadoLivreChanges(previous, current, { displayMinPrice, displayMaxPrice, kind = current.run?.kind ?? (current.run?.id === 'notebooks' ? 'notebook' : 'product') }) {
+  const visible = (item) => (kind !== "notebook" || meetsNotebookRamMinimum(item)) && item.status === "active"
     && Number(item.price_brl) >= displayMinPrice
     && Number(item.price_brl) <= displayMaxPrice;
-  const { newItems, priceChanges } = buildMonitorChanges(previous, current, {
+  const eligiblePrevious = kind === 'notebook' && previous
+    ? { ...previous, items: (previous.items ?? []).filter(meetsNotebookRamMinimum) } : previous;
+  const { newItems, priceChanges } = buildMonitorChanges(eligiblePrevious, current, {
     include: visible,
     reactivationIsNew: false,
   });
@@ -384,6 +389,7 @@ function renderMercadoLivreReport(snapshot, changes) {
     `Fila interrompida: **${run.aborted ? "sim" : "nao"}**`,
     `Termos concluidos: **${run.successful_terms.length}**`,
     `Termos com falha: **${run.failed_terms.length}**`,
+    ...(run.kind === "notebook" ? [`RAM mínima instalada: **${NOTEBOOK_MIN_RAM_GB} GB**`] : []),
     `Novos produtos: **${changes.newItems.length}**`,
     `Alteracoes de preco: **${changes.priceChanges.length}**`,
     `Entraram na faixa do monitor: **${changes.enteredDisplayRange.length}**`,

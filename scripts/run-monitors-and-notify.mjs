@@ -1,3 +1,4 @@
+import { filterNotebookReportRam } from './lib/notebook-policy.mjs';
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -25,7 +26,7 @@ import {
   reconcileNotificationOutbox,
   settleNotification,
 } from "./lib/notification-outbox.mjs";
-import { readLatestCommittedReport, writeJsonAtomic } from "./lib/monitor-runtime.mjs";
+import { readLatestCommittedReport, readLatestValidSnapshot, writeJsonAtomic } from "./lib/monitor-runtime.mjs";
 import {
   MERCADOLIVRE_WATCHLISTS,
   getWatchlist,
@@ -583,7 +584,7 @@ async function readLatestReport(dir, minTime = null) {
     if (committed) {
       const timestamp = Date.parse(committed.manifest.committed_at ?? "");
       if (minTime != null && Number.isFinite(timestamp) && timestamp < minTime) return null;
-      return committed.report;
+      return applyNotebookRamPreference(dir, committed.report);
     }
   }
   const entries = await fsApi.readdir(dir).catch(() => []);
@@ -597,7 +598,14 @@ async function readLatestReport(dir, minTime = null) {
     const ts = reportFileTime(reports[0]);
     if (ts != null && ts < minTime) return null;
   }
-  return fsApi.readFile(path.join(dir, reports[0]), "utf8");
+  return applyNotebookRamPreference(dir, await fsApi.readFile(path.join(dir, reports[0]), "utf8"));
+}
+
+async function applyNotebookRamPreference(dir, report) {
+  if (![OLX_DIR, ENJOEI_NOTEBOOKS_DIR, localDir("mercadolivre-notebooks")].includes(dir)) return report;
+  const { snapshot } = await readLatestValidSnapshot(dir);
+  const details = new Map((snapshot?.items ?? []).map(item => [item.url, item]));
+  return filterNotebookReportRam(report, details);
 }
 
 // Instante (epoch ms) embutido no nome do arquivo de relatório, ou null.

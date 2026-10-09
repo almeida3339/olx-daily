@@ -1,3 +1,4 @@
+import { extractNotebookRamText, meetsNotebookRamMinimum, NOTEBOOK_MIN_RAM_GB } from './lib/notebook-policy.mjs';
 import fs from "node:fs/promises";
 import { createDescriptionQueue, cardCpuState, cardKey } from "./lib/olx-description-queue.mjs";
 import path from "node:path";
@@ -391,7 +392,8 @@ async function collectForCpuTermRawCdp(tab, cpuTerm, maxCards, previousSnapshot)
 
 async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openDetail) {
   const eligible = [...new Map(cards.filter(card => card.url && card.title && card.price_brl != null
-    && isNotebookCategoryUrl(card.url) && !hasExcludedKeyword(`${card.title}\n${card.text ?? ''}`))
+    && isNotebookCategoryUrl(card.url) && !hasExcludedKeyword(`${card.title}\n${card.text ?? ''}`)
+    && (extractNotebookRamText(`${card.title}\n${card.text ?? ''}`) ?? NOTEBOOK_MIN_RAM_GB) >= NOTEBOOK_MIN_RAM_GB)
     .map(card => [cardKey(card), { ...card, cpu_term: cpuTerm }])).values()];
   const matches = eligible.filter(card => cardCpuState(`${card.title}\n${card.text ?? ''}`, cpuTerm) === 'match')
     .filter(card => card.price_brl >= PRICE_MIN_BRL && card.price_brl <= PRICE_CHANGE_MAX_BRL)
@@ -999,6 +1001,7 @@ function extractConditionFromText(text) {
 function buildReport({ runDate, snapshot, previousSnapshot, priceMin, priceMax }) {
   const currentItems = snapshot.items.filter((x) => x.status === "active" && isValidatedOlxItem(x));
   const pending = snapshot.items.filter(x => x.status === 'active' && !isValidatedOlxItem(x)
+    && (x.ram_gb == null || x.ram_gb >= NOTEBOOK_MIN_RAM_GB)
     && x.validation?.state !== 'rejected' && x.price_brl >= priceMin && x.price_brl <= priceMax);
   const rejected = snapshot.items.filter(x => x.validation?.state === 'rejected');
   const inRange = currentItems.filter((x) => x.price_brl != null && x.price_brl >= priceMin && x.price_brl <= priceMax);
@@ -1010,7 +1013,7 @@ function buildReport({ runDate, snapshot, previousSnapshot, priceMin, priceMax }
 
   // Listing-based crawler: absence only means "not seen in this run's listing results" (not necessarily offline).
   const notSeenThisRun = (previousSnapshot?.items ?? [])
-    .filter((x) => x.status === "active")
+    .filter((x) => x.status === "active" && meetsNotebookRamMinimum(x))
     .filter((x) => !snapshot.items.some(item => (item.id ?? item.url) === (x.id ?? x.url) && item.status === 'active'));
 
   const priceChanges = [];
@@ -1027,6 +1030,7 @@ function buildReport({ runDate, snapshot, previousSnapshot, priceMin, priceMax }
   lines.push(`# Monitor OLX notebooks por CPU — ${runDate}`);
   lines.push("");
   lines.push("## Resumo executivo");
+  lines.push(`- RAM mínima instalada: **${NOTEBOOK_MIN_RAM_GB} GB**.`);
   if (snapshot.run?.successful_terms) {
     lines.push(`- Cobertura parcial: **${snapshot.run.partial ? "sim" : "não"}**`);
     lines.push(`- Coleta em andamento: **${snapshot.run.in_progress ? "sim" : "não"}**`);
@@ -1131,7 +1135,7 @@ function mergeWithPreviousSnapshot({ runDate, now, collected, previousSnapshot, 
       configuredCoverage: DEFAULT_CPU_TERMS,
       itemCoverage: (item) => item.cpu_term ? [item.cpu_term]
         : DEFAULT_CPU_TERMS.filter((term) => textContainsCpuTerm(item.title ?? "", term)),
-      filters: { price_brl: { min: PRICE_MIN_BRL, max: PRICE_MAX_BRL } },
+      filters: { ram_gb: { min: NOTEBOOK_MIN_RAM_GB }, price_brl: { min: PRICE_MIN_BRL, max: PRICE_MAX_BRL } },
     });
     result.price_range_brl = { min: PRICE_MIN_BRL, max: PRICE_MAX_BRL };
     result.items = result.items.map(item => item.validation?.state === 'rejected'

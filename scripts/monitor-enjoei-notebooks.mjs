@@ -1,3 +1,4 @@
+import { meetsNotebookRamMinimum, NOTEBOOK_MIN_RAM_GB } from './lib/notebook-policy.mjs';
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -572,7 +573,7 @@ export function mergeEnjoeiNotebookSnapshot({
     itemCoverage: (item) => item.cpu_terms ?? [],
   });
   result.price_range_brl = { min: priceMin, max: priceMax };
-  result.filters = { ...result.filters, price_brl: result.price_range_brl };
+  result.filters = { ...result.filters, ram_gb: { min: NOTEBOOK_MIN_RAM_GB }, price_brl: result.price_range_brl };
   return result;
 }
 
@@ -580,10 +581,10 @@ export function mergeEnjoeiNotebookSnapshot({
 
 function buildReport({ runDate, snapshot, previousSnapshot, failedTerms = [], incompleteTerms = [] }) {
   const currentItems = snapshot.items.filter(
-    (i) => i.status === "active" && i.price_brl != null && i.price_brl >= minPriceBrl && i.price_brl <= maxPriceBrl
+    (i) => meetsNotebookRamMinimum(i) && i.status === "active" && i.price_brl != null && i.price_brl >= minPriceBrl && i.price_brl <= maxPriceBrl
   );
   const previousItems = (previousSnapshot?.items ?? []).filter(
-    (i) => i.price_brl != null && i.price_brl >= minPriceBrl && i.price_brl <= maxPriceBrl
+    (i) => meetsNotebookRamMinimum(i) && i.price_brl != null && i.price_brl >= minPriceBrl && i.price_brl <= maxPriceBrl
   );
   const previousById = new Map(previousItems.map((i) => [i.id ?? i.url, i]));
   const currentById = new Map(currentItems.map((i) => [i.id ?? i.url, i]));
@@ -606,6 +607,7 @@ function buildReport({ runDate, snapshot, previousSnapshot, failedTerms = [], in
   lines.push(`# Monitor Enjoei notebooks por CPU — ${runDate}`);
   lines.push("");
   lines.push("## Resumo executivo");
+  lines.push(`- RAM mínima instalada: **${NOTEBOOK_MIN_RAM_GB} GB**.`);
   lines.push(`- Novos notebooks (R$ ${fmtBrl(minPriceBrl)}–R$ ${fmtBrl(maxPriceBrl)}): **${newItems.length}**`);
   lines.push(`- Já vistos e ativos: **${stillActive.length}**`);
   lines.push(`- Não vistos nesta rodada: **${notSeen.length}**`);

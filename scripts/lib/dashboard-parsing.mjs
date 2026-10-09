@@ -24,6 +24,7 @@ export function createDashboardParser({ summarizeMachine, formatDateTimeBrt, pri
       newCount: newItems.length,
       priceCount: priceItems.length,
       pendingCount: pendingItems.length,
+      allPendingItems: pendingItems,
       pendingItems: pendingItems.slice(0, maxItems),
       date,
       newItems: newItems.slice(0, maxItems),

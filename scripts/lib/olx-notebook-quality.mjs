@@ -1,6 +1,7 @@
+import { extractNotebookRamText, meetsNotebookRamMinimum, NOTEBOOK_MIN_RAM_GB } from './notebook-policy.mjs';
 import { DEFAULT_CPU_TERMS } from "./cpu-terms.mjs";
 import { cardCpuState } from "./olx-description-queue.mjs";
-import { extractRamGb, extractStorageGb, extractGpuLabel, normalizeText, parseBrlPrice, textContainsCpuTerm } from './parsers.mjs';
+import { extractStorageGb, extractGpuLabel, normalizeText, parseBrlPrice, textContainsCpuTerm } from './parsers.mjs';
 
 export const OLX_QUALITY_VERSION = 1;
 export const OLX_PRIORITY_CPUS = ['14700hx', '13980hx', '14900hx', '13900hx', '12900hx', '12800hx'];
@@ -18,16 +19,10 @@ export function planOlxCpuTerms(terms, previous, { now = Date.now(), lowPriority
 
 // RAM do sistema: remover a capacidade que pertence à GPU antes de aplicar o
 // parser existente. O texto continua disponível para extrair a GPU separadamente.
-export function extractOlxRam(text) {
-  const cleaned = String(text ?? '')
-    .replace(/\b(?:rtx|gtx|radeon|arc)\s*[\w-]+(?:\s+(?:ti|super))?\s*[-|/([]?\s*(?:com\s+)?\d{1,3}\s*gb\b(?!\s*(?:ram|ddr\d))/gi, '')
-    .replace(/\b\d{1,3}\s*gb\s*(?:gddr\d\w*|vram|de\s+(?:video|vídeo))\b/gi, '')
-    .replace(/\b(?:vram|mem[oó]ria\s+(?:de\s+)?v[ií]deo)\s*:?\s*\d{1,3}\s*gb\b/gi, '');
-  return extractRamGb(cleaned);
-}
+export { extractNotebookRamText as extractOlxRam } from './notebook-policy.mjs';
 
 export function olxSpecs(text) {
-  return { ram_gb: extractOlxRam(text), storage_gb: extractStorageGb(text), gpu: extractGpuLabel(text) };
+  return { ram_gb: extractNotebookRamText(text), storage_gb: extractStorageGb(text), gpu: extractGpuLabel(text) };
 }
 
 export function notebookExclusionReason(text) {
@@ -130,11 +125,13 @@ export function validateOlxNotebook(card, detail, now = new Date()) {
     specs[key] = descSpecs[key] ?? titleSpecs[key];
     if (specs[key] == null) reasons.push(`Especificação não confirmada: ${label}`);
   }
+  const insufficientRam = specs.ram_gb != null && specs.ram_gb < NOTEBOOK_MIN_RAM_GB;
+  if (insufficientRam) reasons.push(`RAM abaixo do mínimo de ${NOTEBOOK_MIN_RAM_GB} GB`);
   if (!cpuConfirmed) reasons.push('CPU não confirmada no anúncio');
   if (card.description_discovery && confirmedTerms.length > 1) reasons.push('Mais de um processador informado no anúncio');
-  const rejected = excluded || (detail.description.trim() && detail.title && !cpuConfirmed
+  const rejected = excluded || insufficientRam || (detail.description.trim() && detail.title && !cpuConfirmed
     && (!card.description_discovery || (confirmedTerms.length === 0 && cardCpuState(detailText, card.cpu_term) === 'other')));
-  if (rejected) reasons.unshift(excluded ?? 'CPU fora da busca');
+  if (rejected) reasons.unshift(excluded ?? (insufficientRam ? 'RAM abaixo do mínimo exigido' : 'CPU fora da busca'));
   return {
     ...card, ...specs, price_brl: price ?? card.price_brl, desc_checked: Boolean(detail.description.trim()),
     validation: { version: OLX_QUALITY_VERSION, state: rejected ? 'rejected' : reasons.length ? 'pending' : 'validated',
@@ -146,5 +143,5 @@ export function validateOlxNotebook(card, detail, now = new Date()) {
 }
 
 export function isValidatedOlxItem(item) {
-  return item?.validation?.version === OLX_QUALITY_VERSION && item.validation.state === 'validated';
+  return item?.validation?.version === OLX_QUALITY_VERSION && item.validation.state === 'validated' && meetsNotebookRamMinimum(item);
 }
