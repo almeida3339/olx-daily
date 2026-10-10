@@ -2,8 +2,8 @@
   "schema_version": 1,
   "quality_version": 1,
   "configuration": "9955hx3d,290hx,9955hx,285hx,275hx,aimax395,7945hx,7945hx3d,255hx,13980hx,8940hx,7940hx,13950hx,14900hx,13900hx,7845hx,8840hx,aimax390,14700hx,hx470,12900hx,12800hx",
-  "started_at": "2026-10-09T19:00:28.097Z",
-  "updated_at": "2026-10-09T19:01:33.533Z",
+  "started_at": "2026-10-10T10:18:34.787Z",
+  "updated_at": "2026-10-10T10:55:28.169Z",
   "state": "completed",
   "scheduled_terms": [
     "14700hx",
@@ -11,7 +11,23 @@
     "14900hx",
     "13900hx",
     "12900hx",
-    "12800hx"
+    "12800hx",
+    "9955hx3d",
+    "290hx",
+    "9955hx",
+    "285hx",
+    "275hx",
+    "aimax395",
+    "7945hx",
+    "7945hx3d",
+    "255hx",
+    "8940hx",
+    "7940hx",
+    "13950hx",
+    "7845hx",
+    "8840hx",
+    "aimax390",
+    "hx470"
   ],
   "successful_terms": [
     "14700hx",
@@ -19,7 +35,23 @@
     "14900hx",
     "13900hx",
     "12900hx",
-    "12800hx"
+    "12800hx",
+    "9955hx3d",
+    "290hx",
+    "9955hx",
+    "285hx",
+    "275hx",
+    "aimax395",
+    "7945hx",
+    "7945hx3d",
+    "255hx",
+    "8940hx",
+    "7940hx",
+    "13950hx",
+    "7845hx",
+    "8840hx",
+    "aimax390",
+    "hx470"
   ],
   "collected": [
     {
@@ -42,7 +74,7 @@
       "validation": {
         "version": 1,
         "state": "validated",
-        "checked_at": "2026-10-09T10:00:31.708Z",
+        "checked_at": "2026-10-10T10:18:37.402Z",
         "reasons": [],
         "listing_price_brl": 8399,
         "detail_price_brl": 8399,
@@ -82,7 +114,7 @@
       "validation": {
         "version": 1,
         "state": "pending",
-        "checked_at": "2026-10-09T10:00:34.073Z",
+        "checked_at": "2026-10-10T10:18:38.961Z",
         "reasons": [
           "Especificação não confirmada: RAM"
         ],
@@ -115,7 +147,7 @@
       "storage_gb": 1024,
       "gpu": "RTX 4060",
       "location": null,
-      "condition": "novo",
+      "condition": "Usado - Excelente",
       "status": "active",
       "first_seen": null,
       "last_seen": null,
@@ -123,10 +155,12 @@
       "desc_checked": true,
       "validation": {
         "version": 1,
-        "state": "pending",
-        "checked_at": "2026-10-09T10:00:53.104Z",
+        "state": "rejected",
+        "checked_at": "2026-10-10T10:18:46.102Z",
         "reasons": [
-          "Especificação divergente: SSD/armazenamento"
+          "RAM abaixo do mínimo exigido",
+          "Especificação divergente: SSD/armazenamento",
+          "RAM abaixo do mínimo de 32 GB"
         ],
         "listing_price_brl": 7990,
         "detail_price_brl": 7990,
@@ -156,7 +190,7 @@
       "ram_gb": 32,
       "storage_gb": 1024,
       "gpu": "RTX 4060",
-      "location": "Jardim Piazza di Roma, Sorocaba - SP",
+      "location": null,
       "condition": "novo",
       "status": "active",
       "first_seen": null,
@@ -166,7 +200,7 @@
       "validation": {
         "version": 1,
         "state": "validated",
-        "checked_at": "2026-10-09T10:00:54.253Z",
+        "checked_at": "2026-10-10T10:18:47.749Z",
         "reasons": [],
         "listing_price_brl": 9399,
         "detail_price_brl": 9399,
@@ -205,9 +239,12 @@
       "desc_checked": true,
       "validation": {
         "version": 1,
-        "state": "validated",
-        "checked_at": "2026-10-09T10:01:05.103Z",
-        "reasons": [],
+        "state": "rejected",
+        "checked_at": "2026-10-10T10:18:59.602Z",
+        "reasons": [
+          "RAM abaixo do mínimo exigido",
+          "RAM abaixo do mínimo de 32 GB"
+        ],
         "listing_price_brl": 9000,
         "detail_price_brl": 9000,
         "visible_price_brl": null,
@@ -246,11 +283,12 @@
       "validation": {
         "version": 1,
         "state": "rejected",
-        "checked_at": "2026-10-09T10:01:37.334Z",
+        "checked_at": "2026-10-10T10:19:20.161Z",
         "reasons": [
           "Defeito ou avaria declarados no anúncio",
           "Especificação divergente: RAM",
-          "Especificação não confirmada: SSD/armazenamento"
+          "Especificação não confirmada: SSD/armazenamento",
+          "RAM abaixo do mínimo de 32 GB"
         ],
         "listing_price_brl": 7850,
         "detail_price_brl": 7850,
@@ -290,7 +328,7 @@
       "validation": {
         "version": 1,
         "state": "pending",
-        "checked_at": "2026-10-09T10:01:38.597Z",
+        "checked_at": "2026-10-10T10:19:21.678Z",
         "reasons": [
           "Especificação não confirmada: SSD/armazenamento"
         ],
@@ -332,7 +370,7 @@
       "validation": {
         "version": 1,
         "state": "pending",
-        "checked_at": "2026-10-09T10:01:40.081Z",
+        "checked_at": "2026-10-10T10:19:23.561Z",
         "reasons": [
           "Especificação não confirmada: SSD/armazenamento"
         ],
@@ -373,9 +411,12 @@
       "desc_checked": true,
       "validation": {
         "version": 1,
-        "state": "validated",
-        "checked_at": "2026-10-09T10:01:46.139Z",
-        "reasons": [],
+        "state": "rejected",
+        "checked_at": "2026-10-10T10:19:32.451Z",
+        "reasons": [
+          "RAM abaixo do mínimo exigido",
+          "RAM abaixo do mínimo de 32 GB"
+        ],
         "listing_price_brl": 7999,
         "detail_price_brl": 7999,
         "visible_price_brl": null,
@@ -418,12 +459,55 @@
           "Descrição e preço integral ainda não conferidos"
         ]
       }
+    },
+    {
+      "id": "1539254949",
+      "url": "https://rj.olx.com.br/rio-de-janeiro-e-regiao/informatica/notebooks/helios-predator-neo-16-ai-rtx5070-ultra-core7-255hx-1539254949",
+      "title": "Helios Predator neo 16 ai Rtx5070 ultra core7 255hx",
+      "cpu_term": "255hx",
+      "description_discovery": false,
+      "price_brl": 8500,
+      "ram_gb": null,
+      "storage_gb": null,
+      "gpu": "RTX 5070",
+      "location": null,
+      "condition": "Novo",
+      "status": "active",
+      "first_seen": null,
+      "last_seen": null,
+      "notes": null,
+      "desc_checked": true,
+      "validation": {
+        "version": 1,
+        "state": "pending",
+        "checked_at": "2026-10-10T10:21:06.109Z",
+        "reasons": [
+          "Especificação não confirmada: RAM",
+          "Especificação não confirmada: SSD/armazenamento"
+        ],
+        "listing_price_brl": 8500,
+        "detail_price_brl": 8500,
+        "visible_price_brl": null,
+        "structured_price_brl": 8500,
+        "title_specs": {
+          "ram_gb": null,
+          "storage_gb": null,
+          "gpu": "RTX 5070"
+        },
+        "description_specs": {
+          "ram_gb": null,
+          "storage_gb": null,
+          "gpu": "RTX 5070"
+        },
+        "cpu_confirmed": true,
+        "description_checked": true
+      }
     }
   ],
   "pending_terms": [],
   "baseline_snapshot": {
     "schema_version": 2,
-    "generated_at": "2026-10-09T10:02:28.953Z",
+    "generated_at": "2026-10-09T19:01:32.435Z",
     "coverage_status": {
       "9955hx3d": {
         "checked_at": "2026-10-08T19:56:27.824Z",
@@ -480,8 +564,8 @@
         "error": null
       },
       "13980hx": {
-        "checked_at": "2026-10-09T10:02:28.953Z",
-        "last_success_at": "2026-10-09T10:02:28.953Z",
+        "checked_at": "2026-10-09T19:01:32.435Z",
+        "last_success_at": "2026-10-09T19:01:32.435Z",
         "state": "success",
         "error": null
       },
@@ -504,14 +588,14 @@
         "error": null
       },
       "14900hx": {
-        "checked_at": "2026-10-09T10:02:28.953Z",
-        "last_success_at": "2026-10-09T10:02:28.953Z",
+        "checked_at": "2026-10-09T19:01:32.435Z",
+        "last_success_at": "2026-10-09T19:01:32.435Z",
         "state": "success",
         "error": null
       },
       "13900hx": {
-        "checked_at": "2026-10-09T10:02:28.953Z",
-        "last_success_at": "2026-10-09T10:02:28.953Z",
+        "checked_at": "2026-10-09T19:01:32.435Z",
+        "last_success_at": "2026-10-09T19:01:32.435Z",
         "state": "success",
         "error": null
       },
@@ -534,8 +618,8 @@
         "error": null
       },
       "14700hx": {
-        "checked_at": "2026-10-09T10:02:28.953Z",
-        "last_success_at": "2026-10-09T10:02:28.953Z",
+        "checked_at": "2026-10-09T19:01:32.435Z",
+        "last_success_at": "2026-10-09T19:01:32.435Z",
         "state": "success",
         "error": null
       },
@@ -546,14 +630,14 @@
         "error": null
       },
       "12900hx": {
-        "checked_at": "2026-10-09T10:02:28.953Z",
-        "last_success_at": "2026-10-09T10:02:28.953Z",
+        "checked_at": "2026-10-09T19:01:32.435Z",
+        "last_success_at": "2026-10-09T19:01:32.435Z",
         "state": "success",
         "error": null
       },
       "12800hx": {
-        "checked_at": "2026-10-09T10:02:28.953Z",
-        "last_success_at": "2026-10-09T10:02:28.953Z",
+        "checked_at": "2026-10-09T19:01:32.435Z",
+        "last_success_at": "2026-10-09T19:01:32.435Z",
         "state": "success",
         "error": null
       }
@@ -561,8 +645,8 @@
     "run": {
       "date": "2026-10-09",
       "timezone": "America/Sao_Paulo",
-      "started_at": "2026-10-09T10:00:27.258Z",
-      "completed_at": "2026-10-09T10:02:28.953Z",
+      "started_at": "2026-10-09T19:00:28.097Z",
+      "completed_at": "2026-10-09T19:01:32.435Z",
       "in_progress": false,
       "phase": "completed",
       "partial": false,
@@ -572,11 +656,7 @@
         "14900hx",
         "13900hx",
         "12900hx",
-        "12800hx",
-        "7845hx",
-        "8840hx",
-        "aimax390",
-        "hx470"
+        "12800hx"
       ],
       "failed_terms": [],
       "errors": [],
@@ -585,7 +665,7 @@
         "extra_details": 0,
         "detail_ms": 0,
         "recovered_validated": 0,
-        "cache_hits": 0,
+        "cache_hits": 9,
         "by_term": {},
         "queued_candidates": 0,
         "validation_complete": true,
@@ -598,11 +678,7 @@
         "14900hx",
         "13900hx",
         "12900hx",
-        "12800hx",
-        "7845hx",
-        "8840hx",
-        "aimax390",
-        "hx470"
+        "12800hx"
       ],
       "successful_coverage": [
         "14700hx",
@@ -610,11 +686,7 @@
         "14900hx",
         "13900hx",
         "12900hx",
-        "12800hx",
-        "7845hx",
-        "8840hx",
-        "aimax390",
-        "hx470"
+        "12800hx"
       ],
       "failed_coverage": [],
       "configured_coverage": [
@@ -644,62 +716,15 @@
       "quarantined_item_count": 0
     },
     "filters": {
+      "ram_gb": {
+        "min": 32
+      },
       "price_brl": {
         "min": 2000,
         "max": 8000
       }
     },
     "items": [
-      {
-        "id": "1538894993",
-        "url": "https://pa.olx.com.br/regiao-de-belem/informatica/notebooks/helios-neo-i7-14700hx-16gb-1-4tb-ssd-4070-1538894993",
-        "title": "Helios Neo I7 14700HX, 16Gb, 1,4tb SSD, 4070",
-        "cpu_term": "14700hx",
-        "price_brl": 8300,
-        "ram_gb": 16,
-        "storage_gb": 1024,
-        "gpu": null,
-        "location": null,
-        "condition": "novo",
-        "status": "active",
-        "first_seen": "2026-09-25",
-        "last_seen": "2026-10-09",
-        "notes": null,
-        "out_of_scope_at": null,
-        "price_history": [
-          {
-            "at": "2026-09-25T20:30:51.540Z",
-            "price_brl": 8300
-          }
-        ],
-        "desc_checked": true,
-        "description_discovery": false,
-        "validation": {
-          "version": 1,
-          "state": "pending",
-          "checked_at": "2026-10-09T10:00:30.530Z",
-          "reasons": [
-            "Especificação divergente: SSD/armazenamento",
-            "Especificação não confirmada: GPU"
-          ],
-          "listing_price_brl": 8300,
-          "detail_price_brl": 8300,
-          "visible_price_brl": null,
-          "structured_price_brl": 8300,
-          "title_specs": {
-            "ram_gb": 16,
-            "storage_gb": 1434,
-            "gpu": null
-          },
-          "description_specs": {
-            "ram_gb": null,
-            "storage_gb": 1024,
-            "gpu": null
-          },
-          "cpu_confirmed": true,
-          "description_checked": true
-        }
-      },
       {
         "id": "1522141686",
         "url": "https://sc.olx.com.br/florianopolis-e-regiao/informatica/notebooks/notebook-gamer-nave-estelar-i7-14700hx-32gb-rtx-4060-8gb-1522141686",
@@ -912,60 +937,6 @@
         }
       },
       {
-        "id": "1510666124",
-        "url": "https://es.olx.com.br/norte-do-espirito-santo/informatica/notebooks/notebook-gamer-avell-storm-460-i9-14900hx-rtx-4060-16gb-ram-240hz-1510666124",
-        "title": "Notebook Gamer Avell Storm 460 - i9 14900HX | RTX 4060 | 16GB RAM | 240Hz",
-        "cpu_term": "14900hx",
-        "price_brl": 8500,
-        "ram_gb": 16,
-        "storage_gb": null,
-        "gpu": "RTX 4060",
-        "location": null,
-        "condition": "novo",
-        "status": "out_of_scope",
-        "first_seen": "2026-06-27",
-        "last_seen": "2026-10-09",
-        "notes": null,
-        "out_of_scope_at": "2026-10-09T10:02:28.953Z",
-        "price_history": [
-          {
-            "at": "2026-06-27T12:00:00.000Z",
-            "price_brl": 9500
-          },
-          {
-            "at": "2026-08-27T12:00:00.000Z",
-            "price_brl": 8500
-          }
-        ],
-        "description_discovery": false,
-        "desc_checked": true,
-        "validation": {
-          "version": 1,
-          "state": "rejected",
-          "checked_at": "2026-10-09T10:01:03.789Z",
-          "reasons": [
-            "Defeito ou avaria declarados no anúncio",
-            "Especificação não confirmada: SSD/armazenamento"
-          ],
-          "listing_price_brl": 8500,
-          "detail_price_brl": 8500,
-          "visible_price_brl": null,
-          "structured_price_brl": 8500,
-          "title_specs": {
-            "ram_gb": 16,
-            "storage_gb": null,
-            "gpu": "RTX 4060"
-          },
-          "description_specs": {
-            "ram_gb": 16,
-            "storage_gb": null,
-            "gpu": "RTX 4060"
-          },
-          "cpu_confirmed": true,
-          "description_checked": true
-        }
-      },
-      {
         "id": "1531014028",
         "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-gamer-asus-rog-strix-g16-rtx-5060-core-i9-14900hx-16gb-512gb-w11-240hz-1531014028",
         "title": "Notebook Gamer ASUS ROG Strix G16 RTX 5060 Core I9 14900HX 16GB 512GB W11 240Hz",
@@ -1027,7 +998,7 @@
         "first_seen": "2026-08-02",
         "last_seen": "2026-10-09",
         "notes": null,
-        "out_of_scope_at": "2026-10-09T10:02:28.953Z",
+        "out_of_scope_at": "2026-10-09T19:01:32.435Z",
         "price_history": [
           {
             "at": "2026-08-02T12:00:00.000Z",
@@ -1259,6 +1230,110 @@
             "price_brl": 8990
           }
         ]
+      },
+      {
+        "id": "1538894993",
+        "url": "https://pa.olx.com.br/regiao-de-belem/informatica/notebooks/helios-neo-i7-14700hx-16gb-1-4tb-ssd-4070-1538894993",
+        "title": "Helios Neo I7 14700HX, 16Gb, 1,4tb SSD, 4070",
+        "cpu_term": "14700hx",
+        "price_brl": 8300,
+        "ram_gb": 16,
+        "storage_gb": 1024,
+        "gpu": null,
+        "location": null,
+        "condition": "novo",
+        "status": "not_seen",
+        "first_seen": "2026-09-25",
+        "last_seen": "2026-10-09",
+        "notes": null,
+        "out_of_scope_at": null,
+        "price_history": [
+          {
+            "at": "2026-09-25T20:30:51.540Z",
+            "price_brl": 8300
+          }
+        ],
+        "desc_checked": true,
+        "description_discovery": false,
+        "validation": {
+          "version": 1,
+          "state": "pending",
+          "checked_at": "2026-10-09T10:00:30.530Z",
+          "reasons": [
+            "Especificação divergente: SSD/armazenamento",
+            "Especificação não confirmada: GPU"
+          ],
+          "listing_price_brl": 8300,
+          "detail_price_brl": 8300,
+          "visible_price_brl": null,
+          "structured_price_brl": 8300,
+          "title_specs": {
+            "ram_gb": 16,
+            "storage_gb": 1434,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": 1024,
+            "gpu": null
+          },
+          "cpu_confirmed": true,
+          "description_checked": true
+        }
+      },
+      {
+        "id": "1510666124",
+        "url": "https://es.olx.com.br/norte-do-espirito-santo/informatica/notebooks/notebook-gamer-avell-storm-460-i9-14900hx-rtx-4060-16gb-ram-240hz-1510666124",
+        "title": "Notebook Gamer Avell Storm 460 - i9 14900HX | RTX 4060 | 16GB RAM | 240Hz",
+        "cpu_term": "14900hx",
+        "price_brl": 8500,
+        "ram_gb": 16,
+        "storage_gb": null,
+        "gpu": "RTX 4060",
+        "location": null,
+        "condition": "novo",
+        "status": "out_of_scope",
+        "first_seen": "2026-06-27",
+        "last_seen": "2026-10-09",
+        "notes": null,
+        "out_of_scope_at": "2026-10-09T10:02:28.953Z",
+        "price_history": [
+          {
+            "at": "2026-06-27T12:00:00.000Z",
+            "price_brl": 9500
+          },
+          {
+            "at": "2026-08-27T12:00:00.000Z",
+            "price_brl": 8500
+          }
+        ],
+        "description_discovery": false,
+        "desc_checked": true,
+        "validation": {
+          "version": 1,
+          "state": "rejected",
+          "checked_at": "2026-10-09T10:01:03.789Z",
+          "reasons": [
+            "Defeito ou avaria declarados no anúncio",
+            "Especificação não confirmada: SSD/armazenamento"
+          ],
+          "listing_price_brl": 8500,
+          "detail_price_brl": 8500,
+          "visible_price_brl": null,
+          "structured_price_brl": 8500,
+          "title_specs": {
+            "ram_gb": 16,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "description_specs": {
+            "ram_gb": 16,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "cpu_confirmed": true,
+          "description_checked": true
+        }
       },
       {
         "id": "1537347112",
@@ -8049,7 +8124,7 @@
     "extra_details": 0,
     "detail_ms": 0,
     "recovered_validated": 0,
-    "cache_hits": 9,
+    "cache_hits": 0,
     "by_term": {},
     "queued_candidates": 0,
     "validation_complete": true,

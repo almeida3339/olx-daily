@@ -1,7 +1,25 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-09T19:03:37.325Z",
+  "updated_at": "2026-10-10T10:59:07.352Z",
   "runs": [
+    {
+      "run_id": "51986b3d-a8e0-4ea0-b932-17b5f059bec4",
+      "completed_at": "2026-10-10T10:59:07.349Z",
+      "outcome": "failed",
+      "partial": true,
+      "duration_ms": 2452154,
+      "item_count": 0,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "local",
+        "monitor_errors": 2,
+        "monitor_failures": [
+          "Google Pixel Watch 4: Saiu com código 1: Aviso: coleta OLX falhou — Cloudflare: OLX em pausa até 2026-10-10T19:02:22.635Z; abra o perfil com --visible para recuperação manual.",
+          "Monitores OLED: Saiu com código 1: Aviso: termo \"cepheus p1\" em https://www.olx.com.br/brasil falhou — OLX não expôs cards nem uma mensagem de busca vazia\n  Aviso: termo \"mpg 491cqp\" em https://www.olx.com.br/brasil falhou — OLX não expôs cards nem uma mensagem de busca vazia"
+        ],
+        "pending_notifications": 0
+      }
+    },
     {
       "run_id": "6eb7444d-2c28-488e-b739-42f1521f7dca",
       "completed_at": "2026-10-09T19:03:37.313Z",
@@ -1730,20 +1748,6 @@
       "outcome": "success",
       "partial": false,
       "duration_ms": 55670,
-      "item_count": 2,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "local",
-        "monitor_errors": 0,
-        "pending_notifications": 1
-      }
-    },
-    {
-      "run_id": "af5f6868-853e-4fe5-baf0-6fef516a310a",
-      "completed_at": "2026-08-17T19:01:06.905Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 61757,
       "item_count": 2,
       "quarantined_item_count": 0,
       "metadata": {
