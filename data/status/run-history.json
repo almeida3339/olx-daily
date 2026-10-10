@@ -1,7 +1,25 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-10T10:59:07.352Z",
+  "updated_at": "2026-10-10T19:05:44.076Z",
   "runs": [
+    {
+      "run_id": "97d4514e-c32e-49fd-a841-94227c10e3f4",
+      "completed_at": "2026-10-10T19:05:44.073Z",
+      "outcome": "failed",
+      "partial": true,
+      "duration_ms": 336114,
+      "item_count": 0,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "local",
+        "monitor_errors": 2,
+        "monitor_failures": [
+          "Google Pixel Watch 4: Saiu com código 1: Aviso: coleta OLX falhou — Cloudflare: OLX em pausa até 2026-10-10T19:02:22.635Z; abra o perfil com --visible para recuperação manual.",
+          "Monitores OLED: Saiu com código 1: Aviso: termo \"aw2725df\" em https://www.olx.com.br/brasil falhou — OLX não expôs cards nem uma mensagem de busca vazia"
+        ],
+        "pending_notifications": 0
+      }
+    },
     {
       "run_id": "51986b3d-a8e0-4ea0-b932-17b5f059bec4",
       "completed_at": "2026-10-10T10:59:07.349Z",
@@ -1735,20 +1753,6 @@
       "partial": false,
       "duration_ms": 67846,
       "item_count": 3,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "local",
-        "monitor_errors": 0,
-        "pending_notifications": 1
-      }
-    },
-    {
-      "run_id": "d418f32e-f5d3-438d-80e6-c4022b1a585c",
-      "completed_at": "2026-08-18T10:01:00.569Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 55670,
-      "item_count": 2,
       "quarantined_item_count": 0,
       "metadata": {
         "source": "local",
