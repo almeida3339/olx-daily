@@ -1,7 +1,25 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-11T10:25:50.022Z",
+  "updated_at": "2026-10-11T19:02:34.903Z",
   "runs": [
+    {
+      "run_id": "558b6ffe-f18c-4e2a-abdc-aede1be1a7e4",
+      "completed_at": "2026-10-11T19:02:34.900Z",
+      "outcome": "failed",
+      "partial": true,
+      "duration_ms": 148692,
+      "item_count": 0,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "local",
+        "monitor_errors": 2,
+        "monitor_failures": [
+          "OLX: Saiu com código 1: OLX bloqueada até 2026-10-12T10:21:31.160Z. Resolva a verificação antes de usar --resume-after-verification.\nMonitor OLX falhou com exit code 1.\r\nNo C:\\Users\\docra\\downloads\\olx-daily\\scripts\\run-olx-monitor.ps1:88 caractere:5\r\n+     throw \"Monitor OLX falhou com exit code $LASTEXITCODE.\"\r\n+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : OperationStopped: (Monitor OLX falhou com exit code 1.:String) [], RuntimeException\r\n    + FullyQualifiedErrorId : Monitor OLX falhou com exit code 1.",
+          "Google Pixel Watch 4: Saiu com código 1: Aviso: coleta OLX falhou — Cloudflare: OLX em pausa até 2026-10-12T10:22:39.892Z; abra o perfil com --visible para recuperação manual."
+        ],
+        "pending_notifications": 0
+      }
+    },
     {
       "run_id": "2f9e17a9-739e-4f7f-96e0-ed818c3bf700",
       "completed_at": "2026-10-11T10:25:50.018Z",
@@ -1744,20 +1762,6 @@
       "outcome": "success",
       "partial": false,
       "duration_ms": 65987,
-      "item_count": 2,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "local",
-        "monitor_errors": 0,
-        "pending_notifications": 1
-      }
-    },
-    {
-      "run_id": "4fb838e1-3308-4c22-bc1f-511f911f4f58",
-      "completed_at": "2026-08-19T10:41:10.958Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 66939,
       "item_count": 2,
       "quarantined_item_count": 0,
       "metadata": {
