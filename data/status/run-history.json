@@ -1,7 +1,27 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-10T19:05:44.076Z",
+  "updated_at": "2026-10-11T10:25:50.022Z",
   "runs": [
+    {
+      "run_id": "2f9e17a9-739e-4f7f-96e0-ed818c3bf700",
+      "completed_at": "2026-10-11T10:25:50.018Z",
+      "outcome": "failed",
+      "partial": true,
+      "duration_ms": 366572,
+      "item_count": 0,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "local",
+        "monitor_errors": 4,
+        "monitor_failures": [
+          "OLX: Saiu com código 1: Aviso: termo \"12900hx\" falhou (OLX exige verificação ou bloqueou o acesso; coleta interrompida.) — pulando para o próximo.\n\nFalha: Error: OLX exige verificação ou bloqueou o acesso; coleta interrompida.\n    at assertOlxAccessible (file:///C:/Users/docra/Downloads/olx-daily/scripts/lib/olx-notebook-quality.mjs:46:19)\n    at waitForRawBody (file:///C:/Users/docra/Downloads/olx-daily/scripts/monitor-olx-notebooks-por-cpu.mjs:619:5)\n    at async enrichAdRawCdp (file:///C:/Users/docra/Downloads/olx-daily/scripts/monitor-olx-notebooks-por-cpu.mjs:594:5)\n    at async processCpuCards (file:///C:/Users/docra/Downloads/olx-daily/scripts/monitor-olx-notebooks-por-cpu.mjs:432:20)\n    at async file:///C:/Users/docra/Downloads/olx-daily/scripts/monitor-olx-notebooks-por-cpu.mjs:252:25\n    at async forEachOlxTerm (file:///C:/Users/docra/Downloads/olx-daily/scripts/monitor-olx-notebooks-por-cpu.mjs:812:5)\n    at async collectOlxTerms (file:///C:/Users/docra/Downloads/olx-daily/scri…",
+          "Dockstations: Saiu com código 1: Aviso: termo \"WD22TB4\" em https://www.olx.com.br/brasil falhou — OLX não expôs cards nem uma mensagem de busca vazia",
+          "Google Pixel Watch 4: Saiu com código 1: Aviso: termo \"pixel watch 4\" em https://www.olx.com.br/brasil falhou — Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a48d25197f8124cd).\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.",
+          "Google Pixel Watch 5: Saiu com código 1: Aviso: termo \"pixel watch 5\" em https://www.olx.com.br/brasil falhou — OLX não expôs cards nem uma mensagem de busca vazia"
+        ],
+        "pending_notifications": 0
+      }
+    },
     {
       "run_id": "97d4514e-c32e-49fd-a841-94227c10e3f4",
       "completed_at": "2026-10-10T19:05:44.073Z",
@@ -1739,20 +1759,6 @@
       "partial": false,
       "duration_ms": 66939,
       "item_count": 2,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "local",
-        "monitor_errors": 0,
-        "pending_notifications": 1
-      }
-    },
-    {
-      "run_id": "dfcf4bd9-df45-4964-913e-07613dc6a71d",
-      "completed_at": "2026-08-18T19:01:12.616Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 67846,
-      "item_count": 3,
       "quarantined_item_count": 0,
       "metadata": {
         "source": "local",

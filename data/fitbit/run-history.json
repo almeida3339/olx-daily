@@ -1,7 +1,23 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-10T19:01:42.987Z",
+  "updated_at": "2026-10-11T10:21:58.013Z",
   "runs": [
+    {
+      "run_id": "2026-10-11T10-21-50-589Z",
+      "committed_at": "2026-10-11T10:21:57.646Z",
+      "completed_at": "2026-10-11T10:21:57.614Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 7025,
+      "item_count": 1,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "fitbit-air",
+        "label": "Fitbit Air",
+        "collected_count": 1,
+        "quarantined_item_count": 0
+      }
+    },
     {
       "run_id": "2026-10-10T19-01-35-620Z",
       "committed_at": "2026-10-10T19:01:42.591Z",
@@ -10,12 +26,12 @@
       "partial": false,
       "duration_ms": 6938,
       "item_count": 0,
-      "quarantined_item_count": 0,
       "metadata": {
         "source": "fitbit-air",
         "label": "Fitbit Air",
         "collected_count": 0,
-        "quarantined_item_count": 0
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     },
     {
@@ -1894,22 +1910,6 @@
       "run_id": "2026-08-29T19-00-17-052Z",
       "committed_at": "2026-08-29T19:00:20.256Z",
       "completed_at": "2026-08-29T19:00:20.256Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": null,
-      "item_count": 0,
-      "metadata": {
-        "source": "fitbit-air",
-        "label": "Fitbit Air",
-        "collected_count": 0,
-        "quarantined_item_count": 0,
-        "in_progress": false
-      }
-    },
-    {
-      "run_id": "2026-08-29T11-01-03-315Z",
-      "committed_at": "2026-08-29T11:01:03.722Z",
-      "completed_at": "2026-08-29T11:01:03.722Z",
       "outcome": "success",
       "partial": false,
       "duration_ms": null,

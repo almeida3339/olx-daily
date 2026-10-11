@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-10T19:00:07.959Z",
+  "generated_at": "2026-10-11T10:19:43.446Z",
   "source": "local",
   "delivery": {
     "email": "skipped",
@@ -40,8 +40,10 @@
     "scope": "local-watchlists",
     "partial": true,
     "errors": [
-      "Google Pixel Watch 4: Saiu com código 1: Aviso: coleta OLX falhou — Cloudflare: OLX em pausa até 2026-10-10T19:02:22.635Z; abra o perfil com --visible para recuperação manual.",
-      "Monitores OLED: Saiu com código 1: Aviso: termo \"aw2725df\" em https://www.olx.com.br/brasil falhou — OLX não expôs cards nem uma mensagem de busca vazia"
+      "OLX: Saiu com código 1: Aviso: termo \"12900hx\" falhou (OLX exige verificação ou bloqueou o acesso; coleta interrompida.) — pulando para o próximo.\n\nFalha: Error: OLX exige verificação ou bloqueou o acesso; coleta interrompida.\n    at assertOlxAccessible (file:///C:/Users/docra/Downloads/olx-daily/scripts/lib/olx-notebook-quality.mjs:46:19)\n    at waitForRawBody (file:///C:/Users/docra/Downloads/olx-daily/scripts/monitor-olx-notebooks-por-cpu.mjs:619:5)\n    at async enrichAdRawCdp (file:///C:/Users/docra/Downloads/olx-daily/scripts/monitor-olx-notebooks-por-cpu.mjs:594:5)\n    at async processCpuCards (file:///C:/Users/docra/Downloads/olx-daily/scripts/monitor-olx-notebooks-por-cpu.mjs:432:20)\n    at async file:///C:/Users/docra/Downloads/olx-daily/scripts/monitor-olx-notebooks-por-cpu.mjs:252:25\n    at async forEachOlxTerm (file:///C:/Users/docra/Downloads/olx-daily/scripts/monitor-olx-notebooks-por-cpu.mjs:812:5)\n    at async collectOlxTerms (file:///C:/Users/docra/Downloads/olx-daily…",
+      "Dockstations: Saiu com código 1: Aviso: termo \"WD22TB4\" em https://www.olx.com.br/brasil falhou — OLX não expôs cards nem uma mensagem de busca vazia",
+      "Google Pixel Watch 4: Saiu com código 1: Aviso: termo \"pixel watch 4\" em https://www.olx.com.br/brasil falhou — Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a48d25197f8124cd).\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.",
+      "Google Pixel Watch 5: Saiu com código 1: Aviso: termo \"pixel watch 5\" em https://www.olx.com.br/brasil falhou — OLX não expôs cards nem uma mensagem de busca vazia"
     ]
   },
   "notification_sent_ids": [
@@ -51,7 +53,8 @@
     "bcb83bb5-88a1-443c-8534-ba4c85427187",
     "39938946-57e6-4695-96dd-fd9d1e4f76a2",
     "c2f38492-5a9d-45a8-8b64-d81d128968ce",
-    "c1193cb1-3359-429c-80b7-9e168e1686a5"
+    "c1193cb1-3359-429c-80b7-9e168e1686a5",
+    "9000d60b-9556-4c19-a387-70e89dec73a8"
   ],
   "notification_archive": [
     {
