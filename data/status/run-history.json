@@ -1,7 +1,29 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-11T19:02:34.903Z",
+  "updated_at": "2026-10-12T10:03:16.363Z",
   "runs": [
+    {
+      "run_id": "2669955e-ff01-4e31-83a7-165d0f468b11",
+      "completed_at": "2026-10-12T10:03:16.350Z",
+      "outcome": "failed",
+      "partial": true,
+      "duration_ms": 188769,
+      "item_count": 0,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "local",
+        "monitor_errors": 6,
+        "monitor_failures": [
+          "OLX: Saiu com código 1: OLX bloqueada até 2026-10-12T10:21:31.160Z. Resolva a verificação antes de usar --resume-after-verification.\nMonitor OLX falhou com exit code 1.\r\nNo C:\\Users\\docra\\downloads\\olx-daily\\scripts\\run-olx-monitor.ps1:88 caractere:5\r\n+     throw \"Monitor OLX falhou com exit code $LASTEXITCODE.\"\r\n+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : OperationStopped: (Monitor OLX falhou com exit code 1.:String) [], RuntimeException\r\n    + FullyQualifiedErrorId : Monitor OLX falhou com exit code 1.",
+          "Lifefactory: Saiu com código 1: Aviso: termo \"lifefactory\" em https://www.olx.com.br/brasil falhou — OLX não expôs cards nem uma mensagem de busca vazia",
+          "Melanger: Saiu com código 1: Aviso: termo \"melanger\" em https://www.olx.com.br/comercio-e-escritorio/gastronomia falhou — OLX não expôs cards nem uma mensagem de busca vazia",
+          "OnePlus Buds Pro 3: Saiu com código 1: Aviso: termo \"buds 3 pro\" em https://www.olx.com.br/brasil falhou — OLX não expôs cards nem uma mensagem de busca vazia",
+          "Google Pixel Watch 4: Saiu com código 1: Aviso: coleta OLX falhou — Cloudflare: OLX em pausa até 2026-10-12T10:22:39.892Z; abra o perfil com --visible para recuperação manual.",
+          "Monitores OLED: Saiu com código 1: Aviso: termo \"mag 271qp\" em https://www.olx.com.br/brasil falhou — OLX não expôs cards nem uma mensagem de busca vazia\n  Aviso: termo \"mpg 491cqp\" em https://www.olx.com.br/brasil falhou — OLX não expôs cards nem uma mensagem de busca vazia\n  Aviso: termo \"xg27acdng\" em https://www.olx.com.br/brasil falhou — OLX não expôs cards nem uma mensagem de busca vazia"
+        ],
+        "pending_notifications": 0
+      }
+    },
     {
       "run_id": "558b6ffe-f18c-4e2a-abdc-aede1be1a7e4",
       "completed_at": "2026-10-11T19:02:34.900Z",
@@ -1749,20 +1771,6 @@
       "partial": false,
       "duration_ms": 56517,
       "item_count": 1,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "local",
-        "monitor_errors": 0,
-        "pending_notifications": 1
-      }
-    },
-    {
-      "run_id": "3d563630-35da-4301-8bee-ff240ccfdb3b",
-      "completed_at": "2026-08-19T19:01:10.549Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 65987,
-      "item_count": 2,
       "quarantined_item_count": 0,
       "metadata": {
         "source": "local",
