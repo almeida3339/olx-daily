@@ -42,7 +42,7 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
     if (profileBlocked) state = 'blocked';
     const hardDenial = Object.entries(snapshot?.source_blocks ?? {}).find(([source, block]) => source === 'OLX' && block.recovery_kind === 'hard_denial');
     const freshnessNote = id.startsWith('mercadolivre-')
-      ? `Sob demanda · ${ageMs == null ? 'sem coleta registrada' : `dados de ${Math.floor(ageMs / 86400_000)} dia(s) atrás`} · ` : '';
+      ? `Sob demanda · ${ageMs == null ? 'sem coleta registrada' : `última coleta há ${formatHealthAge(ageMs)}`} · ` : '';
     sources.push({
       id,
       label,
@@ -157,4 +157,10 @@ function snapshotTimestamp(snapshot, file) {
 
 function asArray(value) {
   return Array.isArray(value) ? value : [];
+}
+
+function formatHealthAge(ageMs) {
+  if (ageMs < 3600_000) return `${Math.floor(ageMs / 60_000)} min`;
+  if (ageMs < 86400_000) return `${Math.floor(ageMs / 3600_000)} h`;
+  return `${Math.floor(ageMs / 86400_000)} dia(s)`;
 }
