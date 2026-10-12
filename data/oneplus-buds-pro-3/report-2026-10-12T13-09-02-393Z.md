@@ -1,11 +1,11 @@
-# Monitor Melanger R$ 1.000,00–R$ 5.000,00 — 2026-08-30
+# Monitor OnePlus Buds Pro 3 R$ 300,00–R$ 800,00 — 2026-10-12
 
 ## Resumo executivo
 - Novos produtos: **0**
 - Já vistos e ativos: **0**
 - Não vistos nesta rodada: **0**
 - Alterações de preço: **0**
-- Termos: melanger
+- Termos: buds 3 pro
 
 ## Novos produtos
 - Nenhum.
