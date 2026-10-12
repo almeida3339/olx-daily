@@ -1,3 +1,4 @@
+import { isCompleteOledMonitor } from './lib/oled-monitor-scope.mjs';
 // Monitor de monitores OLED (OLX com entrega + Enjoei) até R$ 3.000.
 import path from "node:path";
 import { runWatchlistMonitor } from "./lib/watchlist-monitor.mjs";
@@ -8,6 +9,7 @@ const dataDir =
 
 runWatchlistMonitor({
   label: "Monitores OLED",
+  itemFilter: isCompleteOledMonitor,
   dataDir,
   profileDir: ".chrome-oled-monitores-profile",
   terms: [

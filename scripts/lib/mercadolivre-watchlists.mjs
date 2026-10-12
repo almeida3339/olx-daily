@@ -1,3 +1,4 @@
+import { isCompleteOledMonitor } from './oled-monitor-scope.mjs';
 import { normalizeMonitorText } from "./monitor-core.mjs";
 import { textMatchesAnyTermVariant } from "./mercadolivre-monitor.mjs";
 import {
@@ -129,6 +130,7 @@ export const mercadoLivreWatchlists = [
   },
   {
     id: "oled-monitores",
+    itemFilter: isCompleteOledMonitor,
     label: "Monitores OLED",
     terms: [
       "aw2726dm", "aw2725d", "aw2725df", "aw3225qf", "aw3423dw", "aw3423dwf", "aw3425dw",

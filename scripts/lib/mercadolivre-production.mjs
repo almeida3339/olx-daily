@@ -192,6 +192,10 @@ export async function runMercadoLivreBatch({
     await lock.release();
   }
 
+  // Reapply category rules after reading the detail title, and to carried items.
+  const isInScope = item => !excludeTerms.some(term => normalizeText(item.title).includes(normalizeText(term)))
+    && (!itemFilter || itemFilter(item));
+  consolidated = consolidated.filter(isInScope);
   const completedAt = new Date();
   const snapshot = mergeMercadoLivreBatch({
     previous,
@@ -219,6 +223,10 @@ export async function runMercadoLivreBatch({
       configured_terms: allTerms.map((term) => normalizeTask(term).matchTerm),
       failed_terms: failedTerms,
     },
+  });
+  snapshot.items = snapshot.items.map(item => isInScope(item) ? item : {
+    ...item, status: 'out_of_scope', out_of_scope_at: item.out_of_scope_at ?? completedAt.toISOString(),
+    scope_rejection_reason: 'Produto fora dos critérios da busca após conferir o título do detalhe',
   });
   const changes = buildMercadoLivreChanges(previous, snapshot, { displayMinPrice, displayMaxPrice, kind });
   const runId = completedAt.toISOString().replace(/[:.]/g, "-");

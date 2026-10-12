@@ -1,13 +1,13 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-10-12T13:22:17.332Z",
+  "generated_at": "2026-10-12T13:42:14.314Z",
   "sources": [
     {
       "id": "olx",
       "label": "OLX Notebooks",
       "state": "healthy",
       "updated_at": "2026-10-12T13:16:00.034Z",
-      "age_ms": 377298,
+      "age_ms": 1574280,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -32,7 +32,7 @@
       "label": "Enjoei Notebooks",
       "state": "healthy",
       "updated_at": "2026-10-12T13:06:21.459Z",
-      "age_ms": 955873,
+      "age_ms": 2152855,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -57,7 +57,7 @@
       "label": "Enjoei Tênis 42",
       "state": "healthy",
       "updated_at": "2026-10-12T13:06:00.752Z",
-      "age_ms": 976580,
+      "age_ms": 2173562,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -82,7 +82,7 @@
       "label": "Dockstations",
       "state": "healthy",
       "updated_at": "2026-10-12T13:06:02.824Z",
-      "age_ms": 974508,
+      "age_ms": 2171490,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -114,7 +114,7 @@
       "label": "Fitbit Air",
       "state": "healthy",
       "updated_at": "2026-10-12T13:06:04.555Z",
-      "age_ms": 972777,
+      "age_ms": 2169759,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -146,7 +146,7 @@
       "label": "Lifefactory",
       "state": "healthy",
       "updated_at": "2026-10-12T13:06:05.170Z",
-      "age_ms": 972162,
+      "age_ms": 2169144,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -178,7 +178,7 @@
       "label": "Tela Book3",
       "state": "healthy",
       "updated_at": "2026-10-12T13:06:05.748Z",
-      "age_ms": 971584,
+      "age_ms": 2168566,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -210,7 +210,7 @@
       "label": "Melanger",
       "state": "healthy",
       "updated_at": "2026-10-12T13:07:19.254Z",
-      "age_ms": 898078,
+      "age_ms": 2095060,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -242,7 +242,7 @@
       "label": "OnePlus Buds Pro 3",
       "state": "healthy",
       "updated_at": "2026-10-12T13:09:07.196Z",
-      "age_ms": 790136,
+      "age_ms": 1987118,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -274,7 +274,7 @@
       "label": "Google Pixel Watch 4",
       "state": "blocked",
       "updated_at": "2026-10-12T13:13:12.135Z",
-      "age_ms": 545197,
+      "age_ms": 1742179,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -306,7 +306,7 @@
       "label": "Google Pixel Watch 5",
       "state": "healthy",
       "updated_at": "2026-10-12T13:06:09.609Z",
-      "age_ms": 967723,
+      "age_ms": 2164705,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -338,7 +338,7 @@
       "label": "Oura Ring 5",
       "state": "healthy",
       "updated_at": "2026-10-12T13:06:10.413Z",
-      "age_ms": 966919,
+      "age_ms": 2163901,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -370,7 +370,7 @@
       "label": "Monitores OLED",
       "state": "healthy",
       "updated_at": "2026-10-12T13:07:42.110Z",
-      "age_ms": 875222,
+      "age_ms": 2072204,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -402,7 +402,7 @@
       "label": "Mercado Livre Notebooks",
       "state": "healthy",
       "updated_at": "2026-10-12T13:21:47.644Z",
-      "age_ms": 29688,
+      "age_ms": 1226670,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -420,39 +420,39 @@
           "updated_at": "2026-10-12T13:21:47.644Z"
         }
       ],
-      "message": "Sob demanda · última coleta há 0 min · ML: Saudável (22/22 termos recentes)"
+      "message": "Sob demanda · última coleta há 20 min · ML: Saudável (22/22 termos recentes)"
     },
     {
       "id": "mercadolivre-oneplus-buds-pro-3",
       "label": "Mercado Livre OnePlus Buds Pro 3",
-      "state": "stale",
-      "updated_at": "2026-10-08T13:34:26.195Z",
-      "age_ms": 344871137,
+      "state": "healthy",
+      "updated_at": "2026-10-12T13:22:47.993Z",
+      "age_ms": 1166321,
       "invalid_snapshots": 0,
       "history": {
-        "sample": 2,
+        "sample": 3,
         "partial": 0,
         "failed": 0,
         "success_rate": 1,
-        "median_duration_ms": 21336
+        "median_duration_ms": 17266
       },
       "marketplaces": [
         {
           "label": "ML",
-          "state": "stale",
+          "state": "healthy",
           "total_terms": 1,
-          "fresh_terms": 0,
-          "updated_at": "2026-10-08T13:34:26.195Z"
+          "fresh_terms": 1,
+          "updated_at": "2026-10-12T13:22:47.993Z"
         }
       ],
-      "message": "Sob demanda · última coleta há 3 dia(s) · ML: Coleta desatualizada (0/1 termos recentes)"
+      "message": "Sob demanda · última coleta há 19 min · ML: Saudável (1/1 termos recentes)"
     },
     {
       "id": "mercadolivre-google-pixel-watch-4",
       "label": "Mercado Livre Google Pixel Watch 4",
       "state": "healthy",
       "updated_at": "2026-10-12T13:22:09.346Z",
-      "age_ms": 7986,
+      "age_ms": 1204968,
       "invalid_snapshots": 0,
       "history": {
         "sample": 3,
@@ -470,42 +470,42 @@
           "updated_at": "2026-10-12T13:22:09.346Z"
         }
       ],
-      "message": "Sob demanda · última coleta há 0 min · ML: Saudável (1/1 termos recentes)"
+      "message": "Sob demanda · última coleta há 20 min · ML: Saudável (1/1 termos recentes)"
     },
     {
       "id": "mercadolivre-google-pixel-watch-5",
       "label": "Mercado Livre Google Pixel Watch 5",
-      "state": "stale",
-      "updated_at": "2026-10-08T13:34:04.837Z",
-      "age_ms": 344892495,
+      "state": "healthy",
+      "updated_at": "2026-10-12T13:22:30.705Z",
+      "age_ms": 1183609,
       "invalid_snapshots": 0,
       "history": {
-        "sample": 2,
+        "sample": 3,
         "partial": 0,
         "failed": 0,
         "success_rate": 1,
-        "median_duration_ms": 25058
+        "median_duration_ms": 21327
       },
       "marketplaces": [
         {
           "label": "ML",
-          "state": "stale",
+          "state": "healthy",
           "total_terms": 1,
-          "fresh_terms": 0,
-          "updated_at": "2026-10-08T13:34:04.837Z"
+          "fresh_terms": 1,
+          "updated_at": "2026-10-12T13:22:30.705Z"
         }
       ],
-      "message": "Sob demanda · última coleta há 3 dia(s) · ML: Coleta desatualizada (0/1 termos recentes)"
+      "message": "Sob demanda · última coleta há 19 min · ML: Saudável (1/1 termos recentes)"
     },
     {
       "id": "mercadolivre-dockstations",
       "label": "Mercado Livre Dockstations",
-      "state": "stale",
-      "updated_at": "2026-10-08T13:35:17.207Z",
-      "age_ms": 344820125,
+      "state": "healthy",
+      "updated_at": "2026-10-12T13:23:38.607Z",
+      "age_ms": 1115707,
       "invalid_snapshots": 0,
       "history": {
-        "sample": 3,
+        "sample": 4,
         "partial": 0,
         "failed": 0,
         "success_rate": 1,
@@ -514,48 +514,48 @@
       "marketplaces": [
         {
           "label": "ML",
-          "state": "stale",
+          "state": "healthy",
           "total_terms": 2,
-          "fresh_terms": 0,
-          "updated_at": "2026-10-08T13:35:17.207Z"
+          "fresh_terms": 2,
+          "updated_at": "2026-10-12T13:23:38.607Z"
         }
       ],
-      "message": "Sob demanda · última coleta há 3 dia(s) · ML: Coleta desatualizada (0/2 termos recentes)"
+      "message": "Sob demanda · última coleta há 18 min · ML: Saudável (2/2 termos recentes)"
     },
     {
       "id": "mercadolivre-fitbit-air",
       "label": "Mercado Livre Fitbit Air",
-      "state": "stale",
-      "updated_at": "2026-10-08T13:35:33.926Z",
-      "age_ms": 344803406,
+      "state": "healthy",
+      "updated_at": "2026-10-12T13:24:04.187Z",
+      "age_ms": 1090127,
       "invalid_snapshots": 0,
       "history": {
-        "sample": 3,
+        "sample": 4,
         "partial": 0,
         "failed": 0,
         "success_rate": 1,
-        "median_duration_ms": 16693
+        "median_duration_ms": 17886
       },
       "marketplaces": [
         {
           "label": "ML",
-          "state": "stale",
+          "state": "healthy",
           "total_terms": 1,
-          "fresh_terms": 0,
-          "updated_at": "2026-10-08T13:35:33.926Z"
+          "fresh_terms": 1,
+          "updated_at": "2026-10-12T13:24:04.187Z"
         }
       ],
-      "message": "Sob demanda · última coleta há 3 dia(s) · ML: Coleta desatualizada (0/1 termos recentes)"
+      "message": "Sob demanda · última coleta há 18 min · ML: Saudável (1/1 termos recentes)"
     },
     {
       "id": "mercadolivre-lifefactory",
       "label": "Mercado Livre Lifefactory",
-      "state": "stale",
-      "updated_at": "2026-10-08T13:35:59.407Z",
-      "age_ms": 344777925,
+      "state": "healthy",
+      "updated_at": "2026-10-12T13:24:27.608Z",
+      "age_ms": 1066706,
       "invalid_snapshots": 0,
       "history": {
-        "sample": 3,
+        "sample": 4,
         "partial": 0,
         "failed": 0,
         "success_rate": 1,
@@ -564,48 +564,48 @@
       "marketplaces": [
         {
           "label": "ML",
-          "state": "stale",
+          "state": "healthy",
           "total_terms": 1,
-          "fresh_terms": 0,
-          "updated_at": "2026-10-08T13:35:59.407Z"
+          "fresh_terms": 1,
+          "updated_at": "2026-10-12T13:24:27.608Z"
         }
       ],
-      "message": "Sob demanda · última coleta há 3 dia(s) · ML: Coleta desatualizada (0/1 termos recentes)"
+      "message": "Sob demanda · última coleta há 17 min · ML: Saudável (1/1 termos recentes)"
     },
     {
       "id": "mercadolivre-tela-galaxybook3",
       "label": "Mercado Livre Tela Galaxy Book3",
-      "state": "stale",
-      "updated_at": "2026-10-08T13:36:20.803Z",
-      "age_ms": 344756529,
+      "state": "healthy",
+      "updated_at": "2026-10-12T13:24:50.981Z",
+      "age_ms": 1043333,
       "invalid_snapshots": 0,
       "history": {
-        "sample": 3,
+        "sample": 4,
         "partial": 0,
         "failed": 0,
         "success_rate": 1,
-        "median_duration_ms": 22919
+        "median_duration_ms": 23347
       },
       "marketplaces": [
         {
           "label": "ML",
-          "state": "stale",
+          "state": "healthy",
           "total_terms": 1,
-          "fresh_terms": 0,
-          "updated_at": "2026-10-08T13:36:20.803Z"
+          "fresh_terms": 1,
+          "updated_at": "2026-10-12T13:24:50.981Z"
         }
       ],
-      "message": "Sob demanda · última coleta há 3 dia(s) · ML: Coleta desatualizada (0/1 termos recentes)"
+      "message": "Sob demanda · última coleta há 17 min · ML: Saudável (1/1 termos recentes)"
     },
     {
       "id": "mercadolivre-melanger",
       "label": "Mercado Livre Melanger",
-      "state": "stale",
-      "updated_at": "2026-10-08T13:36:42.233Z",
-      "age_ms": 344735099,
+      "state": "healthy",
+      "updated_at": "2026-10-12T13:25:07.202Z",
+      "age_ms": 1027112,
       "invalid_snapshots": 0,
       "history": {
-        "sample": 3,
+        "sample": 4,
         "partial": 0,
         "failed": 0,
         "success_rate": 1,
@@ -614,63 +614,63 @@
       "marketplaces": [
         {
           "label": "ML",
-          "state": "stale",
+          "state": "healthy",
           "total_terms": 1,
-          "fresh_terms": 0,
-          "updated_at": "2026-10-08T13:36:42.233Z"
+          "fresh_terms": 1,
+          "updated_at": "2026-10-12T13:25:07.202Z"
         }
       ],
-      "message": "Sob demanda · última coleta há 3 dia(s) · ML: Coleta desatualizada (0/1 termos recentes)"
+      "message": "Sob demanda · última coleta há 17 min · ML: Saudável (1/1 termos recentes)"
     },
     {
       "id": "mercadolivre-tenis-42",
       "label": "Mercado Livre Tênis 42",
-      "state": "stale",
-      "updated_at": "2026-10-08T13:50:52.181Z",
-      "age_ms": 343885151,
-      "invalid_snapshots": 0,
-      "history": {
-        "sample": 2,
-        "partial": 0,
-        "failed": 0,
-        "success_rate": 1,
-        "median_duration_ms": 212164
-      },
-      "marketplaces": [
-        {
-          "label": "ML",
-          "state": "stale",
-          "total_terms": 6,
-          "fresh_terms": 0,
-          "updated_at": "2026-10-08T13:50:52.181Z"
-        }
-      ],
-      "message": "Sob demanda · última coleta há 3 dia(s) · ML: Coleta desatualizada (0/6 termos recentes)"
-    },
-    {
-      "id": "mercadolivre-oled-monitores",
-      "label": "Mercado Livre Monitores OLED",
-      "state": "stale",
-      "updated_at": "2026-10-08T13:47:19.980Z",
-      "age_ms": 344097352,
+      "state": "healthy",
+      "updated_at": "2026-10-12T13:38:30.174Z",
+      "age_ms": 224140,
       "invalid_snapshots": 0,
       "history": {
         "sample": 3,
         "partial": 0,
         "failed": 0,
         "success_rate": 1,
-        "median_duration_ms": 637714
+        "median_duration_ms": 209724
       },
       "marketplaces": [
         {
           "label": "ML",
-          "state": "stale",
-          "total_terms": 17,
-          "fresh_terms": 0,
-          "updated_at": "2026-10-08T13:47:19.980Z"
+          "state": "healthy",
+          "total_terms": 6,
+          "fresh_terms": 6,
+          "updated_at": "2026-10-12T13:38:30.174Z"
         }
       ],
-      "message": "Sob demanda · última coleta há 3 dia(s) · ML: Coleta desatualizada (0/17 termos recentes)"
+      "message": "Sob demanda · última coleta há 3 min · ML: Saudável (6/6 termos recentes)"
+    },
+    {
+      "id": "mercadolivre-oled-monitores",
+      "label": "Mercado Livre Monitores OLED",
+      "state": "healthy",
+      "updated_at": "2026-10-12T13:41:58.723Z",
+      "age_ms": 15591,
+      "invalid_snapshots": 0,
+      "history": {
+        "sample": 5,
+        "partial": 0,
+        "failed": 0,
+        "success_rate": 1,
+        "median_duration_ms": 593187
+      },
+      "marketplaces": [
+        {
+          "label": "ML",
+          "state": "healthy",
+          "total_terms": 17,
+          "fresh_terms": 17,
+          "updated_at": "2026-10-12T13:41:58.723Z"
+        }
+      ],
+      "message": "Sob demanda · última coleta há 0 min · ML: Saudável (17/17 termos recentes)"
     },
     {
       "id": "notifications",

@@ -1,3 +1,4 @@
+import { isCompleteOledMonitor } from './lib/oled-monitor-scope.mjs';
 import { meetsNotebookRamMinimum } from './lib/notebook-policy.mjs';
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -145,6 +146,7 @@ async function buildPriceInsights(descriptors) {
     const { snapshot } = await readLatestValidSnapshot(dir);
     for (const item of snapshot?.items ?? []) {
       if (['OLX', 'Enjoei Notebooks', 'Mercado Livre Notebooks'].includes(source) && !meetsNotebookRamMinimum(item)) continue;
+      if ([OLED_MONITORES_DIR, path.join(ROOT, 'data', 'mercadolivre-oled-monitores')].includes(dir) && !isCompleteOledMonitor(item)) continue;
       if (source === 'OLX' && !isValidatedOlxItem(item)) continue;
       if (item.status !== "active" || !item.url || !Number.isFinite(Number(item.price_brl))) continue;
       const observations = [...(item.price_history ?? [])]
@@ -207,6 +209,15 @@ async function gather(dir, prefix, excludePrefix, detailsByUrl = new Map()) {
     if ([OLX_DIR, ENJOEI_NOTEBOOKS_DIR, MERCADOLIVRE_NOTEBOOKS_DIR].includes(dir)) {
       const allowedRam = item => meetsNotebookRamMinimum(detailsByUrl.get(item.url) ?? { title: item.fullTitle });
       for (const field of ['allNewItems', 'allPriceItems', 'allPendingItems']) p[field] = p[field].filter(allowedRam);
+      p.newItems = p.allNewItems.slice(0, MAX);
+      p.priceItems = p.allPriceItems.slice(0, MAX);
+      p.pendingItems = p.allPendingItems.slice(0, MAX);
+      p.newCount = p.allNewItems.length;
+      p.priceCount = p.allPriceItems.length;
+      p.pendingCount = p.allPendingItems.length;
+    }
+    if ([OLED_MONITORES_DIR, path.join(ROOT, 'data', 'mercadolivre-oled-monitores')].includes(dir)) {
+      for (const field of ['allNewItems', 'allPriceItems', 'allPendingItems']) p[field] = p[field].filter(item => isCompleteOledMonitor(detailsByUrl.get(item.url) ?? { title: item.fullTitle }));
       p.newItems = p.allNewItems.slice(0, MAX);
       p.priceItems = p.allPriceItems.slice(0, MAX);
       p.pendingItems = p.allPendingItems.slice(0, MAX);
@@ -435,7 +446,8 @@ async function currentMercadoLivreSnapshotReport(dir, displayMax = Infinity) {
   const snapshot = JSON.parse(raw);
   const items = (snapshot.items ?? [])
     .filter((item) => item.status === "active" && Number(item.price_brl) <= displayMax
-      && (dir !== MERCADOLIVRE_NOTEBOOKS_DIR || meetsNotebookRamMinimum(item)))
+      && (dir !== MERCADOLIVRE_NOTEBOOKS_DIR || meetsNotebookRamMinimum(item))
+      && (dir !== path.join(ROOT, "data", "mercadolivre-oled-monitores") || isCompleteOledMonitor(item)))
     .slice(0, MAX)
     .map((item) => ({
       title: item.title,
