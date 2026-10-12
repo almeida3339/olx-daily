@@ -22,18 +22,18 @@ export const LOCAL_WATCHLISTS = Object.freeze([
 ]);
 
 export const MERCADOLIVRE_WATCHLISTS = Object.freeze([
-  { id: "mercadolivre-notebooks", label: "Mercado Livre Notebooks", healthLabel: "ML Notebooks", env: "MERCADOLIVRE_NOTEBOOKS_DATA_DIR", repoFolder: "mercadolivre-notebooks", maxAgeHours: 7 * 24 },
-  { id: "mercadolivre-galaxy-buds4-pro", label: "Mercado Livre Galaxy Buds4 Pro", healthLabel: "ML Galaxy Buds4 Pro", repoFolder: "mercadolivre-galaxy-buds4-pro", maxAgeHours: 7 * 24, paused: true },
-  { id: "mercadolivre-oneplus-buds-pro-3", label: "Mercado Livre OnePlus Buds Pro 3", healthLabel: "ML OnePlus Buds Pro 3", repoFolder: "mercadolivre-oneplus-buds-pro-3", maxAgeHours: 7 * 24 },
-  { id: "mercadolivre-google-pixel-watch-4", label: "Mercado Livre Google Pixel Watch 4", healthLabel: "ML Google Pixel Watch 4", repoFolder: "mercadolivre-google-pixel-watch-4", maxAgeHours: 7 * 24 },
-  { id: "mercadolivre-google-pixel-watch-5", label: "Mercado Livre Google Pixel Watch 5", healthLabel: "ML Google Pixel Watch 5", repoFolder: "mercadolivre-google-pixel-watch-5", maxAgeHours: 7 * 24 },
-  { id: "mercadolivre-dockstations", label: "Mercado Livre Dockstations", healthLabel: "ML Dockstations", repoFolder: "mercadolivre-dockstations", maxAgeHours: 7 * 24 },
-  { id: "mercadolivre-fitbit-air", label: "Mercado Livre Fitbit Air", healthLabel: "ML Fitbit Air", repoFolder: "mercadolivre-fitbit-air", maxAgeHours: 7 * 24 },
-  { id: "mercadolivre-lifefactory", label: "Mercado Livre Lifefactory", healthLabel: "ML Lifefactory", repoFolder: "mercadolivre-lifefactory", maxAgeHours: 7 * 24 },
-  { id: "mercadolivre-tela-galaxybook3", label: "Mercado Livre Tela Galaxy Book3", healthLabel: "ML Tela Book3", repoFolder: "mercadolivre-tela-galaxybook3", maxAgeHours: 7 * 24 },
-  { id: "mercadolivre-melanger", label: "Mercado Livre Melanger", healthLabel: "ML Melanger", repoFolder: "mercadolivre-melanger", maxAgeHours: 7 * 24 },
-  { id: "mercadolivre-tenis-42", label: "Mercado Livre Tênis 42", healthLabel: "ML Tênis 42", repoFolder: "mercadolivre-tenis-42", maxAgeHours: 7 * 24 },
-  { id: "mercadolivre-oled-monitores", label: "Mercado Livre Monitores OLED", healthLabel: "ML Monitores OLED", repoFolder: "mercadolivre-oled-monitores", maxAgeHours: 7 * 24 },
+  { id: "mercadolivre-notebooks", label: "Mercado Livre Notebooks", healthLabel: "ML Notebooks", env: "MERCADOLIVRE_NOTEBOOKS_DATA_DIR", repoFolder: "mercadolivre-notebooks", maxAgeHours: 24 },
+  { id: "mercadolivre-galaxy-buds4-pro", label: "Mercado Livre Galaxy Buds4 Pro", healthLabel: "ML Galaxy Buds4 Pro", repoFolder: "mercadolivre-galaxy-buds4-pro", maxAgeHours: 24, paused: true },
+  { id: "mercadolivre-oneplus-buds-pro-3", label: "Mercado Livre OnePlus Buds Pro 3", healthLabel: "ML OnePlus Buds Pro 3", repoFolder: "mercadolivre-oneplus-buds-pro-3", maxAgeHours: 24 },
+  { id: "mercadolivre-google-pixel-watch-4", label: "Mercado Livre Google Pixel Watch 4", healthLabel: "ML Google Pixel Watch 4", repoFolder: "mercadolivre-google-pixel-watch-4", maxAgeHours: 24 },
+  { id: "mercadolivre-google-pixel-watch-5", label: "Mercado Livre Google Pixel Watch 5", healthLabel: "ML Google Pixel Watch 5", repoFolder: "mercadolivre-google-pixel-watch-5", maxAgeHours: 24 },
+  { id: "mercadolivre-dockstations", label: "Mercado Livre Dockstations", healthLabel: "ML Dockstations", repoFolder: "mercadolivre-dockstations", maxAgeHours: 24 },
+  { id: "mercadolivre-fitbit-air", label: "Mercado Livre Fitbit Air", healthLabel: "ML Fitbit Air", repoFolder: "mercadolivre-fitbit-air", maxAgeHours: 24 },
+  { id: "mercadolivre-lifefactory", label: "Mercado Livre Lifefactory", healthLabel: "ML Lifefactory", repoFolder: "mercadolivre-lifefactory", maxAgeHours: 24 },
+  { id: "mercadolivre-tela-galaxybook3", label: "Mercado Livre Tela Galaxy Book3", healthLabel: "ML Tela Book3", repoFolder: "mercadolivre-tela-galaxybook3", maxAgeHours: 24 },
+  { id: "mercadolivre-melanger", label: "Mercado Livre Melanger", healthLabel: "ML Melanger", repoFolder: "mercadolivre-melanger", maxAgeHours: 24 },
+  { id: "mercadolivre-tenis-42", label: "Mercado Livre Tênis 42", healthLabel: "ML Tênis 42", repoFolder: "mercadolivre-tenis-42", maxAgeHours: 24 },
+  { id: "mercadolivre-oled-monitores", label: "Mercado Livre Monitores OLED", healthLabel: "ML Monitores OLED", repoFolder: "mercadolivre-oled-monitores", maxAgeHours: 24 },
 ]);
 
 export const ALL_WATCHLISTS = Object.freeze([...LOCAL_WATCHLISTS, ...MERCADOLIVRE_WATCHLISTS]);

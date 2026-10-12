@@ -340,7 +340,7 @@ async function collectOlx({ terms, categoryUrls, userDataDir, headless, visible,
     return route.continue();
   }).catch(() => {});
 
-  const page = context.pages()[0] ?? (await context.newPage());
+  let page = context.pages()[0] ?? (await context.newPage());
   page.setDefaultTimeout(30_000);
   page.setDefaultNavigationTimeout(60_000);
 
@@ -356,17 +356,23 @@ async function collectOlx({ terms, categoryUrls, userDataDir, headless, visible,
         console.log(`OLX termo: ${term} -> ${url}`);
         attemptedTerms.add(term);
         try {
-          await retryTransient(async () => {
+          let listingState;
+          await retryTransient(async (attempt) => {
+            if (attempt > 1) {
+              await page.close().catch(() => {});
+              page = await context.newPage();
+              page.setDefaultTimeout(30_000);
+              page.setDefaultNavigationTimeout(60_000);
+            }
             await page.goto(url, { waitUntil: "domcontentloaded", timeout: NAVIGATION_TIMEOUT_MS });
-          }, { sleep, maxAttempts: 2 });
-          await waitOutCloudflare(page, headless, visible);
-          const listingState = await waitForListing(page);
-          if (listingState === "blocked") {
-            throw new Error("OLX bloqueou a página (Cloudflare/anti-bot)");
-          }
-          if (listingState === "unknown") {
-            throw new Error("OLX não expôs cards nem uma mensagem de busca vazia");
-          }
+            await waitOutCloudflare(page, headless, visible);
+            listingState = await waitForListing(page);
+            if (listingState === "blocked") throw new Error("OLX bloqueou a página (Cloudflare/anti-bot)");
+            if (listingState === "unknown") {
+              const pageTitle = await page.title().catch(() => '');
+              throw new Error(`timeout: OLX não expôs cards nem uma mensagem de busca vazia (página: ${pageTitle})`);
+            }
+          }, { sleep, maxAttempts: 2, onRetry: () => console.warn('  Listagem incompleta; aguardando 30 s e tentando uma vez em nova aba.') });
           if (listingState === "empty") {
             console.log("  Nenhum card.");
             continue;
@@ -395,7 +401,7 @@ async function collectOlx({ terms, categoryUrls, userDataDir, headless, visible,
           console.warn(`  Aviso: termo "${term}" em ${categoryUrl} falhou — ${error.message}`);
           failedTerms.add(term);
           failedTermErrors.set(term, error?.message ?? String(error));
-          if (classifyMonitorError(error).kind === 'challenge') {
+          if (['challenge', 'authentication', 'rate_limited'].includes(classifyMonitorError(error).kind)) {
             blocked = true;
             console.warn('OLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.');
             break categories;
@@ -440,11 +446,11 @@ async function waitForListing(page) {
         if (count > 0) return "cards";
         const text = (document.body?.innerText || "").toLowerCase();
         if (/cloudflare|attention required|you have been blocked|security service|verify you are human|checking your browser/i.test(text)) return "blocked";
-        if (/\b0\s+resultados?|nao encontramos|sem resultados|nenhum resultado|não encontramos/i.test(text)) return "empty";
+        if (/(?:^|\n)\s*0\s+resultados?\b|nao encontramos|sem resultados|nenhum resultado|não encontramos/i.test(text)) return "empty";
         return false;
       },
       null,
-      { timeout: 6000, polling: 150 }
+      { timeout: 18_000, polling: 250 }
     )
     .then((handle) => handle.jsonValue())
     .catch(() => null);

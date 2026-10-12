@@ -40,6 +40,8 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
     if (snapshot?.run?.in_progress && state === 'healthy') state = 'partial';
     const profileBlocked = id.startsWith('mercadolivre-') && mlBlocked;
     if (profileBlocked) state = 'blocked';
+    const freshnessNote = id.startsWith('mercadolivre-')
+      ? `Sob demanda · ${ageMs == null ? 'sem coleta registrada' : `dados de ${Math.floor(ageMs / 86400_000)} dia(s) atrás`} · ` : '';
     sources.push({
       id,
       label,
@@ -49,11 +51,11 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
       invalid_snapshots: result.invalid.length,
       history: historySummary,
       marketplaces,
-      message: profileBlocked ? `Perfil ML exige login/verificação${mlSchedule.global.blocked_until ? `; pausa até ${new Date(mlSchedule.global.blocked_until).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })}` : ''}`
+      message: freshnessNote + (profileBlocked ? `Perfil ML exige login/verificação${mlSchedule.global.blocked_until ? `; pausa até ${new Date(mlSchedule.global.blocked_until).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })}` : ''}`
         : snapshot?.run?.in_progress ? 'Coleta em andamento; progresso salvo'
         : snapshot?.run?.aborted ? 'Coleta interrompida; resultados parciais preservados' : marketplaces.length
         ? marketplaces.map((source) => `${source.label}: ${healthMessage(source.state)} (${source.fresh_terms}/${source.total_terms} termos recentes)`).join(' · ')
-        : healthMessage(state),
+        : healthMessage(state)),
     });
   }
   const statusDir = path.join(root, "data", "status");

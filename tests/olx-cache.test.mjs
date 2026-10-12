@@ -7,21 +7,22 @@ import {
 } from "../scripts/monitor-olx-notebooks-por-cpu.mjs";
 
 describe("OLX detail reuse", () => {
-  test("GPU faltando sozinha nao exige abertura do anuncio", () => {
-    assert.equal(needsDetailEnrichment({ ram_gb: 16, storage_gb: 512, gpu: null }), false);
+  test("GPU faltando exige abertura do anuncio", () => {
+    assert.equal(needsDetailEnrichment({ ram_gb: 32, storage_gb: 512, gpu: null }), true);
   });
 
-  test("reaproveita detalhes anteriores mesmo quando o preco mudou", () => {
+  test("nao reaproveita detalhes anteriores quando o preco mudou", () => {
     const reused = getReusablePreviousEnrichedItem(
       {
         items: [
           {
             id: "1498259084",
             url: "https://sc.olx.com.br/notebooks/zenbook-1498259084",
-            title: "Notebook Asus ZenBook 14",
+            title: "Notebook Asus ZenBook 14 Intel Core Ultra i7-155H",
+            validation: { version: 1, state: "validated", checked_at: new Date().toISOString() },
             cpu_term: "155h",
             price_brl: 6000,
-            ram_gb: 16,
+            ram_gb: 32,
             storage_gb: 1024,
             gpu: "Intel Arc integrada",
             status: "not_seen",
@@ -39,11 +40,7 @@ describe("OLX detail reuse", () => {
       },
     );
 
-    assert.equal(reused.price_brl, 6500);
-    assert.equal(reused.ram_gb, 16);
-    assert.equal(reused.storage_gb, 1024);
-    assert.equal(reused.gpu, "Intel Arc integrada");
-    assert.equal(reused.status, "active");
+    assert.equal(reused, null);
   });
 
   test("nao reaproveita item da faixa cuja descricao nunca foi verificada", () => {
