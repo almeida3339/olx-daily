@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-12T13:06:05.257Z",
+  "updated_at": "2026-10-12T19:01:08.441Z",
   "runs": [
     {
-      "run_id": "2026-10-12T13-06-04-949Z",
-      "committed_at": "2026-10-12T13:06:05.191Z",
-      "completed_at": "2026-10-12T13:06:05.170Z",
+      "run_id": "2026-10-12T19-01-08-242Z",
+      "committed_at": "2026-10-12T19:01:08.376Z",
+      "completed_at": "2026-10-12T19:01:08.353Z",
       "outcome": "success",
       "partial": false,
-      "duration_ms": 221,
+      "duration_ms": 111,
       "item_count": 2,
       "quarantined_item_count": 0,
       "metadata": {
@@ -19,6 +19,22 @@
       }
     },
     {
+      "run_id": "2026-10-12T13-06-04-949Z",
+      "committed_at": "2026-10-12T13:06:05.191Z",
+      "completed_at": "2026-10-12T13:06:05.170Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 221,
+      "item_count": 2,
+      "metadata": {
+        "source": "lifefactory",
+        "label": "Lifefactory",
+        "collected_count": 1,
+        "quarantined_item_count": 0,
+        "in_progress": false
+      }
+    },
+    {
       "run_id": "2026-10-12T13-05-42-263Z",
       "committed_at": "2026-10-12T13:05:50.483Z",
       "completed_at": "2026-10-12T13:05:50.465Z",
@@ -26,12 +42,12 @@
       "partial": false,
       "duration_ms": 8202,
       "item_count": 2,
-      "quarantined_item_count": 0,
       "metadata": {
         "source": "lifefactory",
         "label": "Lifefactory",
         "collected_count": 0,
-        "quarantined_item_count": 0
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     },
     {
@@ -1894,22 +1910,6 @@
       "run_id": "2026-08-30T19-01-04-610Z",
       "committed_at": "2026-08-30T19:01:04.835Z",
       "completed_at": "2026-08-30T19:01:04.835Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": null,
-      "item_count": 1,
-      "metadata": {
-        "source": "lifefactory",
-        "label": "Lifefactory",
-        "collected_count": 0,
-        "quarantined_item_count": 0,
-        "in_progress": false
-      }
-    },
-    {
-      "run_id": "2026-08-30T19-00-23-841Z",
-      "committed_at": "2026-08-30T19:00:26.502Z",
-      "completed_at": "2026-08-30T19:00:26.502Z",
       "outcome": "success",
       "partial": false,
       "duration_ms": null,

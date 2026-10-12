@@ -1,7 +1,23 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-12T13:07:19.450Z",
+  "updated_at": "2026-10-12T19:01:09.530Z",
   "runs": [
+    {
+      "run_id": "2026-10-12T19-01-09-253Z",
+      "committed_at": "2026-10-12T19:01:09.463Z",
+      "completed_at": "2026-10-12T19:01:09.443Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 190,
+      "item_count": 5,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "melanger",
+        "label": "Melanger",
+        "collected_count": 0,
+        "quarantined_item_count": 0
+      }
+    },
     {
       "run_id": "2026-10-12T13-07-05-314Z",
       "committed_at": "2026-10-12T13:07:19.275Z",
@@ -10,12 +26,12 @@
       "partial": false,
       "duration_ms": 13940,
       "item_count": 5,
-      "quarantined_item_count": 0,
       "metadata": {
         "source": "melanger",
         "label": "Melanger",
         "collected_count": 1,
-        "quarantined_item_count": 0
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     },
     {
@@ -26,12 +42,12 @@
       "partial": false,
       "duration_ms": 253,
       "item_count": 5,
-      "quarantined_item_count": 0,
       "metadata": {
         "source": "melanger",
         "label": "Melanger",
         "collected_count": 0,
-        "quarantined_item_count": 0
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     },
     {
@@ -1894,22 +1910,6 @@
       "run_id": "2026-08-30T19-01-05-415Z",
       "committed_at": "2026-08-30T19:01:05.681Z",
       "completed_at": "2026-08-30T19:01:05.681Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": null,
-      "item_count": 4,
-      "metadata": {
-        "source": "melanger",
-        "label": "Melanger",
-        "collected_count": 0,
-        "quarantined_item_count": 0,
-        "in_progress": false
-      }
-    },
-    {
-      "run_id": "2026-08-30T19-00-27-141Z",
-      "committed_at": "2026-08-30T19:00:31.839Z",
-      "completed_at": "2026-08-30T19:00:31.839Z",
       "outcome": "success",
       "partial": false,
       "duration_ms": null,
