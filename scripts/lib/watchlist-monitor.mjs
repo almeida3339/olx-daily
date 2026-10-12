@@ -143,16 +143,19 @@ export async function runWatchlistMonitor(config) {
   if (!skipOlx) {
     try {
       const previousBlock = Object.entries(previousSnapshot?.coverage_status ?? {}).find(([key, value]) => key.startsWith('OLX:') && value.state === 'failed' && classifyMonitorError(value.error).kind === 'challenge');
-      if (!sourceBlocks.OLX && previousBlock) sourceBlocks.OLX = { blocked_until: new Date(Date.parse(previousBlock[1].checked_at) + 24 * 60 * 60 * 1000).toISOString() };
+      if (!sourceBlocks.OLX && previousBlock) sourceBlocks.OLX = { blocked_until: new Date(Date.parse(previousBlock[1].checked_at) + 24 * 60 * 60 * 1000).toISOString(), reason: previousBlock[1].error, recovery_kind: /não há verificação interativa/i.test(previousBlock[1].error ?? '') ? 'hard_denial' : 'verification' };
       if (!visible && Date.parse(sourceBlocks.OLX?.blocked_until ?? '') > Date.now()) {
-        throw new Error(`Cloudflare: OLX em pausa até ${sourceBlocks.OLX.blocked_until}; abra o perfil com --visible para recuperação manual.`);
+        throw new Error(`Cloudflare: OLX em pausa até ${sourceBlocks.OLX.blocked_until}; ${sourceBlocks.OLX.recovery_kind === 'hard_denial' ? 'acesso recusado pelo site, sem verificação interativa disponível' : 'abra o perfil com --visible para recuperação manual'}.`);
       }
       const categoryUrls = (config.olxCategoryUrls && config.olxCategoryUrls.length)
         ? config.olxCategoryUrls
         : [OLX_BASE_URL];
       const { items, failedTerms, failedTermErrors, attemptedTerms, blocked } = await collectOlx({ terms, categoryUrls, userDataDir, headless, visible, inRange, sizeOk, notExcluded, itemFilter, olxDeliveryOnly: config.olxDeliveryOnly ?? false });
       for (const term of terms) if (!attemptedTerms.has(term)) unattemptedSourceTerms.add(`OLX:${term}`);
-      if (blocked) sourceBlocks.OLX = { blocked_until: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() };
+      if (blocked) {
+        const reason = [...failedTermErrors.values()].find(message => classifyMonitorError(message).kind === 'challenge') ?? 'OLX exige atenção';
+        sourceBlocks.OLX = { blocked_until: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), reason, recovery_kind: /não há verificação interativa/i.test(reason) ? 'hard_denial' : 'verification' };
+      }
       else if (!failedTerms.size) delete sourceBlocks.OLX;
       collected.push(...items);
       for (const t of failedTerms) {

@@ -40,6 +40,7 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
     if (snapshot?.run?.in_progress && state === 'healthy') state = 'partial';
     const profileBlocked = id.startsWith('mercadolivre-') && mlBlocked;
     if (profileBlocked) state = 'blocked';
+    const hardDenial = Object.entries(snapshot?.source_blocks ?? {}).find(([source, block]) => source === 'OLX' && block.recovery_kind === 'hard_denial');
     const freshnessNote = id.startsWith('mercadolivre-')
       ? `Sob demanda · ${ageMs == null ? 'sem coleta registrada' : `dados de ${Math.floor(ageMs / 86400_000)} dia(s) atrás`} · ` : '';
     sources.push({
@@ -51,7 +52,7 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
       invalid_snapshots: result.invalid.length,
       history: historySummary,
       marketplaces,
-      message: freshnessNote + (profileBlocked ? `Perfil ML exige login/verificação${mlSchedule.global.blocked_until ? `; pausa até ${new Date(mlSchedule.global.blocked_until).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })}` : ''}`
+      message: freshnessNote + (hardDenial ? `OLX recusou o acesso; sem CAPTCHA disponível. ${hardDenial[1].reason ?? ''}` : profileBlocked ? `Perfil ML exige login/verificação${mlSchedule.global.blocked_until ? `; pausa até ${new Date(mlSchedule.global.blocked_until).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })}` : ''}`
         : snapshot?.run?.in_progress ? 'Coleta em andamento; progresso salvo'
         : snapshot?.run?.aborted ? 'Coleta interrompida; resultados parciais preservados' : marketplaces.length
         ? marketplaces.map((source) => `${source.label}: ${healthMessage(source.state)} (${source.fresh_terms}/${source.total_terms} termos recentes)`).join(' · ')

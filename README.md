@@ -611,3 +611,7 @@ A busca por CPU também aproveita resultados cujo cartão não identifica o proc
 ### Preferência de RAM dos notebooks
 
 OLX, Enjoei Notebooks e Mercado Livre Notebooks só apresentam ofertas e enviam alertas quando o anúncio informa pelo menos **32 GB de RAM instalada**. RAM desconhecida ou capacidades conflitantes não atendem ao filtro até confirmação. VRAM e capacidade máxima de expansão não contam como RAM instalada. O filtro vale também para ofertas antigas exibidas no dashboard e relatórios reutilizados para notificação; o histórico bruto permanece preservado.
+
+### Atualidade e recuperação das coletas
+
+A saúde das fontes do Mercado Livre usa uma janela de 24 horas e indica que a execução é sob demanda. O histórico continua visível, mas dados mais antigos aparecem como desatualizados. Nas watchlists OLX, listagens incompletas aguardam até 18 segundos e recebem uma única nova tentativa em outra aba após 30 segundos; bloqueios interrompem a fonte. Recusas sem CAPTCHA são identificadas separadamente de verificações interativas, preservando os resultados anteriores e a pausa de segurança.
