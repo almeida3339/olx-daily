@@ -1,7 +1,23 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-13T17:25:35.371Z",
+  "updated_at": "2026-10-13T19:01:22.131Z",
   "runs": [
+    {
+      "run_id": "2026-10-13T19-01-21-748Z",
+      "committed_at": "2026-10-13T19:01:22.060Z",
+      "completed_at": "2026-10-13T19:01:22.038Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 290,
+      "item_count": 8,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "oura-ring-5",
+        "label": "Oura Ring 5",
+        "collected_count": 1,
+        "quarantined_item_count": 0
+      }
+    },
     {
       "run_id": "2026-10-13T17-25-30-147Z",
       "committed_at": "2026-10-13T17:25:35.139Z",
@@ -10,12 +26,28 @@
       "partial": false,
       "duration_ms": 4966,
       "item_count": 8,
-      "quarantined_item_count": 0,
       "metadata": {
         "source": "oura-ring-5",
         "label": "Oura Ring 5",
         "collected_count": 2,
-        "quarantined_item_count": 0
+        "quarantined_item_count": 0,
+        "in_progress": false
+      }
+    },
+    {
+      "run_id": "2026-10-13T11-01-13-189Z",
+      "committed_at": "2026-10-13T11:01:13.445Z",
+      "completed_at": "2026-10-13T11:01:13.432Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 243,
+      "item_count": 8,
+      "metadata": {
+        "source": "oura-ring-5",
+        "label": "Oura Ring 5",
+        "collected_count": 1,
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     },
     {
@@ -1878,38 +1910,6 @@
       "run_id": "2026-08-31T19-00-34-148Z",
       "committed_at": "2026-08-31T19:00:38.286Z",
       "completed_at": "2026-08-31T19:00:38.286Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": null,
-      "item_count": 1,
-      "metadata": {
-        "source": "oura-ring-5",
-        "label": "Oura Ring 5",
-        "collected_count": 0,
-        "quarantined_item_count": 0,
-        "in_progress": false
-      }
-    },
-    {
-      "run_id": "2026-08-31T11-01-05-872Z",
-      "committed_at": "2026-08-31T11:01:06.108Z",
-      "completed_at": "2026-08-31T11:01:06.108Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": null,
-      "item_count": 1,
-      "metadata": {
-        "source": "oura-ring-5",
-        "label": "Oura Ring 5",
-        "collected_count": 0,
-        "quarantined_item_count": 0,
-        "in_progress": false
-      }
-    },
-    {
-      "run_id": "2026-08-31T10-00-27-616Z",
-      "committed_at": "2026-08-31T10:00:30.327Z",
-      "completed_at": "2026-08-31T10:00:30.327Z",
       "outcome": "success",
       "partial": false,
       "duration_ms": null,
