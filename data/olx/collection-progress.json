@@ -2,8 +2,8 @@
   "schema_version": 1,
   "quality_version": 1,
   "configuration": "9955hx3d,290hx,9955hx,285hx,275hx,aimax395,7945hx,7945hx3d,255hx,13980hx,8940hx,7940hx,13950hx,14900hx,13900hx,7845hx,8840hx,aimax390,14700hx,hx470,12900hx,12800hx",
-  "started_at": "2026-10-12T19:00:24.715Z",
-  "updated_at": "2026-10-12T19:01:44.699Z",
+  "started_at": "2026-10-13T16:34:34.593Z",
+  "updated_at": "2026-10-13T17:24:26.482Z",
   "state": "completed",
   "scheduled_terms": [
     "14700hx",
@@ -11,7 +11,23 @@
     "14900hx",
     "13900hx",
     "12900hx",
-    "12800hx"
+    "12800hx",
+    "9955hx3d",
+    "290hx",
+    "9955hx",
+    "285hx",
+    "275hx",
+    "aimax395",
+    "7945hx",
+    "7945hx3d",
+    "255hx",
+    "8940hx",
+    "7940hx",
+    "13950hx",
+    "7845hx",
+    "8840hx",
+    "aimax390",
+    "hx470"
   ],
   "successful_terms": [
     "14700hx",
@@ -19,7 +35,23 @@
     "14900hx",
     "13900hx",
     "12900hx",
-    "12800hx"
+    "12800hx",
+    "9955hx3d",
+    "290hx",
+    "9955hx",
+    "285hx",
+    "275hx",
+    "aimax395",
+    "7945hx",
+    "7945hx3d",
+    "255hx",
+    "8940hx",
+    "7940hx",
+    "13950hx",
+    "7845hx",
+    "8840hx",
+    "aimax390",
+    "hx470"
   ],
   "collected": [
     {
@@ -42,7 +74,7 @@
       "validation": {
         "version": 1,
         "state": "validated",
-        "checked_at": "2026-10-12T13:05:38.812Z",
+        "checked_at": "2026-10-13T16:34:37.615Z",
         "reasons": [],
         "listing_price_brl": 8399,
         "detail_price_brl": 8399,
@@ -82,7 +114,7 @@
       "validation": {
         "version": 1,
         "state": "pending",
-        "checked_at": "2026-10-12T13:05:40.731Z",
+        "checked_at": "2026-10-13T16:34:40.505Z",
         "reasons": [
           "Especificação não confirmada: RAM"
         ],
@@ -124,7 +156,7 @@
       "validation": {
         "version": 1,
         "state": "rejected",
-        "checked_at": "2026-10-12T13:06:02.976Z",
+        "checked_at": "2026-10-13T16:35:02.116Z",
         "reasons": [
           "RAM abaixo do mínimo exigido",
           "Especificação divergente: SSD/armazenamento",
@@ -158,7 +190,7 @@
       "ram_gb": 32,
       "storage_gb": 1024,
       "gpu": "RTX 4060",
-      "location": null,
+      "location": "Jardim Piazza di Roma, Sorocaba - SP",
       "condition": "novo",
       "status": "active",
       "first_seen": null,
@@ -168,7 +200,7 @@
       "validation": {
         "version": 1,
         "state": "validated",
-        "checked_at": "2026-10-12T13:06:04.758Z",
+        "checked_at": "2026-10-13T16:35:03.438Z",
         "reasons": [],
         "listing_price_brl": 9399,
         "detail_price_brl": 9399,
@@ -208,7 +240,7 @@
       "validation": {
         "version": 1,
         "state": "rejected",
-        "checked_at": "2026-10-12T13:06:14.949Z",
+        "checked_at": "2026-10-13T16:35:20.699Z",
         "reasons": [
           "RAM abaixo do mínimo exigido",
           "RAM abaixo do mínimo de 32 GB"
@@ -226,6 +258,48 @@
           "ram_gb": 16,
           "storage_gb": 512,
           "gpu": "RTX 5060"
+        },
+        "cpu_confirmed": true,
+        "description_checked": true
+      }
+    },
+    {
+      "id": "1542003264",
+      "url": "https://rj.olx.com.br/rio-de-janeiro-e-regiao/informatica/notebooks/laptop-predator-helios-neo-intel-core-i9-14900hx-com-rtx4070-1542003264",
+      "title": "Laptop Predator Helios Neo intel® core i9-14900hx com rtx4070",
+      "cpu_term": "14900hx",
+      "description_discovery": false,
+      "price_brl": 9600,
+      "ram_gb": null,
+      "storage_gb": 1024,
+      "gpu": "RTX 4070",
+      "location": null,
+      "condition": "Usado - Excelente",
+      "status": "active",
+      "first_seen": null,
+      "last_seen": null,
+      "notes": null,
+      "desc_checked": true,
+      "validation": {
+        "version": 1,
+        "state": "pending",
+        "checked_at": "2026-10-13T16:35:22.038Z",
+        "reasons": [
+          "Especificação não confirmada: RAM"
+        ],
+        "listing_price_brl": 9600,
+        "detail_price_brl": 9600,
+        "visible_price_brl": null,
+        "structured_price_brl": 9600,
+        "title_specs": {
+          "ram_gb": null,
+          "storage_gb": null,
+          "gpu": "RTX 4070"
+        },
+        "description_specs": {
+          "ram_gb": null,
+          "storage_gb": 1024,
+          "gpu": "RTX 4070"
         },
         "cpu_confirmed": true,
         "description_checked": true
@@ -251,7 +325,7 @@
       "validation": {
         "version": 1,
         "state": "rejected",
-        "checked_at": "2026-10-12T13:06:42.891Z",
+        "checked_at": "2026-10-13T16:35:53.150Z",
         "reasons": [
           "Defeito ou avaria declarados no anúncio",
           "Especificação divergente: RAM",
@@ -286,7 +360,7 @@
       "ram_gb": 32,
       "storage_gb": null,
       "gpu": "RTX 4060",
-      "location": null,
+      "location": "Jardim Joaquim Procópio de Araújo Ferraz, Ribeirão Preto - SP",
       "condition": "Usado - Bom",
       "status": "active",
       "first_seen": null,
@@ -296,7 +370,7 @@
       "validation": {
         "version": 1,
         "state": "pending",
-        "checked_at": "2026-10-12T13:06:44.391Z",
+        "checked_at": "2026-10-13T16:35:54.402Z",
         "reasons": [
           "Especificação não confirmada: SSD/armazenamento"
         ],
@@ -328,7 +402,7 @@
       "ram_gb": 32,
       "storage_gb": null,
       "gpu": "RTX 4060",
-      "location": null,
+      "location": "Célvia, Vespasiano - MG",
       "condition": "novo",
       "status": "active",
       "first_seen": null,
@@ -338,7 +412,7 @@
       "validation": {
         "version": 1,
         "state": "pending",
-        "checked_at": "2026-10-12T13:06:47.933Z",
+        "checked_at": "2026-10-13T16:35:55.554Z",
         "reasons": [
           "Especificação não confirmada: SSD/armazenamento"
         ],
@@ -355,6 +429,46 @@
           "ram_gb": 32,
           "storage_gb": null,
           "gpu": "RTX 4060"
+        },
+        "cpu_confirmed": true,
+        "description_checked": true
+      }
+    },
+    {
+      "id": "1542538297",
+      "url": "https://rj.olx.com.br/serra-angra-dos-reis-e-regiao/informatica/notebooks/notebook-gamer-msi-raider-ge67hx-i7-12800hx-rtx-3070-ti-8gb-32gb-ddr5-ssd-1tb-ol-1542538297",
+      "title": "Notebook Gamer MSI Raider GE67HX | i7-12800HX | RTX 3070 Ti 8GB | 32GB DDR5 | SSD 1TB | OL",
+      "cpu_term": "12800hx",
+      "description_discovery": false,
+      "price_brl": 7899,
+      "ram_gb": 32,
+      "storage_gb": 1024,
+      "gpu": "RTX 3070 TI",
+      "location": null,
+      "condition": "Usado - Excelente",
+      "status": "active",
+      "first_seen": null,
+      "last_seen": null,
+      "notes": null,
+      "desc_checked": true,
+      "validation": {
+        "version": 1,
+        "state": "validated",
+        "checked_at": "2026-10-13T16:36:05.660Z",
+        "reasons": [],
+        "listing_price_brl": 7899,
+        "detail_price_brl": 7899,
+        "visible_price_brl": null,
+        "structured_price_brl": 7899,
+        "title_specs": {
+          "ram_gb": 32,
+          "storage_gb": 1024,
+          "gpu": "RTX 3070 TI"
+        },
+        "description_specs": {
+          "ram_gb": 32,
+          "storage_gb": 1024,
+          "gpu": "RTX 3070 TI"
         },
         "cpu_confirmed": true,
         "description_checked": true
@@ -380,7 +494,7 @@
       "validation": {
         "version": 1,
         "state": "rejected",
-        "checked_at": "2026-10-12T13:07:09.736Z",
+        "checked_at": "2026-10-13T16:36:07.035Z",
         "reasons": [
           "RAM abaixo do mínimo exigido",
           "RAM abaixo do mínimo de 32 GB"
@@ -404,35 +518,53 @@
       }
     },
     {
-      "id": "1542538297",
-      "url": "https://rj.olx.com.br/serra-angra-dos-reis-e-regiao/informatica/notebooks/notebook-gamer-msi-raider-ge67hx-i7-12800hx-rtx-3070-ti-8gb-32gb-ddr5-ssd-1tb-ol-1542538297",
-      "title": "Notebook Gamer MSI Raider GE67HX | i7-12800HX | RTX 3070 Ti 8GB | 32GB DDR5 | SSD 1TB | OL",
-      "cpu_term": "12800hx",
+      "id": "1539254949",
+      "url": "https://rj.olx.com.br/rio-de-janeiro-e-regiao/informatica/notebooks/helios-predator-neo-16-ai-rtx5070-ultra-core7-255hx-1539254949",
+      "title": "Helios Predator neo 16 ai Rtx5070 ultra core7 255hx",
+      "cpu_term": "255hx",
       "description_discovery": false,
-      "price_brl": 8990,
-      "ram_gb": 32,
-      "storage_gb": 1024,
-      "gpu": "RTX 3070 TI",
-      "location": "Petrópolis, Posse",
-      "condition": null,
+      "price_brl": 8770,
+      "ram_gb": null,
+      "storage_gb": null,
+      "gpu": "RTX 5070",
+      "location": "Santa Cruz, Rio de Janeiro - RJ",
+      "condition": "Novo",
       "status": "active",
       "first_seen": null,
       "last_seen": null,
       "notes": null,
-      "desc_checked": false,
+      "desc_checked": true,
       "validation": {
         "version": 1,
         "state": "pending",
+        "checked_at": "2026-10-13T16:37:50.827Z",
         "reasons": [
-          "Descrição e preço integral ainda não conferidos"
-        ]
+          "Especificação não confirmada: RAM",
+          "Especificação não confirmada: SSD/armazenamento"
+        ],
+        "listing_price_brl": 8770,
+        "detail_price_brl": 8770,
+        "visible_price_brl": null,
+        "structured_price_brl": 8770,
+        "title_specs": {
+          "ram_gb": null,
+          "storage_gb": null,
+          "gpu": "RTX 5070"
+        },
+        "description_specs": {
+          "ram_gb": null,
+          "storage_gb": null,
+          "gpu": "RTX 5070"
+        },
+        "cpu_confirmed": true,
+        "description_checked": true
       }
     }
   ],
   "pending_terms": [],
   "baseline_snapshot": {
     "schema_version": 2,
-    "generated_at": "2026-10-12T13:16:00.034Z",
+    "generated_at": "2026-10-12T19:01:43.900Z",
     "coverage_status": {
       "9955hx3d": {
         "checked_at": "2026-10-12T13:16:00.034Z",
@@ -489,8 +621,8 @@
         "error": null
       },
       "13980hx": {
-        "checked_at": "2026-10-12T13:16:00.034Z",
-        "last_success_at": "2026-10-12T13:16:00.034Z",
+        "checked_at": "2026-10-12T19:01:43.900Z",
+        "last_success_at": "2026-10-12T19:01:43.900Z",
         "state": "success",
         "error": null
       },
@@ -513,14 +645,14 @@
         "error": null
       },
       "14900hx": {
-        "checked_at": "2026-10-12T13:16:00.034Z",
-        "last_success_at": "2026-10-12T13:16:00.034Z",
+        "checked_at": "2026-10-12T19:01:43.900Z",
+        "last_success_at": "2026-10-12T19:01:43.900Z",
         "state": "success",
         "error": null
       },
       "13900hx": {
-        "checked_at": "2026-10-12T13:16:00.034Z",
-        "last_success_at": "2026-10-12T13:16:00.034Z",
+        "checked_at": "2026-10-12T19:01:43.900Z",
+        "last_success_at": "2026-10-12T19:01:43.900Z",
         "state": "success",
         "error": null
       },
@@ -543,8 +675,8 @@
         "error": null
       },
       "14700hx": {
-        "checked_at": "2026-10-12T13:16:00.034Z",
-        "last_success_at": "2026-10-12T13:16:00.034Z",
+        "checked_at": "2026-10-12T19:01:43.900Z",
+        "last_success_at": "2026-10-12T19:01:43.900Z",
         "state": "success",
         "error": null
       },
@@ -555,14 +687,14 @@
         "error": null
       },
       "12900hx": {
-        "checked_at": "2026-10-12T13:16:00.034Z",
-        "last_success_at": "2026-10-12T13:16:00.034Z",
+        "checked_at": "2026-10-12T19:01:43.900Z",
+        "last_success_at": "2026-10-12T19:01:43.900Z",
         "state": "success",
         "error": null
       },
       "12800hx": {
-        "checked_at": "2026-10-12T13:16:00.034Z",
-        "last_success_at": "2026-10-12T13:16:00.034Z",
+        "checked_at": "2026-10-12T19:01:43.900Z",
+        "last_success_at": "2026-10-12T19:01:43.900Z",
         "state": "success",
         "error": null
       }
@@ -570,8 +702,8 @@
     "run": {
       "date": "2026-10-12",
       "timezone": "America/Sao_Paulo",
-      "started_at": "2026-10-12T13:05:36.101Z",
-      "completed_at": "2026-10-12T13:16:00.034Z",
+      "started_at": "2026-10-12T19:00:24.715Z",
+      "completed_at": "2026-10-12T19:01:43.900Z",
       "in_progress": false,
       "phase": "completed",
       "partial": false,
@@ -581,23 +713,7 @@
         "14900hx",
         "13900hx",
         "12900hx",
-        "12800hx",
-        "9955hx3d",
-        "290hx",
-        "9955hx",
-        "285hx",
-        "275hx",
-        "aimax395",
-        "7945hx",
-        "7945hx3d",
-        "255hx",
-        "8940hx",
-        "7940hx",
-        "13950hx",
-        "7845hx",
-        "8840hx",
-        "aimax390",
-        "hx470"
+        "12800hx"
       ],
       "failed_terms": [],
       "errors": [],
@@ -606,7 +722,7 @@
         "extra_details": 0,
         "detail_ms": 0,
         "recovered_validated": 0,
-        "cache_hits": 0,
+        "cache_hits": 9,
         "by_term": {},
         "queued_candidates": 0,
         "validation_complete": true,
@@ -619,23 +735,7 @@
         "14900hx",
         "13900hx",
         "12900hx",
-        "12800hx",
-        "9955hx3d",
-        "290hx",
-        "9955hx",
-        "285hx",
-        "275hx",
-        "aimax395",
-        "7945hx",
-        "7945hx3d",
-        "255hx",
-        "8940hx",
-        "7940hx",
-        "13950hx",
-        "7845hx",
-        "8840hx",
-        "aimax390",
-        "hx470"
+        "12800hx"
       ],
       "successful_coverage": [
         "14700hx",
@@ -643,23 +743,7 @@
         "14900hx",
         "13900hx",
         "12900hx",
-        "12800hx",
-        "9955hx3d",
-        "290hx",
-        "9955hx",
-        "285hx",
-        "275hx",
-        "aimax395",
-        "7945hx",
-        "7945hx3d",
-        "255hx",
-        "8940hx",
-        "7940hx",
-        "13950hx",
-        "7845hx",
-        "8840hx",
-        "aimax390",
-        "hx470"
+        "12800hx"
       ],
       "failed_coverage": [],
       "configured_coverage": [
@@ -825,7 +909,7 @@
         "last_seen": "2026-10-12",
         "notes": null,
         "desc_checked": true,
-        "out_of_scope_at": "2026-10-12T13:16:00.034Z",
+        "out_of_scope_at": "2026-10-12T19:01:43.900Z",
         "price_history": [
           {
             "at": "2026-10-08T13:36:19.953Z",
@@ -927,7 +1011,7 @@
         "last_seen": "2026-10-12",
         "notes": null,
         "desc_checked": true,
-        "out_of_scope_at": "2026-10-12T13:16:00.034Z",
+        "out_of_scope_at": "2026-10-12T19:01:43.900Z",
         "price_history": [
           {
             "at": "2026-10-02T10:00:30.855Z",
@@ -976,7 +1060,7 @@
         "first_seen": "2026-08-02",
         "last_seen": "2026-10-12",
         "notes": null,
-        "out_of_scope_at": "2026-10-12T13:16:00.034Z",
+        "out_of_scope_at": "2026-10-12T19:01:43.900Z",
         "price_history": [
           {
             "at": "2026-08-02T12:00:00.000Z",
@@ -1139,7 +1223,7 @@
         "last_seen": "2026-10-12",
         "notes": null,
         "desc_checked": true,
-        "out_of_scope_at": "2026-10-12T13:16:00.034Z",
+        "out_of_scope_at": "2026-10-12T19:01:43.900Z",
         "price_history": [
           {
             "at": "2026-06-27T12:00:00.000Z",
@@ -8140,7 +8224,7 @@
     "extra_details": 0,
     "detail_ms": 0,
     "recovered_validated": 0,
-    "cache_hits": 9,
+    "cache_hits": 0,
     "by_term": {},
     "queued_candidates": 0,
     "validation_complete": true,

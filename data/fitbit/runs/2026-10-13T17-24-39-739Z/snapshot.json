@@ -1,0 +1,79 @@
+{
+  "schema_version": 2,
+  "generated_at": "2026-10-13T17:24:39.739Z",
+  "coverage_status": {
+    "Enjoei:fitbit air": {
+      "checked_at": "2026-10-13T17:24:44.688Z",
+      "last_success_at": "2026-10-13T17:24:44.688Z",
+      "state": "success",
+      "error": null
+    },
+    "OLX:fitbit air": {
+      "checked_at": "2026-10-13T17:24:44.688Z",
+      "last_success_at": "2026-10-13T17:24:44.688Z",
+      "state": "success",
+      "error": null
+    }
+  },
+  "run": {
+    "date": "2026-10-13",
+    "timezone": "America/Sao_Paulo",
+    "id": "fitbit-air",
+    "label": "Fitbit Air",
+    "started_at": "2026-10-13T17:24:39.739Z",
+    "completed_at": "2026-10-13T17:24:44.688Z",
+    "partial": false,
+    "errors": [],
+    "unattempted_coverage": [],
+    "scheduled_coverage": [
+      "Enjoei:fitbit air",
+      "OLX:fitbit air"
+    ],
+    "successful_coverage": [
+      "Enjoei:fitbit air",
+      "OLX:fitbit air"
+    ],
+    "failed_coverage": [],
+    "configured_coverage": [
+      "Enjoei:fitbit air",
+      "OLX:fitbit air"
+    ],
+    "quarantined_item_count": 0
+  },
+  "filters": {
+    "price_brl": {
+      "min": 300,
+      "max": 600
+    },
+    "size_ml": {
+      "min": null,
+      "max": null
+    }
+  },
+  "items": [
+    {
+      "id": "1543108545",
+      "url": "https://ms.olx.com.br/mato-grosso-do-sul/eletronicos-e-celulares/smartwatches/google-fitbit-air-pulseira-active-original-1543108545",
+      "title": "Google Fitbit Air + Pulseira Active Original",
+      "source": "OLX",
+      "term": "fitbit air",
+      "price_brl": 600,
+      "location": "Campo Grande, Vila Carlota",
+      "status": "not_seen",
+      "first_seen": "2026-10-11",
+      "last_seen": "2026-10-11",
+      "out_of_scope_at": null,
+      "price_history": [
+        {
+          "at": "2026-10-11T10:21:50.589Z",
+          "price_brl": 600
+        }
+      ]
+    }
+  ],
+  "price_range_brl": {
+    "min": 300,
+    "max": 600
+  },
+  "source_blocks": {}
+}
