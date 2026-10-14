@@ -1,0 +1,88 @@
+{
+  "schema_version": 2,
+  "generated_at": "2026-10-14T11:31:57.010Z",
+  "coverage_status": {
+    "OLX:pixel watch 4": {
+      "checked_at": "2026-10-14T11:31:57.366Z",
+      "last_success_at": null,
+      "state": "failed",
+      "error": "OLX: Cloudflare: OLX em pausa até 2026-10-14T17:25:23.663Z; acesso recusado pelo site, sem verificação interativa disponível."
+    },
+    "Enjoei:pixel watch 4": {
+      "checked_at": "2026-10-14T11:31:57.366Z",
+      "last_success_at": "2026-10-14T11:31:57.366Z",
+      "state": "success",
+      "error": null
+    }
+  },
+  "run": {
+    "date": "2026-10-14",
+    "timezone": "America/Sao_Paulo",
+    "id": "google-pixel-watch-4",
+    "label": "Google Pixel Watch 4",
+    "started_at": "2026-10-14T11:31:57.010Z",
+    "completed_at": "2026-10-14T11:31:57.366Z",
+    "partial": true,
+    "errors": [
+      "OLX: Cloudflare: OLX em pausa até 2026-10-14T17:25:23.663Z; acesso recusado pelo site, sem verificação interativa disponível."
+    ],
+    "unattempted_coverage": [],
+    "scheduled_coverage": [
+      "Enjoei:pixel watch 4",
+      "OLX:pixel watch 4"
+    ],
+    "successful_coverage": [
+      "Enjoei:pixel watch 4"
+    ],
+    "failed_coverage": [
+      "OLX:pixel watch 4"
+    ],
+    "configured_coverage": [
+      "Enjoei:pixel watch 4",
+      "OLX:pixel watch 4"
+    ],
+    "quarantined_item_count": 0
+  },
+  "filters": {
+    "price_brl": {
+      "min": 0,
+      "max": 2500
+    },
+    "size_ml": {
+      "min": null,
+      "max": null
+    }
+  },
+  "items": [
+    {
+      "id": "1536203808",
+      "url": "https://sp.olx.com.br/sao-paulo-e-regiao/eletronicos-e-celulares/smartwatches/google-pixel-watch-4-45mm-lte-1536203808",
+      "title": "Google Pixel Watch 4 45mm LTE",
+      "source": "OLX",
+      "term": "pixel watch 4",
+      "price_brl": 1900,
+      "location": "São Paulo -  SP",
+      "status": "not_seen",
+      "first_seen": "2026-09-17",
+      "last_seen": "2026-09-17",
+      "out_of_scope_at": null,
+      "price_history": [
+        {
+          "at": "2026-09-17T10:00:42.631Z",
+          "price_brl": 1900
+        }
+      ]
+    }
+  ],
+  "price_range_brl": {
+    "min": 0,
+    "max": 2500
+  },
+  "source_blocks": {
+    "OLX": {
+      "blocked_until": "2026-10-14T17:25:23.663Z",
+      "reason": "Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4a00b141f13156d).",
+      "recovery_kind": "hard_denial"
+    }
+  }
+}

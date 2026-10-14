@@ -1,34 +1,24 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-14T11:01:20.167Z",
+  "updated_at": "2026-10-14T11:33:47.026Z",
   "runs": [
     {
-      "run_id": "5efcf001-7571-4cc0-a7d9-1f711e43f699",
-      "completed_at": "2026-10-14T11:01:20.165Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 19898,
+      "run_id": "97bfe51a-04c1-4bb3-aa9f-232f599cb169",
+      "completed_at": "2026-10-14T11:33:47.023Z",
+      "outcome": "failed",
+      "partial": true,
+      "duration_ms": 5620085,
       "item_count": 0,
       "quarantined_item_count": 0,
       "metadata": {
-        "source": "ci",
-        "monitor_errors": 0,
-        "monitor_failures": [],
-        "pending_notifications": 0
-      }
-    },
-    {
-      "run_id": "7f3f889a-2601-46de-95d3-e195ad7ec410",
-      "completed_at": "2026-10-13T19:01:33.347Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 18250,
-      "item_count": 0,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "ci",
-        "monitor_errors": 0,
-        "monitor_failures": [],
+        "source": "local",
+        "monitor_errors": 4,
+        "monitor_failures": [
+          "Melanger: Saiu com código 1: Listagem incompleta; aguardando 30 s e tentando uma vez em nova aba.\n  Aviso: termo \"melanger\" em https://www.olx.com.br/eletro/eletroportateis-para-cozinha-e-limpeza falhou — timeout: OLX não expôs cards nem uma mensagem de busca vazia (página: \"melanger\" - Eletroportáteis Para Cozinha e Limpeza no Brasil)\n  Listagem incompleta; aguardando 30 s e tentando uma vez em nova aba.\n  Aviso: termo \"melanger\" em https://www.olx.com.br/comercio-e-escritorio/gastronomia falhou — page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www.olx.com.br/comercio-e-escritorio/gastronomia?[redacted]\", waiting until \"domcontentloaded\"",
+          "OnePlus Buds Pro 3: Saiu com código 1: Listagem incompleta; aguardando 30 s e tentando uma vez em nova aba.\n  Aviso: termo \"buds pro 3\" em https://www.olx.com.br/brasil falhou — page.evaluate: Target page, context or browser has been closed\n  Aviso: termo \"buds 3 pro\" em https://www.olx.com.br/brasil falhou — page.goto: Target page, context or browser has been closed",
+          "Google Pixel Watch 4: Saiu com código 1: Aviso: coleta OLX falhou — Cloudflare: OLX em pausa até 2026-10-14T17:25:23.663Z; acesso recusado pelo site, sem verificação interativa disponível.",
+          "Google Pixel Watch 5: Saiu com código 1: Aviso: coleta OLX falhou — browserType.launchPersistentContext: Chromium distribution 'chrome' is not found at C:\\Users\\docra\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe\nRun \"npx playwright install chrome\""
+        ],
         "pending_notifications": 0
       }
     },
@@ -1783,6 +1773,20 @@
       "quarantined_item_count": 0,
       "metadata": {
         "source": "local",
+        "monitor_errors": 0,
+        "pending_notifications": 1
+      }
+    },
+    {
+      "run_id": "775f0b02-9cce-4538-a6b1-e3292034bfdc",
+      "completed_at": "2026-08-21T19:01:08.184Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 21363,
+      "item_count": 0,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "ci",
         "monitor_errors": 0,
         "pending_notifications": 1
       }
