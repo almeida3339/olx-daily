@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "round": "2026-10-14T10:00:27.210Z",
+  "round": "2026-10-14T19:00:22.547Z",
   "queue": [],
   "cache": [
     {
@@ -531,13 +531,62 @@
           "description_checked": true
         }
       }
+    },
+    {
+      "key": "1539254949",
+      "title": "Helios Predator neo 16 ai Rtx5070 ultra core7 255hx",
+      "price_brl": 8770,
+      "checked_at": "2026-10-14T19:03:57.499Z",
+      "item": {
+        "id": "1539254949",
+        "url": "https://rj.olx.com.br/rio-de-janeiro-e-regiao/informatica/notebooks/helios-predator-neo-16-ai-rtx5070-ultra-core7-255hx-1539254949",
+        "title": "Helios Predator neo 16 ai Rtx5070 ultra core7 255hx",
+        "cpu_term": "255hx",
+        "description_discovery": false,
+        "price_brl": 8770,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": "RTX 5070",
+        "location": null,
+        "condition": "Novo",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 1,
+          "state": "pending",
+          "checked_at": "2026-10-14T19:03:57.494Z",
+          "reasons": [
+            "Especificação não confirmada: RAM",
+            "Especificação não confirmada: SSD/armazenamento"
+          ],
+          "listing_price_brl": 8770,
+          "detail_price_brl": 8770,
+          "visible_price_brl": null,
+          "structured_price_brl": 8770,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 5070"
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 5070"
+          },
+          "cpu_confirmed": true,
+          "description_checked": true
+        }
+      }
     }
   ],
   "metrics": {
     "extra_details": 0,
     "detail_ms": 0,
     "recovered_validated": 0,
-    "cache_hits": 0,
+    "cache_hits": 11,
     "by_term": {}
   }
 }

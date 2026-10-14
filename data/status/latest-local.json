@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-14T10:00:06.938Z",
+  "generated_at": "2026-10-14T19:00:06.919Z",
   "source": "local",
   "delivery": {
     "email": "skipped",
@@ -40,10 +40,7 @@
     "scope": "local-watchlists",
     "partial": true,
     "errors": [
-      "Melanger: Saiu com código 1: Listagem incompleta; aguardando 30 s e tentando uma vez em nova aba.\n  Aviso: termo \"melanger\" em https://www.olx.com.br/eletro/eletroportateis-para-cozinha-e-limpeza falhou — timeout: OLX não expôs cards nem uma mensagem de busca vazia (página: \"melanger\" - Eletroportáteis Para Cozinha e Limpeza no Brasil)\n  Listagem incompleta; aguardando 30 s e tentando uma vez em nova aba.\n  Aviso: termo \"melanger\" em https://www.olx.com.br/comercio-e-escritorio/gastronomia falhou — page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www.olx.com.br/comercio-e-escritorio/gastronomia?[redacted]\", waiting until \"domcontentloaded\"",
-      "OnePlus Buds Pro 3: Saiu com código 1: Listagem incompleta; aguardando 30 s e tentando uma vez em nova aba.\n  Aviso: termo \"buds pro 3\" em https://www.olx.com.br/brasil falhou — page.evaluate: Target page, context or browser has been closed\n  Aviso: termo \"buds 3 pro\" em https://www.olx.com.br/brasil falhou — page.goto: Target page, context or browser has been closed",
-      "Google Pixel Watch 4: Saiu com código 1: Aviso: coleta OLX falhou — Cloudflare: OLX em pausa até 2026-10-14T17:25:23.663Z; acesso recusado pelo site, sem verificação interativa disponível.",
-      "Google Pixel Watch 5: Saiu com código 1: Aviso: coleta OLX falhou — browserType.launchPersistentContext: Chromium distribution 'chrome' is not found at C:\\Users\\docra\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe\nRun \"npx playwright install chrome\""
+      "Google Pixel Watch 4: Saiu com código 1: Aviso: termo \"pixel watch 4\" em https://www.olx.com.br/brasil falhou — Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4a91f36897b1e65).\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados."
     ]
   },
   "notification_sent_ids": [
@@ -62,7 +59,10 @@
     "df293a7e-699c-42c7-9794-5155b6e5340f",
     "d603f351-608d-4610-a2ff-704151d759b8",
     "bc52fef6-7395-4625-894d-4e279d7e7d65",
-    "ed7cb58d-a130-4896-9999-94efa69c7707"
+    "ed7cb58d-a130-4896-9999-94efa69c7707",
+    "b8cd5a6a-5536-4240-8386-f36333745ac4",
+    "fb252df2-ae58-4318-bca7-377785e12f69",
+    "14253e27-4ce4-48ec-adef-a5da26db11f3"
   ],
   "notification_archive": [
     {
