@@ -119,7 +119,8 @@ export async function main({
     const onlyMercadoLivre   = args.includes("--only-mercadolivre");
     const skipOlx            = args.includes("--skip-olx") || process.env.SKIP_OLX === "1";
     const skipEnjoei         = args.includes("--skip-enjoei") || process.env.SKIP_ENJOEI === "1";
-    const skipDockstations   = args.includes("--skip-dockstations") || process.env.SKIP_DOCKSTATIONS === "1";
+    const skipDockstations   = (getWatchlist('dockstations').paused && !args.includes('--include-paused'))
+      || args.includes("--skip-dockstations") || process.env.SKIP_DOCKSTATIONS === "1";
     const skipFitbit         = args.includes("--skip-fitbit") || process.env.SKIP_FITBIT === "1";
     const skipLifefactory    = args.includes("--skip-lifefactory") || process.env.SKIP_LIFEFACTORY === "1";
     const skipTelaBook3      = args.includes("--skip-tela-book3") || process.env.SKIP_TELA_BOOK3 === "1";
@@ -179,7 +180,7 @@ export async function main({
     // Dockstations combina OLX (Playwright) + Enjoei (API) num único script e
     // trata falhas de cada fonte internamente, então roda independente dos flags
     // only-olx/skip-enjoei (assim funciona tanto no Task Scheduler local quanto no CI).
-    if (!skipDockstations) jobs.push(["dockstations", () => runScript("monitor-dockstations.mjs", []), true]);
+    if (!skipDockstations) jobs.push(["dockstations", () => runScript("monitor-dockstations.mjs", args.includes('--include-paused')?['--include-paused']:[]), true]);
     if (!skipFitbit) jobs.push(["fitbit", () => runScript("monitor-fitbit.mjs", []), true]);
     if (!skipLifefactory) jobs.push(["lifefactory", () => runScript("monitor-lifefactory.mjs", []), true]);
     if (!skipTelaBook3) jobs.push(["tela-book3", () => runScript("monitor-tela-galaxybook3.mjs", []), true]);

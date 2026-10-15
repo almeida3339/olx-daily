@@ -77,6 +77,7 @@ export const mercadoLivreWatchlists = [
   },
   {
     id: "dockstations",
+    paused: true,
     label: "Dockstations",
     terms: ["SD25TB4", "WD22TB4"],
     minPrice: 0,

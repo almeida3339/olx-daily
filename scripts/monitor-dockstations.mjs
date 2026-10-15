@@ -2,6 +2,12 @@
 // A lógica de coleta/merge/relatório vive em lib/watchlist-monitor.mjs.
 import path from "node:path";
 import { runWatchlistMonitor } from "./lib/watchlist-monitor.mjs";
+import { getWatchlist } from './lib/watchlists-registry.mjs';
+
+if(getWatchlist('dockstations').paused && process.env.INCLUDE_PAUSED_WATCHLIST !== '1' && !process.argv.includes('--include-paused')) {
+  console.log('Dockstations: busca pausada; nenhum termo consultado.');
+  process.exit(0);
+}
 
 const dataDir =
   process.env.DOCKSTATIONS_DATA_DIR ??

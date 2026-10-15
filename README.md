@@ -77,7 +77,7 @@ Big John e Denime foram excluídas das coletas em 15/10/2026 a pedido do usuári
 | **Enjoei Jeans Jacob Cohën 40** | Enjoei (GraphQL) | menos de R$ 250 | Masculino, cintura 40; jeans/denim confirmado |
 | **Enjoei Jeans Brunello Cucinelli 40** | Enjoei (GraphQL) | até R$ 400 | Masculino, cintura 40; jeans/denim confirmado |
 | **Enjoei Jeans — Momotaro, PBJ, Strike Gold, Kapital, Fullcount, OrSlow** | Enjoei (GraphQL) | até R$ 350 | Masculino, cintura 40; monitor separado por marca |
-| **Dockstations** | OLX + Enjoei | até R$ 500 | 3 modelos (SD25TB4, WD22TB4, 40AY0090BR), 4TB+ |
+| **Dockstations — pausada** | OLX + Enjoei + ML sob demanda | até R$ 500 | SD25TB4 e WD22TB4; histórico preservado |
 | **Fitbit Air** | OLX + Enjoei | R$ 300–600 | Smartwatch Fitbit Air exato |
 | **Lifefactory** | OLX + Enjoei | R$ 25–75 | Garrafa térmica 500ml–1L (exclui mamadeira, bivolt OK) |
 | **Tela Galaxy Book3** | OLX + Enjoei | até R$ 1.000 | Part number BA96-08462A (Galaxy Book3 Ultra) |
