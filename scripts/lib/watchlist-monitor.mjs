@@ -316,7 +316,8 @@ function buildEnjoeiApiUrl(term, slug) {
 
 // ── OLX (Playwright) ───────────────────────────────────────────────────────────
 
-async function collectOlx({ terms, categoryUrls, userDataDir, headless, visible, inRange, sizeOk, notExcluded, itemFilter, olxDeliveryOnly = false }) {
+export async function collectOlx({ terms, categoryUrls, userDataDir, headless, visible, inRange, sizeOk, notExcluded, itemFilter, olxDeliveryOnly = false,
+  termMatcher = textMatchesTerm, maxCards = OLX_MAX_CARDS, reportLimits = false, transformItem = async item => item, onTerm = async () => {}, onSearchAttempt = async () => {} }) {
   const isCI = Boolean(process.env.CI);
   // Local, por padrão a janela roda FORA DA TELA (não atrapalha o trabalho).
   // --visible mostra maximizada (útil para depurar/resolver Cloudflare).
@@ -371,6 +372,7 @@ async function collectOlx({ terms, categoryUrls, userDataDir, headless, visible,
               page.setDefaultTimeout(30_000);
               page.setDefaultNavigationTimeout(60_000);
             }
+            await onSearchAttempt(term);
             await page.goto(url, { waitUntil: "domcontentloaded", timeout: NAVIGATION_TIMEOUT_MS });
             await waitOutCloudflare(page, headless, visible);
             listingState = await waitForListing(page);
@@ -382,16 +384,18 @@ async function collectOlx({ terms, categoryUrls, userDataDir, headless, visible,
           }, { sleep, maxAttempts: 2, onRetry: () => console.warn('  Listagem incompleta; aguardando 30 s e tentando uma vez em nova aba.') });
           if (listingState === "empty") {
             console.log("  Nenhum card.");
+            await onTerm(term, { raw:0, outside_price:0, rejected:0, accepted:0, limited:false });
             continue;
           }
-          const cards = await collectCardsFromInfiniteScroll(page, OLX_MAX_CARDS);
+          const cards = await collectCardsFromInfiniteScroll(page, maxCards);
+          const metrics = { raw: cards.length, outside_price: 0, rejected: 0, accepted: 0, limited: reportLimits && cards.length >= maxCards };
           for (const card of cards) {
-            if (!inRange(card.price_brl)) continue;
-            if (!textMatchesTerm(card.title, term)) continue;
+            if (!inRange(card.price_brl)) { metrics.outside_price++; continue; }
+            if (!termMatcher(card.title, term)) { metrics.rejected++; continue; }
             if (!sizeOk(card.title)) continue;
             if (!notExcluded(card.title)) continue;
-            if (!itemFilter({ title: card.title, price_brl: card.price_brl })) continue;
-            out.push({
+            if (!itemFilter({ title: card.title, price_brl: card.price_brl })) { metrics.rejected++; continue; }
+            const item = await transformItem({
               id: extractOlxId(card.url) ?? card.url,
               url: card.url,
               title: card.title,
@@ -402,8 +406,11 @@ async function collectOlx({ terms, categoryUrls, userDataDir, headless, visible,
               status: "active",
               first_seen: null,
               last_seen: null,
-            });
+            }, { context, page });
+            if (item) { out.push(item); metrics.accepted++; }
           }
+          if (metrics.limited) { failedTerms.add(term); failedTermErrors.set(term, 'Limite de cards atingido; cobertura incompleta'); }
+          await onTerm(term, metrics);
         } catch (error) {
           console.warn(`  Aviso: termo "${term}" em ${categoryUrl} falhou — ${error.message}`);
           failedTerms.add(term);

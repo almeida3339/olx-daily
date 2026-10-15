@@ -1,4 +1,5 @@
 import { meetsNotebookRamMinimum, NOTEBOOK_MIN_RAM_GB, NOTEBOOK_POLICY_VERSION, assessNotebook, isEligibleNotebook, notebookRamGb } from './notebook-policy.mjs';
+import { assessOledMonitor, isApprovedOledMonitor, classifySavedOledItem, OLED_POLICY_VERSION, OLED_DETAIL_TTL_MS } from './oled-monitor-scope.mjs';
 import fs from "node:fs/promises";
 import path from "node:path";
 import { chromium } from "playwright";
@@ -58,13 +59,15 @@ export async function runMercadoLivreBatch({
   const previousResult = await readLatestValidSnapshot(dataDir);
   const previous = previousResult.snapshot;
   const previousById = new Map((previous?.items ?? []).map((item) => [item.id, item]));
-  const queuePath = path.join(dataDir, 'notebook-detail-queue.json');
+  const checkedProduct = kind === 'notebook' || kind === 'oled';
+  const queuePath = path.join(dataDir, kind==='oled'?'oled-detail-queue.json':'notebook-detail-queue.json');
   let detailQueue = {};
-  if (kind === 'notebook') {
+  if (checkedProduct) {
     try { detailQueue = JSON.parse(await fs.readFile(queuePath, 'utf8')); } catch (error) { if (error.code !== 'ENOENT') throw error; }
     detailQueue = Object.fromEntries(Object.entries(detailQueue).filter(([,entry]) => Date.now() - Date.parse(entry.last_observed_at) < 7 * 86400_000));
   }
   const limitedTerms = [];
+  const queryYield = {};
   let pendingDetails = 0, detailReads = 0;
   const lock = await acquireMercadoLivreLock(profileDir);
   const startedAt = new Date();
@@ -127,16 +130,18 @@ export async function runMercadoLivreBatch({
           const state = await detectPageState(page);
           // A recognized empty search is a completed term. Missing/unrecognized
           // cards still fail, so layout changes cannot erase previous results.
-          if (state === "empty") return [];
+          if (state === "empty") { if(kind==='oled')queryYield[task.matchTerm]={raw:0,accepted:0}; return []; }
           if (state !== "results") {
             const error = new Error(pageStateMessage(state));
             error.pageState = state;
             throw error;
           }
           const raw = await collectSearchResults(page);
-          if (kind === 'notebook' && (raw.length > maxItemsPerTerm || await page.locator('.andes-pagination__button--next:not(.andes-pagination__button--disabled)').count() > 0)) limitedTerms.push(task.matchTerm);
+          if (checkedProduct && (raw.length > maxItemsPerTerm || await page.locator('.andes-pagination__button--next:not(.andes-pagination__button--disabled)').count() > 0)) limitedTerms.push(task.matchTerm);
           if (raw.length === 0) throw new Error("Nenhum card reconhecido; possivel mudanca de layout.");
           const exclusions = excludeTerms.map(normalizeText);
+          if(kind==='oled')queryYield[task.matchTerm]={raw:raw.length,outside_price:raw.filter(i=>i.price_brl<minPrice||i.price_brl>maxPrice).length,
+            scope_rejected:raw.filter(i=>i.price_brl>=minPrice&&i.price_brl<=maxPrice&&!termMatcher(i.title,task.matchTerm)).length};
           return raw
             .filter((item) => item.price_brl >= minPrice && item.price_brl <= maxPrice)
             .filter((item) => termMatcher(item.title, task.matchTerm))
@@ -181,7 +186,7 @@ export async function runMercadoLivreBatch({
       .filter((item) => needsMercadoLivreDetail(item, previousById.get(item.id), kind, relevantDetails))
       .sort((a,b) => kind !== 'notebook' ? 0 : Number(a.price_brl > displayMaxPrice) - Number(b.price_brl > displayMaxPrice)
         || (Date.parse(detailQueue[a.id]?.first_queued_at) || 0) - (Date.parse(detailQueue[b.id]?.first_queued_at) || 0));
-    if (kind === 'notebook') for (const item of detailCandidates) detailQueue[item.id] = {
+    if (checkedProduct) for (const item of detailCandidates) detailQueue[item.id] = {
       first_queued_at: detailQueue[item.id]?.first_queued_at ?? new Date().toISOString(), last_observed_at: new Date().toISOString(), terms: item.terms };
     const selectedDetails = detailCandidates
       .slice(0, maxDetails);
@@ -189,13 +194,15 @@ export async function runMercadoLivreBatch({
       const item = selectedDetails[index];
       if (index > 0) await sleep(randomBetween(detailDelayMinMs, detailDelayMaxMs));
       try {
-        const details = await collectProductDetails(page, item.url, { scoped: kind === 'notebook' });
+        const details = await collectProductDetails(page, item.url, { scoped: checkedProduct });
         detailReads++;
         Object.assign(item, details, { listing_title: item.title, details_checked_at: new Date().toISOString(), detail_listing_title: item.title });
-        if (kind === 'notebook') {
+        if (checkedProduct) {
           if (details.detail_price_brl == null) item.price_error = 'Preço integral do detalhe não localizado';
           else if (Math.abs(details.detail_price_brl - item.price_brl) > 1) item.price_error = 'Preço da listagem diverge do detalhe';
-          item.notebook_validation = assessNotebook(item); delete detailQueue[item.id];
+          if(kind==='notebook')item.notebook_validation = assessNotebook(item);
+          else item.oled_validation=assessOledMonitor(item);
+          delete detailQueue[item.id];
         }
         console.log(`  Ficha ${index + 1}/${detailCandidates.length}: ${item.title.slice(0, 65)}`);
       } catch (error) {
@@ -208,7 +215,7 @@ export async function runMercadoLivreBatch({
         }
       }
     }
-    if (kind === 'notebook') {
+    if (checkedProduct) {
       for (const item of deduped) {
         if (!item.details_checked_at && !detailQueue[item.id]) Object.assign(item, {
           specs: previousById.get(item.id)?.specs, description: previousById.get(item.id)?.description,
@@ -216,8 +223,9 @@ export async function runMercadoLivreBatch({
           detail_listing_title: previousById.get(item.id)?.detail_listing_title,
           identity_error: previousById.get(item.id)?.identity_error, price_error: previousById.get(item.id)?.price_error,
         });
-        item.notebook_validation = assessNotebook(item);
-        if (detailQueue[item.id]) item.notebook_validation = { ...item.notebook_validation, state: 'pending', reasons: [...item.notebook_validation.reasons, 'Ficha atualizada pendente'] };
+        const field=kind==='oled'?'oled_validation':'notebook_validation';
+        item[field] = kind==='oled'?assessOledMonitor(item):assessNotebook(item);
+        if (detailQueue[item.id]) item[field] = { ...item[field], state: 'pending', reasons: [...item[field].reasons, 'Ficha atualizada pendente'] };
       }
       pendingDetails = Object.keys(detailQueue).length;
       await writeJsonAtomic(queuePath, detailQueue, { validate: null });
@@ -230,7 +238,8 @@ export async function runMercadoLivreBatch({
   // Reapply category rules after reading the detail title, and to carried items.
   const isInScope = item => !excludeTerms.some(term => normalizeText(item.title).includes(normalizeText(term)))
     && (!itemFilter || itemFilter(item));
-  consolidated = consolidated.filter(isInScope);
+  // Keep OLED rejections with their current evidence for the negative cache.
+  consolidated = kind==='oled'?consolidated:consolidated.filter(isInScope);
   const coverageFailures = [...failedTerms, ...[...new Set(limitedTerms)].map(term => ({ term, error: 'Limite de resultados atingido; cobertura incompleta' }))];
   const completedTerms = successfulTerms.filter(term => !limitedTerms.includes(term));
   const completedAt = new Date();
@@ -254,6 +263,7 @@ export async function runMercadoLivreBatch({
       completed_at: completedAt.toISOString(),
       partial: failedTerms.length > 0 || aborted || limitedTerms.length > 0 || pendingDetails > 0,
       limited_terms: [...new Set(limitedTerms)], pending_details: pendingDetails, detail_reads: detailReads,
+      ...(kind==='oled'?{oled_policy_version:OLED_POLICY_VERSION,query_yield:queryYield}:{}),
       pending_detail_terms: [...new Set(Object.values(detailQueue).flatMap(entry => entry.terms ?? []))],
       aborted,
       blocked_error: blockedError,
@@ -267,6 +277,16 @@ export async function runMercadoLivreBatch({
     ...item, status: 'out_of_scope', out_of_scope_at: item.out_of_scope_at ?? completedAt.toISOString(),
     scope_rejection_reason: 'Produto fora dos critérios da busca após conferir o título do detalhe',
   });
+  if(kind==='oled'){
+    snapshot.items=snapshot.items.map(classifySavedOledItem);
+    snapshot.pending_items=snapshot.items.filter(i=>i.status==='active'&&i.oled_validation.state==='pending');
+    for(const [term,metrics] of Object.entries(queryYield)){
+      const hits=snapshot.items.filter(i=>i.status==='active'&&i.terms?.includes(term));
+      metrics.approved=hits.filter(isApprovedOledMonitor).length;
+      metrics.pending=hits.filter(i=>i.oled_validation?.state==='pending').length;
+      metrics.exclusive=hits.filter(i=>isApprovedOledMonitor(i)&&i.terms.length===1).length;
+    }
+  }
   const changes = buildMercadoLivreChanges(previous, snapshot, { displayMinPrice, displayMaxPrice, kind });
   const runId = completedAt.toISOString().replace(/[:.]/g, "-");
   const committed = await commitMonitorRun(dataDir, {
@@ -338,11 +358,11 @@ export function mergeMercadoLivreBatch({
 }
 
 export function buildMercadoLivreChanges(previous, current, { displayMinPrice, displayMaxPrice, kind = current.run?.kind ?? (current.run?.id === 'notebooks' ? 'notebook' : 'product') }) {
-  const visible = (item) => (kind !== "notebook" || isEligibleNotebook(item)) && item.status === "active"
+  const visible = (item) => (kind !== "notebook" || isEligibleNotebook(item)) && (kind!=='oled'||isApprovedOledMonitor(item)) && item.status === "active"
     && Number(item.price_brl) >= displayMinPrice
     && Number(item.price_brl) <= displayMaxPrice;
-  const eligiblePrevious = kind === 'notebook' && previous
-    ? { ...previous, items: (previous.items ?? []).filter(isEligibleNotebook) } : previous;
+  const eligiblePrevious = ['notebook','oled'].includes(kind) && previous
+    ? { ...previous, items: (previous.items ?? []).filter(kind==='oled'?isApprovedOledMonitor:isEligibleNotebook) } : previous;
   const { newItems, priceChanges } = buildMonitorChanges(eligiblePrevious, current, {
     include: visible,
     reactivationIsNew: false,
@@ -423,6 +443,9 @@ async function detectProductPageState(page) {
 
 export function needsMercadoLivreDetail(item, old, kind, relevantDetails) {
   if (!old?.details_checked_at) return true;
+  if(kind==='oled')return old.oled_validation?.version!==OLED_POLICY_VERSION
+    || !Number.isFinite(Date.parse(old.details_checked_at)) || Date.now()-Date.parse(old.details_checked_at)>=OLED_DETAIL_TTL_MS
+    || (old.detail_listing_title??old.title)!==item.title || Number(old.price_brl)!==Number(item.price_brl);
   if (kind === "notebook") {
     if (old.notebook_validation?.version !== NOTEBOOK_POLICY_VERSION || Date.now() - Date.parse(old.details_checked_at) > 24 * 3600_000
         || (old.detail_listing_title ?? old.title) !== item.title) return true;
@@ -449,6 +472,8 @@ export function renderMercadoLivreReport(snapshot, changes) {
     `Termos com falha: **${run.failed_terms.length}**`,
     ...(run.kind === "notebook" ? [`RAM mínima instalada: **${NOTEBOOK_MIN_RAM_GB} GB**`] : []),
     ...(run.kind === 'notebook' ? [`Fichas lidas: **${run.detail_reads ?? 0}**; aguardando ficha: **${run.pending_details ?? 0}**; termos limitados: **${run.limited_terms?.length ?? 0}**`] : []),
+    ...(run.kind === 'oled' ? [`Fichas lidas: **${run.detail_reads??0}**; pendentes: **${run.pending_details??0}**; termos limitados: **${run.limited_terms?.length??0}**`,
+      'Aprovação automática não comprova estado físico ou ausência de burn-in.'] : []),
     ...(run.policy_reclassification ? [`Reclassificação de dados salvos; sem nova coleta. Coleta original: ${run.completed_at}.`] : []),
     `Novos produtos: **${changes.newItems.length}**`,
     `Alteracoes de preco: **${changes.priceChanges.length}**`,
@@ -466,6 +491,8 @@ export function renderMercadoLivreReport(snapshot, changes) {
   if (run.failed_terms.length) {
     lines.push("", "## Falhas parciais", ...run.failed_terms.map((item) => `- ${item.term}: ${item.error}`));
   }
+  if(run.kind==='oled')lines.push('', '## Candidatos pendentes de conferência',...(snapshot.pending_items??[]).map(item=>
+    `- R$ ${formatNumber(item.price_brl)} - ${item.title} - ${item.url} — Pendente: ${item.oled_validation.reasons.join('; ')}`));
   return `${lines.join("\n")}\n`;
 }
 

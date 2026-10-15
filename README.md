@@ -87,7 +87,9 @@ Big John e Denime foram excluídas das coletas em 15/10/2026 a pedido do usuári
 | **Google Pixel Watch 4** | OLX + Enjoei | Wi‑Fi até R$ 2.000 · LTE até R$ 2.500 | Somente 45 mm |
 | **Google Pixel Watch 5** | OLX + Enjoei | Wi‑Fi até R$ 2.400 · LTE até R$ 3.000 | Somente 45 mm |
 | **Oura Ring 5** | OLX + Enjoei | R$ 1.800–2.700 | Tamanhos 9–11 |
-| **Monitores OLED** | OLX + Enjoei | R$ 1.500–3.000 | Entrega local e filtro de categoria |
+| **Monitores OLED** | OLX + Enjoei; ML sob demanda | R$ 1.500–3.000 | Modelo e descrição conferidos, cache de 24h, descoberta e rodízio |
+
+Agenda, filtros, limites e critérios de aprovação: [política de monitores OLED](docs/oled-monitor-search-policy.md).
 
 **OLX: 2 categorias customizadas para Melanger**
 - `https://www.olx.com.br/eletro/eletroportateis-para-cozinha-e-limpeza?q=melanger`

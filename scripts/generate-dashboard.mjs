@@ -1,4 +1,4 @@
-import { isCompleteOledMonitor } from './lib/oled-monitor-scope.mjs';
+import { isCompleteOledMonitor, isApprovedOledMonitor, assessOledMonitor } from './lib/oled-monitor-scope.mjs';
 import { isConfirmedBarefootShoe, barefootPriority, classifyBarefootShoe } from './lib/shoe-search-rules.mjs';
 import { ENJOEI_JAPANESE_JEANS } from './lib/enjoei-japanese-jeans.mjs';
 import { meetsNotebookRamMinimum, isEligibleNotebook, notebookCpuTerms, hasExplicitOtherNotebookCpu } from './lib/notebook-policy.mjs';
@@ -122,7 +122,7 @@ async function main() {
     gather(PIXEL_WATCH4_DIR, "report-", null),
     gather(PIXEL_WATCH5_DIR, "report-", null),
     gather(OURA_DIR, "report-", null),
-    gather(OLED_MONITORES_DIR, "report-", null),
+    gather(OLED_MONITORES_DIR, "report-", null, await latestSnapshotDetails(OLED_MONITORES_DIR)),
   ]);
   const [olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, onePlusBudsUpdated, pixelWatch4Updated, pixelWatch5Updated, ouraUpdated, oledMonitoresUpdated] = await Promise.all([
     latestRunLabel(OLX_DIR),
@@ -170,7 +170,7 @@ async function buildPriceInsights(descriptors) {
     for (const item of snapshot?.items ?? []) {
       if (dir === ENJOEI_DIR && !isConfirmedBarefootShoe(item)) continue;
       if (['OLX', 'Enjoei Notebooks', 'Mercado Livre Notebooks'].includes(source) && !isEligibleNotebook(item)) continue;
-      if ([OLED_MONITORES_DIR, path.join(ROOT, 'data', 'mercadolivre-oled-monitores')].includes(dir) && !isCompleteOledMonitor(item)) continue;
+      if ([OLED_MONITORES_DIR, path.join(ROOT, 'data', 'mercadolivre-oled-monitores')].includes(dir) && !isApprovedOledMonitor(item)) continue;
       if (source === 'OLX' && !isValidatedOlxItem(item)) continue;
       if (item.status !== "active" || !item.url || !Number.isFinite(Number(item.price_brl))) continue;
       const observations = [...(item.price_history ?? [])]
@@ -264,7 +264,11 @@ async function gather(dir, prefix, excludePrefix, detailsByUrl = new Map()) {
       p.pendingCount = p.allPendingItems.length;
     }
     if ([OLED_MONITORES_DIR, path.join(ROOT, 'data', 'mercadolivre-oled-monitores')].includes(dir)) {
-      for (const field of ['allNewItems', 'allPriceItems', 'allPendingItems']) p[field] = p[field].filter(item => isCompleteOledMonitor(detailsByUrl.get(item.url) ?? { title: item.fullTitle }));
+      for (const field of ['allNewItems', 'allPriceItems']) p[field] = p[field].filter(item => isApprovedOledMonitor(detailsByUrl.get(item.url)));
+      p.allPendingItems=p.allPendingItems.filter(parsed=>{
+        const item=detailsByUrl.get(parsed.url);
+        return item&&item.status!=='out_of_scope'&&assessOledMonitor(item).state==='pending';
+      });
       p.newItems = p.allNewItems.slice(0, MAX);
       p.priceItems = p.allPriceItems.slice(0, MAX);
       p.pendingItems = p.allPendingItems.slice(0, MAX);
@@ -494,7 +498,7 @@ async function currentMercadoLivreSnapshotReport(dir, displayMax = Infinity) {
   const items = (snapshot.items ?? [])
     .filter((item) => item.status === "active" && Number(item.price_brl) <= displayMax
       && (dir !== MERCADOLIVRE_NOTEBOOKS_DIR || isEligibleNotebook(item))
-      && (dir !== path.join(ROOT, "data", "mercadolivre-oled-monitores") || isCompleteOledMonitor(item)))
+      && (dir !== path.join(ROOT, "data", "mercadolivre-oled-monitores") || isApprovedOledMonitor(item)))
     .slice(0, MAX)
     .map((item) => ({
       title: item.title,

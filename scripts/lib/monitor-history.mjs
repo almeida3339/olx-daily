@@ -20,7 +20,8 @@ export async function readMonitorHistory(dataDir) {
     const value = await readJsonValidated(path.join(dataDir, "run-history.json"));
     history = Array.isArray(value?.runs) ? value.runs : [];
   } catch {}
-  const recovered = (await listCommittedRuns(dataDir, { limit: MAX_HISTORY })).map(historyFromArtifact);
+  const recovered = (await listCommittedRuns(dataDir, { limit: MAX_HISTORY }))
+    .filter(artifact=>!artifact.manifest.metadata?.policy_reclassification).map(historyFromArtifact);
   const byId = new Map([...history, ...recovered].map((run) => [run.run_id, run]));
   return [...byId.values()].sort(newestFirst).slice(0, MAX_HISTORY);
 }

@@ -1,4 +1,5 @@
 import { filterNotebookReportRam } from './lib/notebook-policy.mjs';
+import { filterOledReport } from './lib/oled-monitor-scope.mjs';
 import { filterBarefootReport } from './lib/shoe-search-rules.mjs';
 import { ENJOEI_JAPANESE_JEANS } from './lib/enjoei-japanese-jeans.mjs';
 import fs from "node:fs/promises";
@@ -631,6 +632,10 @@ async function readLatestReport(dir, minTime = null) {
 }
 
 async function applyNotebookRamPreference(dir, report) {
+  if([OLED_MONITORES_DIR,localDir('mercadolivre-oled-monitores')].includes(dir)) {
+    const {snapshot}=await readLatestValidSnapshot(dir);
+    return filterOledReport(report,new Map([...(snapshot?.items??[]),...(snapshot?.pending_items??[])].map(item=>[item.url,item])));
+  }
   if (dir === ENJOEI_DIR) {
     const { snapshot } = await readLatestValidSnapshot(dir);
     const details = new Map([...(snapshot?.items ?? []), ...(snapshot?.pending_items ?? [])].map(item => [item.url, item]));

@@ -1,6 +1,7 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { runMercadoLivreBatch } from "./lib/mercadolivre-production.mjs";
+import { normalizeOledSearchTerm } from './lib/oled-monitor-scope.mjs';
 import {
   matchesMercadoLivreWatchlist,
   mercadoLivreWatchlistTermMatcher,
@@ -47,13 +48,13 @@ if (process.argv.includes("--clear-cooldown")) {
 let remaining = selectedTerm ? Number.POSITIVE_INFINITY : Math.max(1, budget);
 for (const watchlist of watchlists) {
   const configuredTerms = selectedTerm
-    ? watchlist.terms.filter((term) => term.toLowerCase() === selectedTerm.toLowerCase())
+    ? watchlist.terms.filter((term) => term.toLowerCase() === (watchlist.kind==='oled'?normalizeOledSearchTerm(selectedTerm):selectedTerm.toLowerCase()))
     : watchlist.terms;
   if (selectedTerm && configuredTerms.length === 0) throw new Error(`Termo desconhecido para ${watchlist.id}: ${selectedTerm}`);
   const plan = planMercadoLivreTerms(schedule, {
     watchlistId: watchlist.id,
     terms: configuredTerms,
-    maxTerms: fullSweep ? configuredTerms.length : Math.min(remaining, configuredTerms.length),
+    maxTerms: fullSweep ? configuredTerms.length : Math.min(remaining, configuredTerms.length, watchlist.kind==='oled'?6:Infinity),
     force: force || Boolean(selectedTerm),
   });
   if (!plan.terms.length) {
@@ -81,6 +82,7 @@ for (const watchlist of watchlists) {
     itemFilter: (item) => matchesMercadoLivreWatchlist(item, watchlist),
     termMatcher: mercadoLivreWatchlistTermMatcher(watchlist) ?? undefined,
     relevantDetails: watchlist.relevantDetails,
+    kind: watchlist.kind ?? 'product',
   });
   schedule = recordMercadoLivreRun(schedule, {
     watchlistId: watchlist.id,

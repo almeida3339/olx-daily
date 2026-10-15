@@ -7,6 +7,7 @@ import { mergeCoverageStatus } from "./monitor-coverage.mjs";
 import { watchlistHealthDefinitions } from "./watchlists-registry.mjs";
 import { DEFAULT_CPU_TERMS } from './cpu-terms.mjs';
 import { notebookQueryMaxAgeHours } from './notebook-search-plan.mjs';
+import { oledQuerySpecs, oledMlIntervalHours } from './oled-search-plan.mjs';
 
 const monitorHealthSourceDefinitions = watchlistHealthDefinitions();
 
@@ -16,7 +17,8 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
   const sources = [];
   const mlSchedule = await readJsonValidated(path.join(root, 'data', 'status', 'mercadolivre-schedule.json')).catch(() => null);
   const mlBlocked = mlSchedule?.global?.requires_login || Date.parse(mlSchedule?.global?.blocked_until ?? '') > now.getTime();
-  for (const [id, label, maxAgeMs] of monitorHealthSources) {
+  for (const [id, label, configuredMaxAgeMs] of monitorHealthSources) {
+    const maxAgeMs=id==='mercadolivre-oled-monitores'?168*3600_000:configuredMaxAgeMs;
     const dataDir = path.join(root, "data", id);
     const result = await readLatestValidSnapshot(dataDir);
     const snapshot = result.snapshot;
@@ -29,9 +31,16 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
     const configuredRaw = snapshot?.run?.configured_coverage ?? snapshot?.run?.configured_terms ?? [];
     const configured = ['olx','enjoei-notebooks','mercadolivre-notebooks'].includes(id)
       ? configuredRaw.filter(key => key.startsWith('family:') || DEFAULT_CPU_TERMS.includes(key)) : configuredRaw;
+    const ageByKey={};
+    if(['oled-monitores','mercadolivre-oled-monitores'].includes(id))for(const key of configured){
+      const source=id.startsWith('mercadolivre-')?'ML':key.split(':')[0];
+      const term=source==='ML'?key:key.slice(key.indexOf(':')+1);
+      const spec=oledQuerySpecs(source).find(s=>s.id===term);
+      if(spec)ageByKey[key]=(source==='ML'?oledMlIntervalHours(term,mlSchedule?.watchlists?.['oled-monitores']?.terms?.[term],now.getTime()):spec.max_age_hours)*3600_000;
+    }
     const marketplaces = id === 'enjoei' && snapshot?.run?.search_schedule
       ? shoeScheduleHealth(snapshot.run.search_schedule, now)
-      : coverageHealth(configured, coverage, { now, maxAgeMs, id, sourceBlocks: snapshot?.source_blocks ?? {} });
+      : coverageHealth(configured, coverage, { now, maxAgeMs, id, sourceBlocks: snapshot?.source_blocks ?? {},ageByKey });
     const timestamp = snapshotTimestamp(snapshot, result.file);
     const ageMs = timestamp == null ? null : Math.max(0, now.getTime() - timestamp);
     const errors = asArray(snapshot?.run?.errors ?? snapshot?.run?.failed_terms);
@@ -112,12 +121,12 @@ function shoeScheduleHealth(schedule, now) {
   });
 }
 
-function coverageHealth(configured, coverage, { now, maxAgeMs, id, sourceBlocks }) {
+function coverageHealth(configured, coverage, { now, maxAgeMs, id, sourceBlocks,ageByKey={} }) {
   const groups = new Map();
   for (const key of configured) {
     const label = key.startsWith('family:') ? 'OLX modelos' : key.includes(':') ? key.split(':')[0] : id.startsWith('mercadolivre-') ? 'ML' : id === 'olx' ? 'OLX' : 'Enjoei';
     const terms = groups.get(label) ?? [];
-    terms.push({ ...(coverage[key] ?? {}), max_age_ms: ['olx','enjoei-notebooks','mercadolivre-notebooks'].includes(id) ? notebookQueryMaxAgeHours(key, id) * 3600_000 : maxAgeMs });
+    terms.push({ ...(coverage[key] ?? {}), max_age_ms: ageByKey[key]??(['olx','enjoei-notebooks','mercadolivre-notebooks'].includes(id) ? notebookQueryMaxAgeHours(key, id) * 3600_000 : maxAgeMs) });
     groups.set(label, terms);
   }
   return [...groups].map(([label, terms]) => {
@@ -129,6 +138,7 @@ function coverageHealth(configured, coverage, { now, maxAgeMs, id, sourceBlocks 
     });
     const blocked = Date.parse(sourceBlocks[label]?.blocked_until ?? '') > now.getTime();
     return { label, state: blocked ? 'blocked' : worstState(states), total_terms: terms.length, fresh_terms: states.filter((state) => state === 'healthy').length,
+      warming_terms:terms.filter(term=>!term.checked_at).length,
       updated_at: terms.map((term) => term.checked_at).filter(Boolean).sort().at(-1) ?? null };
   });
 }

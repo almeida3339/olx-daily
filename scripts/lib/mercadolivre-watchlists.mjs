@@ -1,4 +1,4 @@
-import { isCompleteOledMonitor } from './oled-monitor-scope.mjs';
+import { isCompleteOledMonitor, OLED_SEARCH_TERMS, OLED_PRICE } from './oled-monitor-scope.mjs';
 import { normalizeMonitorText } from "./monitor-core.mjs";
 import { textMatchesAnyTermVariant } from "./mercadolivre-monitor.mjs";
 import {
@@ -132,18 +132,12 @@ export const mercadoLivreWatchlists = [
     id: "oled-monitores",
     itemFilter: isCompleteOledMonitor,
     label: "Monitores OLED",
-    terms: [
-      "aw2726dm", "aw2725d", "aw2725df", "aw3225qf", "aw3423dw", "aw3423dwf", "aw3425dw",
-      "odyssey g6 oled", "ls32dg800", "odyssey g9 oled",
-      "cepheus p1",
-      "mag 271qp", "mag 274qp", "mpg 491cqp",
-      "27gx790a", "27gx704a",
-      "xg27acdng",
-    ],
-    minPrice: 1500,
-    maxPrice: 3000,
+    terms: OLED_SEARCH_TERMS,
+    kind: 'oled',
+    minPrice: OLED_PRICE.min,
+    maxPrice: OLED_PRICE.max,
     relevantDetails: ["modelo", "tamanho", "taxa de atualizacao", "resolucao", "condicao"],
-    searchOptions: { localShipping: true },
+    searchOptions: { localShipping: true, categoryPath:'informatica/monitores-acessorios/monitores' },
   },
   {
     id: "tenis-42",
@@ -178,6 +172,7 @@ export function matchesMercadoLivreWatchlist(item, watchlist) {
 }
 
 export function mercadoLivreWatchlistTermMatcher(watchlist) {
+  if (watchlist.kind === 'oled') return title => isCompleteOledMonitor({title});
   if (!watchlist.matchVariants?.length) return null;
   return (text) => textMatchesAnyTermVariant(text, watchlist.matchVariants);
 }

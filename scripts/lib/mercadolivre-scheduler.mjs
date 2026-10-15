@@ -1,4 +1,6 @@
 import path from "node:path";
+import { OLED_PRIORITY_TERMS, oledMlIntervalHours } from './oled-search-plan.mjs';
+import { isApprovedOledMonitor } from './oled-monitor-scope.mjs';
 import { classifyMonitorError } from "./monitor-errors.mjs";
 import { readJsonValidated, writeJsonAtomic } from "./monitor-runtime.mjs";
 
@@ -41,15 +43,17 @@ export function planMercadoLivreTerms(schedule, { watchlistId, terms, now = new 
   const normalizedTerms = terms.map(normalizeTermTask);
   const due = normalizedTerms
     .map((task, index) => ({ task, index, state: state.terms[task.matchTerm] ?? {} }))
-    .filter(({ state: termState }) => force || isTermDue(termState, time));
+    .filter(({ state: termState,task }) => force || isTermDue(termState, time,watchlistId==='oled-monitores'?oledMlIntervalHours(task.matchTerm,termState,time):null));
   // Missing and oldest successful terms take precedence over recent terms.
   // This lets bounded batches complete coverage rather than repeat a subset.
-  const rotated = due.sort((left, right) => (Date.parse(left.state.last_success_at ?? '') || 0) - (Date.parse(right.state.last_success_at ?? '') || 0));
+  const priority=term=>watchlistId==='oled-monitores'&&!['monitor oled',...OLED_PRIORITY_TERMS].includes(term)?1:0;
+  const rotated = due.sort((left, right) => priority(left.task.matchTerm)-priority(right.task.matchTerm)
+    || (Date.parse(left.state.last_success_at ?? '') || 0) - (Date.parse(right.state.last_success_at ?? '') || 0));
   const limit = Number.isFinite(Number(maxTerms)) ? Math.max(1, Math.floor(Number(maxTerms))) : 6;
   const selected = rotated.slice(0, limit);
   const nextAt = due.length > selected.length
     ? now.toISOString()
-    : earliestNextAt(normalizedTerms, state, time);
+    : earliestNextAt(normalizedTerms, state, time,watchlistId);
   return {
     terms: selected.map(({ task }) => task.original),
     reason: selected.length ? null : "not_due",
@@ -82,6 +86,7 @@ export function recordMercadoLivreRun(schedule, {
   const itemsByTerm = new Map();
   for (const item of snapshot?.items ?? []) {
     if (item.status !== "active") continue;
+    if(watchlistId==='oled-monitores'&&!isApprovedOledMonitor(item))continue;
     for (const term of item.terms ?? (item.term ? [item.term] : [])) {
       itemsByTerm.set(term, (itemsByTerm.get(term) ?? 0) + 1);
     }
@@ -101,6 +106,7 @@ export function recordMercadoLivreRun(schedule, {
         last_checked_at: now.toISOString(),
         last_success_at: now.toISOString(),
         last_result_count: accepted,
+        ...(watchlistId==='oled-monitores'&&accepted>0?{last_valid_change_at:now.toISOString()}:{}),
         last_change_at: accepted > 0 ? now.toISOString() : current.last_change_at ?? null,
         empty_runs: accepted === 0 ? Number(current.empty_runs ?? 0) + 1 : 0,
         failures: 0,
@@ -167,21 +173,21 @@ export function clearMercadoLivreCooldown(schedule) {
   return next;
 }
 
-function isTermDue(state, now) {
+function isTermDue(state, now,intervalHours=null) {
   if (state.pending_details) return true;
   if (!state.last_success_at) return true;
   const age = now - Date.parse(state.last_success_at);
   const recentChange = state.last_change_at && now - Date.parse(state.last_change_at) < 7 * DAY;
-  const interval = recentChange ? DAY : Number(state.empty_runs ?? 0) >= 3 ? 7 * DAY : 3 * DAY;
+  const interval = intervalHours!=null?intervalHours*HOUR:recentChange ? DAY : Number(state.empty_runs ?? 0) >= 3 ? 7 * DAY : 3 * DAY;
   return !Number.isFinite(age) || age >= interval;
 }
 
-function earliestNextAt(terms, state, now) {
+function earliestNextAt(terms, state, now,watchlistId=null) {
   const values = terms.map((task) => {
     const term = state.terms[task.matchTerm] ?? {};
     if (!term.last_success_at) return now;
     const changed = term.last_change_at && now - Date.parse(term.last_change_at) < 7 * DAY;
-    const interval = changed ? DAY : Number(term.empty_runs ?? 0) >= 3 ? 7 * DAY : 3 * DAY;
+    const interval = watchlistId==='oled-monitores'?oledMlIntervalHours(task.matchTerm,term,now)*HOUR:changed ? DAY : Number(term.empty_runs ?? 0) >= 3 ? 7 * DAY : 3 * DAY;
     return Date.parse(term.last_success_at) + interval;
   }).filter(Number.isFinite);
   return values.length ? new Date(Math.min(...values)).toISOString() : null;
