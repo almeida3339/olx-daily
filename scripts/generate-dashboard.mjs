@@ -1,5 +1,6 @@
 import { isCompleteOledMonitor } from './lib/oled-monitor-scope.mjs';
 import { isConfirmedBarefootShoe } from './lib/shoe-search-rules.mjs';
+import { ENJOEI_JAPANESE_JEANS } from './lib/enjoei-japanese-jeans.mjs';
 import { meetsNotebookRamMinimum } from './lib/notebook-policy.mjs';
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -60,6 +61,11 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
 export { parseReport, formatRunLabelFromFile, summarizeMachine, buildLocalTriggerCommands };
 
 async function main() {
+  const japaneseJeans = await Promise.all(ENJOEI_JAPANESE_JEANS.map(async spec => {
+    const dir = resolveWatchlistDataDir(ROOT, spec.id);
+    return { chip: `Enjoei ${spec.brandName}`, title: spec.label, sub: 'jeans masculino · tamanho 40 · até R$ 350',
+      data: await gather(dir, 'report-', null), dpath: `data/${spec.repoFolder}`, upd: await latestRunLabel(dir) };
+  }));
   const zegna = await gather(ENJOEI_ZEGNA_DIR, "report-", null);
   const zegnaUpdated = await latestRunLabel(ENJOEI_ZEGNA_DIR);
   const ricardoAlmeida = await gather(ENJOEI_RICARDO_ALMEIDA_DIR, "report-", null);
@@ -76,6 +82,7 @@ async function main() {
     ["Enjoei Jeans Ricardo Almeida 40", ENJOEI_RICARDO_ALMEIDA_DIR],
     ["Enjoei Jeans Jacob Cohën 40", ENJOEI_JACOB_COHEN_DIR],
     ["Enjoei Jeans Brunello Cucinelli 40", ENJOEI_BRUNELLO_CUCINELLI_DIR],
+    ...ENJOEI_JAPANESE_JEANS.map(spec => [spec.label, resolveWatchlistDataDir(ROOT, spec.id)]),
     ...MERCADOLIVRE_WATCHLISTS.map(([chip, , , folder]) => [`Mercado Livre ${chip}`, path.join(ROOT, "data", folder)]),
   ]);
   const olxDetails = await latestSnapshotDetails(OLX_DIR);
@@ -135,7 +142,7 @@ async function main() {
   ]);
   await writeTextAtomic(
     OUTPUT,
-    buildHtml({ health, priceInsights, zegna, zegnaUpdated, ricardoAlmeida, ricardoAlmeidaUpdated, jacobCohen, jacobCohenUpdated, brunelloCucinelli, brunelloCucinelliUpdated, olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, onePlusBuds, pixelWatch4, pixelWatch5, oura, oledMonitores, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, onePlusBudsUpdated, pixelWatch4Updated, pixelWatch5Updated, ouraUpdated, oledMonitoresUpdated }).replace(/[ \t]+$/gm, ""),
+    buildHtml({ health, priceInsights, japaneseJeans, zegna, zegnaUpdated, ricardoAlmeida, ricardoAlmeidaUpdated, jacobCohen, jacobCohenUpdated, brunelloCucinelli, brunelloCucinelliUpdated, olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, onePlusBuds, pixelWatch4, pixelWatch5, oura, oledMonitores, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, onePlusBudsUpdated, pixelWatch4Updated, pixelWatch5Updated, ouraUpdated, oledMonitoresUpdated }).replace(/[ \t]+$/gm, ""),
   );
   console.log(`Dashboard gerado: ${OUTPUT}`);
 }
@@ -562,12 +569,13 @@ export function groupPendingNotifications(items = []) {
   );
 }
 
-function buildHtml({ health, priceInsights, zegna, zegnaUpdated, ricardoAlmeida, ricardoAlmeidaUpdated, jacobCohen, jacobCohenUpdated, brunelloCucinelli, brunelloCucinelliUpdated, olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, onePlusBuds, pixelWatch4, pixelWatch5, oura, oledMonitores, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, onePlusBudsUpdated, pixelWatch4Updated, pixelWatch5Updated, ouraUpdated, oledMonitoresUpdated }) {
+function buildHtml({ health, priceInsights, japaneseJeans, zegna, zegnaUpdated, ricardoAlmeida, ricardoAlmeidaUpdated, jacobCohen, jacobCohenUpdated, brunelloCucinelli, brunelloCucinelliUpdated, olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, onePlusBuds, pixelWatch4, pixelWatch5, oura, oledMonitores, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, onePlusBudsUpdated, pixelWatch4Updated, pixelWatch5Updated, ouraUpdated, oledMonitoresUpdated }) {
   // Ordenação em dois níveis: primeiro as fontes COM achados recentes (cards com
   // conteúdo), depois as vazias ("Nenhum run com novidades") — sempre no fundo,
   // mesmo que tenham rodado há pouco. Dentro de cada grupo, mais recente primeiro.
   // Tanto os chips quanto os cards seguem esta ordem.
   const sources = [
+    ...japaneseJeans,
     { chip: "Mercado Livre", title: "Mercado Livre Notebooks", sub: "R$ 2.000 - R$ 8.000 · RAM ≥ 32 GB", data: mercadoLivre.reports, dpath: "data/mercadolivre-notebooks", upd: mercadoLivre.updated },
     ...mercadoLivreWatchlists.map((source) => ({
       chip: source.chip,

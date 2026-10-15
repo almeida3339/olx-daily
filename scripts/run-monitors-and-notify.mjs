@@ -1,5 +1,6 @@
 import { filterNotebookReportRam } from './lib/notebook-policy.mjs';
 import { filterBarefootReport } from './lib/shoe-search-rules.mjs';
+import { ENJOEI_JAPANESE_JEANS } from './lib/enjoei-japanese-jeans.mjs';
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -172,6 +173,7 @@ export async function main({
       jobs.push(["enjoei-ricardo-almeida", () => runScript("monitor-enjoei-ricardo-almeida.mjs", []), false]);
       jobs.push(["enjoei-jacob-cohen", () => runScript("monitor-enjoei-jacob-cohen.mjs", []), false]);
       jobs.push(["enjoei-brunello-cucinelli", () => runScript("monitor-enjoei-brunello-cucinelli.mjs", []), false]);
+      jobs.push(["enjoei-japanese-jeans", () => runScript("monitor-enjoei-japanese-jeans.mjs", []), false]);
     }
     // Dockstations combina OLX (Playwright) + Enjoei (API) num único script e
     // trata falhas de cada fonte internamente, então roda independente dos flags
@@ -209,6 +211,7 @@ export async function main({
       if (name === "enjoei-ricardo-almeida") { console.error(`Enjoei Ricardo Almeida falhou: ${monitorError}`); errors.push(`Enjoei Ricardo Almeida: ${monitorError}`); }
       if (name === "enjoei-jacob-cohen") errors.push(`Enjoei Jacob Cohën: ${monitorError}`);
       if (name === "enjoei-brunello-cucinelli") errors.push(`Enjoei Brunello Cucinelli: ${monitorError}`);
+      if (name === "enjoei-japanese-jeans") errors.push(`Enjoei Jeans japoneses: ${monitorError}`);
       if (name === "dockstations") { console.error(`Dockstations falhou: ${monitorError}`); errors.push(`Dockstations: ${monitorError}`); }
       if (name === "fitbit") { console.error(`Fitbit falhou: ${monitorError}`); errors.push(`Fitbit: ${monitorError}`); }
       if (name === "lifefactory") { console.error(`Lifefactory falhou: ${monitorError}`); errors.push(`Lifefactory: ${monitorError}`); }
@@ -237,6 +240,10 @@ export async function main({
   const ricardoAlmeidaReport = enjoeiOn ? await readLatestReport(ENJOEI_RICARDO_ALMEIDA_DIR, reportMinTime).catch(() => null) : null;
   const jacobCohenReport = enjoeiOn ? await readLatestReport(ENJOEI_JACOB_COHEN_DIR, reportMinTime).catch(() => null) : null;
   const brunelloCucinelliReport = enjoeiOn ? await readLatestReport(ENJOEI_BRUNELLO_CUCINELLI_DIR, reportMinTime).catch(() => null) : null;
+  const japaneseJeansReports = enjoeiOn ? await Promise.all(ENJOEI_JAPANESE_JEANS.map(async spec => ({
+    label: spec.label, report: await readLatestReport(localDir(spec.id), reportMinTime).catch(() => null),
+    newRe: /Novos produtos:\s*\*\*(\d+)\*\*/, newSec: "## Novos produtos", priceSec: "## Mudanças de preço",
+  }))) : [];
   const [olxStd, enjoeiReport, enjoeiNbStd, dockReport, fitbitReport, lifefactoryReport, telaBook3Report, melangerReport, buds4ProReport, onePlusBudsReport, pixelWatch4Report, pixelWatch5Report, ouraReport, oledMonitoresReport] = await Promise.all([
     skipOlx || onlyMercadoLivre ? null : readLatestReport(OLX_DIR, reportMinTime).catch(() => null),
     enjoeiOn         ? readLatestReport(ENJOEI_DIR, reportMinTime).catch(() => null) : null,
@@ -272,6 +279,7 @@ export async function main({
     { label: getWatchlist("enjoei-ricardo-almeida").label, report: ricardoAlmeidaReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/, newSec: "## Novos produtos", priceSec: "## Mudanças de preço" },
     { label: getWatchlist("enjoei-jacob-cohen").label, report: jacobCohenReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/, newSec: "## Novos produtos", priceSec: "## Mudanças de preço" },
     { label: getWatchlist("enjoei-brunello-cucinelli").label, report: brunelloCucinelliReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/, newSec: "## Novos produtos", priceSec: "## Mudanças de preço" },
+    ...japaneseJeansReports,
     { label: getWatchlist("dockstations").label, report: dockReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/, newSec: "## Novos produtos", priceSec: "## Mudanças de preço" },
     { label: getWatchlist("fitbit").label, report: fitbitReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/, newSec: "## Novos produtos", priceSec: "## Mudanças de preço" },
     { label: getWatchlist("lifefactory").label, report: lifefactoryReport, newRe: /Novos produtos:\s*\*\*(\d+)\*\*/, newSec: "## Novos produtos", priceSec: "## Mudanças de preço" },

@@ -1,10 +1,12 @@
 import path from "node:path";
+import { ENJOEI_JAPANESE_JEANS } from './enjoei-japanese-jeans.mjs';
 
 // Registro operacional único das fontes monitoradas. As regras de matching
 // específicas continuam nas libs de cada produto; este módulo concentra os
 // nomes, diretórios, variáveis de ambiente e metadados usados pelo painel,
 // saúde e notificações.
 export const LOCAL_WATCHLISTS = Object.freeze([
+  ...ENJOEI_JAPANESE_JEANS.map(({ id, label, env, repoFolder, fallback, maxAgeHours }) => ({ id, label, env, repoFolder, fallback, maxAgeHours })),
   { id: "enjoei-jacob-cohen", label: "Enjoei Jeans Jacob Cohën 40", env: "ENJOEI_JACOB_COHEN_DATA_DIR", repoFolder: "enjoei-jacob-cohen", fallback: "monitor-enjoei-jacob-cohen", maxAgeHours: 24 },
   { id: "enjoei-brunello-cucinelli", label: "Enjoei Jeans Brunello Cucinelli 40", env: "ENJOEI_BRUNELLO_CUCINELLI_DATA_DIR", repoFolder: "enjoei-brunello-cucinelli", fallback: "monitor-enjoei-brunello-cucinelli", maxAgeHours: 24 },
   { id: "enjoei-ricardo-almeida", label: "Enjoei Jeans Ricardo Almeida 40", env: "ENJOEI_RICARDO_ALMEIDA_DATA_DIR", repoFolder: "enjoei-ricardo-almeida", fallback: "monitor-enjoei-ricardo-almeida", maxAgeHours: 24 },

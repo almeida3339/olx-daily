@@ -55,6 +55,13 @@ Sistema modular de monitoramento diário (2× por dia, 07:00 e 16:00 BRT). Busca
 - Compartilham o coletor de jeans com Ricardo Almeida: até dez páginas, até oito leituras de ficha por rodada/marca e cache de 12 horas. Pendentes ficam separados e fora dos alertas de ofertas válidas.
 - Integrados às rodadas das 07h e 16h, painel e alertas. Pastas `data/enjoei-jacob-cohen` e `data/enjoei-brunello-cucinelli`; overrides `ENJOEI_JACOB_COHEN_DATA_DIR` e `ENJOEI_BRUNELLO_CUCINELLI_DATA_DIR`.
 
+### Outras marcas de jeans no Enjoei — até R$ 350
+
+- Momotaro Jeans, Pure Blue Japan (PBJ), The Strike Gold, Kapital, Big John, Fullcount, OrSlow e Denime. Somente jeans masculinos, cintura **40**, preço anunciado **até R$ 350, inclusive**, sem frete/taxas.
+- `node scripts/monitor-enjoei-japanese-jeans.mjs` coleta as oito marcas em sequência; `--watchlist pure-blue-japan` permite selecionar uma delas. Configurações em `scripts/lib/enjoei-japanese-jeans.mjs`; cada marca possui pasta, relatório, histórico e estado de saúde próprios.
+- PBJ/Pure Blue Japan e OrSlow/Or Slow têm buscas alternativas, com deduplicação. Resultados aproximados do Enjoei precisam confirmar a marca no título/campo de marca; “denim” genérico e John John não comprovam Denime nem Big John.
+- Usa o mesmo coletor de jeans: categoria, numeração e tecido conferidos, até dez páginas por termo e oito fichas por marca, com cache de 12 horas. Incluído nas rodadas das 07h e 16h, painel e alertas; candidatos sem confirmação ficam separados.
+
 | Nome | Fonte | Faixa | Detalhes |
 |---|---|---|---|
 | **OLX Notebooks** | OLX (22 CPUs) | R$ 2.000–8.000 | CPU flagship Intel/AMD (filtro mudança até R$ 10k) |
@@ -64,6 +71,7 @@ Sistema modular de monitoramento diário (2× por dia, 07:00 e 16:00 BRT). Busca
 | **Enjoei Jeans Ricardo Almeida 40** | Enjoei (GraphQL) | menos de R$ 250 | Masculino, cintura 40; jeans/denim confirmado |
 | **Enjoei Jeans Jacob Cohën 40** | Enjoei (GraphQL) | menos de R$ 250 | Masculino, cintura 40; jeans/denim confirmado |
 | **Enjoei Jeans Brunello Cucinelli 40** | Enjoei (GraphQL) | até R$ 400 | Masculino, cintura 40; jeans/denim confirmado |
+| **Enjoei Jeans — Momotaro, PBJ, Strike Gold, Kapital, Big John, Fullcount, OrSlow, Denime** | Enjoei (GraphQL) | até R$ 350 | Masculino, cintura 40; monitor separado por marca |
 | **Dockstations** | OLX + Enjoei | até R$ 500 | 3 modelos (SD25TB4, WD22TB4, 40AY0090BR), 4TB+ |
 | **Fitbit Air** | OLX + Enjoei | R$ 300–600 | Smartwatch Fitbit Air exato |
 | **Lifefactory** | OLX + Enjoei | R$ 25–75 | Garrafa térmica 500ml–1L (exclui mamadeira, bivolt OK) |
