@@ -21,6 +21,8 @@ const ENJOEI_DIR           = resolveWatchlistDataDir(ROOT, "enjoei");
 const ENJOEI_NOTEBOOKS_DIR = resolveWatchlistDataDir(ROOT, "enjoei-notebooks");
 const ENJOEI_ZEGNA_DIR = resolveWatchlistDataDir(ROOT, "enjoei-zegna");
 const ENJOEI_RICARDO_ALMEIDA_DIR = resolveWatchlistDataDir(ROOT, "enjoei-ricardo-almeida");
+const ENJOEI_JACOB_COHEN_DIR = resolveWatchlistDataDir(ROOT, "enjoei-jacob-cohen");
+const ENJOEI_BRUNELLO_CUCINELLI_DIR = resolveWatchlistDataDir(ROOT, "enjoei-brunello-cucinelli");
 const DOCKSTATIONS_DIR     = resolveWatchlistDataDir(ROOT, "dockstations");
 const FITBIT_DIR           = resolveWatchlistDataDir(ROOT, "fitbit");
 const LIFEFACTORY_DIR      = resolveWatchlistDataDir(ROOT, "lifefactory");
@@ -62,12 +64,18 @@ async function main() {
   const zegnaUpdated = await latestRunLabel(ENJOEI_ZEGNA_DIR);
   const ricardoAlmeida = await gather(ENJOEI_RICARDO_ALMEIDA_DIR, "report-", null);
   const ricardoAlmeidaUpdated = await latestRunLabel(ENJOEI_RICARDO_ALMEIDA_DIR);
+  const jacobCohen = await gather(ENJOEI_JACOB_COHEN_DIR, "report-", null);
+  const jacobCohenUpdated = await latestRunLabel(ENJOEI_JACOB_COHEN_DIR);
+  const brunelloCucinelli = await gather(ENJOEI_BRUNELLO_CUCINELLI_DIR, "report-", null);
+  const brunelloCucinelliUpdated = await latestRunLabel(ENJOEI_BRUNELLO_CUCINELLI_DIR);
   const health = await buildMonitorHealth(ROOT);
   await writeJsonAtomic(path.join(ROOT, "data", "status", "monitor-health.json"), health, { validate: null });
   const priceInsights = await buildPriceInsights([
     ["OLX", OLX_DIR], ["Enjoei Notebooks", ENJOEI_NOTEBOOKS_DIR], ["Enjoei Tênis", ENJOEI_DIR],
     ["Mercado Livre Notebooks", MERCADOLIVRE_NOTEBOOKS_DIR], ["Enjoei Calças Zegna 40", ENJOEI_ZEGNA_DIR],
     ["Enjoei Jeans Ricardo Almeida 40", ENJOEI_RICARDO_ALMEIDA_DIR],
+    ["Enjoei Jeans Jacob Cohën 40", ENJOEI_JACOB_COHEN_DIR],
+    ["Enjoei Jeans Brunello Cucinelli 40", ENJOEI_BRUNELLO_CUCINELLI_DIR],
     ...MERCADOLIVRE_WATCHLISTS.map(([chip, , , folder]) => [`Mercado Livre ${chip}`, path.join(ROOT, "data", folder)]),
   ]);
   const olxDetails = await latestSnapshotDetails(OLX_DIR);
@@ -127,7 +135,7 @@ async function main() {
   ]);
   await writeTextAtomic(
     OUTPUT,
-    buildHtml({ health, priceInsights, zegna, zegnaUpdated, ricardoAlmeida, ricardoAlmeidaUpdated, olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, onePlusBuds, pixelWatch4, pixelWatch5, oura, oledMonitores, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, onePlusBudsUpdated, pixelWatch4Updated, pixelWatch5Updated, ouraUpdated, oledMonitoresUpdated }).replace(/[ \t]+$/gm, ""),
+    buildHtml({ health, priceInsights, zegna, zegnaUpdated, ricardoAlmeida, ricardoAlmeidaUpdated, jacobCohen, jacobCohenUpdated, brunelloCucinelli, brunelloCucinelliUpdated, olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, onePlusBuds, pixelWatch4, pixelWatch5, oura, oledMonitores, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, onePlusBudsUpdated, pixelWatch4Updated, pixelWatch5Updated, ouraUpdated, oledMonitoresUpdated }).replace(/[ \t]+$/gm, ""),
   );
   console.log(`Dashboard gerado: ${OUTPUT}`);
 }
@@ -554,7 +562,7 @@ export function groupPendingNotifications(items = []) {
   );
 }
 
-function buildHtml({ health, priceInsights, zegna, zegnaUpdated, ricardoAlmeida, ricardoAlmeidaUpdated, olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, onePlusBuds, pixelWatch4, pixelWatch5, oura, oledMonitores, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, onePlusBudsUpdated, pixelWatch4Updated, pixelWatch5Updated, ouraUpdated, oledMonitoresUpdated }) {
+function buildHtml({ health, priceInsights, zegna, zegnaUpdated, ricardoAlmeida, ricardoAlmeidaUpdated, jacobCohen, jacobCohenUpdated, brunelloCucinelli, brunelloCucinelliUpdated, olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, onePlusBuds, pixelWatch4, pixelWatch5, oura, oledMonitores, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, onePlusBudsUpdated, pixelWatch4Updated, pixelWatch5Updated, ouraUpdated, oledMonitoresUpdated }) {
   // Ordenação em dois níveis: primeiro as fontes COM achados recentes (cards com
   // conteúdo), depois as vazias ("Nenhum run com novidades") — sempre no fundo,
   // mesmo que tenham rodado há pouco. Dentro de cada grupo, mais recente primeiro.
@@ -574,6 +582,8 @@ function buildHtml({ health, priceInsights, zegna, zegnaUpdated, ricardoAlmeida,
     { chip: "Enjoei Tênis",     title: "Enjoei Tênis 42",   sub: "até R$ 500,00",                                data: enjoei,      dpath: "data/enjoei",           upd: enjoeiTenisUpdated },
     { chip: "Enjoei Zegna", title: "Enjoei Calças Zegna 40", sub: "masculino · tamanho 40 · menos de R$ 250", data: zegna, dpath: "data/enjoei-zegna", upd: zegnaUpdated },
     { chip: "Enjoei Ricardo Almeida", title: "Enjoei Jeans Ricardo Almeida 40", sub: "jeans masculino · tamanho 40 · menos de R$ 250", data: ricardoAlmeida, dpath: "data/enjoei-ricardo-almeida", upd: ricardoAlmeidaUpdated },
+    { chip: "Enjoei Jacob Cohën", title: "Enjoei Jeans Jacob Cohën 40", sub: "jeans masculino · tamanho 40 · menos de R$ 250", data: jacobCohen, dpath: "data/enjoei-jacob-cohen", upd: jacobCohenUpdated },
+    { chip: "Enjoei Brunello Cucinelli", title: "Enjoei Jeans Brunello Cucinelli 40", sub: "jeans masculino · tamanho 40 · até R$ 400", data: brunelloCucinelli, dpath: "data/enjoei-brunello-cucinelli", upd: brunelloCucinelliUpdated },
     { chip: "Dockstations",     title: "Dockstations",      sub: "OLX + Enjoei · até R$ 500,00",                 data: dock,        dpath: "data/dockstations",     upd: dockUpdated },
     { chip: "Fitbit Air",       title: "Fitbit Air",        sub: "OLX + Enjoei · R$ 300 – R$ 600",               data: fitbit,      dpath: "data/fitbit",           upd: fitbitUpdated },
     { chip: "Lifefactory",      title: "Lifefactory",       sub: "OLX + Enjoei · 500ml–1L · R$ 25 – R$ 75",      data: lifefactory, dpath: "data/lifefactory",      upd: lifefactoryUpdated },

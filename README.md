@@ -48,6 +48,13 @@ Sistema modular de monitoramento diário (2× por dia, 07:00 e 16:00 BRT). Busca
 - Marca e tamanho são conferidos no anúncio. Exige tecido jeans/denim; sarja, linho e calças sociais não entram pela marca. Se a listagem omitir categoria ou tecido, consulta a ficha do produto, até oito leituras por rodada, com cache de 12 horas. Candidatos sem confirmação aparecem separados e não geram alerta de oferta válida.
 - Integrado às rodadas do Enjoei (07h e 16h), painel e alertas. Dados em `data/enjoei-ricardo-almeida`; override `ENJOEI_RICARDO_ALMEIDA_DATA_DIR`. Até dez páginas por coleta; falhas preservam o histórico e sinalizam cobertura incompleta.
 
+### Jeans Jacob Cohën e Brunello Cucinelli no Enjoei
+
+- Somente jeans masculinos, cintura **40**. Jacob Cohën: preço anunciado **menor que R$ 250**. Brunello Cucinelli: preço anunciado **até R$ 400, inclusive**. Frete e taxas ficam fora desses tetos.
+- `node scripts/monitor-enjoei-jacob-cohen.mjs` e `node scripts/monitor-enjoei-brunello-cucinelli.mjs`. Jacob Cohën é reconhecido com ou sem acento. Marca, categoria, numeração disponível e tecido são conferidos; sarja e calças sociais não são aceitas apenas por serem da marca.
+- Compartilham o coletor de jeans com Ricardo Almeida: até dez páginas, até oito leituras de ficha por rodada/marca e cache de 12 horas. Pendentes ficam separados e fora dos alertas de ofertas válidas.
+- Integrados às rodadas das 07h e 16h, painel e alertas. Pastas `data/enjoei-jacob-cohen` e `data/enjoei-brunello-cucinelli`; overrides `ENJOEI_JACOB_COHEN_DATA_DIR` e `ENJOEI_BRUNELLO_CUCINELLI_DATA_DIR`.
+
 | Nome | Fonte | Faixa | Detalhes |
 |---|---|---|---|
 | **OLX Notebooks** | OLX (22 CPUs) | R$ 2.000–8.000 | CPU flagship Intel/AMD (filtro mudança até R$ 10k) |
@@ -55,6 +62,8 @@ Sistema modular de monitoramento diário (2× por dia, 07:00 e 16:00 BRT). Busca
 | **Enjoei Tênis 42** | Enjoei (GraphQL) | até R$ 500 | Masculino, tamanho 42; 24 termos, variantes e descrição dos candidatos |
 | **Enjoei Calças Zegna 40** | Enjoei (GraphQL) | menos de R$ 250 | Masculino, cintura 40; inclui Ermenegildo Zegna e Zegna Sport |
 | **Enjoei Jeans Ricardo Almeida 40** | Enjoei (GraphQL) | menos de R$ 250 | Masculino, cintura 40; jeans/denim confirmado |
+| **Enjoei Jeans Jacob Cohën 40** | Enjoei (GraphQL) | menos de R$ 250 | Masculino, cintura 40; jeans/denim confirmado |
+| **Enjoei Jeans Brunello Cucinelli 40** | Enjoei (GraphQL) | até R$ 400 | Masculino, cintura 40; jeans/denim confirmado |
 | **Dockstations** | OLX + Enjoei | até R$ 500 | 3 modelos (SD25TB4, WD22TB4, 40AY0090BR), 4TB+ |
 | **Fitbit Air** | OLX + Enjoei | R$ 300–600 | Smartwatch Fitbit Air exato |
 | **Lifefactory** | OLX + Enjoei | R$ 25–75 | Garrafa térmica 500ml–1L (exclui mamadeira, bivolt OK) |
