@@ -90,6 +90,10 @@ export function recordMercadoLivreRun(schedule, {
     const task = normalizeTermTask(raw);
     const current = state.terms[task.matchTerm] ?? {};
     const failure = failures.get(task.matchTerm);
+    if ((run.pending_detail_terms ?? []).includes(task.matchTerm)) {
+      state.terms[task.matchTerm] = { ...current, pending_details: true, last_checked_at: now.toISOString() };
+      continue;
+    }
     if (successful.has(task.matchTerm)) {
       const accepted = itemsByTerm.get(task.matchTerm) ?? 0;
       state.terms[task.matchTerm] = {
@@ -100,6 +104,7 @@ export function recordMercadoLivreRun(schedule, {
         last_change_at: accepted > 0 ? now.toISOString() : current.last_change_at ?? null,
         empty_runs: accepted === 0 ? Number(current.empty_runs ?? 0) + 1 : 0,
         failures: 0,
+        pending_details: false,
         last_error: null,
       };
       continue;
@@ -163,6 +168,7 @@ export function clearMercadoLivreCooldown(schedule) {
 }
 
 function isTermDue(state, now) {
+  if (state.pending_details) return true;
   if (!state.last_success_at) return true;
   const age = now - Date.parse(state.last_success_at);
   const recentChange = state.last_change_at && now - Date.parse(state.last_change_at) < 7 * DAY;

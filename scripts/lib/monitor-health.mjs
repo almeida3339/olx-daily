@@ -5,6 +5,8 @@ import { readMonitorHistory, summarizeMonitorHistory } from "./monitor-history.m
 import { listCommittedRuns, readJsonValidated, readLatestValidSnapshot, timestampFromArtifactName } from "./monitor-runtime.mjs";
 import { mergeCoverageStatus } from "./monitor-coverage.mjs";
 import { watchlistHealthDefinitions } from "./watchlists-registry.mjs";
+import { DEFAULT_CPU_TERMS } from './cpu-terms.mjs';
+import { notebookQueryMaxAgeHours } from './notebook-search-plan.mjs';
 
 const monitorHealthSourceDefinitions = watchlistHealthDefinitions();
 
@@ -24,7 +26,9 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
     let coverage = {};
     for (const artifact of artifacts.reverse()) coverage = mergeCoverageStatus(coverage, artifact.snapshot);
     coverage = mergeCoverageStatus(coverage, snapshot ?? {});
-    const configured = snapshot?.run?.configured_coverage ?? snapshot?.run?.configured_terms ?? [];
+    const configuredRaw = snapshot?.run?.configured_coverage ?? snapshot?.run?.configured_terms ?? [];
+    const configured = ['olx','enjoei-notebooks','mercadolivre-notebooks'].includes(id)
+      ? configuredRaw.filter(key => key.startsWith('family:') || DEFAULT_CPU_TERMS.includes(key)) : configuredRaw;
     const marketplaces = id === 'enjoei' && snapshot?.run?.search_schedule
       ? shoeScheduleHealth(snapshot.run.search_schedule, now)
       : coverageHealth(configured, coverage, { now, maxAgeMs, id, sourceBlocks: snapshot?.source_blocks ?? {} });
@@ -111,16 +115,16 @@ function shoeScheduleHealth(schedule, now) {
 function coverageHealth(configured, coverage, { now, maxAgeMs, id, sourceBlocks }) {
   const groups = new Map();
   for (const key of configured) {
-    const label = key.includes(':') ? key.split(':')[0] : id.startsWith('mercadolivre-') ? 'ML' : id === 'olx' ? 'OLX' : 'Enjoei';
+    const label = key.startsWith('family:') ? 'OLX modelos' : key.includes(':') ? key.split(':')[0] : id.startsWith('mercadolivre-') ? 'ML' : id === 'olx' ? 'OLX' : 'Enjoei';
     const terms = groups.get(label) ?? [];
-    terms.push(coverage[key] ?? {});
+    terms.push({ ...(coverage[key] ?? {}), max_age_ms: ['olx','enjoei-notebooks','mercadolivre-notebooks'].includes(id) ? notebookQueryMaxAgeHours(key, id) * 3600_000 : maxAgeMs });
     groups.set(label, terms);
   }
   return [...groups].map(([label, terms]) => {
     const states = terms.map((term) => {
       if (!term.checked_at) return 'partial';
       if (term.state === 'failed' && ['challenge', 'authentication', 'rate_limited'].includes(classifyMonitorError(term.error).kind)) return 'blocked';
-      if (now.getTime() - Date.parse(term.checked_at) > maxAgeMs) return 'stale';
+      if (now.getTime() - Date.parse(term.checked_at) > term.max_age_ms) return 'stale';
       return term.state === 'failed' ? 'partial' : 'healthy';
     });
     const blocked = Date.parse(sourceBlocks[label]?.blocked_until ?? '') > now.getTime();

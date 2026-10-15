@@ -179,7 +179,7 @@ export async function commitMonitorRun(dataDir, { runId, snapshot, report, metad
   const { appendMonitorHistory } = await import("./monitor-history.mjs");
   const startedAt = Date.parse(prepared.snapshot.run?.started_at ?? "");
   const completedAt = Date.parse(prepared.snapshot.run?.completed_at ?? manifest.committed_at);
-  await appendMonitorHistory(dataDir, {
+  if (!metadata.policy_reclassification) await appendMonitorHistory(dataDir, {
     run_id: runId,
     committed_at: manifest.committed_at,
     completed_at: prepared.snapshot.run?.completed_at ?? manifest.committed_at,

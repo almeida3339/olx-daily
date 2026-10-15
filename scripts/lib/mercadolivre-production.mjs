@@ -1,4 +1,4 @@
-import { meetsNotebookRamMinimum, NOTEBOOK_MIN_RAM_GB } from './notebook-policy.mjs';
+import { meetsNotebookRamMinimum, NOTEBOOK_MIN_RAM_GB, NOTEBOOK_POLICY_VERSION, assessNotebook, isEligibleNotebook, notebookRamGb } from './notebook-policy.mjs';
 import fs from "node:fs/promises";
 import path from "node:path";
 import { chromium } from "playwright";
@@ -18,7 +18,7 @@ import {
 } from "./monitor-core.mjs";
 import { classifyMonitorError, retryTransient } from "./monitor-errors.mjs";
 import { createMonitorLogger } from "./monitor-logger.mjs";
-import { commitMonitorRun, readLatestValidSnapshot } from "./monitor-runtime.mjs";
+import { commitMonitorRun, readLatestValidSnapshot, writeJsonAtomic } from "./monitor-runtime.mjs";
 
 const NAVIGATION_TIMEOUT_MS = 45_000;
 const LOCK_STALE_MS = 6 * 60 * 60 * 1000;
@@ -58,6 +58,14 @@ export async function runMercadoLivreBatch({
   const previousResult = await readLatestValidSnapshot(dataDir);
   const previous = previousResult.snapshot;
   const previousById = new Map((previous?.items ?? []).map((item) => [item.id, item]));
+  const queuePath = path.join(dataDir, 'notebook-detail-queue.json');
+  let detailQueue = {};
+  if (kind === 'notebook') {
+    try { detailQueue = JSON.parse(await fs.readFile(queuePath, 'utf8')); } catch (error) { if (error.code !== 'ENOENT') throw error; }
+    detailQueue = Object.fromEntries(Object.entries(detailQueue).filter(([,entry]) => Date.now() - Date.parse(entry.last_observed_at) < 7 * 86400_000));
+  }
+  const limitedTerms = [];
+  let pendingDetails = 0, detailReads = 0;
   const lock = await acquireMercadoLivreLock(profileDir);
   const startedAt = new Date();
   const logger = createMonitorLogger({ monitor: `mercadolivre:${id}` });
@@ -126,6 +134,7 @@ export async function runMercadoLivreBatch({
             throw error;
           }
           const raw = await collectSearchResults(page);
+          if (kind === 'notebook' && (raw.length > maxItemsPerTerm || await page.locator('.andes-pagination__button--next:not(.andes-pagination__button--disabled)').count() > 0)) limitedTerms.push(task.matchTerm);
           if (raw.length === 0) throw new Error("Nenhum card reconhecido; possivel mudanca de layout.");
           const exclusions = excludeTerms.map(normalizeText);
           return raw
@@ -168,14 +177,26 @@ export async function runMercadoLivreBatch({
     const deduped = dedupeMercadoLivreItems(collected);
     consolidated = deduped;
     const detailCandidates = deduped
+      .filter(item => kind !== 'notebook' || notebookRamGb(item) == null || notebookRamGb(item) >= NOTEBOOK_MIN_RAM_GB)
       .filter((item) => needsMercadoLivreDetail(item, previousById.get(item.id), kind, relevantDetails))
+      .sort((a,b) => kind !== 'notebook' ? 0 : Number(a.price_brl > displayMaxPrice) - Number(b.price_brl > displayMaxPrice)
+        || (Date.parse(detailQueue[a.id]?.first_queued_at) || 0) - (Date.parse(detailQueue[b.id]?.first_queued_at) || 0));
+    if (kind === 'notebook') for (const item of detailCandidates) detailQueue[item.id] = {
+      first_queued_at: detailQueue[item.id]?.first_queued_at ?? new Date().toISOString(), last_observed_at: new Date().toISOString(), terms: item.terms };
+    const selectedDetails = detailCandidates
       .slice(0, maxDetails);
-    for (let index = 0; index < detailCandidates.length; index += 1) {
-      const item = detailCandidates[index];
+    for (let index = 0; index < selectedDetails.length; index += 1) {
+      const item = selectedDetails[index];
       if (index > 0) await sleep(randomBetween(detailDelayMinMs, detailDelayMaxMs));
       try {
-        const details = await collectProductDetails(page, item.url);
-        Object.assign(item, details, { details_checked_at: new Date().toISOString() });
+        const details = await collectProductDetails(page, item.url, { scoped: kind === 'notebook' });
+        detailReads++;
+        Object.assign(item, details, { listing_title: item.title, details_checked_at: new Date().toISOString(), detail_listing_title: item.title });
+        if (kind === 'notebook') {
+          if (details.detail_price_brl == null) item.price_error = 'Preço integral do detalhe não localizado';
+          else if (Math.abs(details.detail_price_brl - item.price_brl) > 1) item.price_error = 'Preço da listagem diverge do detalhe';
+          item.notebook_validation = assessNotebook(item); delete detailQueue[item.id];
+        }
         console.log(`  Ficha ${index + 1}/${detailCandidates.length}: ${item.title.slice(0, 65)}`);
       } catch (error) {
         item.detail_error = error.message;
@@ -187,6 +208,20 @@ export async function runMercadoLivreBatch({
         }
       }
     }
+    if (kind === 'notebook') {
+      for (const item of deduped) {
+        if (!item.details_checked_at && !detailQueue[item.id]) Object.assign(item, {
+          specs: previousById.get(item.id)?.specs, description: previousById.get(item.id)?.description,
+          details_checked_at: previousById.get(item.id)?.details_checked_at,
+          detail_listing_title: previousById.get(item.id)?.detail_listing_title,
+          identity_error: previousById.get(item.id)?.identity_error, price_error: previousById.get(item.id)?.price_error,
+        });
+        item.notebook_validation = assessNotebook(item);
+        if (detailQueue[item.id]) item.notebook_validation = { ...item.notebook_validation, state: 'pending', reasons: [...item.notebook_validation.reasons, 'Ficha atualizada pendente'] };
+      }
+      pendingDetails = Object.keys(detailQueue).length;
+      await writeJsonAtomic(queuePath, detailQueue, { validate: null });
+    }
   } finally {
     await context?.close().catch(() => {});
     await lock.release();
@@ -196,12 +231,14 @@ export async function runMercadoLivreBatch({
   const isInScope = item => !excludeTerms.some(term => normalizeText(item.title).includes(normalizeText(term)))
     && (!itemFilter || itemFilter(item));
   consolidated = consolidated.filter(isInScope);
+  const coverageFailures = [...failedTerms, ...[...new Set(limitedTerms)].map(term => ({ term, error: 'Limite de resultados atingido; cobertura incompleta' }))];
+  const completedTerms = successfulTerms.filter(term => !limitedTerms.includes(term));
   const completedAt = new Date();
   const snapshot = mergeMercadoLivreBatch({
     previous,
     collected: consolidated,
-    successfulTerms,
-    failedTerms: failedTerms.map((failure) => failure.term),
+    successfulTerms: completedTerms,
+    failedTerms: coverageFailures.map((failure) => failure.term),
     scheduledTerms: terms.map((term) => normalizeTask(term).matchTerm),
     allTerms: allTerms.map((term) => normalizeTask(term).matchTerm),
     now: completedAt,
@@ -215,13 +252,15 @@ export async function runMercadoLivreBatch({
       kind,
       started_at: startedAt.toISOString(),
       completed_at: completedAt.toISOString(),
-      partial: failedTerms.length > 0 || aborted,
+      partial: failedTerms.length > 0 || aborted || limitedTerms.length > 0 || pendingDetails > 0,
+      limited_terms: [...new Set(limitedTerms)], pending_details: pendingDetails, detail_reads: detailReads,
+      pending_detail_terms: [...new Set(Object.values(detailQueue).flatMap(entry => entry.terms ?? []))],
       aborted,
       blocked_error: blockedError,
-      successful_terms: successfulTerms,
+      successful_terms: completedTerms,
       scheduled_terms: terms.map((term) => normalizeTask(term).matchTerm),
       configured_terms: allTerms.map((term) => normalizeTask(term).matchTerm),
-      failed_terms: failedTerms,
+      failed_terms: coverageFailures,
     },
   });
   snapshot.items = snapshot.items.map(item => isInScope(item) ? item : {
@@ -299,11 +338,11 @@ export function mergeMercadoLivreBatch({
 }
 
 export function buildMercadoLivreChanges(previous, current, { displayMinPrice, displayMaxPrice, kind = current.run?.kind ?? (current.run?.id === 'notebooks' ? 'notebook' : 'product') }) {
-  const visible = (item) => (kind !== "notebook" || meetsNotebookRamMinimum(item)) && item.status === "active"
+  const visible = (item) => (kind !== "notebook" || isEligibleNotebook(item)) && item.status === "active"
     && Number(item.price_brl) >= displayMinPrice
     && Number(item.price_brl) <= displayMaxPrice;
   const eligiblePrevious = kind === 'notebook' && previous
-    ? { ...previous, items: (previous.items ?? []).filter(meetsNotebookRamMinimum) } : previous;
+    ? { ...previous, items: (previous.items ?? []).filter(isEligibleNotebook) } : previous;
   const { newItems, priceChanges } = buildMonitorChanges(eligiblePrevious, current, {
     include: visible,
     reactivationIsNew: false,
@@ -334,19 +373,22 @@ export async function acquireMercadoLivreLock(profileDir, { staleMs = LOCK_STALE
   };
 }
 
-async function collectProductDetails(page, url) {
+async function collectProductDetails(page, url, { scoped = false } = {}) {
+  const expectedId = extractMercadoLivreId(url);
   await page.goto(url, { waitUntil: "domcontentloaded", timeout: NAVIGATION_TIMEOUT_MS });
   await sleep(randomBetween(8_000, 14_000));
   const state = await detectProductPageState(page);
   if (state !== "product") throw new Error(pageStateMessage(state));
-  return page.evaluate(() => {
+  const finalId = extractMercadoLivreId(page.url());
+  const result = await page.evaluate(scoped => {
     const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
     const title = clean(document.querySelector("h1")?.textContent);
     const bodyText = clean(document.body?.innerText);
     const condition = bodyText.match(/(?:^|\s)(Novo|Usado|Recondicionado)(?:\s|$)/i)?.[1] ?? null;
     const specs = [];
     const seen = new Set();
-    for (const row of document.querySelectorAll("tr, .andes-table__row, li")) {
+    const selector = scoped ? '.ui-pdp-specs tr, .ui-pdp-specs__table tr, [data-testid="technical-specifications"] tr, .ui-vpp-highlighted-specs .andes-table__row' : 'tr, .andes-table__row, li';
+    for (const row of document.querySelectorAll(selector)) {
       const cells = [...row.querySelectorAll("th, td, .andes-table__header, .andes-table__column")]
         .map((cell) => clean(cell.textContent))
         .filter(Boolean);
@@ -357,8 +399,14 @@ async function collectProductDetails(page, url) {
       specs.push(value);
     }
     const description = clean(document.querySelector(".ui-pdp-description__content, [data-testid='description-content']")?.textContent);
-    return { title: title || undefined, condition, specs: specs.slice(0, 80), description: description || null };
-  });
+    const price = document.querySelector('.ui-pdp-price__second-line .andes-money-amount');
+    const fraction = price?.querySelector('.andes-money-amount__fraction')?.textContent?.replace(/\D/g, '');
+    const cents = price?.querySelector('.andes-money-amount__cents')?.textContent;
+    return { title: title || undefined, condition, specs: specs.slice(0, 80), description: description || null,
+      detail_price_brl: fraction ? Number(fraction) + Number(cents || 0) / 100 : null };
+  }, scoped);
+  if (scoped && expectedId && finalId !== expectedId) result.identity_error = 'Página de detalhe não confirma a identidade do anúncio';
+  return result;
 }
 
 async function detectProductPageState(page) {
@@ -376,8 +424,10 @@ async function detectProductPageState(page) {
 export function needsMercadoLivreDetail(item, old, kind, relevantDetails) {
   if (!old?.details_checked_at) return true;
   if (kind === "notebook") {
+    if (old.notebook_validation?.version !== NOTEBOOK_POLICY_VERSION || Date.now() - Date.parse(old.details_checked_at) > 24 * 3600_000
+        || (old.detail_listing_title ?? old.title) !== item.title) return true;
     const specs = extractMercadoLivreNotebookSpecs(old.specs);
-    return !specs.cpuModel || !specs.ram || !specs.storage || !specs.gpu || !old.condition;
+    return !specs.cpuModel || !specs.ram;
   }
   const detailsText = normalizeText(`${old.title} ${old.description} ${(old.specs ?? []).join(" ")}`);
   return relevantDetails.some((detail) => {
@@ -387,7 +437,7 @@ export function needsMercadoLivreDetail(item, old, kind, relevantDetails) {
   });
 }
 
-function renderMercadoLivreReport(snapshot, changes) {
+export function renderMercadoLivreReport(snapshot, changes) {
   const { run } = snapshot;
   const lines = [
     `# Mercado Livre - ${run.label}`,
@@ -398,6 +448,8 @@ function renderMercadoLivreReport(snapshot, changes) {
     `Termos concluidos: **${run.successful_terms.length}**`,
     `Termos com falha: **${run.failed_terms.length}**`,
     ...(run.kind === "notebook" ? [`RAM mínima instalada: **${NOTEBOOK_MIN_RAM_GB} GB**`] : []),
+    ...(run.kind === 'notebook' ? [`Fichas lidas: **${run.detail_reads ?? 0}**; aguardando ficha: **${run.pending_details ?? 0}**; termos limitados: **${run.limited_terms?.length ?? 0}**`] : []),
+    ...(run.policy_reclassification ? [`Reclassificação de dados salvos; sem nova coleta. Coleta original: ${run.completed_at}.`] : []),
     `Novos produtos: **${changes.newItems.length}**`,
     `Alteracoes de preco: **${changes.priceChanges.length}**`,
     `Entraram na faixa do monitor: **${changes.enteredDisplayRange.length}**`,

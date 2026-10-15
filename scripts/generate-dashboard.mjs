@@ -1,7 +1,7 @@
 import { isCompleteOledMonitor } from './lib/oled-monitor-scope.mjs';
 import { isConfirmedBarefootShoe, barefootPriority, classifyBarefootShoe } from './lib/shoe-search-rules.mjs';
 import { ENJOEI_JAPANESE_JEANS } from './lib/enjoei-japanese-jeans.mjs';
-import { meetsNotebookRamMinimum } from './lib/notebook-policy.mjs';
+import { meetsNotebookRamMinimum, isEligibleNotebook, notebookCpuTerms, hasExplicitOtherNotebookCpu } from './lib/notebook-policy.mjs';
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -169,7 +169,7 @@ async function buildPriceInsights(descriptors) {
     const { snapshot } = await readLatestValidSnapshot(dir);
     for (const item of snapshot?.items ?? []) {
       if (dir === ENJOEI_DIR && !isConfirmedBarefootShoe(item)) continue;
-      if (['OLX', 'Enjoei Notebooks', 'Mercado Livre Notebooks'].includes(source) && !meetsNotebookRamMinimum(item)) continue;
+      if (['OLX', 'Enjoei Notebooks', 'Mercado Livre Notebooks'].includes(source) && !isEligibleNotebook(item)) continue;
       if ([OLED_MONITORES_DIR, path.join(ROOT, 'data', 'mercadolivre-oled-monitores')].includes(dir) && !isCompleteOledMonitor(item)) continue;
       if (source === 'OLX' && !isValidatedOlxItem(item)) continue;
       if (item.status !== "active" || !item.url || !Number.isFinite(Number(item.price_brl))) continue;
@@ -246,8 +246,16 @@ async function gather(dir, prefix, excludePrefix, detailsByUrl = new Map()) {
       p.priceCount = p.allPriceItems.length;
     }
     if ([OLX_DIR, ENJOEI_NOTEBOOKS_DIR, MERCADOLIVRE_NOTEBOOKS_DIR].includes(dir)) {
-      const allowedRam = item => meetsNotebookRamMinimum(detailsByUrl.get(item.url) ?? { title: item.fullTitle });
-      for (const field of ['allNewItems', 'allPriceItems', 'allPendingItems']) p[field] = p[field].filter(allowedRam);
+      const allowedPending = parsed => {
+        const item = detailsByUrl.get(parsed.url) ?? { title: parsed.fullTitle };
+        const evidence = `${item.title ?? ''} ${item.description ?? item.description_evidence ?? ''} ${item.cpu_term ?? ''}`;
+        return meetsNotebookRamMinimum(item) && item.status !== 'out_of_scope'
+          && item.validation?.state !== 'rejected' && !hasExplicitOtherNotebookCpu(evidence)
+          && notebookCpuTerms(evidence).length === 1;
+      };
+      const eligible = item => isEligibleNotebook(detailsByUrl.get(item.url) ?? { title: item.fullTitle });
+      for (const field of ['allNewItems', 'allPriceItems']) p[field] = p[field].filter(eligible);
+      p.allPendingItems = p.allPendingItems.filter(allowedPending);
       p.newItems = p.allNewItems.slice(0, MAX);
       p.priceItems = p.allPriceItems.slice(0, MAX);
       p.pendingItems = p.allPendingItems.slice(0, MAX);
@@ -485,7 +493,7 @@ async function currentMercadoLivreSnapshotReport(dir, displayMax = Infinity) {
   const snapshot = JSON.parse(raw);
   const items = (snapshot.items ?? [])
     .filter((item) => item.status === "active" && Number(item.price_brl) <= displayMax
-      && (dir !== MERCADOLIVRE_NOTEBOOKS_DIR || meetsNotebookRamMinimum(item))
+      && (dir !== MERCADOLIVRE_NOTEBOOKS_DIR || isEligibleNotebook(item))
       && (dir !== path.join(ROOT, "data", "mercadolivre-oled-monitores") || isCompleteOledMonitor(item)))
     .slice(0, MAX)
     .map((item) => ({

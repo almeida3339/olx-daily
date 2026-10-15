@@ -29,8 +29,6 @@ export const DEFAULT_CPU_TERMS = [
   "aimax390",  // AMD Ryzen AI Max PRO 390
   "14700hx",   // Intel Core i7-14700HX
   "hx470",     // AMD Ryzen AI 9 HX 470
-  "12900hx",   // Intel Core i9-12900HX
-  "12800hx",   // Intel Core i7-12800HX
 ];
 
 /**

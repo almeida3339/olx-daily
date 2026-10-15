@@ -69,8 +69,8 @@ Big John e Denime foram excluídas das coletas em 15/10/2026 a pedido do usuári
 
 | Nome | Fonte | Faixa | Detalhes |
 |---|---|---|---|
-| **OLX Notebooks** | OLX (22 CPUs) | R$ 2.000–8.000 | CPU flagship Intel/AMD (filtro mudança até R$ 10k) |
-| **Enjoei Notebooks** | Enjoei (GraphQL) | R$ 1.500–8.000 | 22 CPUs (novo até R$ 8k) |
+| **OLX Notebooks** | OLX (20 CPUs + famílias em rodízio) | R$ 2.000–8.000 | RAM ≥32 GB, CPU confirmada (mudança até R$ 10k) |
+| **Enjoei Notebooks** | Enjoei (GraphQL) | R$ 1.500–8.000 | 20 CPUs, RAM ≥32 GB |
 | **Enjoei Tênis 42** | Enjoei (GraphQL) | até R$ 500 | Masculino, tamanho 42; 24 termos, variantes e descrição dos candidatos |
 | **Enjoei Calças Zegna 40** | Enjoei (GraphQL) | menos de R$ 250 | Masculino, cintura 40; inclui Ermenegildo Zegna e Zegna Sport |
 | **Enjoei Jeans Ricardo Almeida 40** | Enjoei (GraphQL) | menos de R$ 250 | Masculino, cintura 40; jeans/denim confirmado |
@@ -346,12 +346,12 @@ Adicionar uma nova: copiar um, mudar config, pronto.
 **Arquivo:** `scripts/monitor-olx-notebooks-por-cpu.mjs`
 
 **Características especiais:**
-- **22 CPUs flagship** (Intel i9-13900KS, i9-14900K, Ryzen 9 7950X3D, etc)
+- **20 CPUs de notebooks**, sem Intel de 12ª geração. Regras, agenda e orçamentos: [política de notebooks](docs/notebook-search-policy.md).
 - **Enriquecimento de specs**: RAM, SSD, GPU extraídos da página de detalhe
 - **Filtro de defeitos** (descrição): "defeito", "avaria", "não liga", "não ligou", "queimou", "surto elétrico", "retirada de peças"
 - **Abertura de detalhe:** sempre abre itens na faixa do relatório (R$ 2k–8k), mesmo com specs completas em listagem, para validar descrição contra defeitos
 - **Persistência de validação:** marca `desc_checked: true` nos itens verificados, força reabertura se histórico antigo não tem essa marca
-- **Infinite scroll + Cloudflare bypass:** aguarda estabilização de cards na listagem
+- **Infinite scroll:** aguarda estabilização dos cards; bloqueios ou verificações interrompem a coleta.
 - **Deduplicação:** ignora itens já no snapshot em dias anteriores
 - **Progresso por lote:** salva snapshot, relatório e manifesto antes da pausa entre lotes. O lote intermediário fica marcado como coleta em andamento e cobertura parcial; o resultado final é salvo em outro artefato.
 - **Cobertura por CPU:** registra termos concluídos, falhas e termos não consultados. Os anúncios dos termos sem cobertura são preservados. Uma falha de termo retorna código de erro após salvar os dados válidos.
@@ -381,18 +381,21 @@ por anúncio e passam pelos filtros de preço e pela confirmação de CPU.
   após cada página/descrição em `data/enjoei-notebooks/collection-progress.json`
   (ou em `ENJOEI_NOTEBOOKS_DATA_DIR`). O arquivo acompanha a publicação dos dados,
   permitindo retomar também no próximo GitHub Actions.
-- Por padrão, cada execução permite até 500 páginas por termo e 10 minutos para
-  paginação. `--max-pages` / `ENJOEI_NOTEBOOKS_MAX_PAGES` e `--max-minutes` /
-  `ENJOEI_NOTEBOOKS_MAX_MINUTES` ajustam esses limites. `--first` aceita 1 a 30.
-- Descrições pendentes por falha de rede ou pelo limite `--detail-max` (padrão 50)
-  ficam na fila para a próxima rodada. Elas mantêm a cobertura parcial.
+- Por padrão, cada execução permite até 24 requisições de busca no total, quatro
+  páginas por termo e dois minutos incluindo detalhes. `--max-pages` /
+  `ENJOEI_NOTEBOOKS_MAX_PAGES` e `--max-minutes` / `ENJOEI_NOTEBOOKS_MAX_MINUTES`
+  ajustam esses limites. `--first` aceita 1 a 30.
+- Até oito candidatos recebem leitura de descrição por rodada, com cache de 24h
+  para resultados positivos e negativos. Falhas ou detalhes ainda não lidos ficam
+  na fila e mantêm cobertura parcial; dados conflitantes lidos ficam em revisão.
 - Quando há páginas ou descrições pendentes, o relatório detalha o progresso,
   o coletor retorna código 1 e o aviso aparece na notificação/status da rodada.
   Os itens antigos desses termos são preservados. A busca só fica completa após
   confirmar o fim da paginação e resolver os candidatos pendentes.
-- Rodadas interrompidas retomam o mesmo ciclo; depois de um ciclo completo, a
-  próxima execução inicia uma busca nova. Alterações nos termos, consultas,
-  região, tamanho da página ou faixa de preço também iniciam um ciclo novo.
+- Quatro CPUs prioritárias rodam em cada execução; as outras 16 rodam após 24h,
+  com retomada de cursores pendentes. Alterações de região, tamanho da página ou
+  faixa de preço iniciam um ciclo novo. A cobertura distingue termos agendados
+  nesta rodada dos termos configurados.
 - Para `aimax395`, o Enjoei usa `ryzen ai max 395`: a palavra `notebook` ampliava
   a busca difusa para milhares de outros modelos. OLX e Mercado Livre mantêm
   suas consultas atuais.

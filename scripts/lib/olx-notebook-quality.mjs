@@ -1,20 +1,23 @@
-import { extractNotebookRamText, meetsNotebookRamMinimum, NOTEBOOK_MIN_RAM_GB } from './notebook-policy.mjs';
+import { extractNotebookRamText, meetsNotebookRamMinimum, NOTEBOOK_MIN_RAM_GB, NOTEBOOK_PRIORITY_CPUS, notebookExclusionReason, notebookCpuTerms, hasExplicitOtherNotebookCpu, isEligibleNotebook } from './notebook-policy.mjs';
 import { DEFAULT_CPU_TERMS } from "./cpu-terms.mjs";
 import { cardCpuState } from "./olx-description-queue.mjs";
 import { extractStorageGb, extractGpuLabel, normalizeText, parseBrlPrice, textContainsCpuTerm } from './parsers.mjs';
 
-export const OLX_QUALITY_VERSION = 1;
-export const OLX_PRIORITY_CPUS = ['14700hx', '13980hx', '14900hx', '13900hx', '12900hx', '12800hx'];
+export const OLX_QUALITY_VERSION = 2;
+export const OLX_PRIORITY_CPUS = NOTEBOOK_PRIORITY_CPUS;
 
 export function orderOlxCpuTerms(terms) {
   return [...new Set([...OLX_PRIORITY_CPUS.filter(t => terms.includes(t)), ...terms])];
 }
 
-export function planOlxCpuTerms(terms, previous, { now = Date.now(), lowPriorityIntervalMs = 24 * 3600_000, fullSweep = false } = {}) {
-  return orderOlxCpuTerms(terms).filter(term => fullSweep || OLX_PRIORITY_CPUS.includes(term)
+export function planOlxCpuTerms(terms, previous, { now = Date.now(), lowPriorityIntervalMs = 24 * 3600_000, fullSweep = false, secondaryBudget = 6 } = {}) {
+  const due = orderOlxCpuTerms(terms).filter(term => fullSweep || OLX_PRIORITY_CPUS.includes(term)
     || (previous?.coverage_status?.[term]?.state && previous.coverage_status[term].state !== 'success')
     || !Number.isFinite(Date.parse(previous?.coverage_status?.[term]?.last_success_at))
     || now - Date.parse(previous.coverage_status[term].last_success_at) >= lowPriorityIntervalMs);
+  if (fullSweep) return due;
+  return [...due.filter(term => OLX_PRIORITY_CPUS.includes(term)), ...due.filter(term => !OLX_PRIORITY_CPUS.includes(term))
+    .sort((a,b) => (Date.parse(previous?.coverage_status?.[a]?.last_success_at) || 0) - (Date.parse(previous?.coverage_status?.[b]?.last_success_at) || 0)).slice(0, secondaryBudget)];
 }
 
 // RAM do sistema: remover a capacidade que pertence à GPU antes de aplicar o
@@ -25,18 +28,7 @@ export function olxSpecs(text) {
   return { ram_gb: extractNotebookRamText(text), storage_gb: extractStorageGb(text), gpu: extractGpuLabel(text) };
 }
 
-export function notebookExclusionReason(text) {
-  const t = normalizeText(text)
-    .replace(/\bsem\s+(?:nenhum\s+)?(?:defeitos?|problemas?|avarias?|reparos?)\b/g, '')
-    .replace(/\b(?:nao|nunca)\s+(?:teve|apresentou|precisou\s+de)\s+(?:defeitos?|problemas?|avarias?|reparos?|conserto)\b/g, '');
-  const defects = /\b(?:sucata|defeito\w*|avaria\w*|quebrad[oa]\w*|nao\s+(?:liga|ligou|funciona)|queimad[oa]|queimou|surto\s+eletrico|retirada\s+de\s+pecas)\b/;
-  if (defects.test(t)) return 'Defeito ou avaria declarados no anúncio';
-  if (/^(?:mini[ -]?pc|desktop|computador\s+de\s+mesa)\b|\b(?:vendo|venda\s+de)\s+(?:um\s+)?(?:mini[ -]?pc|desktop|computador\s+de\s+mesa)\b/.test(t)) return 'Equipamento fora da categoria notebook';
-  if (/^(?:placa[ -]?mae|motherboard|carcaca|pecas)\b/.test(t.trim())) return 'Peça ou carcaça, não notebook completo';
-  if (/\b(?:vendo|venda\s+de|somente|apenas|para\s+retirada\s+de)\s+(?:a\s+)?(?:placa[ -]?mae|motherboard|carcaca|pecas)\b/.test(t)) return 'Peça ou carcaça, não notebook completo';
-  if (/\b(?:precisa\s+(?:de\s+)?(?:reparo|conserto)|com\s+problema)\b/.test(t)) return 'Reparo declarado no anúncio';
-  return null;
-}
+export { notebookExclusionReason };
 
 export function assertOlxAccessible(text) {
   if (/fa[cç]a login para continuar|sess[aã]o expirada/i.test(text ?? '')) {
@@ -106,8 +98,8 @@ export function validateOlxNotebook(card, detail, now = new Date()) {
   const detailText = `${detail.title}\n${detail.description}`;
   const confirmedTerms = DEFAULT_CPU_TERMS.filter(cpu => textContainsCpuTerm(detailText, cpu));
   if (card.description_discovery && confirmedTerms.length === 1) card = { ...card, cpu_term: confirmedTerms[0] };
-  const cpuConfirmed = card.description_discovery
-    ? confirmedTerms.length === 1 : textContainsCpuTerm(detailText, card.cpu_term);
+  const cpuConfirmed = confirmedTerms.length === 1 && !hasExplicitOtherNotebookCpu(detailText)
+    && (!card.description_discovery ? confirmedTerms[0] === card.cpu_term : true);
   const domPrice = numericPrice(detail.price_text), jsonPrice = numericPrice(detail.structured_price);
   const price = domPrice ?? jsonPrice;
   const discrepancy = (a, b) => a != null && b != null && Math.abs(a - b) > 1;
@@ -123,7 +115,7 @@ export function validateOlxNotebook(card, detail, now = new Date()) {
     const label = { ram_gb: 'RAM', storage_gb: 'SSD/armazenamento', gpu: 'GPU' }[key];
     if (titleSpecs[key] != null && descSpecs[key] != null && titleSpecs[key] !== descSpecs[key]) reasons.push(`Especificação divergente: ${label}`);
     specs[key] = descSpecs[key] ?? titleSpecs[key];
-    if (specs[key] == null) reasons.push(`Especificação não confirmada: ${label}`);
+    if (specs[key] == null && key !== 'storage_gb') reasons.push(`Especificação não confirmada: ${label}`);
   }
   const insufficientRam = specs.ram_gb != null && specs.ram_gb < NOTEBOOK_MIN_RAM_GB;
   if (insufficientRam) reasons.push(`RAM abaixo do mínimo de ${NOTEBOOK_MIN_RAM_GB} GB`);
@@ -134,14 +126,32 @@ export function validateOlxNotebook(card, detail, now = new Date()) {
   if (rejected) reasons.unshift(excluded ?? (insufficientRam ? 'RAM abaixo do mínimo exigido' : 'CPU fora da busca'));
   return {
     ...card, ...specs, price_brl: price ?? card.price_brl, desc_checked: Boolean(detail.description.trim()),
+    description_evidence: detail.description, detail_title: detail.title,
     validation: { version: OLX_QUALITY_VERSION, state: rejected ? 'rejected' : reasons.length ? 'pending' : 'validated',
       checked_at: now.toISOString(), reasons, listing_price_brl: card.price_brl,
       detail_price_brl: price, visible_price_brl: domPrice, structured_price_brl: jsonPrice,
       title_specs: titleSpecs, description_specs: descSpecs,
       cpu_confirmed: cpuConfirmed, description_checked: Boolean(detail.description.trim()) },
+    configuration_warnings: specs.storage_gb == null ? ['Armazenamento não informado'] : [],
   };
 }
 
 export function isValidatedOlxItem(item) {
-  return item?.validation?.version === OLX_QUALITY_VERSION && item.validation.state === 'validated' && meetsNotebookRamMinimum(item);
+  const current = revalidateSavedOlxItem(item);
+  return current?.validation?.version === OLX_QUALITY_VERSION && current.validation.state === 'validated' && isEligibleNotebook(current);
+}
+
+// Reapply preferences to recorded evidence without claiming a new page visit.
+export function revalidateSavedOlxItem(item) {
+  if (!item?.validation || ![1, OLX_QUALITY_VERSION].includes(item.validation.version)) return item;
+  const old = item.validation;
+  const reasons = (old.reasons ?? []).filter(reason => reason !== 'Especificação não confirmada: SSD/armazenamento');
+  const titleTerms = notebookCpuTerms(item.title ?? '');
+  const cpuAllowed = DEFAULT_CPU_TERMS.includes(item.cpu_term) && !hasExplicitOtherNotebookCpu(item.title ?? '')
+    && (!titleTerms.length || (titleTerms.length === 1 && titleTerms[0] === item.cpu_term));
+  if (!cpuAllowed && !reasons.includes('CPU fora da seleção atual')) reasons.push('CPU fora da seleção atual');
+  const state = !cpuAllowed || old.state === 'rejected' ? 'rejected'
+    : old.cpu_confirmed && old.description_checked && !reasons.length ? 'validated' : 'pending';
+  return { ...item, validation: { ...old, version: OLX_QUALITY_VERSION, state, reasons },
+    configuration_warnings: item.storage_gb == null ? ['Armazenamento não informado'] : [] };
 }

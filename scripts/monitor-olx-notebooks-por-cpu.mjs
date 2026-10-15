@@ -1,4 +1,5 @@
-import { extractNotebookRamText, meetsNotebookRamMinimum, NOTEBOOK_MIN_RAM_GB } from './lib/notebook-policy.mjs';
+import { extractNotebookRamText, meetsNotebookRamMinimum, NOTEBOOK_MIN_RAM_GB, notebookCpuTerms, hasExplicitOtherNotebookCpu } from './lib/notebook-policy.mjs';
+import { OLX_NOTEBOOK_FAMILIES, planNotebookFamilies, notebookOpportunity } from './lib/notebook-search-plan.mjs';
 import fs from "node:fs/promises";
 import { createDescriptionQueue, cardCpuState, cardKey } from "./lib/olx-description-queue.mjs";
 import path from "node:path";
@@ -20,7 +21,7 @@ import { classifyMonitorError } from "./lib/monitor-errors.mjs";
 import { sanitizeErrorMessage } from "./lib/notification-status.mjs";
 import { DEFAULT_CPU_TERMS, cpuSearchQuery } from "./lib/cpu-terms.mjs";
 import { commitMonitorRun, readLatestValidSnapshot, readJsonValidated, writeJsonAtomic } from "./lib/monitor-runtime.mjs";
-import { OLX_QUALITY_VERSION, orderOlxCpuTerms, planOlxCpuTerms, olxSpecs, pendingOlxItem, validateOlxNotebook, readOlxNotebookDetail, notebookExclusionReason, assertOlxAccessible, isValidatedOlxItem } from "./lib/olx-notebook-quality.mjs";
+import { OLX_QUALITY_VERSION, orderOlxCpuTerms, planOlxCpuTerms, olxSpecs, pendingOlxItem, validateOlxNotebook, readOlxNotebookDetail, notebookExclusionReason, assertOlxAccessible, isValidatedOlxItem, revalidateSavedOlxItem } from "./lib/olx-notebook-quality.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const workspaceRoot = path.resolve(__dirname, "..");
@@ -52,6 +53,8 @@ const listingOnly = args.includes("--listing-only");
 const cpuArg = getOptionValue(args, "--cpu");
 const configuredCpuTerms = cpuArg ? cpuArg.split(",").map((s) => s.trim().toLowerCase()).filter(Boolean) : DEFAULT_CPU_TERMS;
 let cpuTerms = orderOlxCpuTerms(configuredCpuTerms);
+const configuredSearches = [...configuredCpuTerms, ...(!cpuArg ? OLX_NOTEBOOK_FAMILIES.map(spec => spec.id) : [])];
+const olxQuery = term => OLX_NOTEBOOK_FAMILIES.find(spec => spec.id === term)?.query ?? cpuSearchQuery(term);
 let resumedProgress = null;
 let descriptionQueue;
 const progressFile = path.join(automationRoot, "collection-progress.json");
@@ -101,11 +104,11 @@ async function main() {
     process.exitCode = 1;
     return;
   }
-  const sameConfiguration = savedProgress?.configuration === configuredCpuTerms.join(',');
+  const sameConfiguration = savedProgress?.configuration === configuredSearches.join(',');
   if (!args.includes('--full-sweep') && sameConfiguration && savedProgress.pending_terms?.length
       && now.getTime() - Date.parse(savedProgress.started_at) < RESUME_MAX_AGE_MS
       && Array.isArray(savedProgress.collected) && Array.isArray(savedProgress.successful_terms)
-      && Array.isArray(savedProgress.scheduled_terms) && savedProgress.scheduled_terms.every(t => configuredCpuTerms.includes(t))
+      && Array.isArray(savedProgress.scheduled_terms) && savedProgress.scheduled_terms.every(t => configuredSearches.includes(t))
       && savedProgress.baseline_snapshot && savedProgress.quality_version === OLX_QUALITY_VERSION) {
     resumedProgress = savedProgress;
     cpuTerms = savedProgress.scheduled_terms;
@@ -120,6 +123,7 @@ async function main() {
       now: now.getTime(), fullSweep: Boolean(cpuArg) || args.includes('--full-sweep'),
       lowPriorityIntervalMs: Number(process.env.OLX_LOW_PRIORITY_INTERVAL_HOURS ?? 24) * 3600_000,
     });
+    if (!cpuArg) cpuTerms.push(...planNotebookFamilies(previousSnapshot, { now: now.getTime(), fullSweep: args.includes('--full-sweep') }));
   }
   descriptionQueue = await createDescriptionQueue(path.join(automationRoot, 'description-candidates.json'), runTimestamp);
   console.log(`Plano OLX: ${cpuTerms.length}/${configuredCpuTerms.length} termos nesta rodada; CPUs prioritárias primeiro.`);
@@ -193,14 +197,16 @@ async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transp
   const collected = [...(resumedProgress?.collected ?? [])];
   const successfulTerms = [...(resumedProgress?.successful_terms ?? [])];
   const failedTerms = [];
+  const queryYield = { ...(resumedProgress?.query_yield ?? {}) };
   let blockedUntil = null;
   const persistProgress = async (inProgress) => writeJsonAtomic(progressFile, {
-    schema_version: 1, quality_version: OLX_QUALITY_VERSION, configuration: configuredCpuTerms.join(','),
+    schema_version: 1, quality_version: OLX_QUALITY_VERSION, configuration: configuredSearches.join(','),
     started_at: runTimestamp, updated_at: new Date().toISOString(), state: inProgress ? 'collecting' : failedTerms.length ? 'partial' : 'completed',
     scheduled_terms: cpuTerms, successful_terms: successfulTerms, collected,
     pending_terms: cpuTerms.filter(term => !successfulTerms.includes(term)),
     baseline_snapshot: previousSnapshot ?? { items: [] }, blocked_until: blockedUntil,
     description_discovery: descriptionQueue.summary(),
+    query_yield: queryYield,
   }, { validate: null });
 
   const saveProgress = async (inProgress) => {
@@ -221,6 +227,7 @@ async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transp
         errors: [...failedTerms],
         unattempted_terms: unattemptedTerms,
         description_discovery: descriptionQueue.summary(),
+        query_yield: queryYield,
       },
     });
     const report = buildReport({
@@ -249,6 +256,7 @@ async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transp
     await forEachOlxTerm(cpuTerms.filter(term => !successfulTerms.includes(term)), async (term) => {
       try {
         let results;
+        const detailsBefore = descriptionQueue.summary().total_details ?? 0;
         try { results = await collectTerm(term); }
         catch (error) {
           if (!classifyMonitorError(error).retriable) throw error;
@@ -263,7 +271,12 @@ async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transp
           if (existing < 0) collected.push(item);
           else collected[existing] = item;
         }
-        successfulTerms.push(term);
+        if (results.coverage_incomplete) failedTerms.push({ term, error: 'Limite de cards ou detalhes atingido; cobertura pendente', kind: 'incomplete' });
+        else successfulTerms.push(term);
+        queryYield[term] = { returned: results.length, validated: results.filter(isValidatedOlxItem).length,
+          pending: results.filter(item => item.validation?.state === 'pending').length,
+          detail_reads: (descriptionQueue.summary().total_details ?? 0) - detailsBefore,
+          limited: Boolean(results.coverage_incomplete) };
         console.log(`  ${results.filter(isValidatedOlxItem).length} validado(s), ${results.filter(x => x.validation?.state === 'pending').length} pendente(s), ${results.filter(x => x.validation?.state === 'rejected').length} rejeitado(s).`);
       } catch (error) {
         const message = sanitizeErrorMessage(error?.message ?? error);
@@ -360,7 +373,7 @@ async function connectToCurrentChrome(cdpEndpoint) {
 }
 
 async function collectForCpuTerm(page, cpuTerm, maxCards, previousSnapshot) {
-  const query = encodeURIComponent(cpuSearchQuery(cpuTerm));
+  const query = encodeURIComponent(olxQuery(cpuTerm));
   const url = `${BASE_URL}?q=${query}&sp=1&opst=2`;
   console.log(`\nCPU: ${cpuTerm} -> ${url}`);
 
@@ -381,7 +394,7 @@ async function collectForCpuTerm(page, cpuTerm, maxCards, previousSnapshot) {
 }
 
 async function collectForCpuTermRawCdp(tab, cpuTerm, maxCards, previousSnapshot) {
-  const url = `${BASE_URL}?q=${encodeURIComponent(cpuSearchQuery(cpuTerm))}&sp=1&opst=2`;
+  const url = `${BASE_URL}?q=${encodeURIComponent(olxQuery(cpuTerm))}&sp=1&opst=2`;
   console.log(`\nCPU: ${cpuTerm} -> ${url}`);
   await navigateRawCdp(tab, url);
   await waitForRawLocation(tab, url);
@@ -391,14 +404,15 @@ async function collectForCpuTermRawCdp(tab, cpuTerm, maxCards, previousSnapshot)
 }
 
 async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openDetail) {
+  const familySearch = cpuTerm.startsWith('family:');
   const eligible = [...new Map(cards.filter(card => card.url && card.title && card.price_brl != null
     && isNotebookCategoryUrl(card.url) && !hasExcludedKeyword(`${card.title}\n${card.text ?? ''}`)
     && (extractNotebookRamText(`${card.title}\n${card.text ?? ''}`) ?? NOTEBOOK_MIN_RAM_GB) >= NOTEBOOK_MIN_RAM_GB)
     .map(card => [cardKey(card), { ...card, cpu_term: cpuTerm }])).values()];
-  const matches = eligible.filter(card => cardCpuState(`${card.title}\n${card.text ?? ''}`, cpuTerm) === 'match')
+  const matches = eligible.filter(card => !familySearch && cardCpuState(`${card.title}\n${card.text ?? ''}`, cpuTerm) === 'match')
     .filter(card => card.price_brl >= PRICE_MIN_BRL && card.price_brl <= PRICE_CHANGE_MAX_BRL)
     .sort((a, b) => a.price_brl - b.price_brl);
-  const unknown = eligible.filter(card => cardCpuState(`${card.title}\n${card.text ?? ''}`, cpuTerm) === 'unknown'
+  const unknown = eligible.filter(card => (familySearch ? !hasExplicitOtherNotebookCpu(`${card.title}\n${card.text ?? ''}`) : cardCpuState(`${card.title}\n${card.text ?? ''}`, cpuTerm) === 'unknown')
     && card.price_brl >= PRICE_MIN_BRL && card.price_brl <= PRICE_MAX_BRL);
   if (!listingOnly) await descriptionQueue.enqueue(unknown, cpuTerm);
   const waiting = listingOnly ? [] : descriptionQueue.pending(cpuTerm);
@@ -406,6 +420,7 @@ async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openD
   const reserveSlots = Math.min(2, waiting.length, maxCards);
   const toProcess = [...matches.slice(0, maxCards - reserveSlots), ...waiting, ...matches.slice(maxCards - reserveSlots)];
   const items = [], seen = new Set();
+  items.coverage_incomplete = cards.length >= maxCards;
   for (const card of toProcess) {
     if (items.length >= maxCards) break;
     const key = cardKey(card);
@@ -418,7 +433,7 @@ async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openD
     const reusable = current ?? (!forceOpenDetails ? cached ?? getReusablePreviousEnrichedItem(previousSnapshot, card) : null);
     if (reusable) {
       // Preserve the CPU confirmed in the description, not the discovery query.
-      items.push(reusable);
+      items.push({ ...revalidateSavedOlxItem(reusable), search_terms: [...new Set([...(reusable.search_terms ?? []), cpuTerm])] });
       if (!current) await descriptionQueue.useCached(card, reusable);
       continue;
     }
@@ -426,7 +441,11 @@ async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openD
     if (!(card.description_discovery || forceOpenDetails || needsDetailEnrichment(listingItem) || inRange)) {
       items.push(listingItem); continue;
     }
-    if (card.description_discovery && !await descriptionQueue.reserve(cpuTerm)) continue;
+    if (!await descriptionQueue.reserveDetail(cpuTerm, Boolean(card.description_discovery))) {
+      await descriptionQueue.enqueue([{ ...card, description_discovery: Boolean(card.description_discovery) }], cpuTerm);
+      items.coverage_incomplete = true;
+      continue;
+    }
     const started = Date.now();
     try {
       const item = await openDetail(card);
@@ -631,6 +650,7 @@ function listingCardToItem(card) {
     url: card.url,
     title: card.title,
     cpu_term: card.cpu_term,
+    search_terms: [card.cpu_term],
     description_discovery: Boolean(card.description_discovery),
     price_brl: card.price_brl,
     ...olxSpecs(listingText),
@@ -646,8 +666,7 @@ function listingCardToItem(card) {
 }
 
 function needsDetailEnrichment(item) {
-  // A qualidade exige RAM, armazenamento e GPU para classificar a oferta.
-  return item.ram_gb == null || item.storage_gb == null || item.gpu == null;
+  return item.ram_gb == null || item.gpu == null;
 }
 
 function getReusablePreviousEnrichedItem(previousSnapshot, card) {
@@ -1008,12 +1027,13 @@ function buildReport({ runDate, snapshot, previousSnapshot, priceMin, priceMax }
 
   const previousById = new Map((previousSnapshot?.items ?? []).map((x) => [x.id ?? x.url, x]));
 
-  const newItems = inRange.filter((x) => !isValidatedOlxItem(previousById.get(x.id ?? x.url)));
-  const stillActiveSeen = inRange.filter((x) => isValidatedOlxItem(previousById.get(x.id ?? x.url)));
+  const wasValidated = item => item?.validation?.state === 'validated' && isValidatedOlxItem(item);
+  const newItems = inRange.filter((x) => !wasValidated(previousById.get(x.id ?? x.url)));
+  const stillActiveSeen = inRange.filter((x) => wasValidated(previousById.get(x.id ?? x.url)));
 
   // Listing-based crawler: absence only means "not seen in this run's listing results" (not necessarily offline).
   const notSeenThisRun = (previousSnapshot?.items ?? [])
-    .filter((x) => x.status === "active" && meetsNotebookRamMinimum(x))
+    .filter((x) => x.status === "active" && isValidatedOlxItem(x))
     .filter((x) => !snapshot.items.some(item => (item.id ?? item.url) === (x.id ?? x.url) && item.status === 'active'));
 
   const priceChanges = [];
@@ -1031,6 +1051,7 @@ function buildReport({ runDate, snapshot, previousSnapshot, priceMin, priceMax }
   lines.push("");
   lines.push("## Resumo executivo");
   lines.push(`- RAM mínima instalada: **${NOTEBOOK_MIN_RAM_GB} GB**.`);
+  lines.push('- Armazenamento não informado não impede a oferta; CPU permitida, RAM e preço continuam obrigatórios.');
   if (snapshot.run?.successful_terms) {
     lines.push(`- Cobertura parcial: **${snapshot.run.partial ? "sim" : "não"}**`);
     lines.push(`- Coleta em andamento: **${snapshot.run.in_progress ? "sim" : "não"}**`);
@@ -1041,6 +1062,7 @@ function buildReport({ runDate, snapshot, previousSnapshot, priceMin, priceMax }
   if (snapshot.run?.description_discovery) {
     const d = snapshot.run.description_discovery;
     lines.push(`- Consultas adicionais de descrição: **${d.extra_details}/${d.per_round_limit}**; tempo: **${Math.round(d.detail_ms / 1000)} s**; ofertas válidas recuperadas: **${d.recovered_validated}**.`);
+    lines.push(`- Total de detalhes reservados: **${d.total_details ?? 0}/${d.total_detail_limit ?? 12}**.`);
     lines.push(`- Candidatos aguardando descrição: **${d.queued_candidates}**. Validação da fila completa: **${d.validation_complete ? 'sim' : 'não'}**.`);
   }
   lines.push(`- Novos anúncios válidos (R$ ${priceMin.toLocaleString("pt-BR")}–R$ ${priceMax.toLocaleString("pt-BR")}): **${newItems.length}**`);
@@ -1050,6 +1072,11 @@ function buildReport({ runDate, snapshot, previousSnapshot, priceMin, priceMax }
   lines.push(`- Candidatos pendentes de conferência na faixa: **${pending.length}**`);
   lines.push(`- Anúncios rejeitados pela validação: **${rejected.length}**`);
   lines.push('- Validado significa leitura automática do anúncio; não comprova autenticidade, estado físico ou entrega.');
+  if (snapshot.run?.policy_reclassification) lines.push(`- Reclassificação dos dados salvos; sem nova visita aos anúncios. Coleta original: ${snapshot.run.completed_at}.`);
+  const references = inRange.filter(item => item.opportunity?.state === 'indicative');
+  if (references.length) {
+    for (const item of references) lines.push(`- Referência indicativa: ${item.title}: ${item.opportunity.difference_percent}% abaixo da mediana de ${item.opportunity.sample} comparáveis; frete, TGP e estado físico exigem conferência.`);
+  } else lines.push('- Comparação de preço: amostra insuficiente de configurações semelhantes para classificar oportunidades.');
   lines.push("");
 
   if (snapshot.run?.failed_terms?.length) {
@@ -1132,14 +1159,17 @@ function mergeWithPreviousSnapshot({ runDate, now, collected, previousSnapshot, 
       scheduledCoverage: scheduledTerms,
       successfulCoverage: successfulTerms,
       failedCoverage: failedTerms.map((failure) => failure.term),
-      configuredCoverage: DEFAULT_CPU_TERMS,
-      itemCoverage: (item) => item.cpu_term ? [item.cpu_term]
+      configuredCoverage: configuredSearches,
+      itemCoverage: (item) => item.search_terms?.length ? item.search_terms : item.cpu_term ? [item.cpu_term]
         : DEFAULT_CPU_TERMS.filter((term) => textContainsCpuTerm(item.title ?? "", term)),
       filters: { ram_gb: { min: NOTEBOOK_MIN_RAM_GB }, price_brl: { min: PRICE_MIN_BRL, max: PRICE_MAX_BRL } },
     });
     result.price_range_brl = { min: PRICE_MIN_BRL, max: PRICE_MAX_BRL };
     result.items = result.items.map(item => item.validation?.state === 'rejected'
       ? { ...item, status: 'out_of_scope', out_of_scope_at: item.out_of_scope_at ?? now.toISOString() } : item);
+    result.items = result.items.map(revalidateSavedOlxItem);
+    const comparable = result.items.filter(item => item.status === 'active' && isValidatedOlxItem(item));
+    result.items = result.items.map(item => isValidatedOlxItem(item) ? { ...item, opportunity: notebookOpportunity(item, comparable) } : item);
     return result;
   }
   return _mergeItems({
@@ -1152,7 +1182,7 @@ function mergeWithPreviousSnapshot({ runDate, now, collected, previousSnapshot, 
   });
 }
 
-export { mergeWithPreviousSnapshot, getReusablePreviousEnrichedItem, needsDetailEnrichment };
+export { mergeWithPreviousSnapshot, getReusablePreviousEnrichedItem, needsDetailEnrichment, buildReport };
 
 function hasExcludedKeyword(text) {
   return Boolean(notebookExclusionReason(text));

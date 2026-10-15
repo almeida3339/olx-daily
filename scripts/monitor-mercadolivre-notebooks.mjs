@@ -29,6 +29,7 @@ const force = process.argv.includes("--force") || fullSweep;
 const requestedBudget = Number(option("--max-terms") ?? process.env.ML_NOTEBOOK_TERM_BUDGET ?? 6);
 const budget = Number.isFinite(requestedBudget) && requestedBudget > 0 ? Math.floor(requestedBudget) : 6;
 let schedule = await readMercadoLivreSchedule(root);
+let lastRunPartial = false;
 if (process.argv.includes("--clear-cooldown")) {
   schedule = clearMercadoLivreCooldown(schedule);
   await writeMercadoLivreSchedule(root, schedule);
@@ -69,6 +70,7 @@ if (!plan.terms.length) {
     localShipping: true,
   },
   });
+  lastRunPartial = lastRunPartial || Boolean(result.snapshot.run?.partial);
   schedule = recordMercadoLivreRun(schedule, {
     watchlistId: "notebooks",
     scheduledTerms: plan.terms,
@@ -90,6 +92,8 @@ if (!plan.terms.length) {
   if (['cooldown', 'login_required'].includes(plan.reason)) { process.exitCode = 1; break; }
   if (plan.terms.length) console.log(`Lote salvo. Prosseguindo com ${plan.terms.length} CPU(s) pendentes.`);
 }
+
+if (lastRunPartial) { console.warn('Notebooks: cobertura limitada ou fichas pendentes; consulte o relatório.'); process.exitCode = 1; }
 
 function option(name) {
   const index = process.argv.indexOf(name);
