@@ -1,4 +1,5 @@
 import { isCompleteOledMonitor } from './lib/oled-monitor-scope.mjs';
+import { isConfirmedBarefootShoe } from './lib/shoe-search-rules.mjs';
 import { meetsNotebookRamMinimum } from './lib/notebook-policy.mjs';
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -91,7 +92,7 @@ async function main() {
   const [olx, enjoeiNb, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, onePlusBuds, pixelWatch4, pixelWatch5, oura, oledMonitores] = await Promise.all([
     gather(OLX_DIR, "report-", "report-premium-", olxDetails),
     gather(ENJOEI_NOTEBOOKS_DIR, "report-", "report-premium-", enjoeiNbDetails),
-    gather(ENJOEI_DIR, "report-", null),
+    gather(ENJOEI_DIR, "report-", null, await latestSnapshotDetails(ENJOEI_DIR)),
     gather(DOCKSTATIONS_DIR, "report-", null),
     gather(FITBIT_DIR, "report-", null),
     gather(LIFEFACTORY_DIR, "report-", null),
@@ -131,7 +132,7 @@ async function main() {
 
 async function latestSnapshotDetails(dir) {
   const { snapshot } = await readLatestValidSnapshot(dir);
-  return new Map((snapshot?.items ?? []).filter((item) => item.url).map((item) => {
+  return new Map([...(snapshot?.items ?? []), ...(snapshot?.pending_items ?? [])].filter((item) => item.url).map((item) => {
     const notebook = extractMercadoLivreNotebookSpecs(item.specs);
     return [item.url, {
       ...item,
@@ -148,6 +149,7 @@ async function buildPriceInsights(descriptors) {
   for (const [source, dir] of descriptors) {
     const { snapshot } = await readLatestValidSnapshot(dir);
     for (const item of snapshot?.items ?? []) {
+      if (dir === ENJOEI_DIR && !isConfirmedBarefootShoe(item)) continue;
       if (['OLX', 'Enjoei Notebooks', 'Mercado Livre Notebooks'].includes(source) && !meetsNotebookRamMinimum(item)) continue;
       if ([OLED_MONITORES_DIR, path.join(ROOT, 'data', 'mercadolivre-oled-monitores')].includes(dir) && !isCompleteOledMonitor(item)) continue;
       if (source === 'OLX' && !isValidatedOlxItem(item)) continue;
@@ -201,6 +203,14 @@ async function gather(dir, prefix, excludePrefix, detailsByUrl = new Map()) {
     const txt = await fs.readFile(path.join(dir, file), "utf8").catch(() => null);
     if (!txt) continue;
     const p = parseReport(txt, detailsByUrl);
+    if (dir === ENJOEI_DIR) {
+      for (const field of ['allNewItems', 'allPriceItems']) p[field] = p[field].filter(item =>
+        isConfirmedBarefootShoe(detailsByUrl.get(item.url) ?? { title: item.fullTitle }));
+      p.newItems = p.allNewItems.slice(0, MAX);
+      p.priceItems = p.allPriceItems.slice(0, MAX);
+      p.newCount = p.allNewItems.length;
+      p.priceCount = p.allPriceItems.length;
+    }
     if (dir === OLX_DIR) {
       const allowed = item => !detailsByUrl.get(item.url)?.validation || isValidatedOlxItem(detailsByUrl.get(item.url));
       p.newItems = p.newItems.filter(allowed);

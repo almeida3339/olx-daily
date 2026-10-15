@@ -1,4 +1,3 @@
-import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -6,12 +5,12 @@ import {
   mergeMonitorSnapshot,
 } from "./lib/monitor-core.mjs";
 import { commitMonitorRun, readLatestValidSnapshot } from "./lib/monitor-runtime.mjs";
-import { ENJOEI_SHOE_TERMS, matchesEnjoeiShoeSearchTerm } from "./lib/shoe-search-rules.mjs";
+import { ENJOEI_SHOE_TERMS, matchesEnjoeiShoeSearchTerm, classifyBarefootShoe, SHOE_RULES_VERSION } from "./lib/shoe-search-rules.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const automationRoot = process.env.ENJOEI_DATA_DIR ?? path.join(process.env.USERPROFILE ?? process.env.HOME ?? "", ".codex", "automations", "monitor-enjoei-tenis-42");
 
-const SEARCH_ENDPOINT = "https://enjusearch.enjoei.com.br/graphql-search-x";
+import { collectEnjoeiShoes } from "./lib/enjoei-shoe-collection.mjs";
 const SITE_ORIGIN = "https://www.enjoei.com.br";
 const DEFAULT_TERMS = ENJOEI_SHOE_TERMS;
 
@@ -39,10 +38,6 @@ function formatError(error) {
   return `${message}\nCausa: ${causeMessage}`;
 }
 
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
 async function main() {
   const now = new Date();
   const runDate = now.toISOString().slice(0, 10);
@@ -59,15 +54,37 @@ async function main() {
   console.log(`Snapshot anterior: ${previousSnapshotPath ?? "(nenhum)"}`);
   console.log("");
 
-  const { items: collected, failedTerms } = await collectProducts();
-  const snapshot = mergeWithPreviousSnapshot({ now, collected, failedTerms, previousSnapshot });
+  const limits = {
+    maxPagesPerTerm: Number(process.env.ENJOEI_SHOE_PAGES_PER_TERM ?? 6),
+    maxPages: Number(process.env.ENJOEI_SHOE_MAX_PAGES ?? 48),
+    maxMinutes: Number(process.env.ENJOEI_SHOE_MAX_MINUTES ?? 3),
+    detailMax: Number(process.env.ENJOEI_SHOE_DETAIL_MAX ?? 8),
+  };
+  if (![first, ...Object.values(limits)].every(v => Number.isInteger(v) && v > 0)
+      || !Number.isFinite(maxPriceBrl) || maxPriceBrl <= 0) throw new Error('Limites de coleta inválidos');
+  const collection = await collectEnjoeiShoes({ dataDir: automationRoot, terms, department, shoeSize, shippingRange, state, city, first, maxPriceBrl, ...limits });
+  const { items: collected, failedTerms, incompleteTerms, pendingItems } = collection;
+  const completedAt = new Date();
+  const snapshot = mergeWithPreviousSnapshot({ now: completedAt, collected, failedTerms: [...failedTerms, ...incompleteTerms], previousSnapshot });
+  snapshot.pending_items = pendingItems;
+  snapshot.run.started_at = runTimestamp;
+  snapshot.run.completed_at = completedAt.toISOString();
+  snapshot.run.failed_terms = failedTerms;
+  snapshot.run.incomplete_terms = incompleteTerms;
+  snapshot.run.errors = collection.errors;
+  snapshot.run.pagination = collection.pagination;
+  snapshot.run.discovery = collection.stats;
+  snapshot.run.discovery.pending_details = pendingItems.filter(item => !item.barefoot_validation.description_checked_at).length;
+  snapshot.run.partial ||= snapshot.run.discovery.pending_details > 0;
+  console.log(JSON.stringify({ confirmed: collected.length, pending: pendingItems.length, ...collection.stats }));
 
   const report = buildReport({ runDate, snapshot, previousSnapshot });
   const committed = await commitMonitorRun(automationRoot, {
     runId,
     snapshot,
     report,
-    metadata: { source: "enjoei-tenis", collected_count: collected.length },
+    metadata: { source: "enjoei-tenis", collected_count: collected.length, pending_count: pendingItems.length,
+      failed_term_count: failedTerms.length, incomplete_term_count: incompleteTerms.length },
   });
   const snapshotPath = committed.legacySnapshotPath;
   const reportPath = committed.legacyReportPath;
@@ -76,106 +93,7 @@ async function main() {
   console.log(`Snapshot salvo: ${snapshotPath}`);
   console.log(`Relatorio salvo: ${reportPath}`);
   if (committed.invalidItems.length) console.warn(`${committed.invalidItems.length} item(ns) foram para a quarentena.`);
-  if (failedTerms.length) process.exitCode = 1;
-}
-
-async function collectProducts() {
-  const byId = new Map();
-  const failedTerms = [];
-
-  for (let i = 0; i < terms.length; i += 1) {
-    const searchTerm = terms[i];
-    if (i > 0) await sleep(350);
-    console.log(`Termo: ${searchTerm}`);
-
-    try {
-      const response = await fetchWithRetry(buildApiUrl(searchTerm), {
-        headers: {
-          accept: "application/json",
-          origin: SITE_ORIGIN,
-          referer: buildSearchPageUrl(searchTerm),
-          "user-agent":
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`Enjoei retornou HTTP ${response.status}`);
-      }
-
-      const payload = await response.json();
-      const products = payload?.data?.search?.products;
-      if (!products) {
-        throw new Error(`Resposta nao contem data.search.products`);
-      }
-
-      for (const edge of products.edges ?? []) {
-        const item = normalizeProduct(edge.node, searchTerm);
-        if (!item || item.price_brl == null || item.price_brl > maxPriceBrl) continue;
-        if (!itemMatchesSearchTerm(item, searchTerm)) continue;
-
-        const current = byId.get(item.id);
-        if (current) {
-          current.search_terms = Array.from(new Set([...(current.search_terms ?? []), searchTerm]));
-        } else {
-          byId.set(item.id, item);
-        }
-      }
-    } catch (error) {
-      console.warn(`  Aviso: falha no termo "${searchTerm}" — ${error.message}. Continuando.`);
-      failedTerms.push(searchTerm);
-    }
-  }
-
-  if (failedTerms.length > 0) {
-    console.warn(`\nTermos que falharam: ${failedTerms.join(", ")}`);
-  }
-
-  return { items: Array.from(byId.values()), failedTerms };
-}
-
-async function fetchWithRetry(url, options) {
-  const maxAttempts = 3;
-  const baseDelayMs = 750;
-  let lastError;
-
-  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
-    try {
-      if (attempt > 1) console.log(`  Retry ${attempt}/${maxAttempts}...`);
-      return await fetch(url, { ...options, signal: AbortSignal.timeout(20_000) });
-    } catch (error) {
-      lastError = error;
-      if (attempt >= maxAttempts) break;
-      await sleep(baseDelayMs * attempt);
-    }
-  }
-
-  const wrapped = new TypeError(`fetch failed apos ${maxAttempts} tentativas (${url})`);
-  wrapped.cause = lastError;
-  throw wrapped;
-}
-
-function buildApiUrl(searchTerm) {
-  const url = new URL(SEARCH_ENDPOINT);
-  const now = Date.now();
-  const browserId = `codex-monitor-${now}`;
-  const searchId = `codex-search-${now}`;
-
-  url.searchParams.set("browser_id", browserId);
-  url.searchParams.set("city", city);
-  url.searchParams.set("experienced_seller", "true");
-  url.searchParams.set("first", String(first));
-  url.searchParams.set("operation_name", "searchProducts");
-  url.searchParams.set("query_id", "c5faa5f85fb47bf0beaa97b67d8a9189");
-  url.searchParams.set("recommendation_context.recommendation_department", department);
-  url.searchParams.set("search_context", "products_search");
-  url.searchParams.set("search_id", searchId);
-  url.searchParams.set("shipping_range", shippingRange);
-  url.searchParams.set("size_types.shoes", shoeSize);
-  url.searchParams.set("state", state);
-  url.searchParams.set("term", searchTerm);
-
-  return url;
+  if (snapshot.run.partial) process.exitCode = 1;
 }
 
 function buildSearchPageUrl(searchTerm) {
@@ -188,31 +106,9 @@ function buildSearchPageUrl(searchTerm) {
   return url.toString();
 }
 
-function normalizeProduct(node, searchTerm) {
-  if (!node?.id || !node?.path) return null;
-  const price = Number(node.price?.current);
-  return {
-    id: String(node.id),
-    url: `${SITE_ORIGIN}/p/${node.path}`,
-    title: node.title?.name ?? "",
-    brand: node.brand?.displayable_name ?? null,
-    price_brl: Number.isFinite(price) ? price : null,
-    original_price_brl: Number.isFinite(Number(node.price?.original)) ? Number(node.price.original) : null,
-    size: node.size?.name ?? shoeSize,
-    used: Boolean(node.used),
-    shipping_free: Boolean(node.shipping?.free),
-    store_name: node.store?.displayable?.name ?? null,
-    store_path: node.store?.path ? `${SITE_ORIGIN}/${node.store.path}` : null,
-    search_terms: [searchTerm],
-    status: "active",
-    first_seen: null,
-    last_seen: null,
-  };
-}
-
 function mergeWithPreviousSnapshot({ now, collected, failedTerms, previousSnapshot }) {
   const previousItems = (previousSnapshot?.items ?? []).filter(
-    (item) => (item.price_brl == null || item.price_brl <= maxPriceBrl) && itemMatchesAnySearchTerm(item)
+    (item) => (item.price_brl == null || item.price_brl <= maxPriceBrl) && isConfirmedItem(item)
   );
   const snapshot = mergeMonitorSnapshot({
     previousSnapshot: previousSnapshot ? { ...previousSnapshot, items: previousItems } : null,
@@ -249,7 +145,7 @@ function mergeWithPreviousSnapshot({ now, collected, failedTerms, previousSnapsh
 function buildReport({ runDate, snapshot, previousSnapshot }) {
   const currentItems = snapshot.items.filter((item) => item.status === "active");
   const previousComparableItems = (previousSnapshot?.items ?? []).filter(
-    (item) => (item.price_brl == null || item.price_brl <= maxPriceBrl) && itemMatchesAnySearchTerm(item)
+    (item) => (item.price_brl == null || item.price_brl <= maxPriceBrl) && isConfirmedItem(item)
   );
   const previousById = new Map(previousComparableItems.map((item) => [item.id ?? item.url, item]));
   const currentById = new Map(currentItems.map((item) => [item.id ?? item.url, item]));
@@ -260,9 +156,10 @@ function buildReport({ runDate, snapshot, previousSnapshot }) {
     { reactivationIsNew: false },
   );
   const stillActive = currentItems.filter((item) => previousById.has(item.id ?? item.url));
+  const pendingIds = new Set((snapshot.pending_items ?? []).map(item => item.id));
   const notSeenThisRun = previousComparableItems
     .filter((item) => item.status === "active")
-    .filter((item) => !currentById.has(item.id ?? item.url));
+    .filter((item) => !currentById.has(item.id ?? item.url) && !pendingIds.has(item.id));
 
   const priceChanges = sharedPriceChanges.map((item) => ({
     item,
@@ -279,9 +176,19 @@ function buildReport({ runDate, snapshot, previousSnapshot }) {
   lines.push(`- Nao vistos nesta rodada: **${notSeenThisRun.length}**`);
   lines.push(`- Alteracoes de preco: **${priceChanges.length}**`);
   lines.push(`- Termos: ${snapshot.search.terms.join(", ")}`);
+  lines.push(`- Cobertura parcial: **${snapshot.run.partial ? 'sim' : 'não'}**`);
+  lines.push(`- Termos com paginação pendente: ${(snapshot.run.incomplete_terms ?? []).join(', ') || 'nenhum'}`);
+  lines.push(`- Candidatos pendentes de conferência: **${(snapshot.pending_items ?? []).length}**`);
+  lines.push(`- Páginas nesta rodada: **${snapshot.run.discovery.pages_fetched}**; descrições: **${snapshot.run.discovery.details_fetched}/${snapshot.run.discovery.detail_budget}**; cache: **${snapshot.run.discovery.cache_hits}**.`);
+  lines.push('- Confirmação automática por marca/modelo ou características declaradas; não comprova autenticidade ou estado físico.');
   lines.push(`- Preco maximo: R$ ${formatBrl(snapshot.search.max_price_brl)}`);
   lines.push("");
 
+  lines.push('## Cobertura por termo');
+  for (const [term, progress] of Object.entries(snapshot.run.pagination)) {
+    lines.push(`- ${term}: ${progress.pages} página(s), ${progress.complete ? 'concluído' : 'pendente'}${progress.reason ? ` — ${progress.reason}` : ''}.`);
+  }
+  lines.push('');
   lines.push("## Novos produtos");
   if (newItems.length === 0) {
     lines.push("- Nenhum.");
@@ -315,6 +222,12 @@ function buildReport({ runDate, snapshot, previousSnapshot }) {
     lines.push("");
   }
 
+  lines.push('## Candidatos pendentes de conferência');
+  lines.push('- Candidatos não entram nos alertas de ofertas confirmadas.');
+  for (const item of sortByPrice(snapshot.pending_items ?? [])) {
+    lines.push(`${formatItemLine(item)} — Pendente: ${item.barefoot_validation.reason}`);
+  }
+  lines.push('');
   return lines.join("\n");
 }
 
@@ -330,6 +243,13 @@ function sortByPrice(items) {
   return items.slice().sort((a, b) => (a.price_brl ?? Infinity) - (b.price_brl ?? Infinity));
 }
 
+function isConfirmedItem(item) {
+  return item.size === shoeSize && itemMatchesAnySearchTerm(item)
+    && (item.barefoot_validation?.version === SHOE_RULES_VERSION
+      ? item.barefoot_validation.state === 'confirmed'
+      : classifyBarefootShoe(item).state === 'confirmed');
+}
+
 function itemMatchesAnySearchTerm(item) {
   return terms.some((searchTerm) => itemMatchesSearchTerm(item, searchTerm));
 }
@@ -341,23 +261,6 @@ function itemMatchesSearchTerm(item, searchTerm) {
 function formatBrl(value) {
   if (value == null || !Number.isFinite(Number(value))) return "n/d";
   return Number(value).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
-
-async function getLatestSnapshotPath(root) {
-  const entries = await fs.readdir(root).catch(() => []);
-  const snapshots = entries
-    .filter((name) => /^snapshot-.*\.json$/.test(name))
-    .map((name) => path.join(root, name))
-    .sort();
-  return snapshots.at(-1) ?? null;
-}
-
-async function readJsonSafe(filePath) {
-  try {
-    return JSON.parse(await fs.readFile(filePath, "utf8"));
-  } catch {
-    return null;
-  }
 }
 
 function getOptionValue(values, name) {

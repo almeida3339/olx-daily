@@ -1,4 +1,5 @@
 import { filterNotebookReportRam } from './lib/notebook-policy.mjs';
+import { filterBarefootReport } from './lib/shoe-search-rules.mjs';
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -607,6 +608,11 @@ async function readLatestReport(dir, minTime = null) {
 }
 
 async function applyNotebookRamPreference(dir, report) {
+  if (dir === ENJOEI_DIR) {
+    const { snapshot } = await readLatestValidSnapshot(dir);
+    const details = new Map([...(snapshot?.items ?? []), ...(snapshot?.pending_items ?? [])].map(item => [item.url, item]));
+    return filterBarefootReport(report, details);
+  }
   if (![OLX_DIR, ENJOEI_NOTEBOOKS_DIR, localDir("mercadolivre-notebooks")].includes(dir)) return report;
   const { snapshot } = await readLatestValidSnapshot(dir);
   const details = new Map((snapshot?.items ?? []).map(item => [item.url, item]));

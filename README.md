@@ -12,6 +12,15 @@
 - Verificação, login ou limite interrompem a rodada e preservam os termos restantes. A pausa de acesso é de 24 horas; após liberação manual, `-ResumeAfterVerification` / `--resume-after-verification` permite retomar. `-FullSweep` não contorna esse bloqueio.
 - O desenho aprofundado das futuras buscas por modelos e do ranking está em [docs/olx-discovery-and-opportunity-plan.md](docs/olx-discovery-and-opportunity-plan.md). Esses dois recursos ainda não foram ativados.
 
+## Tênis barefoot e minimalistas no Enjoei
+
+- Mantém masculino, numeração 42 e preço anunciado até R$ 500. Tamanho é confirmado nos campos/variações disponíveis; não é inventado quando a API omite a numeração.
+- Busca 24 termos, incluindo variantes de FiveFingers e Vivobarefoot, modelos Vapor/Trail Glove, novas marcas, `minimalista(s)` e `zero drop`/`drop zero`. FiveFingers anunciado como “sapatilha” é aceito; sapatilhas convencionais continuam excluídas. A palavra “foto” não comprova FOT.
+- Marca/linha identificada pode confirmar o candidato automaticamente; Merrell genérico, marketing “minimalista” e “zero drop” isolado ficam pendentes. Para marcas não identificadas, a descrição precisa declarar biqueira larga, zero drop e solado fino/flexível. Isso não autentica o produto nem comprova seu estado físico.
+- Candidatos pendentes aparecem separados no painel e não entram nos alertas de ofertas confirmadas. Relatórios históricos reapresentados também respeitam a regra atual.
+- Segue os cursores da API e salva o progresso de cada termo em `data/enjoei/collection-progress.json`. Termos incompletos retomam na próxima rodada; os demais são pesquisados novamente. Limites padrão: seis páginas por termo, 48 páginas totais e três minutos por rodada. Não declara cobertura completa ao atingir um limite.
+- Descrições: até oito novas leituras por rodada, deduplicadas por anúncio, cache de 12 horas com título/marca/preço iguais, limitado a mil entradas. Limites configuráveis por `ENJOEI_SHOE_PAGES_PER_TERM`, `ENJOEI_SHOE_MAX_PAGES`, `ENJOEI_SHOE_MAX_MINUTES` e `ENJOEI_SHOE_DETAIL_MAX`.
+
 ## Visão geral
 
 Sistema modular de monitoramento diário (2× por dia, 07:00 e 16:00 BRT). Busca em OLX (scraping + Playwright) e Enjoei (GraphQL API). Envia WhatsApp (CallMeBot); e-mail (Gmail) é opcional e está desativado por padrão. O Mercado Livre roda sob demanda. Dashboard HTML em GitHub Pages. Requer Node.js 20 ou superior (CI usa Node 22).
@@ -37,7 +46,7 @@ Sistema modular de monitoramento diário (2× por dia, 07:00 e 16:00 BRT). Busca
 |---|---|---|---|
 | **OLX Notebooks** | OLX (22 CPUs) | R$ 2.000–8.000 | CPU flagship Intel/AMD (filtro mudança até R$ 10k) |
 | **Enjoei Notebooks** | Enjoei (GraphQL) | R$ 1.500–8.000 | 22 CPUs (novo até R$ 8k) |
-| **Enjoei Tênis 42** | Enjoei (GraphQL) | até R$ 500 | Minimalistas, tamanho 42, 5 marcas |
+| **Enjoei Tênis 42** | Enjoei (GraphQL) | até R$ 500 | Masculino, tamanho 42; 24 termos, variantes e descrição dos candidatos |
 | **Enjoei Calças Zegna 40** | Enjoei (GraphQL) | menos de R$ 250 | Masculino, cintura 40; inclui Ermenegildo Zegna e Zegna Sport |
 | **Dockstations** | OLX + Enjoei | até R$ 500 | 3 modelos (SD25TB4, WD22TB4, 40AY0090BR), 4TB+ |
 | **Fitbit Air** | OLX + Enjoei | R$ 300–600 | Smartwatch Fitbit Air exato |
