@@ -1,5 +1,5 @@
 import { isCompleteOledMonitor } from './lib/oled-monitor-scope.mjs';
-import { isConfirmedBarefootShoe } from './lib/shoe-search-rules.mjs';
+import { isConfirmedBarefootShoe, barefootPriority, classifyBarefootShoe } from './lib/shoe-search-rules.mjs';
 import { ENJOEI_JAPANESE_JEANS } from './lib/enjoei-japanese-jeans.mjs';
 import { meetsNotebookRamMinimum } from './lib/notebook-policy.mjs';
 import fs from "node:fs/promises";
@@ -224,7 +224,14 @@ async function gather(dir, prefix, excludePrefix, detailsByUrl = new Map()) {
     const p = parseReport(txt, detailsByUrl);
     if (dir === ENJOEI_DIR) {
       for (const field of ['allNewItems', 'allPriceItems']) p[field] = p[field].filter(item =>
-        isConfirmedBarefootShoe(detailsByUrl.get(item.url) ?? { title: item.fullTitle }));
+        isConfirmedBarefootShoe(detailsByUrl.get(item.url) ?? { title: item.fullTitle }))
+        .sort((a,b) => barefootPriority(detailsByUrl.get(a.url) ?? { title: a.fullTitle }) - barefootPriority(detailsByUrl.get(b.url) ?? { title: b.fullTitle }));
+      p.allPendingItems = p.allPendingItems.filter(item => {
+        const details = detailsByUrl.get(item.url);
+        return details && classifyBarefootShoe(details, details.description_evidence ?? '').state === 'pending';
+      });
+      p.pendingItems = p.allPendingItems.slice(0, MAX);
+      p.pendingCount = p.allPendingItems.length;
       p.newItems = p.allNewItems.slice(0, MAX);
       p.priceItems = p.allPriceItems.slice(0, MAX);
       p.newCount = p.allNewItems.length;
@@ -587,7 +594,7 @@ function buildHtml({ health, priceInsights, japaneseJeans, zegna, zegnaUpdated, 
     })),
     { chip: "OLX",              title: "OLX Notebooks",     sub: "R$ 2.000 – R$ 8.000 · RAM ≥ 32 GB",                          data: olx,         dpath: "data/olx",              upd: olxUpdated },
     { chip: "Enjoei Notebooks", title: "Enjoei Notebooks",  sub: "R$ 1.500 – R$ 8.000 · RAM ≥ 32 GB",                          data: enjoeiNb,    dpath: "data/enjoei-notebooks", upd: enjoeiNbUpdated },
-    { chip: "Enjoei Tênis",     title: "Enjoei Tênis 42",   sub: "até R$ 500,00",                                data: enjoei,      dpath: "data/enjoei",           upd: enjoeiTenisUpdated },
+    { chip: "Enjoei Tênis",     title: "Enjoei Tênis barefoot 42", sub: "Fiber e FOT · Walka, Lito, Noga, Voet e Bruk · até R$ 500", data: enjoei, dpath: "data/enjoei", upd: enjoeiTenisUpdated },
     { chip: "Enjoei Zegna", title: "Enjoei Calças Zegna 40", sub: "masculino · tamanho 40 · menos de R$ 250", data: zegna, dpath: "data/enjoei-zegna", upd: zegnaUpdated },
     { chip: "Enjoei Ricardo Almeida", title: "Enjoei Jeans Ricardo Almeida 40", sub: "jeans masculino · tamanho 40 · menos de R$ 250", data: ricardoAlmeida, dpath: "data/enjoei-ricardo-almeida", upd: ricardoAlmeidaUpdated },
     { chip: "Enjoei Jacob Cohën", title: "Enjoei Jeans Jacob Cohën 40", sub: "jeans masculino · tamanho 40 · menos de R$ 250", data: jacobCohen, dpath: "data/enjoei-jacob-cohen", upd: jacobCohenUpdated },

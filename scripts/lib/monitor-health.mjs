@@ -25,7 +25,9 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
     for (const artifact of artifacts.reverse()) coverage = mergeCoverageStatus(coverage, artifact.snapshot);
     coverage = mergeCoverageStatus(coverage, snapshot ?? {});
     const configured = snapshot?.run?.configured_coverage ?? snapshot?.run?.configured_terms ?? [];
-    const marketplaces = coverageHealth(configured, coverage, { now, maxAgeMs, id, sourceBlocks: snapshot?.source_blocks ?? {} });
+    const marketplaces = id === 'enjoei' && snapshot?.run?.search_schedule
+      ? shoeScheduleHealth(snapshot.run.search_schedule, now)
+      : coverageHealth(configured, coverage, { now, maxAgeMs, id, sourceBlocks: snapshot?.source_blocks ?? {} });
     const timestamp = snapshotTimestamp(snapshot, result.file);
     const ageMs = timestamp == null ? null : Math.max(0, now.getTime() - timestamp);
     const errors = asArray(snapshot?.run?.errors ?? snapshot?.run?.failed_terms);
@@ -55,7 +57,7 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
       message: freshnessNote + (hardDenial ? `OLX recusou o acesso; sem CAPTCHA disponível. ${hardDenial[1].reason ?? ''}` : profileBlocked ? `Perfil ML exige login/verificação${mlSchedule.global.blocked_until ? `; pausa até ${new Date(mlSchedule.global.blocked_until).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })}` : ''}`
         : snapshot?.run?.in_progress ? 'Coleta em andamento; progresso salvo'
         : snapshot?.run?.aborted ? 'Coleta interrompida; resultados parciais preservados' : marketplaces.length
-        ? marketplaces.map((source) => `${source.label}: ${healthMessage(source.state)} (${source.fresh_terms}/${source.total_terms} termos recentes)`).join(' · ')
+        ? marketplaces.map((source) => `${source.label}: ${healthMessage(source.state)} (${source.fresh_terms}/${source.total_terms} termos recentes${source.warming_terms ? `; ${source.warming_terms} em implantação` : ''})`).join(' · ')
         : healthMessage(state)),
     });
   }
@@ -86,6 +88,24 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
 
 function worstState(states) {
   return ['blocked', 'missing', 'stale', 'partial', 'degraded', 'healthy'].find((state) => states.includes(state)) ?? 'healthy';
+}
+
+function shoeScheduleHealth(schedule, now) {
+  const labels = { priority: 'Enjoei prioritárias', daily: 'Enjoei diárias', rotation: 'Enjoei rodízio', discovery: 'Enjoei descoberta semanal' };
+  return Object.entries(labels).flatMap(([tier, label]) => {
+    const queries = Object.values(schedule).filter(query => query.tier === tier);
+    if (!queries.length) return [];
+    const states = queries.map(query => {
+      if (query.state === 'failed') return ['challenge', 'authentication', 'rate_limited'].includes(classifyMonitorError(query.error).kind) ? 'blocked' : 'partial';
+      if (!query.last_success_at) return 'partial';
+      if (now.getTime() - Date.parse(query.last_success_at) > query.max_age_hours * 3600_000) return 'stale';
+      return 'healthy';
+    });
+    return [{ label, state: worstState(states), total_terms: queries.length,
+      fresh_terms: states.filter(state => state === 'healthy').length,
+      warming_terms: queries.filter(query => !query.last_success_at).length,
+      updated_at: queries.map(query => query.last_success_at).filter(Boolean).sort().at(-1) ?? null }];
+  });
 }
 
 function coverageHealth(configured, coverage, { now, maxAgeMs, id, sourceBlocks }) {

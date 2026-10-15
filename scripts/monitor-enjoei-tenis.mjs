@@ -5,16 +5,18 @@ import {
   mergeMonitorSnapshot,
 } from "./lib/monitor-core.mjs";
 import { commitMonitorRun, readLatestValidSnapshot } from "./lib/monitor-runtime.mjs";
-import { ENJOEI_SHOE_TERMS, matchesEnjoeiShoeSearchTerm, classifyBarefootShoe, SHOE_RULES_VERSION } from "./lib/shoe-search-rules.mjs";
+import { matchesEnjoeiShoeSearchTerm, classifyBarefootShoe, SHOE_RULES_VERSION, barefootPriority } from "./lib/shoe-search-rules.mjs";
+import { ENJOEI_SHOE_PLAN } from './lib/enjoei-shoe-plan.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const automationRoot = process.env.ENJOEI_DATA_DIR ?? path.join(process.env.USERPROFILE ?? process.env.HOME ?? "", ".codex", "automations", "monitor-enjoei-tenis-42");
 
 import { collectEnjoeiShoes } from "./lib/enjoei-shoe-collection.mjs";
 const SITE_ORIGIN = "https://www.enjoei.com.br";
-const DEFAULT_TERMS = ENJOEI_SHOE_TERMS;
+const DEFAULT_TERMS = ENJOEI_SHOE_PLAN.map(spec => spec.id);
 
 const args = process.argv.slice(2);
+const explicitTerms = args.includes('--term') || args.includes('--terms');
 const terms = getTerms();
 const department = getOptionValue(args, "--department") ?? "masculino";
 const shoeSize = getOptionValue(args, "--shoe-size") ?? "42";
@@ -55,18 +57,24 @@ async function main() {
   console.log("");
 
   const limits = {
-    maxPagesPerTerm: Number(process.env.ENJOEI_SHOE_PAGES_PER_TERM ?? 6),
-    maxPages: Number(process.env.ENJOEI_SHOE_MAX_PAGES ?? 48),
+    maxPagesPerTerm: Number(process.env.ENJOEI_SHOE_PAGES_PER_TERM ?? 2),
+    maxPages: Number(process.env.ENJOEI_SHOE_MAX_PAGES ?? 12),
+    discoveryPages: Number(process.env.ENJOEI_SHOE_DISCOVERY_PAGES ?? 6),
     maxMinutes: Number(process.env.ENJOEI_SHOE_MAX_MINUTES ?? 3),
-    detailMax: Number(process.env.ENJOEI_SHOE_DETAIL_MAX ?? 8),
+    detailMax: Number(process.env.ENJOEI_SHOE_DETAIL_MAX ?? 4),
   };
   if (![first, ...Object.values(limits)].every(v => Number.isInteger(v) && v > 0)
       || !Number.isFinite(maxPriceBrl) || maxPriceBrl <= 0) throw new Error('Limites de coleta inválidos');
-  const collection = await collectEnjoeiShoes({ dataDir: automationRoot, terms, department, shoeSize, shippingRange, state, city, first, maxPriceBrl, ...limits });
+  const collection = await collectEnjoeiShoes({ dataDir: automationRoot, terms, explicitTerms, department, shoeSize, shippingRange, state, city, first, maxPriceBrl, ...limits });
   const { items: collected, failedTerms, incompleteTerms, pendingItems } = collection;
   const completedAt = new Date();
-  const snapshot = mergeWithPreviousSnapshot({ now: completedAt, collected, failedTerms: [...failedTerms, ...incompleteTerms], previousSnapshot });
-  snapshot.pending_items = pendingItems;
+  const snapshot = mergeWithPreviousSnapshot({ now: completedAt, collected, collection, previousSnapshot });
+  const knownIds = new Set([...collected, ...pendingItems].map(item => item.id));
+  const rejectedCachedIds = new Set(collection.rejectedCachedIds);
+  snapshot.pending_items = [...pendingItems, ...(previousSnapshot?.pending_items ?? []).filter(item => !knownIds.has(item.id)
+    && !rejectedCachedIds.has(item.id)
+    && classifyBarefootShoe(item).state === 'pending'
+    && !(item.search_terms ?? []).every(term => collection.successfulTerms.includes(term)))];
   snapshot.run.started_at = runTimestamp;
   snapshot.run.completed_at = completedAt.toISOString();
   snapshot.run.failed_terms = failedTerms;
@@ -74,8 +82,10 @@ async function main() {
   snapshot.run.errors = collection.errors;
   snapshot.run.pagination = collection.pagination;
   snapshot.run.discovery = collection.stats;
+  snapshot.run.search_schedule = collection.schedule;
+  snapshot.run.deferred_terms = collection.deferredTerms;
   snapshot.run.discovery.pending_details = pendingItems.filter(item => !item.barefoot_validation.description_checked_at).length;
-  snapshot.run.partial ||= snapshot.run.discovery.pending_details > 0;
+  snapshot.run.partial ||= pendingItems.some(item => barefootPriority(item) === 0 && !item.barefoot_validation.description_checked_at);
   console.log(JSON.stringify({ confirmed: collected.length, pending: pendingItems.length, ...collection.stats }));
 
   const report = buildReport({ runDate, snapshot, previousSnapshot });
@@ -97,16 +107,19 @@ async function main() {
 }
 
 function buildSearchPageUrl(searchTerm) {
-  const url = new URL(`${SITE_ORIGIN}/${encodeURIComponent(searchTerm)}/s`);
+  const spec = ENJOEI_SHOE_PLAN.find(spec => spec.id === searchTerm);
+  const queryTerm = spec?.term ?? searchTerm;
+  const url = new URL(`${SITE_ORIGIN}/${encodeURIComponent(queryTerm)}/s`);
   url.searchParams.set("ref", "products_search");
-  url.searchParams.set("q", searchTerm);
-  url.searchParams.set("d", department);
+  url.searchParams.set("q", queryTerm);
+  if (spec?.department !== null) url.searchParams.set("d", department);
   url.searchParams.set("st[ss]", shoeSize);
   url.searchParams.set("sr", shippingRange);
   return url.toString();
 }
 
-function mergeWithPreviousSnapshot({ now, collected, failedTerms, previousSnapshot }) {
+function mergeWithPreviousSnapshot({ now, collected, collection, previousSnapshot }) {
+  const failedTerms = [...collection.failedTerms, ...collection.incompleteTerms];
   const previousItems = (previousSnapshot?.items ?? []).filter(
     (item) => (item.price_brl == null || item.price_brl <= maxPriceBrl) && isConfirmedItem(item)
   );
@@ -117,11 +130,11 @@ function mergeWithPreviousSnapshot({ now, collected, failedTerms, previousSnapsh
     run: {
       id: "enjoei-tenis-42",
       label: "Enjoei Tenis 42",
-      partial: failedTerms.length > 0 || terms.length < DEFAULT_TERMS.length,
+      partial: collection.failedTerms.length > 0 || [...collection.incompleteTerms, ...collection.deferredTerms].some(term => collection.schedule[term]?.tier === 'priority'),
     },
     configuredCoverage: DEFAULT_TERMS,
-    scheduledCoverage: terms,
-    successfulCoverage: terms.filter((term) => !failedTerms.includes(term)),
+    scheduledCoverage: collection.scheduledTerms,
+    successfulCoverage: collection.successfulTerms,
     failedCoverage: failedTerms,
     itemCoverage: (item) => item.search_terms ?? [],
     filters: {
@@ -132,12 +145,12 @@ function mergeWithPreviousSnapshot({ now, collected, failedTerms, previousSnapsh
     },
   });
   snapshot.search = {
-    terms,
+    terms: collection.scheduledTerms,
     department,
     shoe_size: shoeSize,
     shipping_range: shippingRange,
     max_price_brl: maxPriceBrl,
-    source_urls: terms.map((searchTerm) => buildSearchPageUrl(searchTerm)),
+    source_urls: collection.scheduledTerms.map((searchTerm) => buildSearchPageUrl(searchTerm)),
   };
   return snapshot;
 }
@@ -178,6 +191,8 @@ function buildReport({ runDate, snapshot, previousSnapshot }) {
   lines.push(`- Termos: ${snapshot.search.terms.join(", ")}`);
   lines.push(`- Cobertura parcial: **${snapshot.run.partial ? 'sim' : 'não'}**`);
   lines.push(`- Termos com paginação pendente: ${(snapshot.run.incomplete_terms ?? []).join(', ') || 'nenhum'}`);
+  lines.push(`- Termos adiados pelo orçamento: ${(snapshot.run.deferred_terms ?? []).join(', ') || 'nenhum'}`);
+  lines.push('- Prioridade: Fiber e FOT somente Walka, Lito, Noga, Voet e Bruk. Numeração 42; teto de descoberta R$500.');
   lines.push(`- Candidatos pendentes de conferência: **${(snapshot.pending_items ?? []).length}**`);
   lines.push(`- Páginas nesta rodada: **${snapshot.run.discovery.pages_fetched}**; descrições: **${snapshot.run.discovery.details_fetched}/${snapshot.run.discovery.detail_budget}**; cache: **${snapshot.run.discovery.cache_hits}**.`);
   lines.push('- Confirmação automática por marca/modelo ou características declaradas; não comprova autenticidade ou estado físico.');
@@ -185,8 +200,15 @@ function buildReport({ runDate, snapshot, previousSnapshot }) {
   lines.push("");
 
   lines.push('## Cobertura por termo');
-  for (const [term, progress] of Object.entries(snapshot.run.pagination)) {
-    lines.push(`- ${term}: ${progress.pages} página(s), ${progress.complete ? 'concluído' : 'pendente'}${progress.reason ? ` — ${progress.reason}` : ''}.`);
+  for (const [term, schedule] of Object.entries(snapshot.run.search_schedule)) {
+    const progress = snapshot.run.pagination[term];
+    lines.push(`- ${term}: ${schedule.tier}; última conclusão: ${schedule.last_success_at ?? 'ainda não concluída'}; ${schedule.state}${schedule.pending ? '; paginação pendente' : ''}${progress ? `; ${progress.pages} página(s) acumuladas no ciclo` : ''}.`);
+  }
+  lines.push('');
+  lines.push('## Rendimento das consultas desta rodada');
+  lines.push('- Exclusivo significa encontrado somente por esta consulta entre as consultas executadas nesta rodada; não comprova exclusividade histórica.');
+  for (const [term, metrics] of Object.entries(snapshot.run.discovery.query_yield ?? {})) {
+    lines.push(`- ${term}: ${metrics.pages_this_run} página(s) novas; ${metrics.confirmed_in_run} confirmado(s), ${metrics.exclusive_in_run} exclusivo(s) nesta rodada; ${metrics.pending_in_run} pendente(s).`);
   }
   lines.push('');
   lines.push("## Novos produtos");
@@ -240,10 +262,11 @@ function formatItemLine(item) {
 }
 
 function sortByPrice(items) {
-  return items.slice().sort((a, b) => (a.price_brl ?? Infinity) - (b.price_brl ?? Infinity));
+  return items.slice().sort((a, b) => barefootPriority(a) - barefootPriority(b) || (a.price_brl ?? Infinity) - (b.price_brl ?? Infinity));
 }
 
 function isConfirmedItem(item) {
+  if (classifyBarefootShoe(item).state === 'rejected') return false;
   return item.size === shoeSize && itemMatchesAnySearchTerm(item)
     && (item.barefoot_validation?.version === SHOE_RULES_VERSION
       ? item.barefoot_validation.state === 'confirmed'
@@ -251,7 +274,7 @@ function isConfirmedItem(item) {
 }
 
 function itemMatchesAnySearchTerm(item) {
-  return terms.some((searchTerm) => itemMatchesSearchTerm(item, searchTerm));
+  return DEFAULT_TERMS.some((searchTerm) => itemMatchesSearchTerm(item, searchTerm));
 }
 
 function itemMatchesSearchTerm(item, searchTerm) {
