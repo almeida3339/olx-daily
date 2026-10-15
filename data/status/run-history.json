@@ -1,7 +1,26 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-15T11:01:18.587Z",
+  "updated_at": "2026-10-15T19:03:34.852Z",
   "runs": [
+    {
+      "run_id": "34502230-c96a-41bb-a887-9a26f7401b91",
+      "completed_at": "2026-10-15T19:03:34.848Z",
+      "outcome": "failed",
+      "partial": true,
+      "duration_ms": 206591,
+      "item_count": 0,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "local",
+        "monitor_errors": 3,
+        "monitor_failures": [
+          "OLX: Saiu com código 1: Coleta OLX parcial: 3 falha(s). Dados coletados e anúncios dos termos sem cobertura foram preservados.\nMonitor OLX falhou com exit code 1.\r\nNo C:\\Users\\docra\\downloads\\olx-daily\\scripts\\run-olx-monitor.ps1:88 caractere:5\r\n+     throw \"Monitor OLX falhou com exit code $LASTEXITCODE.\"\r\n+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : OperationStopped: (Monitor OLX falhou com exit code 1.:String) [], RuntimeException\r\n    + FullyQualifiedErrorId : Monitor OLX falhou com exit code 1.",
+          "Google Pixel Watch 4: Saiu com código 1: Aviso: coleta OLX falhou — Cloudflare: OLX em pausa até 2026-10-15T23:57:05.867Z; acesso recusado pelo site, sem verificação interativa disponível.",
+          "Monitores OLED: Saiu com código 1"
+        ],
+        "pending_notifications": 0
+      }
+    },
     {
       "run_id": "eb0511e0-e83e-4444-aeeb-d2a8cc6e4e0c",
       "completed_at": "2026-10-15T11:01:18.586Z",
@@ -1776,20 +1795,6 @@
       "outcome": "success",
       "partial": false,
       "duration_ms": 50802,
-      "item_count": 0,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "local",
-        "monitor_errors": 0,
-        "pending_notifications": 1
-      }
-    },
-    {
-      "run_id": "01886274-a2fc-4c87-850d-0ab68ef93d7b",
-      "completed_at": "2026-08-22T22:25:40.754Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 60180,
       "item_count": 0,
       "quarantined_item_count": 0,
       "metadata": {

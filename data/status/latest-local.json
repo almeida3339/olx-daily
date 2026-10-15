@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-15T10:00:34.470Z",
+  "generated_at": "2026-10-15T19:00:08.257Z",
   "source": "local",
   "delivery": {
     "email": "skipped",
@@ -40,7 +40,9 @@
     "scope": "local-watchlists",
     "partial": true,
     "errors": [
-      "Google Pixel Watch 4: Saiu com código 1: Aviso: coleta OLX falhou — Cloudflare: OLX em pausa até 2026-10-15T23:57:05.867Z; acesso recusado pelo site, sem verificação interativa disponível."
+      "OLX: Saiu com código 1: Coleta OLX parcial: 3 falha(s). Dados coletados e anúncios dos termos sem cobertura foram preservados.\nMonitor OLX falhou com exit code 1.\r\nNo C:\\Users\\docra\\downloads\\olx-daily\\scripts\\run-olx-monitor.ps1:88 caractere:5\r\n+     throw \"Monitor OLX falhou com exit code $LASTEXITCODE.\"\r\n+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : OperationStopped: (Monitor OLX falhou com exit code 1.:String) [], RuntimeException\r\n    + FullyQualifiedErrorId : Monitor OLX falhou com exit code 1.",
+      "Google Pixel Watch 4: Saiu com código 1: Aviso: coleta OLX falhou — Cloudflare: OLX em pausa até 2026-10-15T23:57:05.867Z; acesso recusado pelo site, sem verificação interativa disponível.",
+      "Monitores OLED: Saiu com código 1"
     ]
   },
   "notification_sent_ids": [
@@ -64,7 +66,9 @@
     "fb252df2-ae58-4318-bca7-377785e12f69",
     "14253e27-4ce4-48ec-adef-a5da26db11f3",
     "d53277c2-486e-46b6-9a1a-1ac7e9083a99",
-    "f914d9c9-c762-40bb-a064-f9d24c11687c"
+    "f914d9c9-c762-40bb-a064-f9d24c11687c",
+    "010eea2b-6c51-4977-b953-105b113c3c90",
+    "09f31426-9124-47b1-9c47-09b2cf1c3e3c"
   ],
   "notification_archive": [
     {
