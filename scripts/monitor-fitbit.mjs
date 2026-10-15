@@ -3,6 +3,13 @@
 import path from "node:path";
 import { runWatchlistMonitor } from "./lib/watchlist-monitor.mjs";
 
+import { getWatchlist } from './lib/watchlists-registry.mjs';
+
+if (getWatchlist('fitbit').paused && process.env.INCLUDE_PAUSED_WATCHLIST !== '1' && !process.argv.includes('--include-paused')) {
+  console.log('Fitbit Air: busca pausada; nenhum termo consultado.');
+  process.exit(0);
+}
+
 const dataDir =
   process.env.FITBIT_DATA_DIR ??
   path.join(process.env.USERPROFILE ?? process.env.HOME ?? "", ".codex", "automations", "monitor-fitbit");

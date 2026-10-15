@@ -7,6 +7,13 @@
 import path from "node:path";
 import { runWatchlistMonitor } from "./lib/watchlist-monitor.mjs";
 
+import { getWatchlist } from './lib/watchlists-registry.mjs';
+
+if (getWatchlist('oura-ring5').paused && process.env.INCLUDE_PAUSED_WATCHLIST !== '1' && !process.argv.includes('--include-paused')) {
+  console.log('Oura Ring 5: busca pausada; nenhum termo consultado.');
+  process.exit(0);
+}
+
 const dataDir =
   process.env.OURA_RING5_DATA_DIR ??
   path.join(process.env.USERPROFILE ?? process.env.HOME ?? "", ".codex", "automations", "monitor-oura-ring5");

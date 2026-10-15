@@ -37,6 +37,7 @@ export const mercadoLivreWatchlists = [
   },
   {
     id: "google-pixel-watch-4",
+    paused: true,
     label: "Google Pixel Watch 4",
     terms: GOOGLE_PIXEL_WATCH4_TERMS,
     matchVariants: GOOGLE_PIXEL_WATCH4_MATCH_VARIANTS,
@@ -49,6 +50,7 @@ export const mercadoLivreWatchlists = [
   },
   {
     id: "google-pixel-watch-5",
+    paused: true,
     label: "Google Pixel Watch 5",
     terms: GOOGLE_PIXEL_WATCH5_TERMS,
     matchVariants: GOOGLE_PIXEL_WATCH5_MATCH_VARIANTS,
@@ -88,6 +90,7 @@ export const mercadoLivreWatchlists = [
   },
   {
     id: "fitbit-air",
+    paused: true,
     label: "Fitbit Air",
     terms: ["fitbit air"],
     minPrice: 300,

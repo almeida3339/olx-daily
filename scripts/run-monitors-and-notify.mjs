@@ -121,16 +121,16 @@ export async function main({
     const skipEnjoei         = args.includes("--skip-enjoei") || process.env.SKIP_ENJOEI === "1";
     const skipDockstations   = (getWatchlist('dockstations').paused && !args.includes('--include-paused'))
       || args.includes("--skip-dockstations") || process.env.SKIP_DOCKSTATIONS === "1";
-    const skipFitbit         = args.includes("--skip-fitbit") || process.env.SKIP_FITBIT === "1";
+    const skipFitbit         = (getWatchlist('fitbit').paused && !args.includes('--include-paused')) || args.includes("--skip-fitbit") || process.env.SKIP_FITBIT === "1";
     const skipLifefactory    = args.includes("--skip-lifefactory") || process.env.SKIP_LIFEFACTORY === "1";
     const skipTelaBook3      = args.includes("--skip-tela-book3") || process.env.SKIP_TELA_BOOK3 === "1";
     const skipMelanger       = args.includes("--skip-melanger") || process.env.SKIP_MELANGER === "1";
     const skipBuds4Pro       = !args.includes("--include-paused")
       || args.includes("--skip-buds4-pro") || process.env.SKIP_BUDS4_PRO === "1";
     const skipOnePlusBuds    = args.includes("--skip-oneplus-buds") || process.env.SKIP_ONEPLUS_BUDS === "1";
-    const skipPixelWatch4    = args.includes("--skip-pixel-watch-4") || process.env.SKIP_PIXEL_WATCH4 === "1";
-    const skipPixelWatch5    = args.includes("--skip-pixel-watch-5") || process.env.SKIP_PIXEL_WATCH5 === "1";
-    const skipOura           = args.includes("--skip-oura") || process.env.SKIP_OURA === "1";
+    const skipPixelWatch4    = (getWatchlist('google-pixel-watch-4').paused && !args.includes('--include-paused')) || args.includes("--skip-pixel-watch-4") || process.env.SKIP_PIXEL_WATCH4 === "1";
+    const skipPixelWatch5    = (getWatchlist('google-pixel-watch-5').paused && !args.includes('--include-paused')) || args.includes("--skip-pixel-watch-5") || process.env.SKIP_PIXEL_WATCH5 === "1";
+    const skipOura           = (getWatchlist('oura-ring5').paused && !args.includes('--include-paused')) || args.includes("--skip-oura") || process.env.SKIP_OURA === "1";
     const skipOledMonitores  = args.includes("--skip-oled-monitores") || process.env.SKIP_OLED_MONITORES === "1";
     const skipMercadoLivre   = args.includes("--skip-mercadolivre")
       || process.env.SKIP_MERCADOLIVRE === "1"
@@ -181,16 +181,16 @@ export async function main({
     // trata falhas de cada fonte internamente, então roda independente dos flags
     // only-olx/skip-enjoei (assim funciona tanto no Task Scheduler local quanto no CI).
     if (!skipDockstations) jobs.push(["dockstations", () => runScript("monitor-dockstations.mjs", args.includes('--include-paused')?['--include-paused']:[]), true]);
-    if (!skipFitbit) jobs.push(["fitbit", () => runScript("monitor-fitbit.mjs", []), true]);
+    if (!skipFitbit) jobs.push(["fitbit", () => runScript("monitor-fitbit.mjs", args.includes("--include-paused") ? ["--include-paused"] : []), true]);
     if (!skipLifefactory) jobs.push(["lifefactory", () => runScript("monitor-lifefactory.mjs", []), true]);
     if (!skipTelaBook3) jobs.push(["tela-book3", () => runScript("monitor-tela-galaxybook3.mjs", []), true]);
     if (!skipMelanger) jobs.push(["melanger", () => runScript("monitor-melanger.mjs", []), true]);
     if (!skipBuds4Pro) jobs.push(["buds4-pro", () => runScript("monitor-galaxy-buds4-pro.mjs", ["--include-paused"]), true]);
     else console.log("Galaxy Buds4 Pro pausado; busca local nao executada.");
     if (!skipOnePlusBuds) jobs.push(["oneplus-buds", () => runScript("monitor-oneplus-buds-pro-3.mjs", []), true]);
-    if (!skipPixelWatch4) jobs.push(["pixel-watch-4", () => runScript("monitor-google-pixel-watch-4.mjs", []), true]);
-    if (!skipPixelWatch5) jobs.push(["pixel-watch-5", () => runScript("monitor-google-pixel-watch-5.mjs", []), true]);
-    if (!skipOura) jobs.push(["oura", () => runScript("monitor-oura-ring5.mjs", []), true]);
+    if (!skipPixelWatch4) jobs.push(["pixel-watch-4", () => runScript("monitor-google-pixel-watch-4.mjs", args.includes("--include-paused") ? ["--include-paused"] : []), true]);
+    if (!skipPixelWatch5) jobs.push(["pixel-watch-5", () => runScript("monitor-google-pixel-watch-5.mjs", args.includes("--include-paused") ? ["--include-paused"] : []), true]);
+    if (!skipOura) jobs.push(["oura", () => runScript("monitor-oura-ring5.mjs", args.includes("--include-paused") ? ["--include-paused"] : []), true]);
     if (!skipOledMonitores) jobs.push(["oled-monitores", () => runScript("monitor-oled-monitores.mjs", []), true]);
     // Mercado Livre NÃO roda aqui: é desacoplado do fluxo do OLX/Enjoei (que
     // espera todos os jobs antes de publicar). O ML é pesado/lento e roda sob

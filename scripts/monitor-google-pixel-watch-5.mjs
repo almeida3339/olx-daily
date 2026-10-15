@@ -9,6 +9,13 @@ import {
   matchesGooglePixelWatch5,
 } from "./lib/google-pixel-watch-5.mjs";
 
+import { getWatchlist } from './lib/watchlists-registry.mjs';
+
+if (getWatchlist('google-pixel-watch-5').paused && process.env.INCLUDE_PAUSED_WATCHLIST !== '1' && !process.argv.includes('--include-paused')) {
+  console.log('Google Pixel Watch 5: busca pausada; nenhum termo consultado.');
+  process.exit(0);
+}
+
 const dataDir =
   process.env.GOOGLE_PIXEL_WATCH5_DATA_DIR ??
   path.join(process.env.USERPROFILE ?? process.env.HOME ?? "", ".codex", "automations", "monitor-google-pixel-watch-5");

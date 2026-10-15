@@ -78,15 +78,15 @@ Big John e Denime foram excluídas das coletas em 15/10/2026 a pedido do usuári
 | **Enjoei Jeans Brunello Cucinelli 40** | Enjoei (GraphQL) | até R$ 400 | Masculino, cintura 40; jeans/denim confirmado |
 | **Enjoei Jeans — Momotaro, PBJ, Strike Gold, Kapital, Fullcount, OrSlow** | Enjoei (GraphQL) | até R$ 350 | Masculino, cintura 40; monitor separado por marca |
 | **Dockstations — pausada** | OLX + Enjoei + ML sob demanda | até R$ 500 | SD25TB4 e WD22TB4; histórico preservado |
-| **Fitbit Air** | OLX + Enjoei | R$ 300–600 | Smartwatch Fitbit Air exato |
+| **Fitbit Air — pausada** | OLX + Enjoei | R$ 300–600 | Smartwatch Fitbit Air exato |
 | **Lifefactory** | OLX + Enjoei | R$ 25–75 | Garrafa térmica 500ml–1L (exclui mamadeira, bivolt OK) |
 | **Tela Galaxy Book3** | OLX + Enjoei | até R$ 1.000 | Part number BA96-08462A (Galaxy Book3 Ultra) |
 | **Melanger** | OLX (2 categorias) + Enjoei | R$ 1.000–5.000 | Moinho de chocolate 110V (exclui 220V puro, bivolt OK) |
 | **Galaxy Buds4 Pro** | OLX + Enjoei + Mercado Livre | R$ 500–1.000 | Busca pausada; dados históricos preservados |
 | **OnePlus Buds Pro 3** | OLX + Enjoei | R$ 300–800 | Exclui linha Nord e modelos próximos |
-| **Google Pixel Watch 4** | OLX + Enjoei | Wi‑Fi até R$ 2.000 · LTE até R$ 2.500 | Somente 45 mm |
-| **Google Pixel Watch 5** | OLX + Enjoei | Wi‑Fi até R$ 2.400 · LTE até R$ 3.000 | Somente 45 mm |
-| **Oura Ring 5** | OLX + Enjoei | R$ 1.800–2.700 | Tamanhos 9–11 |
+| **Google Pixel Watch 4 — pausada** | OLX + Enjoei | Wi‑Fi até R$ 2.000 · LTE até R$ 2.500 | Somente 45 mm |
+| **Google Pixel Watch 5 — pausada** | OLX + Enjoei | Wi‑Fi até R$ 2.400 · LTE até R$ 3.000 | Somente 45 mm |
+| **Oura Ring 5 — pausada** | OLX + Enjoei | R$ 1.800–2.700 | Tamanhos 9–11 |
 | **Monitores OLED** | OLX + Enjoei; ML sob demanda | R$ 1.500–3.000 | Modelo e descrição conferidos, cache de 24h, descoberta e rodízio |
 
 Agenda, filtros, limites e critérios de aprovação: [política de monitores OLED](docs/oled-monitor-search-policy.md).
