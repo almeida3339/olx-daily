@@ -5,6 +5,7 @@ import path from "node:path";
 // nomes, diretórios, variáveis de ambiente e metadados usados pelo painel,
 // saúde e notificações.
 export const LOCAL_WATCHLISTS = Object.freeze([
+  { id: "enjoei-zegna", label: "Enjoei Calças Zegna 40", env: "ENJOEI_ZEGNA_DATA_DIR", repoFolder: "enjoei-zegna", fallback: "monitor-enjoei-zegna", maxAgeHours: 24 },
   { id: "olx", label: "OLX Notebooks", env: "OLX_DATA_DIR", repoFolder: "olx", fallback: "monitor-olx-notebooks-por-cpu", maxAgeHours: 24 },
   { id: "enjoei-notebooks", label: "Enjoei Notebooks", env: "ENJOEI_NOTEBOOKS_DATA_DIR", repoFolder: "enjoei-notebooks", fallback: "monitor-enjoei-notebooks", maxAgeHours: 24 },
   { id: "enjoei", label: "Enjoei Tênis 42", env: "ENJOEI_DATA_DIR", repoFolder: "enjoei", fallback: "monitor-enjoei-tenis-42", maxAgeHours: 24 },

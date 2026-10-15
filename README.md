@@ -27,11 +27,18 @@ Sistema modular de monitoramento diário (2× por dia, 07:00 e 16:00 BRT). Busca
 
 ## Monitores principais
 
+### Calças Zegna no Enjoei
+
+- `node scripts/monitor-enjoei-zegna.mjs`: calças masculinas Zegna (incluindo Ermenegildo Zegna e Zegna Sport), tamanho de cintura 40, preço anunciado **menor que R$ 250**; frete e taxas não entram nesse teto.
+- Usa a busca-base fornecida, com categoria e tamanho na API, e reconfere esses campos em cada produto. Pesquisa em todo o Brasil, sem depender de uma localização de sessão para ordenar por proximidade.
+- Integrado às rodadas existentes do Enjoei (07h e 16h), aos alertas e ao painel. Dados em `data/enjoei-zegna`; override `ENJOEI_ZEGNA_DATA_DIR`. Paginação limitada a dez páginas; falhas preservam os anúncios anteriores e sinalizam cobertura incompleta.
+
 | Nome | Fonte | Faixa | Detalhes |
 |---|---|---|---|
 | **OLX Notebooks** | OLX (22 CPUs) | R$ 2.000–8.000 | CPU flagship Intel/AMD (filtro mudança até R$ 10k) |
 | **Enjoei Notebooks** | Enjoei (GraphQL) | R$ 1.500–8.000 | 22 CPUs (novo até R$ 8k) |
 | **Enjoei Tênis 42** | Enjoei (GraphQL) | até R$ 500 | Minimalistas, tamanho 42, 5 marcas |
+| **Enjoei Calças Zegna 40** | Enjoei (GraphQL) | menos de R$ 250 | Masculino, cintura 40; inclui Ermenegildo Zegna e Zegna Sport |
 | **Dockstations** | OLX + Enjoei | até R$ 500 | 3 modelos (SD25TB4, WD22TB4, 40AY0090BR), 4TB+ |
 | **Fitbit Air** | OLX + Enjoei | R$ 300–600 | Smartwatch Fitbit Air exato |
 | **Lifefactory** | OLX + Enjoei | R$ 25–75 | Garrafa térmica 500ml–1L (exclui mamadeira, bivolt OK) |

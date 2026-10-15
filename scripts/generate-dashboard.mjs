@@ -18,6 +18,7 @@ const ROOT = path.resolve(__dirname, "..");
 const OLX_DIR              = resolveWatchlistDataDir(ROOT, "olx");
 const ENJOEI_DIR           = resolveWatchlistDataDir(ROOT, "enjoei");
 const ENJOEI_NOTEBOOKS_DIR = resolveWatchlistDataDir(ROOT, "enjoei-notebooks");
+const ENJOEI_ZEGNA_DIR = resolveWatchlistDataDir(ROOT, "enjoei-zegna");
 const DOCKSTATIONS_DIR     = resolveWatchlistDataDir(ROOT, "dockstations");
 const FITBIT_DIR           = resolveWatchlistDataDir(ROOT, "fitbit");
 const LIFEFACTORY_DIR      = resolveWatchlistDataDir(ROOT, "lifefactory");
@@ -55,11 +56,13 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
 export { parseReport, formatRunLabelFromFile, summarizeMachine, buildLocalTriggerCommands };
 
 async function main() {
+  const zegna = await gather(ENJOEI_ZEGNA_DIR, "report-", null);
+  const zegnaUpdated = await latestRunLabel(ENJOEI_ZEGNA_DIR);
   const health = await buildMonitorHealth(ROOT);
   await writeJsonAtomic(path.join(ROOT, "data", "status", "monitor-health.json"), health, { validate: null });
   const priceInsights = await buildPriceInsights([
     ["OLX", OLX_DIR], ["Enjoei Notebooks", ENJOEI_NOTEBOOKS_DIR], ["Enjoei Tênis", ENJOEI_DIR],
-    ["Mercado Livre Notebooks", MERCADOLIVRE_NOTEBOOKS_DIR],
+    ["Mercado Livre Notebooks", MERCADOLIVRE_NOTEBOOKS_DIR], ["Enjoei Calças Zegna 40", ENJOEI_ZEGNA_DIR],
     ...MERCADOLIVRE_WATCHLISTS.map(([chip, , , folder]) => [`Mercado Livre ${chip}`, path.join(ROOT, "data", folder)]),
   ]);
   const olxDetails = await latestSnapshotDetails(OLX_DIR);
@@ -119,7 +122,7 @@ async function main() {
   ]);
   await writeTextAtomic(
     OUTPUT,
-    buildHtml({ health, priceInsights, olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, onePlusBuds, pixelWatch4, pixelWatch5, oura, oledMonitores, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, onePlusBudsUpdated, pixelWatch4Updated, pixelWatch5Updated, ouraUpdated, oledMonitoresUpdated }).replace(/[ \t]+$/gm, ""),
+    buildHtml({ health, priceInsights, zegna, zegnaUpdated, olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, onePlusBuds, pixelWatch4, pixelWatch5, oura, oledMonitores, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, onePlusBudsUpdated, pixelWatch4Updated, pixelWatch5Updated, ouraUpdated, oledMonitoresUpdated }).replace(/[ \t]+$/gm, ""),
   );
   console.log(`Dashboard gerado: ${OUTPUT}`);
 }
@@ -537,7 +540,7 @@ export function groupPendingNotifications(items = []) {
   );
 }
 
-function buildHtml({ health, priceInsights, olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, onePlusBuds, pixelWatch4, pixelWatch5, oura, oledMonitores, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, onePlusBudsUpdated, pixelWatch4Updated, pixelWatch5Updated, ouraUpdated, oledMonitoresUpdated }) {
+function buildHtml({ health, priceInsights, zegna, zegnaUpdated, olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, onePlusBuds, pixelWatch4, pixelWatch5, oura, oledMonitores, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, onePlusBudsUpdated, pixelWatch4Updated, pixelWatch5Updated, ouraUpdated, oledMonitoresUpdated }) {
   // Ordenação em dois níveis: primeiro as fontes COM achados recentes (cards com
   // conteúdo), depois as vazias ("Nenhum run com novidades") — sempre no fundo,
   // mesmo que tenham rodado há pouco. Dentro de cada grupo, mais recente primeiro.
@@ -555,6 +558,7 @@ function buildHtml({ health, priceInsights, olx, enjoeiNb, mercadoLivre, mercado
     { chip: "OLX",              title: "OLX Notebooks",     sub: "R$ 2.000 – R$ 8.000 · RAM ≥ 32 GB",                          data: olx,         dpath: "data/olx",              upd: olxUpdated },
     { chip: "Enjoei Notebooks", title: "Enjoei Notebooks",  sub: "R$ 1.500 – R$ 8.000 · RAM ≥ 32 GB",                          data: enjoeiNb,    dpath: "data/enjoei-notebooks", upd: enjoeiNbUpdated },
     { chip: "Enjoei Tênis",     title: "Enjoei Tênis 42",   sub: "até R$ 500,00",                                data: enjoei,      dpath: "data/enjoei",           upd: enjoeiTenisUpdated },
+    { chip: "Enjoei Zegna", title: "Enjoei Calças Zegna 40", sub: "masculino · tamanho 40 · menos de R$ 250", data: zegna, dpath: "data/enjoei-zegna", upd: zegnaUpdated },
     { chip: "Dockstations",     title: "Dockstations",      sub: "OLX + Enjoei · até R$ 500,00",                 data: dock,        dpath: "data/dockstations",     upd: dockUpdated },
     { chip: "Fitbit Air",       title: "Fitbit Air",        sub: "OLX + Enjoei · R$ 300 – R$ 600",               data: fitbit,      dpath: "data/fitbit",           upd: fitbitUpdated },
     { chip: "Lifefactory",      title: "Lifefactory",       sub: "OLX + Enjoei · 500ml–1L · R$ 25 – R$ 75",      data: lifefactory, dpath: "data/lifefactory",      upd: lifefactoryUpdated },
@@ -793,7 +797,7 @@ ${emptyCardsHtml}
 // restringir os chips a elas mantem o horario honesto sem perder informacao.
 function platformsOf(dpath) {
   if (dpath === "data/olx") return ["olx"];
-  if (dpath === "data/enjoei" || dpath === "data/enjoei-notebooks") return ["enjoei"];
+  if (dpath === "data/enjoei" || dpath.startsWith("data/enjoei-")) return ["enjoei"];
   if (dpath.startsWith("data/mercadolivre-")) return ["mercadolivre"];
   return [];
 }
