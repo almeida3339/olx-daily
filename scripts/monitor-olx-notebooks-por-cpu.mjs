@@ -2,6 +2,7 @@ import { extractNotebookRamText, meetsNotebookRamMinimum, NOTEBOOK_MIN_RAM_GB, n
 import { OLX_NOTEBOOK_FAMILIES, planNotebookFamilies, notebookOpportunity } from './lib/notebook-search-plan.mjs';
 import fs from "node:fs/promises";
 import { createDescriptionQueue, cardCpuState, cardKey } from "./lib/olx-description-queue.mjs";
+import { readOlxListing, finishOlxListing } from './lib/olx-listing.mjs';
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
@@ -271,12 +272,14 @@ async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transp
           if (existing < 0) collected.push(item);
           else collected[existing] = item;
         }
-        if (results.coverage_incomplete) failedTerms.push({ term, error: 'Limite de cards ou detalhes atingido; cobertura pendente', kind: 'incomplete' });
+        if (results.coverage_incomplete) failedTerms.push({ term, error: results.incomplete_reasons.join('; '), kind: 'incomplete' });
         else successfulTerms.push(term);
         queryYield[term] = { returned: results.length, validated: results.filter(isValidatedOlxItem).length,
           pending: results.filter(item => item.validation?.state === 'pending').length,
           detail_reads: (descriptionQueue.summary().total_details ?? 0) - detailsBefore,
-          limited: Boolean(results.coverage_incomplete) };
+          limited: Boolean(results.coverage_incomplete), listing_incomplete: Boolean(results.listing_incomplete),
+          details_pending: results.details_pending ?? 0, total_results: results.total_results ?? null,
+          recommendations_ignored: results.recommendations_ignored ?? 0 };
         console.log(`  ${results.filter(isValidatedOlxItem).length} validado(s), ${results.filter(x => x.validation?.state === 'pending').length} pendente(s), ${results.filter(x => x.validation?.state === 'rejected').length} rejeitado(s).`);
       } catch (error) {
         const message = sanitizeErrorMessage(error?.message ?? error);
@@ -420,9 +423,11 @@ async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openD
   const reserveSlots = Math.min(2, waiting.length, maxCards);
   const toProcess = [...matches.slice(0, maxCards - reserveSlots), ...waiting, ...matches.slice(maxCards - reserveSlots)];
   const items = [], seen = new Set();
-  items.coverage_incomplete = cards.length >= maxCards;
+  items.listing_incomplete = Boolean(cards.listing_incomplete);
+  items.total_results = cards.total_results ?? null;
+  items.recommendations_ignored = cards.recommendations_ignored ?? 0;
+  items.details_pending = 0;
   for (const card of toProcess) {
-    if (items.length >= maxCards) break;
     const key = cardKey(card);
     if (seen.has(key)) continue;
     seen.add(key);
@@ -441,9 +446,10 @@ async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openD
     if (!(card.description_discovery || forceOpenDetails || needsDetailEnrichment(listingItem) || inRange)) {
       items.push(listingItem); continue;
     }
-    if (!await descriptionQueue.reserveDetail(cpuTerm, Boolean(card.description_discovery))) {
+    if (items.length >= maxCards || !await descriptionQueue.reserveDetail(cpuTerm, Boolean(card.description_discovery))) {
       await descriptionQueue.enqueue([{ ...card, description_discovery: Boolean(card.description_discovery) }], cpuTerm);
-      items.coverage_incomplete = true;
+      items.details_pending++;
+      items.push(pendingOlxItem(listingItem, 'Ficha aguardando leitura dentro dos limites da rodada'));
       continue;
     }
     const started = Date.now();
@@ -460,7 +466,13 @@ async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openD
     }
   }
   const metrics = descriptionQueue.summary();
+  items.incomplete_reasons = [
+    ...(items.listing_incomplete ? [`Listagem incompleta: limite de ${maxCards} cards ou próxima página pendente`] : []),
+    ...(items.details_pending ? [`${items.details_pending} ficha(s) aguardando leitura dentro dos limites da rodada`] : []),
+  ];
+  items.coverage_incomplete = items.incomplete_reasons.length > 0;
   console.log(`  Descrições adicionais: ${metrics.extra_details}/8 nesta rodada; ${metrics.queued_candidates} candidato(s) na fila.`);
+  if (items.coverage_incomplete) console.log(`  Cobertura parcial: ${items.incomplete_reasons.join('; ')}.`);
   return items.sort((a, b) => a.price_brl - b.price_brl);
 }
 
@@ -552,53 +564,31 @@ async function waitForRawCardsFast(tab) {
 }
 
 async function collectCardsRawCdp(tab, maxCards) {
-  const results = [];
-  let stableRounds = 0;
-  let lastCount = 0;
-  let totalResults = null;
-
-  while (results.length < maxCards && stableRounds < RAW_STABLE_ROUNDS) {
-    const payload = await rawEvaluate(
-      tab,
-      `(()=>{const text=document.body?.innerText||''; const total=(text.match(/\\d+\\s*-\\s*\\d+\\s*de\\s*(\\d+)\\s+resultados?/i)||text.match(/(?:^|\\n)\\s*(\\d+)\\s+resultados?/i)||[])[1]; const items=Array.from(document.querySelectorAll('section.olx-adcard')).map(card=>{const a=card.querySelector('[data-testid=adcard-link]'); return {title:a?.getAttribute('title')||a?.textContent?.trim()||'', url:a?.href||'', priceText:card.querySelector('h3.olx-adcard__price')?.textContent?.trim()||'', location:card.querySelector('.olx-adcard__location')?.textContent?.trim()||'', text:card.innerText||''};}); return {totalResults: total ? Number(total) : null, items};})()`
-    );
-    const batch = payload?.items ?? [];
-    if (Number.isFinite(payload?.totalResults)) {
-      totalResults = payload.totalResults;
-    }
-
-    const seen = new Set(results.map((item) => item.url));
-    for (const item of batch ?? []) {
-      const normalized = {
-        title: item.title?.trim(),
-        url: item.url,
-        price_brl: parseBrlPrice(item.priceText),
-        location: item.location?.trim() || null,
-        text: item.text || "",
-        ram_gb: extractRamGb(`${item.title}\n${item.text}`),
-        storage_gb: extractStorageGb(`${item.title}\n${item.text}`),
-      };
-      if (normalized.url && normalized.title && normalized.price_brl != null && !seen.has(normalized.url)) {
-        results.push(normalized);
+  const results = [], seen = new Set();
+  let stableRounds = 0, lastCount = 0, payload = {};
+  while (results.length <= maxCards && stableRounds < RAW_STABLE_ROUNDS) {
+    payload = await rawEvaluate(tab, `(${readOlxListing.toString()})()`);
+    for (const item of payload.items ?? []) {
+      const normalized = normalizeListingCard(item);
+      const key = normalized.url ? cardKey(normalized) : null;
+      if (normalized.title && normalized.price_brl != null && key && !seen.has(key)) {
+        seen.add(key); results.push(normalized);
       }
     }
-
-    if (results.length === lastCount) {
-      stableRounds += 1;
-    } else {
-      lastCount = results.length;
-      stableRounds = 0;
-    }
-
-    if (results.length >= maxCards) break;
-    if (totalResults != null && results.length >= totalResults) break;
-    if ((batch?.length ?? 0) === 0) break;
-
-    await rawEvaluate(tab, "window.scrollBy(0, 2200); undefined");
+    stableRounds = results.length === lastCount ? stableRounds + 1 : 0;
+    lastCount = results.length;
+    if (results.length > maxCards || (Number.isFinite(payload.totalResults) && results.length >= payload.totalResults)
+      || !(payload.items?.length)) break;
+    await rawEvaluate(tab, 'window.scrollBy(0, 2200); undefined');
     await delay(RAW_SCROLL_DELAY_MS);
   }
+  return finishOlxListing(results, maxCards, payload);
+}
 
-  return results.slice(0, maxCards);
+function normalizeListingCard(item) {
+  return { title: item.title?.trim(), url: item.url, price_brl: parseBrlPrice(item.priceText),
+    location: item.location?.trim() || null, text: item.text || '',
+    ram_gb: extractRamGb(`${item.title}\n${item.text}`), storage_gb: extractStorageGb(`${item.title}\n${item.text}`) };
 }
 
 async function enrichAdRawCdp(cdpEndpoint, card) {
@@ -907,54 +897,25 @@ async function waitForListingReadinessPlaywright(page) {
 }
 
 async function collectCardsFromInfiniteScroll(page, maxCards) {
-  const results = [];
-  let lastCount = 0;
-  let stableRounds = 0;
-
-  while (results.length < maxCards && stableRounds < RAW_STABLE_ROUNDS) {
-    const batch = await page.evaluate(() => {
-      const cards = Array.from(document.querySelectorAll("section.olx-adcard"));
-      return cards.map((card) => {
-        const a = card.querySelector("[data-testid=adcard-link]");
-        const title = a?.getAttribute("title") || a?.textContent?.trim() || "";
-        const url = a?.href || "";
-        const priceText = card.querySelector("h3.olx-adcard__price")?.textContent?.trim() || "";
-        const location = card.querySelector(".olx-adcard__location")?.textContent?.trim() || "";
-        const text = card.innerText || "";
-        return { title, url, priceText, location, text };
-      });
-    });
-
-    const normalized = batch
-      .map((item) => ({
-        title: item.title?.trim(),
-        url: item.url,
-        price_brl: parseBrlPrice(item.priceText),
-        location: item.location?.trim() || null,
-        text: item.text || "",
-        ram_gb: extractRamGb(`${item.title}\n${item.text}`),
-        storage_gb: extractStorageGb(`${item.title}\n${item.text}`),
-      }))
-      .filter((x) => x.url && x.title && x.price_brl != null);
-
-    const seen = new Set(results.map((r) => r.url));
-    for (const item of normalized) {
-      if (!seen.has(item.url)) results.push(item);
+  const results = [], seen = new Set();
+  let stableRounds = 0, lastCount = 0, payload = {};
+  while (results.length <= maxCards && stableRounds < RAW_STABLE_ROUNDS) {
+    payload = await page.evaluate(readOlxListing);
+    for (const item of payload.items ?? []) {
+      const normalized = normalizeListingCard(item);
+      const key = normalized.url ? cardKey(normalized) : null;
+      if (normalized.title && normalized.price_brl != null && key && !seen.has(key)) {
+        seen.add(key); results.push(normalized);
+      }
     }
-
-    const currentCount = results.length;
-    if (currentCount === lastCount) {
-      stableRounds += 1;
-    } else {
-      stableRounds = 0;
-      lastCount = currentCount;
-    }
-
+    stableRounds = results.length === lastCount ? stableRounds + 1 : 0;
+    lastCount = results.length;
+    if (results.length > maxCards || (Number.isFinite(payload.totalResults) && results.length >= payload.totalResults)
+      || !(payload.items?.length)) break;
     await page.mouse.wheel(0, 2200);
-    await waitForCardCountChangePlaywright(page, currentCount);
+    await waitForCardCountChangePlaywright(page, results.length);
   }
-
-  return results.slice(0, maxCards);
+  return finishOlxListing(results, maxCards, payload);
 }
 
 async function waitForCardCountChangePlaywright(page, previousCount) {

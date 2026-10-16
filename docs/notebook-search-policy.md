@@ -21,7 +21,7 @@ Atualizada em 15/10/2026. A lista canônica fica em `scripts/lib/cpu-terms.mjs`.
 
 | Fonte | Busca normal | Detalhes e limites |
 | --- | --- | --- |
-| OLX | 14700HX, 13980HX, 14900HX e 13900HX em cada rodada; até seis CPUs secundárias com intervalo de 24h, priorizando as mais antigas; até duas famílias em rodízio | Até 20 cards por consulta e 12 detalhes no total. Descoberta por descrição: até dois por consulta e oito por rodada, incluídos nos 12. Fila persistida. |
+| OLX | 14700HX, 13980HX, 14900HX e 13900HX em cada rodada; até seis CPUs secundárias com intervalo de 24h; até duas famílias em rodízio, ordenadas pela última tentativa | Até 12 cards por consulta na tarefa agendada e 12 detalhes no total. Descoberta por descrição: até dois por consulta e oito por rodada, incluídos nos 12. Fila persistida. |
 | Enjoei | As quatro prioritárias em cada rodada; outras 16 após 24h | Até 24 requisições de busca no total, incluindo tentativas; quatro páginas por termo; oito candidatos com detalhes; prazo global de dois minutos. Cache por ID, título, marca e versão das regras por 24h. |
 | Mercado Livre | Sob demanda, mantendo lotes e pausas existentes | Até oito fichas por lote; cache de 24h. Fila persistida prioriza candidatos até R$8 mil. Fichas antigas ou anteriores à política atual precisam de nova leitura. |
 
@@ -32,6 +32,17 @@ passam pelos mesmos critérios. `--full-sweep` permite a varredura completa OLX.
 No Enjoei, o fim precisa de página vazia válida, indicação explícita da API ou
 total informado já coberto por IDs distintos. Uma página curta não comprova fim.
 Estouro de prazo, páginas ou detalhes mantém os dados anteriores e a pendência.
+
+Recomendações da OLX não entram nos resultados nem consomem a fila de fichas.
+O total informado pela página e um card de margem distinguem uma lista encerrada
+exatamente no limite de uma lista truncada. Relatórios separam listagem incompleta,
+fichas aguardando leitura e falhas de acesso; nenhuma cobertura é declarada completa
+quando ainda há páginas ou fichas não lidas. Tentativas parciais também avançam o
+rodízio de CPUs secundárias e famílias, sem aumentar os limites da rodada.
+
+No Enjoei, falha temporária na ficha preserva uma confirmação anterior somente
+com título, marca e preço iguais, política atual, CPU permitida, RAM mínima e
+evidência de menos de 24h. A pendência de nova leitura continua registrada.
 
 No ML, fichas são lidas nas seções técnicas do produto, evitando capturar modelos
 de recomendações da página. O preço integral do detalhe também é conferido.

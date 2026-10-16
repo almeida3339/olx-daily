@@ -231,15 +231,15 @@ describe("textContainsCpuTerm", () => {
     assert.equal(textContainsCpuTerm("notebook dell g15 i5 12500h rtx 3050", "12700h"), false));
   test("275HX NÃO deve casar com termo 255hx (modelo diferente)", () =>
     assert.equal(textContainsCpuTerm("rog strix scar 16 ultra 9-275hx 32gb", "255hx"), false));
-  // Intel Ultra HX: sufixo opcional (política "pegar tudo, inclusive variante H")
-  test("Ultra 9 285 (sem sufixo) casa com 285hx", () =>
-    assert.equal(textContainsCpuTerm("notebook pro max intel core ultra 9 285 64gb", "285hx"), true));
-  test("Ultra 9 285H casa com 285hx (variante H aceita)", () =>
-    assert.equal(textContainsCpuTerm("notebook ultra 9 285h 32gb", "285hx"), true));
+  // Intel Ultra HX exige o sufixo exato da seleção atual.
+  test("Ultra 9 285 sem sufixo não confirma 285hx", () =>
+    assert.equal(textContainsCpuTerm("notebook pro max intel core ultra 9 285 64gb", "285hx"), false));
+  test("Ultra 9 285H não confirma 285hx", () =>
+    assert.equal(textContainsCpuTerm("notebook ultra 9 285h 32gb", "285hx"), false));
   test("Ultra 9 285HX casa com 285hx", () =>
     assert.equal(textContainsCpuTerm("notebook ultra 9 285hx", "285hx"), true));
-  test("Ultra 7 255H casa com 255hx (variante H aceita)", () =>
-    assert.equal(textContainsCpuTerm("notebook ultra 7 255h 32gb 1tb", "255hx"), true));
+  test("Ultra 7 255H não confirma 255hx", () =>
+    assert.equal(textContainsCpuTerm("notebook ultra 7 255h 32gb 1tb", "255hx"), false));
   test("285 solto SEM 'ultra' NÃO casa com 285hx", () =>
     assert.equal(textContainsCpuTerm("notebook gamer por R$ 285 modelo 285", "285hx"), false));
 });

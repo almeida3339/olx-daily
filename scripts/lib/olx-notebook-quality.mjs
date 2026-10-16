@@ -17,7 +17,7 @@ export function planOlxCpuTerms(terms, previous, { now = Date.now(), lowPriority
     || now - Date.parse(previous.coverage_status[term].last_success_at) >= lowPriorityIntervalMs);
   if (fullSweep) return due;
   return [...due.filter(term => OLX_PRIORITY_CPUS.includes(term)), ...due.filter(term => !OLX_PRIORITY_CPUS.includes(term))
-    .sort((a,b) => (Date.parse(previous?.coverage_status?.[a]?.last_success_at) || 0) - (Date.parse(previous?.coverage_status?.[b]?.last_success_at) || 0)).slice(0, secondaryBudget)];
+    .sort((a,b) => (Date.parse(previous?.coverage_status?.[a]?.checked_at) || 0) - (Date.parse(previous?.coverage_status?.[b]?.checked_at) || 0)).slice(0, secondaryBudget)];
 }
 
 // RAM do sistema: remover a capacidade que pertence à GPU antes de aplicar o

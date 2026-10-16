@@ -1,4 +1,5 @@
 import { normalizeMonitorText } from './monitor-core.mjs';
+import { isOlxRecommendationUrl } from './olx-listing.mjs';
 
 export const OLED_POLICY_VERSION = 1;
 export const OLED_PRICE = { min: 1500, max: 3000 };
@@ -80,15 +81,29 @@ export function assessOledMonitor(item, { requireDetail = true } = {}) {
 export function isCompleteOledMonitor(item) {
   return assessOledMonitor(item, { requireDetail: false }).state !== 'rejected';
 }
-export function isApprovedOledMonitor(item, { now = Date.now() } = {}) {
+export function hasApprovedOledEvidence(item) {
   return Boolean(item && item.status !== 'out_of_scope' && item.oled_validation?.version === OLED_POLICY_VERSION
     && Number(item.price_brl)>=OLED_PRICE.min && Number(item.price_brl)<=OLED_PRICE.max
     && item.oled_validation.state === 'approved' && assessOledMonitor(item).state === 'approved'
-    && Number.isFinite(Date.parse(item.details_checked_at)) && now - Date.parse(item.details_checked_at) < OLED_DETAIL_TTL_MS);
+    && Number.isFinite(Date.parse(item.details_checked_at)));
+}
+export function isApprovedOledMonitor(item, { now = Date.now() } = {}) {
+  const age=now-Date.parse(item?.details_checked_at ?? '');
+  return hasApprovedOledEvidence(item) && age>=0 && age<OLED_DETAIL_TTL_MS;
 }
 export function classifySavedOledItem(item) {
   const validation = assessOledMonitor(item);
   return { ...item, oled_validation: validation, ...(validation.state === 'rejected' ? { status: 'out_of_scope' } : {}) };
+}
+export function oledPendingReason(item, { now = Date.now() } = {}) {
+  if (!item || !['active', undefined].includes(item.status) || isOlxRecommendationUrl(item.url)
+    || !Number.isFinite(Number(item.price_brl))
+    || Number(item.price_brl) < OLED_PRICE.min || Number(item.price_brl) > OLED_PRICE.max) return null;
+  const assessment = assessOledMonitor(item);
+  if (assessment.state === 'rejected') return null;
+  if (assessment.state === 'pending') return assessment.reasons.join('; ');
+  if (!isApprovedOledMonitor(item, { now })) return 'Aguardando atualização: conferência vencida; preço e disponibilidade precisam ser confirmados novamente';
+  return null;
 }
 export function filterOledReport(report, details = new Map()) {
   if (!report) return report;
@@ -99,7 +114,7 @@ export function filterOledReport(report, details = new Map()) {
     const url = line.match(/https?:\/\/\S+/)?.[0]?.replace(/[.,)]+$/, '');
     if (!url) return true;
     const item = details.get(url);
-    return /pendentes/i.test(section) ? item?.oled_validation?.state === 'pending' : isApprovedOledMonitor(item);
+    return /pendentes|aguardando atualiza/i.test(section) ? Boolean(oledPendingReason(item)) : isApprovedOledMonitor(item);
   });
   const count = pattern => { let active=false, n=0; for (const line of lines) { if(line.startsWith('## ')) active=pattern.test(line); else if(active&&line.startsWith('- ')&&/https?:/.test(line))n++; } return n; };
   return lines.map(line => /^(?:- )?Novos produtos:/.test(line) ? line.replace(/\*\*\d+\*\*/,`**${count(/^## Novos produtos/)}**`)

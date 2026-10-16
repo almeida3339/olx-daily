@@ -56,6 +56,9 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
     const profileBlocked = id.startsWith('mercadolivre-') && mlBlocked;
     if (profileBlocked) state = 'blocked';
     const hardDenial = Object.entries(snapshot?.source_blocks ?? {}).find(([source, block]) => source === 'OLX' && block.recovery_kind === 'hard_denial');
+    const olxPause = snapshot?.source_blocks?.OLX;
+    const pauseNote = Date.parse(olxPause?.blocked_until ?? '') > now
+      ? `OLX em pausa após bloqueio até ${new Date(olxPause.blocked_until).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })} BRT; consultas adiadas. ` : '';
     const freshnessNote = id.startsWith('mercadolivre-')
       ? `Sob demanda · ${ageMs == null ? 'sem coleta registrada' : `última coleta há ${formatHealthAge(ageMs)}`} · ` : '';
     sources.push({
@@ -67,7 +70,7 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
       invalid_snapshots: result.invalid.length,
       history: historySummary,
       marketplaces,
-      message: freshnessNote + (hardDenial ? `OLX recusou o acesso; sem CAPTCHA disponível. ${hardDenial[1].reason ?? ''}` : profileBlocked ? `Perfil ML exige login/verificação${mlSchedule.global.blocked_until ? `; pausa até ${new Date(mlSchedule.global.blocked_until).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })}` : ''}`
+      message: freshnessNote + pauseNote + (hardDenial ? `OLX recusou o acesso; sem CAPTCHA disponível. ${hardDenial[1].reason ?? ''}` : profileBlocked ? `Perfil ML exige login/verificação${mlSchedule.global.blocked_until ? `; pausa até ${new Date(mlSchedule.global.blocked_until).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })}` : ''}`
         : snapshot?.run?.in_progress ? 'Coleta em andamento; progresso salvo'
         : snapshot?.run?.aborted ? 'Coleta interrompida; resultados parciais preservados' : marketplaces.length
         ? marketplaces.map((source) => `${source.label}: ${healthMessage(source.state)} (${source.fresh_terms}/${source.total_terms} termos recentes${source.warming_terms ? `; ${source.warming_terms} em implantação` : ''})`).join(' · ')

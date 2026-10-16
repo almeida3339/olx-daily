@@ -1,4 +1,4 @@
-import { isCompleteOledMonitor, isApprovedOledMonitor, assessOledMonitor } from './lib/oled-monitor-scope.mjs';
+import { isCompleteOledMonitor, isApprovedOledMonitor, assessOledMonitor, oledPendingReason } from './lib/oled-monitor-scope.mjs';
 import { isConfirmedBarefootShoe, barefootPriority, classifyBarefootShoe } from './lib/shoe-search-rules.mjs';
 import { ENJOEI_JAPANESE_JEANS } from './lib/enjoei-japanese-jeans.mjs';
 import { meetsNotebookRamMinimum, isEligibleNotebook, notebookCpuTerms, hasExplicitOtherNotebookCpu } from './lib/notebook-policy.mjs';
@@ -92,14 +92,14 @@ async function main() {
     updated: await latestRunLabel(MERCADOLIVRE_NOTEBOOKS_DIR),
   };
   if (!mercadoLivre.reports.length) {
-    const current = await currentMercadoLivreSnapshotReport(MERCADOLIVRE_NOTEBOOKS_DIR, 8000);
+    const current = await currentSnapshotReport(MERCADOLIVRE_NOTEBOOKS_DIR, 8000);
     if (current) mercadoLivre.reports = [current];
   }
   const mercadoLivreWatchlists = await Promise.all(MERCADOLIVRE_WATCHLISTS.map(async ([chip, title, sub, folder]) => {
     const dir = path.join(ROOT, "data", folder);
     const reports = await gather(dir, "report-", null, await latestSnapshotDetails(dir));
     if (!reports.length) {
-      const current = await currentMercadoLivreSnapshotReport(dir);
+      const current = await currentSnapshotReport(dir);
       if (current) reports.push(current);
     }
     return {
@@ -124,6 +124,8 @@ async function main() {
     gather(OURA_DIR, "report-", null),
     gather(OLED_MONITORES_DIR, "report-", null, await latestSnapshotDetails(OLED_MONITORES_DIR)),
   ]);
+  const currentOled = await currentSnapshotReport(OLED_MONITORES_DIR, 3000);
+  if (currentOled) oledMonitores.unshift(currentOled);
   const [olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, onePlusBudsUpdated, pixelWatch4Updated, pixelWatch5Updated, ouraUpdated, oledMonitoresUpdated] = await Promise.all([
     latestRunLabel(OLX_DIR),
     latestRunLabel(ENJOEI_NOTEBOOKS_DIR),
@@ -267,8 +269,23 @@ async function gather(dir, prefix, excludePrefix, detailsByUrl = new Map()) {
       for (const field of ['allNewItems', 'allPriceItems']) p[field] = p[field].filter(item => isApprovedOledMonitor(detailsByUrl.get(item.url)));
       p.allPendingItems=p.allPendingItems.filter(parsed=>{
         const item=detailsByUrl.get(parsed.url);
-        return item&&item.status!=='out_of_scope'&&assessOledMonitor(item).state==='pending';
+        return Boolean(oledPendingReason(item));
       });
+      // Keep expired confirmations visible independently of historical report
+      // wording, without promoting them to valid offers or price alerts.
+      if (file === files[0]) {
+        const pending = new Map(p.allPendingItems.map(item => [item.url, item]));
+        for (const item of detailsByUrl.values()) {
+          const reason = oledPendingReason(item);
+          if (!reason) continue;
+          const refresh = assessOledMonitor(item).state === 'approved';
+          pending.set(item.url, { title: item.title, fullTitle: item.title, url: item.url,
+            price: `${refresh ? 'Último preço: ' : ''}${formatBrlPrice(item.price_brl)}`,
+            validationReason: reason, reviewState: refresh ? 'refresh_required' : 'pending' });
+        }
+        p.allPendingItems = [...pending.values()].sort((a,b) =>
+          Number(b.reviewState === 'refresh_required') - Number(a.reviewState === 'refresh_required'));
+      }
       p.newItems = p.allNewItems.slice(0, MAX);
       p.priceItems = p.allPriceItems.slice(0, MAX);
       p.pendingItems = p.allPendingItems.slice(0, MAX);
@@ -488,17 +505,13 @@ function toTitleCase(text) {
   });
 }
 
-async function currentMercadoLivreSnapshotReport(dir, displayMax = Infinity) {
-  const all = await fs.readdir(dir).catch(() => []);
-  const file = all.filter((name) => name.startsWith("snapshot-") && name.endsWith(".json")).sort().reverse()[0];
-  if (!file) return null;
-  const raw = await fs.readFile(path.join(dir, file), "utf8").catch(() => null);
-  if (!raw) return null;
-  const snapshot = JSON.parse(raw);
+async function currentSnapshotReport(dir, displayMax = Infinity) {
+  const { snapshot, file } = await readLatestValidSnapshot(dir);
+  if (!snapshot) return null;
   const items = (snapshot.items ?? [])
     .filter((item) => item.status === "active" && Number(item.price_brl) <= displayMax
       && (dir !== MERCADOLIVRE_NOTEBOOKS_DIR || isEligibleNotebook(item))
-      && (dir !== path.join(ROOT, "data", "mercadolivre-oled-monitores") || isApprovedOledMonitor(item)))
+      && (![OLED_MONITORES_DIR, path.join(ROOT, "data", "mercadolivre-oled-monitores")].includes(dir) || isApprovedOledMonitor(item)))
     .slice(0, MAX)
     .map((item) => ({
       title: item.title,
@@ -892,7 +905,8 @@ function renderCard(r, dpath, showSpecs) {
     ...r.newItems.map((i) => renderRow(i, false, showSpecs)),
     ...r.priceItems.map((i) => renderRow(i, true, showSpecs)),
   ].join("\n");
-  const pendingRows = (r.pendingItems ?? []).map(i => renderRow(i, false, showSpecs)).join('\n');
+  const pendingRows = (r.pendingItems ?? []).filter(i => i.reviewState !== 'refresh_required').map(i => renderRow(i, false, showSpecs)).join('\n');
+  const refreshRows = (r.pendingItems ?? []).filter(i => i.reviewState === 'refresh_required').map(i => renderRow(i, false, showSpecs)).join('\n');
   const runDate = runTimestampFromFile(r.file);
   const datetime = runDate ? ` datetime="${e(runDate.toISOString())}"` : "";
   return `<div class="card">
@@ -902,6 +916,7 @@ function renderCard(r, dpath, showSpecs) {
   </div>
   ${rows ? `<div class="ci">${rows}</div>` : ""}
   ${pendingRows ? `<details><summary>Pendentes de conferência — sem alerta de oferta válida</summary><div class="ci">${pendingRows}</div></details>` : ''}
+  ${refreshRows ? `<details open><summary>Aguardando atualização — preço e disponibilidade não reconfirmados</summary><div class="ci">${refreshRows}</div></details>` : ''}
 </div>`;
 }
 
@@ -930,7 +945,7 @@ function renderRow(item, isPrice, showSpecs) {
   if (isPrice && item.priceFrom && item.priceTo) {
     return `<div class="item legacy-item"><span class="it">${titleHtml}</span>${priceChangeHtml(item)}</div>`;
   }
-  return `<div class="item legacy-item"><span class="it">${titleHtml}</span>${item.price ? `<span class="ip">${e(item.price)}</span>` : ""}</div>`;
+  return `<div class="item legacy-item"><span class="it">${titleHtml}</span>${item.price ? `<span class="ip">${e(item.price)}</span>` : ""}</div>${item.validationReason ? `<p class="empty">${e(item.validationReason)}</p>` : ''}`;
 }
 
 function renderMachineRow(item, isPrice) {

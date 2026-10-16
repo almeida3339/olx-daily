@@ -374,7 +374,8 @@ function someTermIn(text, cpuTerms) {
 //  - termo confirmado na evidência → mantém com o(s) termo(s) corretos;
 //  - mismatch CONCLUSIVO (buscamos a descrição e mesmo assim nada confere) → descarta;
 //  - inconclusivo TEMPORÁRIO (fetch falhou OU orçamento de detalhes esgotado) →
-//    preserva o item se ele já tinha CPU validado em rodada anterior; senão descarta.
+//    preserva evidência da política atual por até 24h, com CPU/RAM confirmadas e
+//    título/marca/preço iguais; a nova leitura continua pendente na fila.
 // fetchDetails/detailMax/cpuTerms são injetáveis para teste.
 export async function enrichMissingDetails(items, previousSnapshot, {
   fetchDetails = fetchProductDetails, detailMax: maxDetails = detailMax, cpuTerms = DEFAULT_CPU_TERMS,
@@ -395,9 +396,25 @@ export async function enrichMissingDetails(items, previousSnapshot, {
         if (details) cache[item.id] = { title: item.title, brand: item.brand, checked_at: new Date().toISOString(), version: NOTEBOOK_POLICY_VERSION, details };
       } catch (error) { item.detail_error = error.message; }
     }
-    if (!details) { await onResolution(item, 'pending', null); continue; }
+    if (!details) {
+      // A temporary detail failure must not erase a recently verified listing.
+      // Search labels alone are not evidence of CPU or installed RAM.
+      const previous = previousSnapshot?.items?.find(old => String(old.id) === String(item.id));
+      const checkedAt = Date.parse(previous?.details_checked_at ?? '');
+      const preserve = previous?.title === item.title && (previous.brand ?? '') === (item.brand ?? '')
+        && Number(previous.price_brl) === Number(item.price_brl)
+        && previous.notebook_validation?.version === NOTEBOOK_POLICY_VERSION
+        && previous.notebook_validation?.state === 'validated'
+        && Number.isFinite(checkedAt) && Date.now() - checkedAt >= 0 && Date.now() - checkedAt < 24*3600_000
+        && isEligibleNotebook(previous)
+        && previous.cpu_terms?.length === 1 && cpuTerms.includes(previous.cpu_terms[0]);
+      const retained = preserve ? { ...previous, search_terms: [...new Set([...(previous.search_terms ?? []), ...(item.search_terms ?? [])])] } : null;
+      if (retained) verified.push(retained);
+      await onResolution(item, 'pending', retained);
+      continue;
+    }
     if (details.unavailable) { await onResolution(item, 'rejected', null); continue; }
-    const merged = { ...item, cpu: details.cpu ?? null, ram_gb: details.ram_gb ?? item.ram_gb ?? null,
+    const merged = { ...item, detail_error: null, cpu: details.cpu ?? null, ram_gb: details.ram_gb ?? item.ram_gb ?? null,
       storage_gb: details.storage_gb ?? null, gpu: details.gpu ?? null,
       description_evidence: details.text ?? '', detail_title: details.title ?? null,
       details_checked_at: reusable ? cached.checked_at : new Date().toISOString() };

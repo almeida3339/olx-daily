@@ -1,5 +1,5 @@
 import { meetsNotebookRamMinimum, NOTEBOOK_MIN_RAM_GB, NOTEBOOK_POLICY_VERSION, assessNotebook, isEligibleNotebook, notebookRamGb } from './notebook-policy.mjs';
-import { assessOledMonitor, isApprovedOledMonitor, classifySavedOledItem, OLED_POLICY_VERSION, OLED_DETAIL_TTL_MS } from './oled-monitor-scope.mjs';
+import { assessOledMonitor, isApprovedOledMonitor, hasApprovedOledEvidence, classifySavedOledItem, OLED_POLICY_VERSION, OLED_DETAIL_TTL_MS } from './oled-monitor-scope.mjs';
 import fs from "node:fs/promises";
 import path from "node:path";
 import { chromium } from "playwright";
@@ -362,7 +362,7 @@ export function buildMercadoLivreChanges(previous, current, { displayMinPrice, d
     && Number(item.price_brl) >= displayMinPrice
     && Number(item.price_brl) <= displayMaxPrice;
   const eligiblePrevious = ['notebook','oled'].includes(kind) && previous
-    ? { ...previous, items: (previous.items ?? []).filter(kind==='oled'?isApprovedOledMonitor:isEligibleNotebook) } : previous;
+    ? { ...previous, items: (previous.items ?? []).filter(kind==='oled'?hasApprovedOledEvidence:isEligibleNotebook) } : previous;
   const { newItems, priceChanges } = buildMonitorChanges(eligiblePrevious, current, {
     include: visible,
     reactivationIsNew: false,

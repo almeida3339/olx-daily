@@ -15,8 +15,10 @@ export function planNotebookFamilies(previous, { now = Date.now(), budget = 2, f
   const due = OLX_NOTEBOOK_FAMILIES.filter(({ id }) => fullSweep
     || !previous?.coverage_status?.[id]?.last_success_at
     || now - Date.parse(previous.coverage_status[id].last_success_at) >= 24 * 3600_000);
-  return due.sort((a,b) => (Date.parse(previous?.coverage_status?.[a.id]?.last_success_at) || 0)
-    - (Date.parse(previous?.coverage_status?.[b.id]?.last_success_at) || 0)).slice(0, fullSweep ? Infinity : budget).map(spec => spec.id);
+  // A partial query still consumed its slot. Rotate by attempt time so an
+  // incomplete family cannot starve families that have never been queried.
+  return due.sort((a,b) => (Date.parse(previous?.coverage_status?.[a.id]?.checked_at) || 0)
+    - (Date.parse(previous?.coverage_status?.[b.id]?.checked_at) || 0)).slice(0, fullSweep ? Infinity : budget).map(spec => spec.id);
 }
 
 export function notebookOpportunity(item, pool = []) {

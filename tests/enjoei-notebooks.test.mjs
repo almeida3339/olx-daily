@@ -90,27 +90,31 @@ test("arrays de cobertura e contagens são gravados corretamente", () => {
 // ── Falso desaparecimento por falha de enriquecimento (enrichMissingDetails) ──
 
 test("falha no endpoint de detalhes NÃO descarta item já confirmado antes", async () => {
-  const items = [{ id: "1", title: "Notebook usado barato", brand: "", cpu_terms: ["ryzen 7 8845h"], price_brl: 4000 }];
-  const previousSnapshot = { items: [{ id: "1", cpu_terms: ["ryzen 7 8845h"], cpu: null }] };
+  const items = [{ id: "1", title: "Notebook usado barato", brand: "", cpu_terms: ["14700hx"], price_brl: 4000 }];
+  const previousSnapshot = { items: [{ ...items[0], cpu_terms: ["14700hx"], cpu: "i7-14700HX", ram_gb: 32,
+    description_evidence: "Notebook i7-14700HX com 32 GB RAM", details_checked_at: new Date().toISOString(),
+    notebook_validation: { version: 2, state: "validated" } }] };
   const out = await enrichMissingDetails(items, previousSnapshot, {
     fetchDetails: async () => { throw new Error("HTTP 500"); },
     detailMax: 5,
-    cpuTerms: ["ryzen 7 8845h"],
+    cpuTerms: ["14700hx"],
   });
   assert.equal(out.length, 1);
-  assert.deepEqual(out[0].cpu_terms, ["ryzen 7 8845h"]);
+  assert.deepEqual(out[0].cpu_terms, ["14700hx"]);
 });
 
 test("detailMax esgotado preserva confirmado e descarta item novo não confirmável", async () => {
   const items = [
-    { id: "1", title: "Notebook generico", brand: "", cpu_terms: ["ryzen 7 8845h"], price_brl: 4000 },
-    { id: "2", title: "Notebook generico", brand: "", cpu_terms: ["ryzen 7 8845h"], price_brl: 4000 },
+    { id: "1", title: "Notebook generico", brand: "", cpu_terms: ["14700hx"], price_brl: 4000 },
+    { id: "2", title: "Notebook generico", brand: "", cpu_terms: ["14700hx"], price_brl: 4000 },
   ];
-  const previousSnapshot = { items: [{ id: "1", cpu_terms: ["ryzen 7 8845h"], cpu: null }] };
+  const previousSnapshot = { items: [{ ...items[0], cpu_terms: ["14700hx"], cpu: "i7-14700HX", ram_gb: 32,
+    description_evidence: "Notebook i7-14700HX com 32 GB RAM", details_checked_at: new Date().toISOString(),
+    notebook_validation: { version: 2, state: "validated" } }] };
   const out = await enrichMissingDetails(items, previousSnapshot, {
     fetchDetails: async () => { throw new Error("não deveria ser chamado"); },
     detailMax: 0,
-    cpuTerms: ["ryzen 7 8845h"],
+    cpuTerms: ["14700hx"],
   });
   assert.equal(out.length, 1);
   assert.equal(out[0].id, "1");

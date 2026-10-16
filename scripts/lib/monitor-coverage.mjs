@@ -16,6 +16,8 @@ export function mergeCoverageStatus(previous = {}, snapshot = {}) {
     if (Date.parse(old.checked_at) > Date.parse(at)) continue;
     const separator = key.indexOf(':');
     const error = failures.find((value) => value?.term === key)?.error
+      ?? (run.failed_terms ?? []).find((value) => value?.term === key)?.error
+      ?? (run.errors ?? []).find((value) => value?.term === key)?.error
       ?? (run.errors ?? []).find((value) => separator >= 0 && String(value).includes(key.slice(0, separator)) && String(value).includes(key.slice(separator + 1)))
       ?? (run.errors ?? []).find((value) => separator >= 0 && String(value).startsWith(`${key.slice(0, separator)}:`))
       ?? 'Coleta incompleta';

@@ -62,6 +62,22 @@ própria e não contam como ofertas aprovadas. Evidências com mais de 24h preci
 de atualização antes de gerar alerta de oferta. A saúde considera a agenda de
 cada consulta e mostra consultas novas ainda em implantação.
 
+Ofertas com conferência vencida continuam visíveis em **Aguardando atualização**,
+com o último preço observado, sem entrar nos alertas de ofertas aprovadas.
+Renovar uma confirmação vencida não transforma um anúncio já aprovado em novidade;
+depois da renovação ele aparece entre as ofertas ativas atuais.
+No Enjoei, uma oferta aprovada que venceu permite renovar sua consulta antes
+do intervalo habitual de 12h, mantendo os mesmos limites de páginas e detalhes.
+
+Durante uma pausa por bloqueio da OLX, as consultas são registradas como adiadas:
+não contam como novas tentativas nem alteram a data da última consulta. O painel
+e o relatório mostram o prazo de retomada. Após esse prazo, a próxima rodada
+retoma pela primeira consulta e interrompe a fonte se o site voltar a bloquear.
+Se faltarem até cinco minutos para o fim da pausa, a rodada aguarda localmente,
+sem fazer acessos, para aproveitar o horário agendado da manhã.
+Abrir uma janela visível não ignora a pausa. Recomendações da página não são
+tratadas como resultados da busca.
+
 `scripts/refresh-oled-policy.mjs` reaplica as regras aos dados salvos sem nova
 visita nem alteração dos horários de coleta. Manifestos de reclassificação não
 entram no histórico de desempenho como novas coletas.
