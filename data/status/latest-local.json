@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-16T10:00:10.788Z",
+  "generated_at": "2026-10-16T19:00:08.692Z",
   "source": "local",
   "delivery": {
     "email": "skipped",
@@ -40,8 +40,8 @@
     "scope": "local-watchlists",
     "partial": true,
     "errors": [
-      "OLX: Saiu com código 1: Coleta OLX parcial: 5 falha(s). Dados coletados e anúncios dos termos sem cobertura foram preservados.\nMonitor OLX falhou com exit code 1.\r\nNo C:\\Users\\docra\\downloads\\olx-daily\\scripts\\run-olx-monitor.ps1:88 caractere:5\r\n+     throw \"Monitor OLX falhou com exit code $LASTEXITCODE.\"\r\n+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : OperationStopped: (Monitor OLX falhou com exit code 1.:String) [], RuntimeException\r\n    + FullyQualifiedErrorId : Monitor OLX falhou com exit code 1.",
-      "Monitores OLED: Saiu com código 1: Aviso: termo \"aw2726dm\" em https://www.olx.com.br/brasil/informatica/monitores falhou — OLX exige verificação ou bloqueou o acesso; coleta interrompida.\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados."
+      "OLX: Saiu com código 1: Coleta OLX parcial: 6 falha(s). Dados coletados e anúncios dos termos sem cobertura foram preservados.\nMonitor OLX falhou com exit code 1.\r\nNo C:\\Users\\docra\\downloads\\olx-daily\\scripts\\run-olx-monitor.ps1:88 caractere:5\r\n+     throw \"Monitor OLX falhou com exit code $LASTEXITCODE.\"\r\n+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : OperationStopped: (Monitor OLX falhou com exit code 1.:String) [], RuntimeException\r\n    + FullyQualifiedErrorId : Monitor OLX falhou com exit code 1.",
+      "Monitores OLED: Saiu com código 1"
     ]
   },
   "notification_sent_ids": [
@@ -68,7 +68,8 @@
     "f914d9c9-c762-40bb-a064-f9d24c11687c",
     "010eea2b-6c51-4977-b953-105b113c3c90",
     "09f31426-9124-47b1-9c47-09b2cf1c3e3c",
-    "f91342c0-0401-4f5b-b3e7-7073c55ea1f4"
+    "f91342c0-0401-4f5b-b3e7-7073c55ea1f4",
+    "0a0aee5c-21ee-4836-bdae-039048f61b14"
   ],
   "notification_archive": [
     {

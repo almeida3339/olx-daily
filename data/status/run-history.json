@@ -1,7 +1,25 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-16T10:03:52.579Z",
+  "updated_at": "2026-10-16T19:03:23.006Z",
   "runs": [
+    {
+      "run_id": "bb5b499a-2689-4b3d-ba39-13a4773f63bd",
+      "completed_at": "2026-10-16T19:03:23.000Z",
+      "outcome": "failed",
+      "partial": true,
+      "duration_ms": 194308,
+      "item_count": 0,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "local",
+        "monitor_errors": 2,
+        "monitor_failures": [
+          "OLX: Saiu com código 1: Coleta OLX parcial: 6 falha(s). Dados coletados e anúncios dos termos sem cobertura foram preservados.\nMonitor OLX falhou com exit code 1.\r\nNo C:\\Users\\docra\\downloads\\olx-daily\\scripts\\run-olx-monitor.ps1:88 caractere:5\r\n+     throw \"Monitor OLX falhou com exit code $LASTEXITCODE.\"\r\n+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : OperationStopped: (Monitor OLX falhou com exit code 1.:String) [], RuntimeException\r\n    + FullyQualifiedErrorId : Monitor OLX falhou com exit code 1.",
+          "Monitores OLED: Saiu com código 1"
+        ],
+        "pending_notifications": 0
+      }
+    },
     {
       "run_id": "ad4a2d4f-e1df-44fe-b446-449dece5871e",
       "completed_at": "2026-10-16T10:03:52.565Z",
@@ -1785,20 +1803,6 @@
       "outcome": "success",
       "partial": false,
       "duration_ms": 70637,
-      "item_count": 0,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "local",
-        "monitor_errors": 0,
-        "pending_notifications": 1
-      }
-    },
-    {
-      "run_id": "fd78a285-26fe-4c86-840c-de36c79a6519",
-      "completed_at": "2026-08-23T19:01:10.014Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 65832,
       "item_count": 0,
       "quarantined_item_count": 0,
       "metadata": {
