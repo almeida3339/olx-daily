@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-16T19:00:08.692Z",
+  "generated_at": "2026-10-17T10:00:10.959Z",
   "source": "local",
   "delivery": {
     "email": "skipped",
@@ -40,8 +40,8 @@
     "scope": "local-watchlists",
     "partial": true,
     "errors": [
-      "OLX: Saiu com código 1: Coleta OLX parcial: 6 falha(s). Dados coletados e anúncios dos termos sem cobertura foram preservados.\nMonitor OLX falhou com exit code 1.\r\nNo C:\\Users\\docra\\downloads\\olx-daily\\scripts\\run-olx-monitor.ps1:88 caractere:5\r\n+     throw \"Monitor OLX falhou com exit code $LASTEXITCODE.\"\r\n+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : OperationStopped: (Monitor OLX falhou com exit code 1.:String) [], RuntimeException\r\n    + FullyQualifiedErrorId : Monitor OLX falhou com exit code 1.",
-      "Monitores OLED: Saiu com código 1"
+      "OLX: Saiu com código 1: Coleta OLX parcial: 1 falha(s). Dados coletados e anúncios dos termos sem cobertura foram preservados.\nMonitor OLX falhou com exit code 1.\r\nNo C:\\Users\\docra\\downloads\\olx-daily\\scripts\\run-olx-monitor.ps1:88 caractere:5\r\n+     throw \"Monitor OLX falhou com exit code $LASTEXITCODE.\"\r\n+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : OperationStopped: (Monitor OLX falhou com exit code 1.:String) [], RuntimeException\r\n    + FullyQualifiedErrorId : Monitor OLX falhou com exit code 1.",
+      "Monitores OLED: Saiu com código 1: Aviso: termo \"aw2726dm\" em https://www.olx.com.br/brasil/informatica/monitores falhou — Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4be79cbff9d5f0f).\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.\nColeta OLED parcial: 10 consulta(s) incompleta(s), 0 adiada(s).\nOLX:aw2726dm: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4be79cbff9d5f0f).\nOLX:aw2725d: Consulta não executada após interrupção\nOLX:aw2725df: Consulta não executada após interrupção"
     ]
   },
   "notification_sent_ids": [
@@ -69,7 +69,8 @@
     "010eea2b-6c51-4977-b953-105b113c3c90",
     "09f31426-9124-47b1-9c47-09b2cf1c3e3c",
     "f91342c0-0401-4f5b-b3e7-7073c55ea1f4",
-    "0a0aee5c-21ee-4836-bdae-039048f61b14"
+    "0a0aee5c-21ee-4836-bdae-039048f61b14",
+    "8dd66a33-52b6-4138-b5c4-d7f71d8ad3f7"
   ],
   "notification_archive": [
     {

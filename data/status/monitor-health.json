@@ -1,13 +1,13 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-10-16T21:21:01.895Z",
+  "generated_at": "2026-10-17T10:04:00.427Z",
   "sources": [
     {
       "id": "enjoei-momotaro",
       "label": "Enjoei Jeans Momotaro Jeans 40",
       "state": "healthy",
       "updated_at": "2026-10-16T21:15:54.567Z",
-      "age_ms": 307328,
+      "age_ms": 46085860,
       "invalid_snapshots": 0,
       "history": {
         "sample": 2,
@@ -33,7 +33,7 @@
       "label": "Enjoei Jeans Pure Blue Japan (PBJ) 40",
       "state": "healthy",
       "updated_at": "2026-10-16T21:15:55.966Z",
-      "age_ms": 305929,
+      "age_ms": 46084461,
       "invalid_snapshots": 0,
       "history": {
         "sample": 2,
@@ -59,7 +59,7 @@
       "label": "Enjoei Jeans The Strike Gold 40",
       "state": "healthy",
       "updated_at": "2026-10-16T21:15:56.661Z",
-      "age_ms": 305234,
+      "age_ms": 46083766,
       "invalid_snapshots": 0,
       "history": {
         "sample": 2,
@@ -85,7 +85,7 @@
       "label": "Enjoei Jeans Kapital 40",
       "state": "healthy",
       "updated_at": "2026-10-16T21:15:57.305Z",
-      "age_ms": 304590,
+      "age_ms": 46083122,
       "invalid_snapshots": 0,
       "history": {
         "sample": 2,
@@ -111,7 +111,7 @@
       "label": "Enjoei Jeans Fullcount 40",
       "state": "healthy",
       "updated_at": "2026-10-16T21:15:57.979Z",
-      "age_ms": 303916,
+      "age_ms": 46082448,
       "invalid_snapshots": 0,
       "history": {
         "sample": 2,
@@ -137,7 +137,7 @@
       "label": "Enjoei Jeans OrSlow 40",
       "state": "healthy",
       "updated_at": "2026-10-16T21:15:59.293Z",
-      "age_ms": 302602,
+      "age_ms": 46081134,
       "invalid_snapshots": 0,
       "history": {
         "sample": 2,
@@ -163,7 +163,7 @@
       "label": "Enjoei Jeans Jacob Cohën 40",
       "state": "healthy",
       "updated_at": "2026-10-16T21:15:53.707Z",
-      "age_ms": 308188,
+      "age_ms": 46086720,
       "invalid_snapshots": 0,
       "history": {
         "sample": 2,
@@ -189,7 +189,7 @@
       "label": "Enjoei Jeans Brunello Cucinelli 40",
       "state": "healthy",
       "updated_at": "2026-10-16T21:15:54.137Z",
-      "age_ms": 307758,
+      "age_ms": 46086290,
       "invalid_snapshots": 0,
       "history": {
         "sample": 2,
@@ -215,7 +215,7 @@
       "label": "Enjoei Jeans Ricardo Almeida 40",
       "state": "healthy",
       "updated_at": "2026-10-16T21:15:53.223Z",
-      "age_ms": 308672,
+      "age_ms": 46087204,
       "invalid_snapshots": 0,
       "history": {
         "sample": 4,
@@ -241,7 +241,7 @@
       "label": "Enjoei Calças Zegna 40",
       "state": "healthy",
       "updated_at": "2026-10-16T21:15:49.348Z",
-      "age_ms": 312547,
+      "age_ms": 46091079,
       "invalid_snapshots": 0,
       "history": {
         "sample": 2,
@@ -265,43 +265,43 @@
     {
       "id": "olx",
       "label": "OLX Notebooks",
-      "state": "stale",
-      "updated_at": "2026-10-16T21:17:51.385Z",
-      "age_ms": 190510,
+      "state": "partial",
+      "updated_at": "2026-10-17T10:03:04.352Z",
+      "age_ms": 56075,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
-        "partial": 4,
+        "partial": 5,
         "failed": 0,
-        "success_rate": 0.6,
+        "success_rate": 0.5,
         "median_duration_ms": 136000
       },
       "marketplaces": [
         {
           "label": "OLX",
-          "state": "stale",
+          "state": "partial",
           "total_terms": 20,
-          "fresh_terms": 13,
+          "fresh_terms": 19,
           "warming_terms": 0,
-          "updated_at": "2026-10-16T21:17:51.385Z"
+          "updated_at": "2026-10-17T10:03:04.352Z"
         },
         {
           "label": "OLX modelos",
           "state": "partial",
           "total_terms": 6,
-          "fresh_terms": 0,
-          "warming_terms": 4,
-          "updated_at": "2026-10-16T21:17:51.385Z"
+          "fresh_terms": 2,
+          "warming_terms": 2,
+          "updated_at": "2026-10-17T10:03:04.352Z"
         }
       ],
-      "message": "OLX: Coleta desatualizada (13/20 termos recentes) · OLX modelos: Cobertura parcial (0/6 termos recentes; 4 em implantação)"
+      "message": "OLX: Cobertura parcial (19/20 termos recentes) · OLX modelos: Cobertura parcial (2/6 termos recentes; 2 em implantação)"
     },
     {
       "id": "enjoei-notebooks",
       "label": "Enjoei Notebooks",
       "state": "healthy",
       "updated_at": "2026-10-16T21:16:12.177Z",
-      "age_ms": 289718,
+      "age_ms": 46068250,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -327,7 +327,7 @@
       "label": "Enjoei Tênis 42",
       "state": "healthy",
       "updated_at": "2026-10-16T21:16:17.602Z",
-      "age_ms": 284293,
+      "age_ms": 46062825,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -376,8 +376,8 @@
       "id": "lifefactory",
       "label": "Lifefactory",
       "state": "healthy",
-      "updated_at": "2026-10-16T19:02:43.908Z",
-      "age_ms": 8297987,
+      "updated_at": "2026-10-17T10:03:10.799Z",
+      "age_ms": 49628,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -393,7 +393,7 @@
           "total_terms": 1,
           "fresh_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-10-16T19:02:43.908Z"
+          "updated_at": "2026-10-17T10:03:10.799Z"
         },
         {
           "label": "OLX",
@@ -401,7 +401,7 @@
           "total_terms": 1,
           "fresh_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-10-16T19:02:43.908Z"
+          "updated_at": "2026-10-17T10:03:10.799Z"
         }
       ],
       "message": "Enjoei: Saudável (1/1 termos recentes) · OLX: Saudável (1/1 termos recentes)"
@@ -410,8 +410,8 @@
       "id": "tela-galaxybook3",
       "label": "Tela Book3",
       "state": "healthy",
-      "updated_at": "2026-10-16T19:02:50.551Z",
-      "age_ms": 8291344,
+      "updated_at": "2026-10-17T10:03:15.727Z",
+      "age_ms": 44700,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -427,7 +427,7 @@
           "total_terms": 1,
           "fresh_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-10-16T19:02:50.551Z"
+          "updated_at": "2026-10-17T10:03:15.727Z"
         },
         {
           "label": "OLX",
@@ -435,7 +435,7 @@
           "total_terms": 1,
           "fresh_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-10-16T19:02:50.551Z"
+          "updated_at": "2026-10-17T10:03:15.727Z"
         }
       ],
       "message": "Enjoei: Saudável (1/1 termos recentes) · OLX: Saudável (1/1 termos recentes)"
@@ -444,8 +444,8 @@
       "id": "melanger",
       "label": "Melanger",
       "state": "healthy",
-      "updated_at": "2026-10-16T19:03:03.222Z",
-      "age_ms": 8278673,
+      "updated_at": "2026-10-17T10:03:24.423Z",
+      "age_ms": 36004,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -461,7 +461,7 @@
           "total_terms": 1,
           "fresh_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-10-16T19:03:03.222Z"
+          "updated_at": "2026-10-17T10:03:24.423Z"
         },
         {
           "label": "OLX",
@@ -469,7 +469,7 @@
           "total_terms": 1,
           "fresh_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-10-16T19:03:03.222Z"
+          "updated_at": "2026-10-17T10:03:24.423Z"
         }
       ],
       "message": "Enjoei: Saudável (1/1 termos recentes) · OLX: Saudável (1/1 termos recentes)"
@@ -478,8 +478,8 @@
       "id": "oneplus-buds-pro-3",
       "label": "OnePlus Buds Pro 3",
       "state": "healthy",
-      "updated_at": "2026-10-16T19:03:19.752Z",
-      "age_ms": 8262143,
+      "updated_at": "2026-10-17T10:03:39.098Z",
+      "age_ms": 21329,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -495,7 +495,7 @@
           "total_terms": 3,
           "fresh_terms": 3,
           "warming_terms": 0,
-          "updated_at": "2026-10-16T19:03:19.752Z"
+          "updated_at": "2026-10-17T10:03:39.098Z"
         },
         {
           "label": "OLX",
@@ -503,7 +503,7 @@
           "total_terms": 3,
           "fresh_terms": 3,
           "warming_terms": 0,
-          "updated_at": "2026-10-16T19:03:19.752Z"
+          "updated_at": "2026-10-17T10:03:39.098Z"
         }
       ],
       "message": "Enjoei: Saudável (3/3 termos recentes) · OLX: Saudável (3/3 termos recentes)"
@@ -512,15 +512,15 @@
       "id": "oled-monitores",
       "label": "Monitores OLED",
       "state": "blocked",
-      "updated_at": "2026-10-16T21:19:49.530Z",
-      "age_ms": 72365,
+      "updated_at": "2026-10-17T10:03:51.544Z",
+      "age_ms": 8883,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
-        "partial": 4,
+        "partial": 5,
         "failed": 0,
-        "success_rate": 0.6,
-        "median_duration_ms": 8564
+        "success_rate": 0.5,
+        "median_duration_ms": 11652
       },
       "marketplaces": [
         {
@@ -529,7 +529,7 @@
           "total_terms": 21,
           "fresh_terms": 11,
           "warming_terms": 0,
-          "updated_at": "2026-10-16T19:03:20.793Z"
+          "updated_at": "2026-10-17T10:03:51.544Z"
         },
         {
           "label": "Enjoei",
@@ -537,17 +537,17 @@
           "total_terms": 21,
           "fresh_terms": 21,
           "warming_terms": 0,
-          "updated_at": "2026-10-16T21:19:49.530Z"
+          "updated_at": "2026-10-17T10:03:51.544Z"
         }
       ],
-      "message": "OLX em pausa após bloqueio até 17/10/2026, 07:03:50 BRT; consultas adiadas. OLX: Login, limite ou desafio exigem atenção (11/21 termos recentes) · Enjoei: Saudável (21/21 termos recentes)"
+      "message": "OLX em pausa após bloqueio até 18/10/2026, 07:03:51 BRT; consultas adiadas. OLX: Login, limite ou desafio exigem atenção (11/21 termos recentes) · Enjoei: Saudável (21/21 termos recentes)"
     },
     {
       "id": "mercadolivre-notebooks",
       "label": "Mercado Livre Notebooks",
       "state": "stale",
       "updated_at": "2026-10-12T13:21:47.644Z",
-      "age_ms": 374354251,
+      "age_ms": 420132783,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -573,7 +573,7 @@
       "label": "Mercado Livre OnePlus Buds Pro 3",
       "state": "stale",
       "updated_at": "2026-10-12T13:22:47.993Z",
-      "age_ms": 374293902,
+      "age_ms": 420072434,
       "invalid_snapshots": 0,
       "history": {
         "sample": 3,
@@ -599,7 +599,7 @@
       "label": "Mercado Livre Lifefactory",
       "state": "stale",
       "updated_at": "2026-10-12T13:24:27.608Z",
-      "age_ms": 374194287,
+      "age_ms": 419972819,
       "invalid_snapshots": 0,
       "history": {
         "sample": 4,
@@ -625,7 +625,7 @@
       "label": "Mercado Livre Tela Galaxy Book3",
       "state": "stale",
       "updated_at": "2026-10-12T13:24:50.981Z",
-      "age_ms": 374170914,
+      "age_ms": 419949446,
       "invalid_snapshots": 0,
       "history": {
         "sample": 4,
@@ -651,7 +651,7 @@
       "label": "Mercado Livre Melanger",
       "state": "stale",
       "updated_at": "2026-10-12T13:25:07.202Z",
-      "age_ms": 374154693,
+      "age_ms": 419933225,
       "invalid_snapshots": 0,
       "history": {
         "sample": 4,
@@ -677,7 +677,7 @@
       "label": "Mercado Livre Tênis 42",
       "state": "stale",
       "updated_at": "2026-10-12T13:38:30.174Z",
-      "age_ms": 373351721,
+      "age_ms": 419130253,
       "invalid_snapshots": 0,
       "history": {
         "sample": 3,
@@ -703,7 +703,7 @@
       "label": "Mercado Livre Monitores OLED",
       "state": "stale",
       "updated_at": "2026-10-12T13:41:58.723Z",
-      "age_ms": 373143172,
+      "age_ms": 418921704,
       "invalid_snapshots": 0,
       "history": {
         "sample": 5,

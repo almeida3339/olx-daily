@@ -1,7 +1,25 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-16T19:03:23.006Z",
+  "updated_at": "2026-10-17T10:03:53.259Z",
   "runs": [
+    {
+      "run_id": "b27cfada-4652-4f9a-93ae-232459bd6857",
+      "completed_at": "2026-10-17T10:03:53.256Z",
+      "outcome": "failed",
+      "partial": true,
+      "duration_ms": 222297,
+      "item_count": 0,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "local",
+        "monitor_errors": 2,
+        "monitor_failures": [
+          "OLX: Saiu com código 1: Coleta OLX parcial: 1 falha(s). Dados coletados e anúncios dos termos sem cobertura foram preservados.\nMonitor OLX falhou com exit code 1.\r\nNo C:\\Users\\docra\\downloads\\olx-daily\\scripts\\run-olx-monitor.ps1:88 caractere:5\r\n+     throw \"Monitor OLX falhou com exit code $LASTEXITCODE.\"\r\n+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : OperationStopped: (Monitor OLX falhou com exit code 1.:String) [], RuntimeException\r\n    + FullyQualifiedErrorId : Monitor OLX falhou com exit code 1.",
+          "Monitores OLED: Saiu com código 1: Aviso: termo \"aw2726dm\" em https://www.olx.com.br/brasil/informatica/monitores falhou — Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4be79cbff9d5f0f).\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.\nColeta OLED parcial: 10 consulta(s) incompleta(s), 0 adiada(s).\nOLX:aw2726dm: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4be79cbff9d5f0f).\nOLX:aw2725d: Consulta não executada após interrupção\nOLX:aw2725df: Consulta não executada após interrupção"
+        ],
+        "pending_notifications": 0
+      }
+    },
     {
       "run_id": "bb5b499a-2689-4b3d-ba39-13a4773f63bd",
       "completed_at": "2026-10-16T19:03:23.000Z",
@@ -1789,20 +1807,6 @@
       "outcome": "success",
       "partial": false,
       "duration_ms": 57968,
-      "item_count": 0,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "local",
-        "monitor_errors": 0,
-        "pending_notifications": 1
-      }
-    },
-    {
-      "run_id": "c1bf7f2f-d41b-4974-89da-df2fea442f14",
-      "completed_at": "2026-08-23T19:11:13.365Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 70637,
       "item_count": 0,
       "quarantined_item_count": 0,
       "metadata": {
