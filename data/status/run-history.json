@@ -1,34 +1,22 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-17T19:01:13.997Z",
+  "updated_at": "2026-10-17T19:02:27.770Z",
   "runs": [
     {
-      "run_id": "a348d7ea-9d45-4944-a563-8d9cbd04a1eb",
-      "completed_at": "2026-10-17T19:01:13.996Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 4688,
+      "run_id": "d394c748-3981-40f1-a778-95499723fbfa",
+      "completed_at": "2026-10-17T19:02:27.766Z",
+      "outcome": "failed",
+      "partial": true,
+      "duration_ms": 139604,
       "item_count": 0,
       "quarantined_item_count": 0,
       "metadata": {
-        "source": "ci",
-        "monitor_errors": 0,
-        "monitor_failures": [],
-        "pending_notifications": 0
-      }
-    },
-    {
-      "run_id": "f6cb21d5-e484-40c6-bf28-d0c197550cab",
-      "completed_at": "2026-10-17T11:01:13.335Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 5202,
-      "item_count": 0,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "ci",
-        "monitor_errors": 0,
-        "monitor_failures": [],
+        "source": "local",
+        "monitor_errors": 2,
+        "monitor_failures": [
+          "OLX: Saiu com código 1: Coleta OLX parcial: 3 falha(s). Dados coletados e anúncios dos termos sem cobertura foram preservados.\nMonitor OLX falhou com exit code 1.\r\nNo C:\\Users\\docra\\downloads\\olx-daily\\scripts\\run-olx-monitor.ps1:88 caractere:5\r\n+     throw \"Monitor OLX falhou com exit code $LASTEXITCODE.\"\r\n+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : OperationStopped: (Monitor OLX falhou com exit code 1.:String) [], RuntimeException\r\n    + FullyQualifiedErrorId : Monitor OLX falhou com exit code 1.",
+          "Monitores OLED: Saiu com código 1: Coleta OLED parcial: 0 consulta(s) incompleta(s), 10 adiada(s).\nOLX: consultas adiadas após bloqueio; retomada prevista em 18/10/2026, 07:03:51 BRT."
+        ],
         "pending_notifications": 0
       }
     },
@@ -1809,6 +1797,20 @@
       "outcome": "success",
       "partial": false,
       "duration_ms": 63898,
+      "item_count": 1,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "local",
+        "monitor_errors": 0,
+        "pending_notifications": 1
+      }
+    },
+    {
+      "run_id": "aebf9d4a-7c88-4e04-8e03-9aa59cec2d76",
+      "completed_at": "2026-08-24T19:00:58.703Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 55509,
       "item_count": 1,
       "quarantined_item_count": 0,
       "metadata": {
