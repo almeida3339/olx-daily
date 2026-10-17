@@ -66,6 +66,11 @@ Ofertas com conferência vencida continuam visíveis em **Aguardando atualizaç�
 com o último preço observado, sem entrar nos alertas de ofertas aprovadas.
 Renovar uma confirmação vencida não transforma um anúncio já aprovado em novidade;
 depois da renovação ele aparece entre as ofertas ativas atuais.
+No painel, as ofertas ativas sem mudança ficam recolhidas em **Ofertas já
+conhecidas**, com a data da primeira identificação e da última conferência real.
+O horário de uma rodada sem consultas não renova essas datas. Apenas anúncios
+novos e mudanças de preço nas últimas 24h levam uma busca para a área de
+novidades; pendências aparecem uma única vez em **Pendências atuais**.
 No Enjoei, uma oferta aprovada que venceu permite renovar sua consulta antes
 do intervalo habitual de 12h, mantendo os mesmos limites de páginas e detalhes.
 

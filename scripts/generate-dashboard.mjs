@@ -93,14 +93,14 @@ async function main() {
   };
   if (!mercadoLivre.reports.length) {
     const current = await currentSnapshotReport(MERCADOLIVRE_NOTEBOOKS_DIR, 8000);
-    if (current) mercadoLivre.reports = [current];
+    if (current) mercadoLivre.reports.currentReport = current;
   }
   const mercadoLivreWatchlists = await Promise.all(MERCADOLIVRE_WATCHLISTS.map(async ([chip, title, sub, folder]) => {
     const dir = path.join(ROOT, "data", folder);
     const reports = await gather(dir, "report-", null, await latestSnapshotDetails(dir));
     if (!reports.length) {
       const current = await currentSnapshotReport(dir);
-      if (current) reports.push(current);
+      if (current) reports.currentReport = current;
     }
     return {
       chip, title, sub, dpath: `data/${folder}`,
@@ -125,7 +125,7 @@ async function main() {
     gather(OLED_MONITORES_DIR, "report-", null, await latestSnapshotDetails(OLED_MONITORES_DIR)),
   ]);
   const currentOled = await currentSnapshotReport(OLED_MONITORES_DIR, 3000);
-  if (currentOled) oledMonitores.unshift(currentOled);
+  if (currentOled) oledMonitores.currentReport = currentOled;
   const [olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, onePlusBudsUpdated, pixelWatch4Updated, pixelWatch5Updated, ouraUpdated, oledMonitoresUpdated] = await Promise.all([
     latestRunLabel(OLX_DIR),
     latestRunLabel(ENJOEI_NOTEBOOKS_DIR),
@@ -281,7 +281,8 @@ async function gather(dir, prefix, excludePrefix, detailsByUrl = new Map()) {
           const refresh = assessOledMonitor(item).state === 'approved';
           pending.set(item.url, { title: item.title, fullTitle: item.title, url: item.url,
             price: `${refresh ? 'Último preço: ' : ''}${formatBrlPrice(item.price_brl)}`,
-            validationReason: reason, reviewState: refresh ? 'refresh_required' : 'pending' });
+            validationReason: reason, reviewState: refresh ? 'refresh_required' : 'pending',
+            observationLabel: formatObservationLabel(item.first_seen, item.details_checked_at) });
         }
         p.allPendingItems = [...pending.values()].sort((a,b) =>
           Number(b.reviewState === 'refresh_required') - Number(a.reviewState === 'refresh_required'));
@@ -293,6 +294,14 @@ async function gather(dir, prefix, excludePrefix, detailsByUrl = new Map()) {
       p.priceCount = p.allPriceItems.length;
       p.pendingCount = p.allPendingItems.length;
     }
+    // Pending candidates describe the latest state, not a new event per run.
+    if (file === files[0] && p.pendingCount > 0) {
+      out.pendingReport = { ...p, file, newCount: 0, priceCount: 0, newItems: [], priceItems: [],
+        runLabel: formatRunLabelFromFile(file, p.date), stateLabel: 'Pendências atuais' };
+    }
+    p.pendingCount = 0;
+    p.pendingItems = [];
+    p.allPendingItems = [];
     const fileTs = runTimestampFromFile(file)?.getTime() ?? null;
     if (fileTs != null && fileTs >= recentCutoff && fileTs <= Date.now() + 60_000) {
       const runLabel = formatRunLabelFromFile(file, p.date);
@@ -311,7 +320,7 @@ async function gather(dir, prefix, excludePrefix, detailsByUrl = new Map()) {
       return true;
     });
     p.newCount = p.newItems.length;
-    if (p.newCount > 0 || p.priceCount > 0 || p.pendingCount > 0) out.push({ file, ...p, runLabel: formatRunLabelFromFile(file, p.date) });
+    if (p.newCount > 0 || p.priceCount > 0) out.push({ file, ...p, runLabel: formatRunLabelFromFile(file, p.date) });
   }
   out.recentItems = [...recentItems.values()];
   return out;
@@ -518,6 +527,9 @@ async function currentSnapshotReport(dir, displayMax = Infinity) {
       fullTitle: item.title,
       price: formatBrlPrice(item.price_brl),
       url: item.url,
+      firstSeen: item.first_seen,
+      checkedAt: item.details_checked_at ?? item.validation?.checked_at ?? null,
+      observationLabel: formatObservationLabel(item.first_seen, item.details_checked_at ?? item.validation?.checked_at),
       machine: summarizeMachine(item.title, {
         ...item,
         ...(() => {
@@ -556,6 +568,14 @@ function formatDateTimeBrt(date) {
     minute: "2-digit",
     hour12: false,
   }).format(date)} BRT`;
+}
+
+function formatObservationLabel(firstSeen, checkedAt) {
+  const date = firstSeen?.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  const since = date ? `Encontrado em ${date[3]}/${date[2]}/${date[1]}. ` : '';
+  const checked = checkedAt && Number.isFinite(Date.parse(checkedAt))
+    ? `Última conferência: ${formatDateTimeBrt(new Date(checkedAt))}.` : 'Conferência do anúncio sem data registrada.';
+  return since + checked;
 }
 
 // ── HTML ─────────────────────────────────────────────────────────────────────
@@ -646,7 +666,7 @@ function buildHtml({ health, priceInsights, japaneseJeans, zegna, zegnaUpdated, 
     const findTs = top ? (runTimestampFromFile(top.file)?.getTime() ?? null) : null;
     s.sortTs = findTs ?? s.upd.ts ?? null;
     s.stampFresh = s.sortTs != null && (Date.now() - s.sortTs) < DAY;
-    s.hasFind = top != null && s.stampFresh;
+    s.hasFind = Boolean(s.data.recentItems?.length);
     s.stampLabel = s.hasFind ? (top.runLabel ?? top.date) : s.upd.label;
   }
   sources.sort((a, b) => {
@@ -761,6 +781,9 @@ h1{font-size:1.3rem;color:#f0f6fc;margin-bottom:5px}
 .sd{font-size:.72rem;color:#8b949e;font-variant-numeric:tabular-nums;white-space:nowrap}
 .sd.fresh{color:#3fb950}
 .sb{padding:12px 14px}
+.known-offers,.current-pending,.history-changes{margin-bottom:12px;border:1px solid #30363d;border-radius:6px;padding:8px 10px}
+.known-offers>summary,.current-pending>summary,.history-changes>summary{cursor:pointer;color:#8b949e;font-size:.78rem}
+.known-offers[open]>summary,.current-pending[open]>summary,.history-changes[open]>summary{margin-bottom:8px}
 .empty{color:#8b949e;font-size:.8rem;padding:4px 0}
 .card{border:1px solid #21262d;border-radius:6px;margin-bottom:10px;overflow:hidden}
 .card:last-child{margin-bottom:0}
@@ -880,16 +903,28 @@ function renderHighlight(item) {
 
 function renderSection(title, sub, reports, dpath, stampInfo) {
   const showSpecs = dpath === "data/olx" || dpath === "data/enjoei-notebooks" || dpath === "data/mercadolivre-notebooks";
-  const body = reports.length === 0
-    ? `<p class="empty">Nenhum run com novidades recentes.</p>`
-    : reports.map((r) => renderCard(r, dpath, showSpecs)).join("\n");
+  const cutoff = Date.now() - 24*3600_000;
+  const fresh = reports.filter(report => (runTimestampFromFile(report.file)?.getTime() ?? 0) >= cutoff);
+  const historical = reports.filter(report => !fresh.includes(report));
+  const body = fresh.length === 0
+    ? `<p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p>`
+    : fresh.map((r) => renderCard(r, dpath, showSpecs)).join("\n");
+  const historyHtml = historical.length ? `<details class="history-changes"><summary>Histórico de novidades · ${historical.length} rodada(s)</summary>${historical.map(report => renderCard(report, dpath, showSpecs)).join('\n')}</details>` : '';
+  const known = reports.currentReport;
+  const recentUrls = new Set((reports.recentItems ?? []).map(item => item.url));
+  const knownItems = (known?.newItems ?? []).filter(item => !recentUrls.has(item.url));
+  const knownHtml = knownItems.length ? `<details class="known-offers"><summary>Ofertas já conhecidas · ${knownItems.length}</summary>
+    <p class="empty">Sem nova descoberta. As datas abaixo são da evidência do anúncio.</p>
+    <div class="ci">${knownItems.map(item => renderRow(item, false, showSpecs)).join('\n')}</div></details>` : '';
+  const pendingHtml = reports.pendingReport
+    ? `<details class="current-pending"><summary>Pendências atuais · ${reports.pendingReport.pendingCount}</summary>${renderCard(reports.pendingReport, dpath, showSpecs)}</details>` : '';
   // Data/hora do último achado desta busca, dentro do card (verde se < 24h).
   const stamp = stampInfo && stampInfo.label
     ? `<time class="sd${stampInfo.fresh ? " fresh" : ""}"${Number.isFinite(stampInfo.ts) ? ` datetime="${e(new Date(stampInfo.ts).toISOString())}"` : ""}>${e(stampInfo.label)}</time>`
     : "";
   return `<div class="sec">
-  <div class="sh"><div class="shr"><h2>${e(title)}</h2>${stamp}</div><small>${e(sub)} &nbsp;·&nbsp; últimos ${reports.length} com novidades</small></div>
-  <div class="sb">${body}</div>
+  <div class="sh"><div class="shr"><h2>${e(title)}</h2>${stamp}</div><small>${e(sub)}${reports.length ? ` &nbsp;·&nbsp; últimos ${reports.length} com novidades` : ''}</small></div>
+  <div class="sb">${body}${knownHtml}${pendingHtml}${historyHtml}</div>
 </div>`;
 }
 
@@ -911,7 +946,7 @@ function renderCard(r, dpath, showSpecs) {
   const datetime = runDate ? ` datetime="${e(runDate.toISOString())}"` : "";
   return `<div class="card">
   <div class="ch">
-    <time class="cd"${datetime}>${e(r.runLabel ?? r.date ?? "—")}<a class="rl" href="${e(url)}" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
+    <time class="cd"${datetime}>${e(r.stateLabel ? `${r.stateLabel} · ${r.runLabel ?? r.date ?? '—'}` : r.runLabel ?? r.date ?? "—")}<a class="rl" href="${e(url)}" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
     <div class="badges">${bw}${bn}${bp}${bPending}</div>
   </div>
   ${rows ? `<div class="ci">${rows}</div>` : ""}
@@ -938,14 +973,15 @@ function priceChangeHtml(item) {
 }
 
 function renderRow(item, isPrice, showSpecs) {
-  if (showSpecs && item.machine) return renderMachineRow(item, isPrice) + (item.validationReason ? `<p class="empty">${e(item.validationReason)}</p>` : '');
+  const note = `${item.validationReason ? `<p class="empty">${e(item.validationReason)}</p>` : ''}${item.observationLabel ? `<p class="empty">${e(item.observationLabel)}</p>` : ''}`;
+  if (showSpecs && item.machine) return renderMachineRow(item, isPrice) + note;
   const titleHtml = item.url
     ? `<a href="${e(item.url)}" target="_blank" rel="noopener noreferrer">${e(item.title)}</a>`
     : e(item.title);
   if (isPrice && item.priceFrom && item.priceTo) {
     return `<div class="item legacy-item"><span class="it">${titleHtml}</span>${priceChangeHtml(item)}</div>`;
   }
-  return `<div class="item legacy-item"><span class="it">${titleHtml}</span>${item.price ? `<span class="ip">${e(item.price)}</span>` : ""}</div>${item.validationReason ? `<p class="empty">${e(item.validationReason)}</p>` : ''}`;
+  return `<div class="item legacy-item"><span class="it">${titleHtml}</span>${item.price ? `<span class="ip">${e(item.price)}</span>` : ""}</div>${note}`;
 }
 
 function renderMachineRow(item, isPrice) {

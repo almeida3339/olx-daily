@@ -36,6 +36,9 @@ h1{font-size:1.3rem;color:#f0f6fc;margin-bottom:5px}
 .sd{font-size:.72rem;color:#8b949e;font-variant-numeric:tabular-nums;white-space:nowrap}
 .sd.fresh{color:#3fb950}
 .sb{padding:12px 14px}
+.known-offers,.current-pending,.history-changes{margin-bottom:12px;border:1px solid #30363d;border-radius:6px;padding:8px 10px}
+.known-offers>summary,.current-pending>summary,.history-changes>summary{cursor:pointer;color:#8b949e;font-size:.78rem}
+.known-offers[open]>summary,.current-pending[open]>summary,.history-changes[open]>summary{margin-bottom:8px}
 .empty{color:#8b949e;font-size:.8rem;padding:4px 0}
 .card{border:1px solid #21262d;border-radius:6px;margin-bottom:10px;overflow:hidden}
 .card:last-child{margin-bottom:0}
@@ -146,220 +149,67 @@ function copyTrigger(btn, cmd) {
   <section><h2>Notificações</h2><ul><li class="empty">Nenhuma entrega pendente.</li></ul><button type="button" class="trig" data-command="$repo = $env:OLX_DAILY_REPO; if (-not $repo) { $repo = Join-Path $HOME 'Downloads\olx-daily' }; node (Join-Path $repo 'scripts\manage-notification-outbox.mjs')" onclick="copyTrigger(this, this.dataset.command)">Gerenciar pendências <span class="tip">(copia comando)</span></button><p class="hint">Use <code>--retry ID</code> ou <code>--discard ID</code> depois de listar a fila.</p></section>
 </div>
 <div class="grid">
-<div class="sec">
-  <div class="sh"><div class="shr"><h2>Monitores OLED</h2><time class="sd fresh">17/10/2026, 16:02 BRT</time></div><small>OLX c/ entrega + Enjoei · R$ 1.500 – R$ 3.000 &nbsp;·&nbsp; últimos 6 com novidades</small></div>
-  <div class="sb"><div class="card">
-  <div class="ch">
-    <time class="cd">17/10/2026, 16:02 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/oled-monitores/runs/2026-10-17T19-02-26-007Z/snapshot.json" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
-    <div class="badges"><span class="badge bw" title="A coleta terminou, mas parte dos termos ou itens não pôde ser confirmada.">cobertura parcial</span><span class="badge bn">1 ativo</span></div>
-  </div>
-  <div class="ci"><div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/monitor-lg-ultragear-39-oled-curvo-240hz-151274107" target="_blank" rel="noopener noreferrer">monitor lg ultragear 39 oled curvo 240hz</a></span><span class="ip">R$ 2.950,00</span></div></div>
-
 
 </div>
-<div class="card">
+<details class="empty-sources"><summary>Sem novidades recentes · 36 monitores</summary><div class="empty-grid"><div class="sec">
+  <div class="sh"><div class="shr"><h2>Monitores OLED</h2><time class="sd fresh">17/10/2026, 16:02 BRT</time></div><small>OLX c/ entrega + Enjoei · R$ 1.500 – R$ 3.000</small></div>
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p><details class="current-pending"><summary>Pendências atuais · 2</summary><div class="card">
   <div class="ch">
-    <time class="cd" datetime="2026-10-17T19:02:26.007Z">17/10/2026, 16:02 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/oled-monitores/report-2026-10-17T19-02-26-007Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
-    <div class="badges"><span class="badge bw" title="A coleta terminou, mas parte dos termos ou itens não pôde ser confirmada.">cobertura parcial</span><span class="badge bw">1 pendente(s)</span></div>
+    <time class="cd" datetime="2026-10-17T19:02:26.007Z">Pendências atuais · 17/10/2026, 16:02 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/oled-monitores/report-2026-10-17T19-02-26-007Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
+    <div class="badges"><span class="badge bw" title="A coleta terminou, mas parte dos termos ou itens não pôde ser confirmada.">cobertura parcial</span><span class="badge bw">2 pendente(s)</span></div>
   </div>
 
-  <details><summary>Pendentes de conferência — sem alerta de oferta válida</summary><div class="ci"><div class="item legacy-item"><span class="it"><a href="https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/monitores/troco-monitor-qd-mini-led-por-monitor-oled-1544179735" target="_blank" rel="noopener noreferrer">Troco monitor  qd Mini led por monitor oled</a></span><span class="ip">R$ 1.500,00</span></div><p class="empty">Modelo OLED ainda não confirmado no catálogo; Descrição e preço aguardam conferência; Descrição do anúncio não localizada</p></div></details>
-
-</div>
-<div class="card">
-  <div class="ch">
-    <time class="cd" datetime="2026-10-17T10:03:51.544Z">17/10/2026, 07:03 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/oled-monitores/report-2026-10-17T10-03-51-544Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
-    <div class="badges"><span class="badge bw" title="A coleta terminou, mas parte dos termos ou itens não pôde ser confirmada.">cobertura parcial</span><span class="badge bw">1 pendente(s)</span></div>
-  </div>
-
-  <details><summary>Pendentes de conferência — sem alerta de oferta válida</summary><div class="ci"><div class="item legacy-item"><span class="it"><a href="https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/monitores/troco-monitor-qd-mini-led-por-monitor-oled-1544179735" target="_blank" rel="noopener noreferrer">Troco monitor  qd Mini led por monitor oled —  — Pendente: Modelo OLED a…</a></span><span class="ip">R$ 1.500,00</span></div><p class="empty">Modelo OLED ainda não confirmado no catálogo; Descrição e preço aguardam conferência; Descrição do anúncio não localizada</p></div></details>
-
-</div>
-<div class="card">
-  <div class="ch">
-    <time class="cd" datetime="2026-10-16T21:19:49.530Z">16/10/2026, 18:19 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/oled-monitores/report-2026-10-16T21-19-49-530Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
-    <div class="badges"><span class="badge bw" title="A coleta terminou, mas parte dos termos ou itens não pôde ser confirmada.">cobertura parcial</span><span class="badge bw">1 pendente(s)</span></div>
-  </div>
-
-  <details><summary>Pendentes de conferência — sem alerta de oferta válida</summary><div class="ci"><div class="item legacy-item"><span class="it"><a href="https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/monitores/troco-monitor-qd-mini-led-por-monitor-oled-1544179735" target="_blank" rel="noopener noreferrer">Troco monitor  qd Mini led por monitor oled —  — Pendente: Modelo OLED a…</a></span><span class="ip">R$ 1.500,00</span></div><p class="empty">Modelo OLED ainda não confirmado no catálogo; Descrição e preço aguardam conferência; Descrição do anúncio não localizada</p></div></details>
-
-</div>
-<div class="card">
-  <div class="ch">
-    <time class="cd" datetime="2026-10-16T19:03:20.793Z">16/10/2026, 16:03 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/oled-monitores/report-2026-10-16T19-03-20-793Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
-    <div class="badges"><span class="badge bw" title="A coleta terminou, mas parte dos termos ou itens não pôde ser confirmada.">cobertura parcial</span><span class="badge bw">1 pendente(s)</span></div>
-  </div>
-
-  <details><summary>Pendentes de conferência — sem alerta de oferta válida</summary><div class="ci"><div class="item legacy-item"><span class="it"><a href="https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/monitores/troco-monitor-qd-mini-led-por-monitor-oled-1544179735" target="_blank" rel="noopener noreferrer">Troco monitor  qd Mini led por monitor oled —  — Pendente: Modelo OLED a…</a></span><span class="ip">R$ 1.500,00</span></div><p class="empty">Modelo OLED ainda não confirmado no catálogo; Descrição e preço aguardam conferência; Descrição do anúncio não localizada</p></div></details>
-
-</div>
-<div class="card">
-  <div class="ch">
-    <time class="cd" datetime="2026-10-16T10:03:50.519Z">16/10/2026, 07:03 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/oled-monitores/report-2026-10-16T10-03-50-519Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
-    <div class="badges"><span class="badge bw" title="A coleta terminou, mas parte dos termos ou itens não pôde ser confirmada.">cobertura parcial</span><span class="badge bw">1 pendente(s)</span></div>
-  </div>
-
-  <details><summary>Pendentes de conferência — sem alerta de oferta válida</summary><div class="ci"><div class="item legacy-item"><span class="it"><a href="https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/monitores/troco-monitor-qd-mini-led-por-monitor-oled-1544179735" target="_blank" rel="noopener noreferrer">Troco monitor  qd Mini led por monitor oled —  — Pendente: Modelo OLED a…</a></span><span class="ip">R$ 1.500,00</span></div><p class="empty">Modelo OLED ainda não confirmado no catálogo; Descrição e preço aguardam conferência; Descrição do anúncio não localizada</p></div></details>
-
-</div></div>
+  <details><summary>Pendentes de conferência — sem alerta de oferta válida</summary><div class="ci"><div class="item legacy-item"><span class="it"><a href="https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/monitores/troco-monitor-qd-mini-led-por-monitor-oled-1544179735" target="_blank" rel="noopener noreferrer">Troco monitor  qd Mini led por monitor oled</a></span><span class="ip">R$ 1.500,00</span></div><p class="empty">Modelo OLED ainda não confirmado no catálogo; Descrição e preço aguardam conferência; Descrição do anúncio não localizada</p><p class="empty">Conferência do anúncio sem data registrada.</p></div></details>
+  <details open><summary>Aguardando atualização — preço e disponibilidade não reconfirmados</summary><div class="ci"><div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/monitor-lg-ultragear-39-oled-curvo-240hz-151274107" target="_blank" rel="noopener noreferrer">monitor lg ultragear 39 oled curvo 240hz</a></span><span class="ip">Último preço: R$ 2.950,00</span></div><p class="empty">Aguardando atualização: conferência vencida; preço e disponibilidade precisam ser confirmados novamente</p><p class="empty">Encontrado em 15/10/2026. Última conferência: 16/10/2026, 18:16 BRT.</p></div></details>
+</div></details></div>
 </div>
 <div class="sec">
-  <div class="sh"><div class="shr"><h2>Enjoei Jeans Ricardo Almeida 40</h2><time class="sd fresh">17/10/2026, 16:01 BRT</time></div><small>jeans masculino · tamanho 40 · menos de R$ 250 &nbsp;·&nbsp; últimos 5 com novidades</small></div>
-  <div class="sb"><div class="card">
-  <div class="ch">
-    <time class="cd" datetime="2026-10-17T19:01:09.783Z">17/10/2026, 16:01 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/enjoei-ricardo-almeida/report-2026-10-17T19-01-09-783Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
-    <div class="badges"><span class="badge bw">1 pendente(s)</span></div>
-  </div>
-
-  <details><summary>Pendentes de conferência — sem alerta de oferta válida</summary><div class="ci"><div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/calca-ricardo-almeida-128159862" target="_blank" rel="noopener noreferrer">[Enjoei] calça ricardo almeida — tam. 40 —  — Pendente: Falta confirmar …</a></span><span class="ip">R$ 100,00</span></div><p class="empty">Falta confirmar jeans/denim, categoria masculina ou tamanho na ficha; fora dos alertas de ofertas válidas</p></div></details>
-
-</div>
-<div class="card">
-  <div class="ch">
-    <time class="cd" datetime="2026-10-17T11:01:11.011Z">17/10/2026, 08:01 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/enjoei-ricardo-almeida/report-2026-10-17T11-01-11-011Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
-    <div class="badges"><span class="badge bw">1 pendente(s)</span></div>
-  </div>
-
-  <details><summary>Pendentes de conferência — sem alerta de oferta válida</summary><div class="ci"><div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/calca-ricardo-almeida-128159862" target="_blank" rel="noopener noreferrer">[Enjoei] calça ricardo almeida — tam. 40 —  — Pendente: Falta confirmar …</a></span><span class="ip">R$ 100,00</span></div><p class="empty">Falta confirmar jeans/denim, categoria masculina ou tamanho na ficha; fora dos alertas de ofertas válidas</p></div></details>
-
-</div>
-<div class="card">
-  <div class="ch">
-    <time class="cd" datetime="2026-10-16T21:15:53.223Z">16/10/2026, 18:15 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/enjoei-ricardo-almeida/report-2026-10-16T21-15-53-223Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
-    <div class="badges"><span class="badge bw">1 pendente(s)</span></div>
-  </div>
-
-  <details><summary>Pendentes de conferência — sem alerta de oferta válida</summary><div class="ci"><div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/calca-ricardo-almeida-128159862" target="_blank" rel="noopener noreferrer">[Enjoei] calça ricardo almeida — tam. 40 —  — Pendente: Falta confirmar …</a></span><span class="ip">R$ 100,00</span></div><p class="empty">Falta confirmar jeans/denim, categoria masculina ou tamanho na ficha; fora dos alertas de ofertas válidas</p></div></details>
-
-</div>
-<div class="card">
-  <div class="ch">
-    <time class="cd" datetime="2026-10-15T13:05:37.322Z">15/10/2026, 10:05 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/enjoei-ricardo-almeida/report-2026-10-15T13-05-37-322Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
-    <div class="badges"><span class="badge bw">1 pendente(s)</span></div>
-  </div>
-
-  <details><summary>Pendentes de conferência — sem alerta de oferta válida</summary><div class="ci"><div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/calca-ricardo-almeida-128159862" target="_blank" rel="noopener noreferrer">[Enjoei] calça ricardo almeida — tam. 40 —  — Pendente: Falta confirmar …</a></span><span class="ip">R$ 100,00</span></div><p class="empty">Falta confirmar jeans/denim, categoria masculina ou tamanho na ficha; fora dos alertas de ofertas válidas</p></div></details>
-
-</div>
-<div class="card">
-  <div class="ch">
-    <time class="cd" datetime="2026-10-15T12:59:14.824Z">15/10/2026, 09:59 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/enjoei-ricardo-almeida/report-2026-10-15T12-59-14-824Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
-    <div class="badges"><span class="badge bn">+4 novos</span><span class="badge bw">1 pendente(s)</span></div>
-  </div>
-  <div class="ci"><div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/calca-jeans-destroyed-ricardo-almeida-119335770" target="_blank" rel="noopener noreferrer">[Enjoei] calça jeans destroyed ricardo almeida — tam. 40</a></span><span class="ip">R$ 140,00</span></div>
-<div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/calca-jeans-ricardo-almeida-azul-40-masculina-139747726" target="_blank" rel="noopener noreferrer">[Enjoei] calça jeans ricardo almeida azul 40 masculina — tam. 40</a></span><span class="ip">R$ 168,00</span></div>
-<div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/calca-jeans-ricardo-almeida-40-146663572" target="_blank" rel="noopener noreferrer">[Enjoei] calça jeans ricardo almeida 40 — tam. 40</a></span><span class="ip">R$ 215,00</span></div>
-<div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/calca-jeans-escura-regular-fit-com-botoes-ricardo-almeida-tam-40-142996268" target="_blank" rel="noopener noreferrer">[Enjoei] calça jeans escura regular fit com botões ricardo almeida tam. …</a></span><span class="ip">R$ 245,00</span></div></div>
-  <details><summary>Pendentes de conferência — sem alerta de oferta válida</summary><div class="ci"><div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/calca-ricardo-almeida-128159862" target="_blank" rel="noopener noreferrer">[Enjoei] calça ricardo almeida — tam. 40</a></span><span class="ip">R$ 100,00</span></div></div></details>
-
-</div></div>
+  <div class="sh"><div class="shr"><h2>Tela Galaxy Book3</h2><time class="sd fresh">17/10/2026, 16:02 BRT</time></div><small>BA96-08462A · OLX + Enjoei · até R$ 1.000</small></div>
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p></div>
 </div>
 <div class="sec">
-  <div class="sh"><div class="shr"><h2>Enjoei Tênis barefoot 42</h2><time class="sd fresh">17/10/2026, 16:01 BRT</time></div><small>Fiber e FOT · Walka, Lito, Noga, Voet e Bruk · até R$ 500 &nbsp;·&nbsp; últimos 5 com novidades</small></div>
-  <div class="sb"><div class="card">
-  <div class="ch">
-    <time class="cd" datetime="2026-10-17T19:01:09.362Z">17/10/2026, 16:01 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/enjoei/report-2026-10-17T19-01-09-362Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
-    <div class="badges"><span class="badge bw">3 pendente(s)</span></div>
-  </div>
-
-  <details><summary>Pendentes de conferência — sem alerta de oferta válida</summary><div class="ci"><div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/tenis-mvp-barefoot-preto-crossfit-121147815" target="_blank" rel="noopener noreferrer">tênis mvp barefoot - preto crossfit - mvp - tam. 42 - vendedor: lucas - …</a></span><span class="ip">R$ 105,00</span></div><p class="empty">Termo ou marca é candidato; faltam características barefoot na descrição</p>
-<div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/tenis-minimalista-zara-146829741" target="_blank" rel="noopener noreferrer">tênis minimalista zara - zara - tam. 42 - termos: minimalistas, minimali…</a></span><span class="ip">R$ 179,00</span></div><p class="empty">Termo ou marca é candidato; faltam características barefoot na descrição</p>
-<div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/tenis-para-crossfit-mvp-fitness-barefoot-black-42-codigo-19-150436352" target="_blank" rel="noopener noreferrer">tênis para crossfit mvp fitness barefoot black 42 código 19 - mvp fitnes…</a></span><span class="ip">R$ 205,00</span></div><p class="empty">Termo ou marca é candidato; faltam características barefoot na descrição</p></div></details>
-
-</div>
-<div class="card">
-  <div class="ch">
-    <time class="cd" datetime="2026-10-17T11:01:08.195Z">17/10/2026, 08:01 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/enjoei/report-2026-10-17T11-01-08-195Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
-    <div class="badges"><span class="badge bw">3 pendente(s)</span></div>
-  </div>
-
-  <details><summary>Pendentes de conferência — sem alerta de oferta válida</summary><div class="ci"><div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/tenis-mvp-barefoot-preto-crossfit-121147815" target="_blank" rel="noopener noreferrer">tênis mvp barefoot - preto crossfit - mvp - tam. 42 - vendedor: lucas - …</a></span><span class="ip">R$ 105,00</span></div><p class="empty">Termo ou marca é candidato; faltam características barefoot na descrição</p>
-<div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/tenis-minimalista-zara-146829741" target="_blank" rel="noopener noreferrer">tênis minimalista zara - zara - tam. 42 - termos: minimalistas, minimali…</a></span><span class="ip">R$ 179,00</span></div><p class="empty">Termo ou marca é candidato; faltam características barefoot na descrição</p>
-<div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/tenis-para-crossfit-mvp-fitness-barefoot-black-42-codigo-19-150436352" target="_blank" rel="noopener noreferrer">tênis para crossfit mvp fitness barefoot black 42 código 19 - mvp fitnes…</a></span><span class="ip">R$ 205,00</span></div><p class="empty">Termo ou marca é candidato; faltam características barefoot na descrição</p></div></details>
-
-</div>
-<div class="card">
-  <div class="ch">
-    <time class="cd" datetime="2026-10-16T21:16:14.100Z">16/10/2026, 18:16 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/enjoei/report-2026-10-16T21-16-14-100Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
-    <div class="badges"><span class="badge bw">3 pendente(s)</span></div>
-  </div>
-
-  <details><summary>Pendentes de conferência — sem alerta de oferta válida</summary><div class="ci"><div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/tenis-mvp-barefoot-preto-crossfit-121147815" target="_blank" rel="noopener noreferrer">tênis mvp barefoot - preto crossfit - mvp - tam. 42 - vendedor: lucas - …</a></span><span class="ip">R$ 105,00</span></div><p class="empty">Termo ou marca é candidato; faltam características barefoot na descrição</p>
-<div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/tenis-minimalista-zara-146829741" target="_blank" rel="noopener noreferrer">tênis minimalista zara - zara - tam. 42 - termos: minimalistas, minimali…</a></span><span class="ip">R$ 179,00</span></div><p class="empty">Termo ou marca é candidato; faltam características barefoot na descrição</p>
-<div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/tenis-para-crossfit-mvp-fitness-barefoot-black-42-codigo-19-150436352" target="_blank" rel="noopener noreferrer">tênis para crossfit mvp fitness barefoot black 42 código 19 - mvp fitnes…</a></span><span class="ip">R$ 205,00</span></div><p class="empty">Termo ou marca é candidato; faltam características barefoot na descrição</p></div></details>
-
-</div>
-<div class="card">
-  <div class="ch">
-    <time class="cd" datetime="2026-10-15T16:57:09.689Z">15/10/2026, 13:57 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/enjoei/report-2026-10-15T16-57-09-689Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
-    <div class="badges"><span class="badge bw">3 pendente(s)</span></div>
-  </div>
-
-  <details><summary>Pendentes de conferência — sem alerta de oferta válida</summary><div class="ci"><div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/tenis-mvp-barefoot-preto-crossfit-121147815" target="_blank" rel="noopener noreferrer">tênis mvp barefoot - preto crossfit - mvp - tam. 42 - vendedor: lucas - …</a></span><span class="ip">R$ 105,00</span></div><p class="empty">Termo ou marca é candidato; faltam características barefoot na descrição</p>
-<div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/tenis-minimalista-zara-146829741" target="_blank" rel="noopener noreferrer">tênis minimalista zara - zara - tam. 42 - termos: minimalistas, minimali…</a></span><span class="ip">R$ 179,00</span></div><p class="empty">Termo ou marca é candidato; faltam características barefoot na descrição</p>
-<div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/tenis-para-crossfit-mvp-fitness-barefoot-black-42-codigo-19-150436352" target="_blank" rel="noopener noreferrer">tênis para crossfit mvp fitness barefoot black 42 código 19 - mvp fitnes…</a></span><span class="ip">R$ 228,00</span></div><p class="empty">Termo ou marca é candidato; faltam características barefoot na descrição</p></div></details>
-
-</div>
-<div class="card">
-  <div class="ch">
-    <time class="cd" datetime="2026-10-15T16:56:16.891Z">15/10/2026, 13:56 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/enjoei/report-2026-10-15T16-56-16-891Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
-    <div class="badges"><span class="badge bw">3 pendente(s)</span></div>
-  </div>
-
-  <details><summary>Pendentes de conferência — sem alerta de oferta válida</summary><div class="ci"><div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/tenis-mvp-barefoot-preto-crossfit-121147815" target="_blank" rel="noopener noreferrer">tênis mvp barefoot - preto crossfit - mvp - tam. 42 - vendedor: lucas - …</a></span><span class="ip">R$ 105,00</span></div><p class="empty">Termo ou marca é candidato; faltam características barefoot na descrição</p>
-<div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/tenis-minimalista-zara-146829741" target="_blank" rel="noopener noreferrer">tênis minimalista zara - zara - tam. 42 - termos: minimalistas, minimali…</a></span><span class="ip">R$ 179,00</span></div><p class="empty">Termo ou marca é candidato; faltam características barefoot na descrição</p>
-<div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/tenis-para-crossfit-mvp-fitness-barefoot-black-42-codigo-19-150436352" target="_blank" rel="noopener noreferrer">tênis para crossfit mvp fitness barefoot black 42 código 19 - mvp fitnes…</a></span><span class="ip">R$ 228,00</span></div><p class="empty">Termo ou marca é candidato; faltam características barefoot na descrição</p></div></details>
-
-</div></div>
-</div>
-</div>
-<details class="empty-sources"><summary>Sem novidades recentes · 33 monitores</summary><div class="empty-grid"><div class="sec">
-  <div class="sh"><div class="shr"><h2>Tela Galaxy Book3</h2><time class="sd fresh">17/10/2026, 16:02 BRT</time></div><small>BA96-08462A · OLX + Enjoei · até R$ 1.000 &nbsp;·&nbsp; últimos 0 com novidades</small></div>
-  <div class="sb"><p class="empty">Nenhum run com novidades recentes.</p></div>
+  <div class="sh"><div class="shr"><h2>Enjoei Jeans OrSlow 40</h2><time class="sd fresh">17/10/2026, 16:01 BRT</time></div><small>jeans masculino · tamanho 40 · até R$ 350</small></div>
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p></div>
 </div>
 <div class="sec">
-  <div class="sh"><div class="shr"><h2>Enjoei Jeans OrSlow 40</h2><time class="sd fresh">17/10/2026, 16:01 BRT</time></div><small>jeans masculino · tamanho 40 · até R$ 350 &nbsp;·&nbsp; últimos 0 com novidades</small></div>
-  <div class="sb"><p class="empty">Nenhum run com novidades recentes.</p></div>
+  <div class="sh"><div class="shr"><h2>Enjoei Jeans Fullcount 40</h2><time class="sd fresh">17/10/2026, 16:01 BRT</time></div><small>jeans masculino · tamanho 40 · até R$ 350</small></div>
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p></div>
 </div>
 <div class="sec">
-  <div class="sh"><div class="shr"><h2>Enjoei Jeans Fullcount 40</h2><time class="sd fresh">17/10/2026, 16:01 BRT</time></div><small>jeans masculino · tamanho 40 · até R$ 350 &nbsp;·&nbsp; últimos 0 com novidades</small></div>
-  <div class="sb"><p class="empty">Nenhum run com novidades recentes.</p></div>
+  <div class="sh"><div class="shr"><h2>Enjoei Jeans Kapital 40</h2><time class="sd fresh">17/10/2026, 16:01 BRT</time></div><small>jeans masculino · tamanho 40 · até R$ 350</small></div>
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p></div>
 </div>
 <div class="sec">
-  <div class="sh"><div class="shr"><h2>Enjoei Jeans Kapital 40</h2><time class="sd fresh">17/10/2026, 16:01 BRT</time></div><small>jeans masculino · tamanho 40 · até R$ 350 &nbsp;·&nbsp; últimos 0 com novidades</small></div>
-  <div class="sb"><p class="empty">Nenhum run com novidades recentes.</p></div>
+  <div class="sh"><div class="shr"><h2>Enjoei Jeans The Strike Gold 40</h2><time class="sd fresh">17/10/2026, 16:01 BRT</time></div><small>jeans masculino · tamanho 40 · até R$ 350</small></div>
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p></div>
 </div>
 <div class="sec">
-  <div class="sh"><div class="shr"><h2>Enjoei Jeans The Strike Gold 40</h2><time class="sd fresh">17/10/2026, 16:01 BRT</time></div><small>jeans masculino · tamanho 40 · até R$ 350 &nbsp;·&nbsp; últimos 0 com novidades</small></div>
-  <div class="sb"><p class="empty">Nenhum run com novidades recentes.</p></div>
+  <div class="sh"><div class="shr"><h2>Enjoei Jeans Pure Blue Japan (PBJ) 40</h2><time class="sd fresh">17/10/2026, 16:01 BRT</time></div><small>jeans masculino · tamanho 40 · até R$ 350</small></div>
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p></div>
 </div>
 <div class="sec">
-  <div class="sh"><div class="shr"><h2>Enjoei Jeans Pure Blue Japan (PBJ) 40</h2><time class="sd fresh">17/10/2026, 16:01 BRT</time></div><small>jeans masculino · tamanho 40 · até R$ 350 &nbsp;·&nbsp; últimos 0 com novidades</small></div>
-  <div class="sb"><p class="empty">Nenhum run com novidades recentes.</p></div>
+  <div class="sh"><div class="shr"><h2>Enjoei Jeans Jacob Cohën 40</h2><time class="sd fresh">17/10/2026, 16:01 BRT</time></div><small>jeans masculino · tamanho 40 · menos de R$ 250</small></div>
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p></div>
 </div>
 <div class="sec">
-  <div class="sh"><div class="shr"><h2>Enjoei Jeans Jacob Cohën 40</h2><time class="sd fresh">17/10/2026, 16:01 BRT</time></div><small>jeans masculino · tamanho 40 · menos de R$ 250 &nbsp;·&nbsp; últimos 0 com novidades</small></div>
-  <div class="sb"><p class="empty">Nenhum run com novidades recentes.</p></div>
+  <div class="sh"><div class="shr"><h2>Enjoei Jeans Brunello Cucinelli 40</h2><time class="sd fresh">17/10/2026, 16:01 BRT</time></div><small>jeans masculino · tamanho 40 · até R$ 400</small></div>
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p></div>
 </div>
 <div class="sec">
-  <div class="sh"><div class="shr"><h2>Enjoei Jeans Brunello Cucinelli 40</h2><time class="sd fresh">17/10/2026, 16:01 BRT</time></div><small>jeans masculino · tamanho 40 · até R$ 400 &nbsp;·&nbsp; últimos 0 com novidades</small></div>
-  <div class="sb"><p class="empty">Nenhum run com novidades recentes.</p></div>
+  <div class="sh"><div class="shr"><h2>Enjoei Calças Zegna 40</h2><time class="sd fresh">17/10/2026, 16:01 BRT</time></div><small>masculino · tamanho 40 · menos de R$ 250</small></div>
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p></div>
 </div>
 <div class="sec">
-  <div class="sh"><div class="shr"><h2>Enjoei Calças Zegna 40</h2><time class="sd fresh">17/10/2026, 16:01 BRT</time></div><small>masculino · tamanho 40 · menos de R$ 250 &nbsp;·&nbsp; últimos 0 com novidades</small></div>
-  <div class="sb"><p class="empty">Nenhum run com novidades recentes.</p></div>
+  <div class="sh"><div class="shr"><h2>Enjoei Jeans Momotaro Jeans 40</h2><time class="sd fresh">17/10/2026, 16:01 BRT</time></div><small>jeans masculino · tamanho 40 · até R$ 350</small></div>
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p></div>
 </div>
 <div class="sec">
-  <div class="sh"><div class="shr"><h2>Enjoei Jeans Momotaro Jeans 40</h2><time class="sd fresh">17/10/2026, 16:01 BRT</time></div><small>jeans masculino · tamanho 40 · até R$ 350 &nbsp;·&nbsp; últimos 0 com novidades</small></div>
-  <div class="sb"><p class="empty">Nenhum run com novidades recentes.</p></div>
-</div>
-<div class="sec">
-  <div class="sh"><div class="shr"><h2>Google Pixel Watch 5 — busca pausada</h2><time class="sd">15/10/2026, 16:02 BRT</time></div><small>Histórico preservado · OLX + Enjoei · 45 mm · Wi‑Fi até R$ 2.400 · LTE até R$ 3.000 &nbsp;·&nbsp; últimos 0 com novidades</small></div>
-  <div class="sb"><p class="empty">Nenhum run com novidades recentes.</p></div>
+  <div class="sh"><div class="shr"><h2>Google Pixel Watch 5 — busca pausada</h2><time class="sd">15/10/2026, 16:02 BRT</time></div><small>Histórico preservado · OLX + Enjoei · 45 mm · Wi‑Fi até R$ 2.400 · LTE até R$ 3.000</small></div>
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p></div>
 </div>
 <div class="sec">
   <div class="sh"><div class="shr"><h2>Lifefactory</h2><time class="sd">17/10/2026, 16:02 BRT</time></div><small>OLX + Enjoei · 500ml–1L · R$ 25 – R$ 75 &nbsp;·&nbsp; últimos 5 com novidades</small></div>
-  <div class="sb"><div class="card">
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p><details class="history-changes"><summary>Histórico de novidades · 5 rodada(s)</summary><div class="card">
   <div class="ch">
     <time class="cd" datetime="2026-10-15T19:01:42.840Z">15/10/2026, 16:01 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/lifefactory/report-2026-10-15T19-01-42-840Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
     <div class="badges"><span class="badge bp">1 preço</span></div>
@@ -403,15 +253,15 @@ function copyTrigger(btn, cmd) {
   <div class="ci"><div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/garrafa-lifefactory-preta-150535909" target="_blank" rel="noopener noreferrer">garrafa lifefactory preta</a></span><span class="price-change"><span><span class="pf">R$ 62,00</span> → <span class="pt">R$ 59,00</span></span><span class="delta down" title="caiu">↓ caiu R$ 3,00</span></span></div></div>
 
 
-</div></div>
+</div></details></div>
 </div>
 <div class="sec">
-  <div class="sh"><div class="shr"><h2>Dockstations — busca pausada</h2><time class="sd">15/10/2026, 16:01 BRT</time></div><small>Histórico preservado · OLX, Enjoei e Mercado Livre &nbsp;·&nbsp; últimos 0 com novidades</small></div>
-  <div class="sb"><p class="empty">Nenhum run com novidades recentes.</p></div>
+  <div class="sh"><div class="shr"><h2>Dockstations — busca pausada</h2><time class="sd">15/10/2026, 16:01 BRT</time></div><small>Histórico preservado · OLX, Enjoei e Mercado Livre</small></div>
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p></div>
 </div>
 <div class="sec">
   <div class="sh"><div class="shr"><h2>OLX Notebooks</h2><time class="sd">17/10/2026, 16:01 BRT</time></div><small>R$ 2.000 – R$ 8.000 · RAM ≥ 32 GB &nbsp;·&nbsp; últimos 5 com novidades</small></div>
-  <div class="sb"><div class="card">
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p><details class="history-changes"><summary>Histórico de novidades · 5 rodada(s)</summary><div class="card">
   <div class="ch">
     <time class="cd" datetime="2026-10-15T17:45:57.345Z">15/10/2026, 14:45 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/olx/report-2026-10-15T17-45-57-345Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
     <div class="badges"><span class="badge bn">+1 novo</span></div>
@@ -426,23 +276,6 @@ function copyTrigger(btn, cmd) {
   </div>
 </div></div>
 
-
-</div>
-<div class="card">
-  <div class="ch">
-    <time class="cd" datetime="2026-10-15T10:01:44.104Z">15/10/2026, 07:01 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/olx/report-2026-10-15T10-01-44-104Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
-    <div class="badges"><span class="badge bw">1 pendente(s)</span></div>
-  </div>
-
-  <details><summary>Pendentes de conferência — sem alerta de oferta válida</summary><div class="ci"><div class="item">
-  <div class="machine-head"><span class="machine-title"><a href="https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/notebooks/notebook-gamer-acer-predator-helios-neo-16-i7-14700hx-rtx-4070-8gb-32gb-240hz-1544215577" target="_blank" rel="noopener noreferrer">Acer Predator Helios Neo 16</a></span><span class="ip">R$ 7.000,00</span></div>
-  <div class="specs">
-    <span class="spec">CPU <b>I7-14700HX</b></span>
-    <span class="spec">RAM <b>32 GB</b></span>
-    <span class="spec">SSD <b>n/d</b></span>
-  <span class="spec">GPU <b>RTX 4070</b></span>
-  </div>
-</div><p class="empty">Especificação não confirmada: SSD/armazenamento</p></div></details>
 
 </div>
 <div class="card">
@@ -495,11 +328,51 @@ function copyTrigger(btn, cmd) {
 </div></div>
 
 
+</div>
+<div class="card">
+  <div class="ch">
+    <time class="cd" datetime="2026-09-26T10:00:27.744Z">26/09/2026, 07:00 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/olx/report-2026-09-26T10-00-27-744Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
+    <div class="badges"><span class="badge bp">1 preço</span></div>
+  </div>
+  <div class="ci"><div class="item">
+  <div class="machine-head"><span class="machine-title"><a href="https://ba.olx.com.br/grande-salvador/informatica/notebooks/notebook-gamer-acer-predator-helios-neo-16-i9-14900hx-rtx-4060-32gb-ssd-1tb-1535111034" target="_blank" rel="noopener noreferrer">Acer Predator Helios Neo 16</a></span><span class="price-change"><span><span class="pf">R$ 9.000,00</span> → <span class="pt">R$ 8.500,00</span></span><span class="delta down" title="caiu">↓ caiu R$ 500,00</span></span></div>
+  <div class="specs">
+    <span class="spec">CPU <b>I9-14900HX</b></span>
+    <span class="spec">RAM <b>32 GB</b></span>
+    <span class="spec">SSD <b>1 TB</b></span>
+  <span class="spec">GPU <b>RTX 4060</b></span>
+  </div>
 </div></div>
+
+
+</div></details></div>
+</div>
+<div class="sec">
+  <div class="sh"><div class="shr"><h2>Enjoei Jeans Ricardo Almeida 40</h2><time class="sd">17/10/2026, 16:01 BRT</time></div><small>jeans masculino · tamanho 40 · menos de R$ 250 &nbsp;·&nbsp; últimos 1 com novidades</small></div>
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p><details class="current-pending"><summary>Pendências atuais · 1</summary><div class="card">
+  <div class="ch">
+    <time class="cd" datetime="2026-10-17T19:01:09.783Z">Pendências atuais · 17/10/2026, 16:01 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/enjoei-ricardo-almeida/report-2026-10-17T19-01-09-783Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
+    <div class="badges"><span class="badge bw">1 pendente(s)</span></div>
+  </div>
+
+  <details><summary>Pendentes de conferência — sem alerta de oferta válida</summary><div class="ci"><div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/calca-ricardo-almeida-128159862" target="_blank" rel="noopener noreferrer">[Enjoei] calça ricardo almeida — tam. 40 —  — Pendente: Falta confirmar …</a></span><span class="ip">R$ 100,00</span></div><p class="empty">Falta confirmar jeans/denim, categoria masculina ou tamanho na ficha; fora dos alertas de ofertas válidas</p></div></details>
+
+</div></details><details class="history-changes"><summary>Histórico de novidades · 1 rodada(s)</summary><div class="card">
+  <div class="ch">
+    <time class="cd" datetime="2026-10-15T12:59:14.824Z">15/10/2026, 09:59 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/enjoei-ricardo-almeida/report-2026-10-15T12-59-14-824Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
+    <div class="badges"><span class="badge bn">+4 novos</span></div>
+  </div>
+  <div class="ci"><div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/calca-jeans-destroyed-ricardo-almeida-119335770" target="_blank" rel="noopener noreferrer">[Enjoei] calça jeans destroyed ricardo almeida — tam. 40</a></span><span class="ip">R$ 140,00</span></div>
+<div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/calca-jeans-ricardo-almeida-azul-40-masculina-139747726" target="_blank" rel="noopener noreferrer">[Enjoei] calça jeans ricardo almeida azul 40 masculina — tam. 40</a></span><span class="ip">R$ 168,00</span></div>
+<div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/calca-jeans-ricardo-almeida-40-146663572" target="_blank" rel="noopener noreferrer">[Enjoei] calça jeans ricardo almeida 40 — tam. 40</a></span><span class="ip">R$ 215,00</span></div>
+<div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/calca-jeans-escura-regular-fit-com-botoes-ricardo-almeida-tam-40-142996268" target="_blank" rel="noopener noreferrer">[Enjoei] calça jeans escura regular fit com botões ricardo almeida tam. …</a></span><span class="ip">R$ 245,00</span></div></div>
+
+
+</div></details></div>
 </div>
 <div class="sec">
   <div class="sh"><div class="shr"><h2>OnePlus Buds Pro 3</h2><time class="sd">17/10/2026, 16:02 BRT</time></div><small>OLX + Enjoei · R$ 300 – R$ 800 &nbsp;·&nbsp; últimos 3 com novidades</small></div>
-  <div class="sb"><div class="card">
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p><details class="history-changes"><summary>Histórico de novidades · 3 rodada(s)</summary><div class="card">
   <div class="ch">
     <time class="cd" datetime="2026-10-15T10:02:29.008Z">15/10/2026, 07:02 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/oneplus-buds-pro-3/report-2026-10-15T10-02-29-008Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
     <div class="badges"><span class="badge bn">+1 novo</span></div>
@@ -525,55 +398,55 @@ function copyTrigger(btn, cmd) {
   <div class="ci"><div class="item legacy-item"><span class="it"><a href="https://ba.olx.com.br/grande-salvador/audio/fones-de-ouvido/oneplus-buds-pro-3-1541641393" target="_blank" rel="noopener noreferrer">[OLX] OnePlus Buds Pro 3 (oneplus buds pro 3) — Salvador -  BA</a></span><span class="ip">R$ 780,00</span></div></div>
 
 
-</div></div>
+</div></details></div>
 </div>
 <div class="sec">
-  <div class="sh"><div class="shr"><h2>Mercado Livre Monitores OLED</h2><time class="sd">12/10/2026, 10:41 BRT</time></div><small>R$ 1.500 – R$ 3.000 &nbsp;·&nbsp; últimos 0 com novidades</small></div>
-  <div class="sb"><p class="empty">Nenhum run com novidades recentes.</p></div>
+  <div class="sh"><div class="shr"><h2>Mercado Livre Monitores OLED</h2><time class="sd">12/10/2026, 10:41 BRT</time></div><small>R$ 1.500 – R$ 3.000</small></div>
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p></div>
 </div>
 <div class="sec">
-  <div class="sh"><div class="shr"><h2>Mercado Livre Tênis 42</h2><time class="sd">12/10/2026, 10:38 BRT</time></div><small>masculino · tamanho 42 · até R$ 500 &nbsp;·&nbsp; últimos 0 com novidades</small></div>
-  <div class="sb"><p class="empty">Nenhum run com novidades recentes.</p></div>
+  <div class="sh"><div class="shr"><h2>Mercado Livre Tênis 42</h2><time class="sd">12/10/2026, 10:38 BRT</time></div><small>masculino · tamanho 42 · até R$ 500</small></div>
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p></div>
 </div>
 <div class="sec">
-  <div class="sh"><div class="shr"><h2>Mercado Livre Melanger</h2><time class="sd">12/10/2026, 10:25 BRT</time></div><small>110/127V · R$ 1.000 - R$ 5.000 &nbsp;·&nbsp; últimos 0 com novidades</small></div>
-  <div class="sb"><p class="empty">Nenhum run com novidades recentes.</p></div>
+  <div class="sh"><div class="shr"><h2>Mercado Livre Melanger</h2><time class="sd">12/10/2026, 10:25 BRT</time></div><small>110/127V · R$ 1.000 - R$ 5.000</small></div>
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p></div>
 </div>
 <div class="sec">
-  <div class="sh"><div class="shr"><h2>Mercado Livre Tela Galaxy Book3</h2><time class="sd">12/10/2026, 10:24 BRT</time></div><small>BA96-08462A · até R$ 1.000 &nbsp;·&nbsp; últimos 0 com novidades</small></div>
-  <div class="sb"><p class="empty">Nenhum run com novidades recentes.</p></div>
+  <div class="sh"><div class="shr"><h2>Mercado Livre Tela Galaxy Book3</h2><time class="sd">12/10/2026, 10:24 BRT</time></div><small>BA96-08462A · até R$ 1.000</small></div>
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p></div>
 </div>
 <div class="sec">
-  <div class="sh"><div class="shr"><h2>Mercado Livre Lifefactory</h2><time class="sd">12/10/2026, 10:24 BRT</time></div><small>500 ml-1 L · R$ 25 - R$ 75 &nbsp;·&nbsp; últimos 0 com novidades</small></div>
-  <div class="sb"><p class="empty">Nenhum run com novidades recentes.</p></div>
+  <div class="sh"><div class="shr"><h2>Mercado Livre Lifefactory</h2><time class="sd">12/10/2026, 10:24 BRT</time></div><small>500 ml-1 L · R$ 25 - R$ 75</small></div>
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p></div>
 </div>
 <div class="sec">
-  <div class="sh"><div class="shr"><h2>Mercado Livre Fitbit Air — busca pausada</h2><time class="sd">12/10/2026, 10:24 BRT</time></div><small>R$ 300 - R$ 600 · histórico preservado &nbsp;·&nbsp; últimos 0 com novidades</small></div>
-  <div class="sb"><p class="empty">Nenhum run com novidades recentes.</p></div>
+  <div class="sh"><div class="shr"><h2>Mercado Livre Fitbit Air — busca pausada</h2><time class="sd">12/10/2026, 10:24 BRT</time></div><small>R$ 300 - R$ 600 · histórico preservado</small></div>
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p></div>
 </div>
 <div class="sec">
-  <div class="sh"><div class="shr"><h2>Mercado Livre Dockstations — busca pausada</h2><time class="sd">12/10/2026, 10:23 BRT</time></div><small>até R$ 500 · histórico preservado &nbsp;·&nbsp; últimos 0 com novidades</small></div>
-  <div class="sb"><p class="empty">Nenhum run com novidades recentes.</p></div>
+  <div class="sh"><div class="shr"><h2>Mercado Livre Dockstations — busca pausada</h2><time class="sd">12/10/2026, 10:23 BRT</time></div><small>até R$ 500 · histórico preservado</small></div>
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p></div>
 </div>
 <div class="sec">
-  <div class="sh"><div class="shr"><h2>Mercado Livre OnePlus Buds Pro 3</h2><time class="sd">12/10/2026, 10:22 BRT</time></div><small>R$ 300 - R$ 800 &nbsp;·&nbsp; últimos 0 com novidades</small></div>
-  <div class="sb"><p class="empty">Nenhum run com novidades recentes.</p></div>
+  <div class="sh"><div class="shr"><h2>Mercado Livre OnePlus Buds Pro 3</h2><time class="sd">12/10/2026, 10:22 BRT</time></div><small>R$ 300 - R$ 800</small></div>
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p></div>
 </div>
 <div class="sec">
-  <div class="sh"><div class="shr"><h2>Mercado Livre Google Pixel Watch 5 — busca pausada</h2><time class="sd">12/10/2026, 10:22 BRT</time></div><small>45 mm · Wi‑Fi até R$ 2.400 · LTE até R$ 3.000 · histórico preservado &nbsp;·&nbsp; últimos 0 com novidades</small></div>
-  <div class="sb"><p class="empty">Nenhum run com novidades recentes.</p></div>
+  <div class="sh"><div class="shr"><h2>Mercado Livre Google Pixel Watch 5 — busca pausada</h2><time class="sd">12/10/2026, 10:22 BRT</time></div><small>45 mm · Wi‑Fi até R$ 2.400 · LTE até R$ 3.000 · histórico preservado</small></div>
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p></div>
 </div>
 <div class="sec">
-  <div class="sh"><div class="shr"><h2>Mercado Livre Google Pixel Watch 4 — busca pausada</h2><time class="sd">12/10/2026, 10:22 BRT</time></div><small>45 mm · Wi‑Fi até R$ 2.000 · LTE até R$ 2.500 · histórico preservado &nbsp;·&nbsp; últimos 0 com novidades</small></div>
-  <div class="sb"><p class="empty">Nenhum run com novidades recentes.</p></div>
+  <div class="sh"><div class="shr"><h2>Mercado Livre Google Pixel Watch 4 — busca pausada</h2><time class="sd">12/10/2026, 10:22 BRT</time></div><small>45 mm · Wi‑Fi até R$ 2.000 · LTE até R$ 2.500 · histórico preservado</small></div>
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p></div>
 </div>
 <div class="sec">
-  <div class="sh"><div class="shr"><h2>Mercado Livre Notebooks</h2><time class="sd">12/10/2026, 10:21 BRT</time></div><small>R$ 2.000 - R$ 8.000 · RAM ≥ 32 GB &nbsp;·&nbsp; últimos 0 com novidades</small></div>
-  <div class="sb"><p class="empty">Nenhum run com novidades recentes.</p></div>
+  <div class="sh"><div class="shr"><h2>Mercado Livre Notebooks</h2><time class="sd">12/10/2026, 10:21 BRT</time></div><small>R$ 2.000 - R$ 8.000 · RAM ≥ 32 GB</small></div>
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p></div>
 </div>
 <div class="sec">
   <div class="sh"><div class="shr"><h2>Fitbit Air — busca pausada</h2><time class="sd">15/10/2026, 16:01 BRT</time></div><small>Histórico preservado · OLX + Enjoei · R$ 300 – R$ 600 &nbsp;·&nbsp; últimos 1 com novidades</small></div>
-  <div class="sb"><div class="card">
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p><details class="history-changes"><summary>Histórico de novidades · 1 rodada(s)</summary><div class="card">
   <div class="ch">
     <time class="cd" datetime="2026-10-11T10:21:50.589Z">11/10/2026, 07:21 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/fitbit/report-2026-10-11T10-21-50-589Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
     <div class="badges"><span class="badge bn">+1 novo</span></div>
@@ -581,11 +454,11 @@ function copyTrigger(btn, cmd) {
   <div class="ci"><div class="item legacy-item"><span class="it"><a href="https://ms.olx.com.br/mato-grosso-do-sul/eletronicos-e-celulares/smartwatches/google-fitbit-air-pulseira-active-original-1543108545" target="_blank" rel="noopener noreferrer">[OLX] Google Fitbit Air + Pulseira Active Original (fitbit air) — Campo …</a></span><span class="ip">R$ 600,00</span></div></div>
 
 
-</div></div>
+</div></details></div>
 </div>
 <div class="sec">
   <div class="sh"><div class="shr"><h2>Oura Ring 5 — busca pausada</h2><time class="sd">15/10/2026, 16:02 BRT</time></div><small>Histórico preservado · OLX + Enjoei · tam 9-11 · R$ 1.800 – R$ 2.700 &nbsp;·&nbsp; últimos 5 com novidades</small></div>
-  <div class="sb"><div class="card">
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p><details class="history-changes"><summary>Histórico de novidades · 5 rodada(s)</summary><div class="card">
   <div class="ch">
     <time class="cd" datetime="2026-10-08T13:37:10.381Z">08/10/2026, 10:37 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/oura-ring5/report-2026-10-08T13-37-10-381Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
     <div class="badges"><span class="badge bn">+1 novo</span></div>
@@ -629,11 +502,69 @@ function copyTrigger(btn, cmd) {
   <div class="ci"><div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/oura-ring-5-brushed-silver-11-150678247" target="_blank" rel="noopener noreferrer">[Enjoei] oura ring 5 brushed silver 11 (oura ring)</a></span><span class="ip">R$ 2.600,00</span></div></div>
 
 
-</div></div>
+</div></details></div>
+</div>
+<div class="sec">
+  <div class="sh"><div class="shr"><h2>Enjoei Tênis barefoot 42</h2><time class="sd">17/10/2026, 16:01 BRT</time></div><small>Fiber e FOT · Walka, Lito, Noga, Voet e Bruk · até R$ 500 &nbsp;·&nbsp; últimos 5 com novidades</small></div>
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p><details class="current-pending"><summary>Pendências atuais · 3</summary><div class="card">
+  <div class="ch">
+    <time class="cd" datetime="2026-10-17T19:01:09.362Z">Pendências atuais · 17/10/2026, 16:01 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/enjoei/report-2026-10-17T19-01-09-362Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
+    <div class="badges"><span class="badge bw">3 pendente(s)</span></div>
+  </div>
+
+  <details><summary>Pendentes de conferência — sem alerta de oferta válida</summary><div class="ci"><div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/tenis-mvp-barefoot-preto-crossfit-121147815" target="_blank" rel="noopener noreferrer">tênis mvp barefoot - preto crossfit - mvp - tam. 42 - vendedor: lucas - …</a></span><span class="ip">R$ 105,00</span></div><p class="empty">Termo ou marca é candidato; faltam características barefoot na descrição</p>
+<div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/tenis-minimalista-zara-146829741" target="_blank" rel="noopener noreferrer">tênis minimalista zara - zara - tam. 42 - termos: minimalistas, minimali…</a></span><span class="ip">R$ 179,00</span></div><p class="empty">Termo ou marca é candidato; faltam características barefoot na descrição</p>
+<div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/tenis-para-crossfit-mvp-fitness-barefoot-black-42-codigo-19-150436352" target="_blank" rel="noopener noreferrer">tênis para crossfit mvp fitness barefoot black 42 código 19 - mvp fitnes…</a></span><span class="ip">R$ 205,00</span></div><p class="empty">Termo ou marca é candidato; faltam características barefoot na descrição</p></div></details>
+
+</div></details><details class="history-changes"><summary>Histórico de novidades · 5 rodada(s)</summary><div class="card">
+  <div class="ch">
+    <time class="cd" datetime="2026-10-08T11:01:14.878Z">08/10/2026, 08:01 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/enjoei/report-2026-10-08T11-01-14-878Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
+    <div class="badges"><span class="badge bp">1 preço</span></div>
+  </div>
+  <div class="ci"><div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/tenis-lems-numero-42-drop-zero-137508659" target="_blank" rel="noopener noreferrer">tênis lems - número 42 - drop zero</a></span><span class="price-change"><span><span class="pf">R$ 210,00</span> → <span class="pt">R$ 205,00</span></span><span class="delta down" title="caiu">↓ caiu R$ 5,00</span></span></div></div>
+
+
+</div>
+<div class="card">
+  <div class="ch">
+    <time class="cd" datetime="2026-10-05T11:01:06.879Z">05/10/2026, 08:01 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/enjoei/report-2026-10-05T11-01-06-879Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
+    <div class="badges"><span class="badge bp">1 preço</span></div>
+  </div>
+  <div class="ci"><div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/tenis-lems-numero-42-drop-zero-137508659" target="_blank" rel="noopener noreferrer">tênis lems - número 42 - drop zero</a></span><span class="price-change"><span><span class="pf">R$ 230,00</span> → <span class="pt">R$ 210,00</span></span><span class="delta down" title="caiu">↓ caiu R$ 20,00</span></span></div></div>
+
+
+</div>
+<div class="card">
+  <div class="ch">
+    <time class="cd" datetime="2026-09-30T19:36:54.168Z">30/09/2026, 16:36 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/enjoei/report-2026-09-30T19-36-54-168Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
+    <div class="badges"><span class="badge bp">1 preço</span></div>
+  </div>
+  <div class="ci"><div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/tenis-lems-numero-42-drop-zero-137508659" target="_blank" rel="noopener noreferrer">tênis lems - número 42 - drop zero</a></span><span class="price-change"><span><span class="pf">R$ 250,00</span> → <span class="pt">R$ 230,00</span></span><span class="delta down" title="caiu">↓ caiu R$ 20,00</span></span></div></div>
+
+
+</div>
+<div class="card">
+  <div class="ch">
+    <time class="cd" datetime="2026-09-02T19:01:20.193Z">02/09/2026, 16:01 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/enjoei/report-2026-09-02T19-01-20-193Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
+    <div class="badges"><span class="badge bn">+1 novo</span></div>
+  </div>
+  <div class="ci"><div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/tenis-feet-of-tomorrow-barefeet-walka-42-150012985" target="_blank" rel="noopener noreferrer">tenis feet of tomorrow barefeet walka 42 - feet of tomorrow - tam. 42 - …</a></span><span class="ip">R$ 100,00</span></div></div>
+
+
+</div>
+<div class="card">
+  <div class="ch">
+    <time class="cd" datetime="2026-08-20T11:00:56.651Z">20/08/2026, 08:00 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/enjoei/report-2026-08-20T11-00-56-651Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
+    <div class="badges"><span class="badge bp">1 preço</span></div>
+  </div>
+  <div class="ci"><div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/tenis-lems-numero-42-drop-zero-137508659" target="_blank" rel="noopener noreferrer">tênis lems - número 42 - drop zero</a></span><span class="price-change"><span><span class="pf">R$ 385,00</span> → <span class="pt">R$ 250,00</span></span><span class="delta down" title="caiu">↓ caiu R$ 135,00</span></span></div></div>
+
+
+</div></details></div>
 </div>
 <div class="sec">
   <div class="sh"><div class="shr"><h2>Galaxy Buds4 Pro — busca pausada</h2><time class="sd">05/10/2026, 08:01 BRT</time></div><small>Histórico preservado · OLX, Enjoei e Mercado Livre &nbsp;·&nbsp; últimos 5 com novidades</small></div>
-  <div class="sb"><div class="card">
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p><details class="history-changes"><summary>Histórico de novidades · 5 rodada(s)</summary><div class="card">
   <div class="ch">
     <time class="cd" datetime="2026-10-05T10:47:13.683Z">05/10/2026, 07:47 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/galaxy-buds4-pro/report-2026-10-05T10-47-13-683Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
     <div class="badges"><span class="badge bp">1 preço</span></div>
@@ -678,15 +609,15 @@ function copyTrigger(btn, cmd) {
   <div class="ci"><div class="item legacy-item"><span class="it"><a href="https://www.enjoei.com.br/p/fone-de-ouvido-samsung-galaxy-buds4-pro-preto-151877978" target="_blank" rel="noopener noreferrer">[Enjoei] fone de ouvido samsung galaxy buds4 pro preto (galaxy buds4 pro…</a></span><span class="ip">R$ 800,00</span></div></div>
 
 
-</div></div>
+</div></details></div>
 </div>
 <div class="sec">
-  <div class="sh"><div class="shr"><h2>Mercado Livre Galaxy Buds4 Pro — busca pausada</h2><time class="sd">02/10/2026, 20:57 BRT</time></div><small>R$ 500 - R$ 1.000 · histórico preservado &nbsp;·&nbsp; últimos 0 com novidades</small></div>
-  <div class="sb"><p class="empty">Nenhum run com novidades recentes.</p></div>
+  <div class="sh"><div class="shr"><h2>Mercado Livre Galaxy Buds4 Pro — busca pausada</h2><time class="sd">02/10/2026, 20:57 BRT</time></div><small>R$ 500 - R$ 1.000 · histórico preservado</small></div>
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p></div>
 </div>
 <div class="sec">
   <div class="sh"><div class="shr"><h2>Melanger</h2><time class="sd">17/10/2026, 16:02 BRT</time></div><small>110V · OLX + Enjoei · R$ 1.000 – R$ 5.000 &nbsp;·&nbsp; últimos 1 com novidades</small></div>
-  <div class="sb"><div class="card">
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p><details class="history-changes"><summary>Histórico de novidades · 1 rodada(s)</summary><div class="card">
   <div class="ch">
     <time class="cd" datetime="2026-09-29T10:48:12.891Z">29/09/2026, 07:48 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/melanger/report-2026-09-29T10-48-12-891Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
     <div class="badges"><span class="badge bn">+1 novo</span></div>
@@ -694,11 +625,11 @@ function copyTrigger(btn, cmd) {
   <div class="ci"><div class="item legacy-item"><span class="it"><a href="https://ro.olx.com.br/rondonia/eletro/eletroportateis-para-cozinha-e-limpeza/melanger-maquina-de-fazer-chocolate-descascador-soprador-de-cascas-1537041721" target="_blank" rel="noopener noreferrer">[OLX] Melanger (máquina de fazer chocolate), descascador/soprador de cas…</a></span><span class="ip">R$ 4.500,00</span></div></div>
 
 
-</div></div>
+</div></details></div>
 </div>
 <div class="sec">
   <div class="sh"><div class="shr"><h2>Google Pixel Watch 4 — busca pausada</h2><time class="sd">15/10/2026, 16:02 BRT</time></div><small>Histórico preservado · OLX + Enjoei · 45 mm · Wi‑Fi até R$ 2.000 · LTE até R$ 2.500 &nbsp;·&nbsp; últimos 1 com novidades</small></div>
-  <div class="sb"><div class="card">
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p><details class="history-changes"><summary>Histórico de novidades · 1 rodada(s)</summary><div class="card">
   <div class="ch">
     <time class="cd" datetime="2026-09-17T10:00:42.631Z">17/09/2026, 07:00 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/google-pixel-watch-4/report-2026-09-17T10-00-42-631Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
     <div class="badges"><span class="badge bn">+1 novo</span></div>
@@ -706,11 +637,11 @@ function copyTrigger(btn, cmd) {
   <div class="ci"><div class="item legacy-item"><span class="it"><a href="https://sp.olx.com.br/sao-paulo-e-regiao/eletronicos-e-celulares/smartwatches/google-pixel-watch-4-45mm-lte-1536203808" target="_blank" rel="noopener noreferrer">[OLX] Google Pixel Watch 4 45mm LTE (pixel watch 4) — São Paulo -  SP</a></span><span class="ip">R$ 1.900,00</span></div></div>
 
 
-</div></div>
+</div></details></div>
 </div>
 <div class="sec">
   <div class="sh"><div class="shr"><h2>Enjoei Notebooks</h2><time class="sd">17/10/2026, 16:01 BRT</time></div><small>R$ 1.500 – R$ 8.000 · RAM ≥ 32 GB &nbsp;·&nbsp; últimos 3 com novidades</small></div>
-  <div class="sb"><div class="card">
+  <div class="sb"><p class="empty">Nenhum anúncio novo ou mudança de preço nas últimas 24 horas.</p><details class="history-changes"><summary>Histórico de novidades · 3 rodada(s)</summary><div class="card">
   <div class="ch">
     <time class="cd" datetime="2026-09-08T11:01:02.428Z">08/09/2026, 08:01 BRT<a class="rl" href="https://github.com/almeida3339/olx-daily/blob/main/data/enjoei-notebooks/report-2026-09-08T11-01-02-428Z.md" target="_blank" rel="noopener noreferrer">ver completo ↗</a></time>
     <div class="badges"><span class="badge bn">+1 novo</span></div>
@@ -769,7 +700,7 @@ function copyTrigger(btn, cmd) {
 </div></div>
 
 
-</div></div>
+</div></details></div>
 </div></div></details>
 </body>
 </html>
