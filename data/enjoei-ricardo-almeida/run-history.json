@@ -1,7 +1,24 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-16T21:15:53.303Z",
+  "updated_at": "2026-10-17T11:01:11.030Z",
   "runs": [
+    {
+      "run_id": "2026-10-17T11-01-11-011Z",
+      "committed_at": "2026-10-17T11:01:11.022Z",
+      "completed_at": "2026-10-17T11:01:11.011Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 2698,
+      "item_count": 4,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "enjoei-ricardo-almeida",
+        "collected_count": 3,
+        "pending_count": 1,
+        "failed_term_count": 0,
+        "quarantined_item_count": 0
+      }
+    },
     {
       "run_id": "2026-10-16T21-15-53-223Z",
       "committed_at": "2026-10-16T21:15:53.231Z",
@@ -10,13 +27,13 @@
       "partial": false,
       "duration_ms": 3677,
       "item_count": 4,
-      "quarantined_item_count": 0,
       "metadata": {
         "source": "enjoei-ricardo-almeida",
         "collected_count": 4,
         "pending_count": 1,
         "failed_term_count": 0,
-        "quarantined_item_count": 0
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     },
     {
