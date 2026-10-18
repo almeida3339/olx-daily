@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "tracking_started_at": "2026-10-17T23:55:24.817Z",
+  "days": {
+    "2026-10-17": {
+      "search": 4,
+      "detail": 2,
+      "watchlists": {
+        "notebooks": {
+          "search": 3,
+          "detail": 2
+        },
+        "lifefactory": {
+          "search": 1,
+          "detail": 0
+        }
+      },
+      "rounds": {
+        "operational-recovery-1792281411656": {
+          "search": 4,
+          "detail": 2
+        }
+      }
+    }
+  },
+  "queries": {
+    "notebooks:14900hx": {
+      "last_attempt_at": "2026-10-17T23:56:56.694Z",
+      "approved": 0,
+      "interval_hours": 8
+    },
+    "notebooks:family:avell-a65": {
+      "last_attempt_at": "2026-10-17T23:57:11.382Z",
+      "approved": 0,
+      "interval_hours": 24
+    },
+    "notebooks:family:avell-storm": {
+      "last_attempt_at": "2026-10-17T23:57:19.629Z",
+      "approved": 0,
+      "interval_hours": 24
+    },
+    "lifefactory:lifefactory": {
+      "last_attempt_at": "2026-10-17T23:57:22.042Z",
+      "approved": 0,
+      "last_success_at": "2026-10-17T23:57:24.152Z",
+      "empty_runs": 1,
+      "prices": {},
+      "interval_hours": 24
+    }
+  },
+  "updated_at": "2026-10-17T23:57:24.152Z",
+  "limits": {
+    "daily": {
+      "search": 40,
+      "detail": 24
+    },
+    "round": {
+      "search": 22,
+      "detail": 14
+    }
+  }
+}
