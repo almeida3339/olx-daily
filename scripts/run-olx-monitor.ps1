@@ -84,6 +84,11 @@ if ($ResumeAfterVerification) { $npmArgs += "--resume-after-verification" }
 Push-Location $root
 try {
   & npm @npmArgs
+  if ($LASTEXITCODE -in @(2, 3)) {
+    $collectionExit = $LASTEXITCODE
+    Write-Host "Coleta com cobertura parcial ou consultas adiadas; resultados preservados (codigo $collectionExit)."
+    exit $collectionExit
+  }
   if ($LASTEXITCODE -ne 0) {
     throw "Monitor OLX falhou com exit code $LASTEXITCODE."
   }

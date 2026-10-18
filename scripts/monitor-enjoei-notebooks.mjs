@@ -1,3 +1,4 @@
+import { setMonitorExit } from './lib/monitor-outcome.mjs';
 import { meetsNotebookRamMinimum, NOTEBOOK_MIN_RAM_GB, NOTEBOOK_POLICY_VERSION, NOTEBOOK_PRIORITY_CPUS, assessNotebook, isEligibleNotebook, extractNotebookRamText, notebookExclusionReason, hasExplicitOtherNotebookCpu } from './lib/notebook-policy.mjs';
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -138,10 +139,10 @@ async function main() {
   // para o orquestrador e o GitHub Actions detectarem a falha.
   if (failedTerms.length === terms.length) {
     console.error("Falha total: nenhum termo do Enjoei Notebooks foi coletado nesta rodada; snapshot anterior preservado.");
-    process.exitCode = 1;
+    setMonitorExit(committed.snapshot.run);
   } else if (committed.snapshot.run.partial) {
     console.error(`Coleta incompleta Enjoei Notebooks: ${failedTerms.length} termo(s) com falha; ${incompleteTerms.length} com páginas ou detalhes pendentes. Progresso salvo para a próxima rodada.`);
-    process.exitCode = 1;
+    setMonitorExit(committed.snapshot.run);
   }
 }
 

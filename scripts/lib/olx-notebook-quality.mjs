@@ -1,5 +1,6 @@
 import { extractNotebookRamText, meetsNotebookRamMinimum, NOTEBOOK_MIN_RAM_GB, NOTEBOOK_PRIORITY_CPUS, notebookExclusionReason, notebookCpuTerms, hasExplicitOtherNotebookCpu, isEligibleNotebook } from './notebook-policy.mjs';
 import { DEFAULT_CPU_TERMS } from "./cpu-terms.mjs";
+import { olxIntervalHours } from './olx-traffic.mjs';
 import { cardCpuState } from "./olx-description-queue.mjs";
 import { extractStorageGb, extractGpuLabel, normalizeText, parseBrlPrice, textContainsCpuTerm } from './parsers.mjs';
 
@@ -10,11 +11,17 @@ export function orderOlxCpuTerms(terms) {
   return [...new Set([...OLX_PRIORITY_CPUS.filter(t => terms.includes(t)), ...terms])];
 }
 
-export function planOlxCpuTerms(terms, previous, { now = Date.now(), lowPriorityIntervalMs = 24 * 3600_000, fullSweep = false, secondaryBudget = 6 } = {}) {
-  const due = orderOlxCpuTerms(terms).filter(term => fullSweep || OLX_PRIORITY_CPUS.includes(term)
-    || (previous?.coverage_status?.[term]?.state && previous.coverage_status[term].state !== 'success')
-    || !Number.isFinite(Date.parse(previous?.coverage_status?.[term]?.last_success_at))
-    || now - Date.parse(previous.coverage_status[term].last_success_at) >= lowPriorityIntervalMs);
+export function planOlxCpuTerms(terms, previous, { now = Date.now(), lowPriorityIntervalMs = 24 * 3600_000, fullSweep = false, secondaryBudget = 4, traffic = null } = {}) {
+  const due = orderOlxCpuTerms(terms).filter(term => {
+    if (fullSweep) return true;
+    const record = traffic?.queries?.[`notebooks:${term}`];
+    if (record?.last_attempt_at) return now - Date.parse(record.last_attempt_at)
+      >= olxIntervalHours('notebooks', term, record) * 3600_000;
+    return OLX_PRIORITY_CPUS.includes(term)
+      || (previous?.coverage_status?.[term]?.state && previous.coverage_status[term].state !== 'success')
+      || !Number.isFinite(Date.parse(previous?.coverage_status?.[term]?.last_success_at))
+      || now - Date.parse(previous.coverage_status[term].last_success_at) >= lowPriorityIntervalMs;
+  });
   if (fullSweep) return due;
   return [...due.filter(term => OLX_PRIORITY_CPUS.includes(term)), ...due.filter(term => !OLX_PRIORITY_CPUS.includes(term))
     .sort((a,b) => (Date.parse(previous?.coverage_status?.[a]?.checked_at) || 0) - (Date.parse(previous?.coverage_status?.[b]?.checked_at) || 0)).slice(0, secondaryBudget)];

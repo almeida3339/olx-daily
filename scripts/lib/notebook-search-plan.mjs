@@ -1,4 +1,5 @@
 import { NOTEBOOK_PRIORITY_CPUS } from './notebook-policy.mjs';
+import { olxIntervalHours } from './olx-traffic.mjs';
 
 export const OLX_NOTEBOOK_FAMILIES = [
   ['helios-neo-16', 'helios neo 16'], ['rog-strix-g16', 'rog strix g16'],
@@ -11,10 +12,15 @@ export function notebookQueryMaxAgeHours(key, source) {
   return NOTEBOOK_PRIORITY_CPUS.includes(key) ? 24 : source === 'mercadolivre-notebooks' ? 168 : 48;
 }
 
-export function planNotebookFamilies(previous, { now = Date.now(), budget = 2, fullSweep = false } = {}) {
-  const due = OLX_NOTEBOOK_FAMILIES.filter(({ id }) => fullSweep
-    || !previous?.coverage_status?.[id]?.last_success_at
-    || now - Date.parse(previous.coverage_status[id].last_success_at) >= 24 * 3600_000);
+export function planNotebookFamilies(previous, { now = Date.now(), budget = 1, fullSweep = false, traffic = null } = {}) {
+  const due = OLX_NOTEBOOK_FAMILIES.filter(({ id }) => {
+    if (fullSweep) return true;
+    const record = traffic?.queries?.[`notebooks:${id}`];
+    if (record?.last_attempt_at) return now - Date.parse(record.last_attempt_at)
+      >= olxIntervalHours('notebooks', id, record) * 3600_000;
+    return !previous?.coverage_status?.[id]?.last_success_at
+      || now - Date.parse(previous.coverage_status[id].last_success_at) >= 24 * 3600_000;
+  });
   // A partial query still consumed its slot. Rotate by attempt time so an
   // incomplete family cannot starve families that have never been queried.
   return due.sort((a,b) => (Date.parse(previous?.coverage_status?.[a.id]?.checked_at) || 0)

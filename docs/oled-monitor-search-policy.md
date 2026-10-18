@@ -33,8 +33,13 @@ visível para revisão sem manter a coleta em repetição automática infinita.
 
 OLX prioritárias: AW2726DM, AW2725D, AW2725DF, Odyssey OLED G6, Monitor Cepheus,
 27GR95QE e 27GS95QE. As secundárias ficam elegíveis após 72h, com precedência
-para a consulta menos recentemente tentada. A descoberta é consultada em toda
-rodada OLX.
+para a consulta menos recentemente tentada. Todas as consultas OLX respeitam
+também a frequência adaptativa e os limites compartilhados. Ofertas produtivas
+mantêm intervalo de 8h; consultas sem ofertas começam em 24h e podem passar
+para 48h ou 72h após buscas completas vazias. A ordem das prioritárias alterna
+pela última tentativa para evitar que o orçamento favoreça sempre os mesmos modelos.
+
+Detalhes: [operação e orçamento OLX](monitor-operation-and-olx-budget.md).
 
 Enjoei evita refazer a mesma consulta bem-sucedida em menos de 12h usando a
 cobertura publicada, compartilhada entre CI e local. Secundárias entram em rodízio

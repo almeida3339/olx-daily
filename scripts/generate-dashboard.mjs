@@ -720,16 +720,26 @@ function buildHtml({ health, priceInsights, japaneseJeans, zegna, zegnaUpdated, 
     const updatedDate = source.updated_at ? new Date(source.updated_at) : null;
     const updated = updatedDate && !Number.isNaN(updatedDate.getTime()) ? formatDateTimeBrt(updatedDate) : "—";
     const history = source.history?.sample
-      ? `<small>${source.history.sample} rodadas · ${Math.round((source.history.success_rate ?? 0) * 100)}% estáveis</small>`
+      ? `<small>${source.history.sample} rodadas · ${source.history.complete ?? 0} completas · ${source.history.partial} parciais · ${source.history.deferred ?? 0} adiadas · ${source.history.blocked ?? 0} bloqueadas · ${source.history.failed} falhas</small>`
       : "";
     const datetime = updatedDate && !Number.isNaN(updatedDate.getTime()) ? ` datetime="${e(updatedDate.toISOString())}"` : "";
-    return `<div class="health ${e(source.state)}"><b>${e(source.label)}</b><span>${e(source.message)}</span>${history}<time${datetime}>${e(updated)}</time></div>`;
+    const labels={success:'Completa',partial:'Parcial; resultados preservados',deferred:'Adiada pela programação ou pausa',blocked:'Bloqueio ou login exigido',failed:'Falha técnica'};
+    const operational=labels[source.operational_status]?`<small>Última rodada: ${e(labels[source.operational_status])}</small>`:'';
+    return `<div class="health ${e(source.state)}"><b>${e(source.label)}</b><span>${e(source.message)}</span>${operational}${history}<time${datetime}>${e(updated)}</time></div>`;
   }).join("\n");
   const healthCounts = health.sources.reduce((counts, source) => {
     counts[source.state] = (counts[source.state] ?? 0) + 1;
     return counts;
   }, {});
   const healthyCount = healthCounts.healthy ?? 0;
+  const traffic=health.olx_traffic;
+  const trafficDay=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+  const trafficUsage=traffic?.days?.[trafficDay]??{search:0,detail:0,watchlists:{}};
+  const trafficHtml=traffic?`<section><h2>Orçamento da OLX</h2><ul>
+    <li>Hoje: ${trafficUsage.search}/${traffic.limits.daily.search} buscas e ${trafficUsage.detail}/${traffic.limits.daily.detail} fichas</li>
+    <li>Por rodada: até ${traffic.limits.round.search} buscas e ${traffic.limits.round.detail} fichas, somando todas as buscas da OLX</li>
+    ${Object.entries(trafficUsage.watchlists).map(([name,usage])=>`<li>${e(name)}<span>${usage.search} buscas · ${usage.detail} fichas</span></li>`).join('')}
+    </ul><p class="hint">Contagem iniciada em ${e(formatDateTimeBrt(new Date(traffic.tracking_started_at)))}. Tentativas também contam. Cache não consome acessos.</p></section>`:'';
   const attentionCount = health.sources.length - healthyCount;
   const healthSummary = `${healthyCount} ${healthyCount === 1 ? "saudável" : "saudáveis"} · ${attentionCount} em atenção`;
   const healthPanelHtml = `<details class="health-panel ${attentionCount ? "attention" : "ok"}"><summary><span><b>Saúde da coleta</b><small>${e(healthSummary)}</small></span><strong>${attentionCount ? "Atenção" : "Operacional"}</strong></summary><div class="health-grid">${healthHtml}</div></details>`;
@@ -862,6 +872,7 @@ ${chipsHtml}
 </div>
 ${healthPanelHtml}
 <div class="ops">
+  ${trafficHtml}
   <section><h2>Preços acompanhados</h2><ul>${insightsHtml}</ul></section>
   <section><h2>Notificações</h2><ul>${notificationsHtml}</ul><button type="button" class="trig" data-command="${e(triggerCommands.notificacoes)}" onclick="copyTrigger(this, this.dataset.command)">Gerenciar pendências <span class="tip">(copia comando)</span></button><p class="hint">Use <code>--retry ID</code> ou <code>--discard ID</code> depois de listar a fila.</p></section>
 </div>

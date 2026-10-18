@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import crypto from "node:crypto";
+import { classifyMonitorOutcome } from './monitor-outcome.mjs';
 
 export const MONITOR_RUN_MANIFEST_SCHEMA_VERSION = 1;
 export const DEFAULT_MONITOR_ARTIFACT_RETENTION_RUNS = 120;
@@ -128,6 +129,7 @@ export async function commitMonitorRun(dataDir, { runId, snapshot, report, metad
   if (!hasText(runId)) throw new Error("runId obrigatorio");
   if (typeof report !== "string" || !report.trim()) throw new Error("relatorio vazio");
   const prepared = quarantineInvalidItems(snapshot);
+  prepared.snapshot.run.operational = classifyMonitorOutcome(prepared.snapshot.run, { quarantined: prepared.invalid.length });
   prepared.snapshot = sanitizeArtifactValue(prepared.snapshot);
   prepared.invalid = sanitizeArtifactValue(prepared.invalid);
   const safeReport = sanitizeArtifactText(report).replace(/\r\n/g, "\n");
@@ -183,7 +185,7 @@ export async function commitMonitorRun(dataDir, { runId, snapshot, report, metad
     run_id: runId,
     committed_at: manifest.committed_at,
     completed_at: prepared.snapshot.run?.completed_at ?? manifest.committed_at,
-    outcome: prepared.snapshot.run?.partial ? "partial" : "success",
+    outcome: prepared.snapshot.run.operational.status,
     partial: Boolean(prepared.snapshot.run?.partial),
     duration_ms: Number.isFinite(startedAt) && Number.isFinite(completedAt) ? Math.max(0, completedAt - startedAt) : null,
     item_count: prepared.snapshot.items.length,
@@ -193,6 +195,10 @@ export async function commitMonitorRun(dataDir, { runId, snapshot, report, metad
   // Retenção é manutenção best-effort: uma falha de limpeza não invalida uma
   // coleta já validada e publicada.
   await pruneMonitorArtifacts(dataDir).catch(() => {});
+  if (process.env.MONITOR_INVOCATION_ID && !prepared.snapshot.run.in_progress) {
+    console.log(JSON.stringify({ event: 'monitor_committed', invocation: process.env.MONITOR_INVOCATION_ID,
+      outcome: prepared.snapshot.run.operational, run_id: runId }));
+  }
   return {
     snapshot: prepared.snapshot,
     invalidItems: prepared.invalid,

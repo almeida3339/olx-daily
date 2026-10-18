@@ -1,3 +1,4 @@
+import { setMonitorExit } from './monitor-outcome.mjs';
 import path from 'node:path';
 import fs from 'node:fs/promises';
 import { buildMonitorChanges, mergeMonitorSnapshot, normalizeMonitorText } from './monitor-core.mjs';
@@ -184,7 +185,8 @@ export async function runEnjoeiJeansMonitor({ id, label, brandName, term, brandP
       metadata: { source: id, collected_count: result.items.length, pending_count: result.pendingItems.length, failed_term_count: error ? 1 : 0 },
     });
     console.log(`${brandName} jeans 40: ${result.scanned} anúncios examinados; ${result.items.length} elegíveis (${priceLabel}). Relatório: ${committed.legacyReportPath}`);
-    if (error) { console.error(error); process.exitCode = 1; }
+    if (error) console.error(error);
+    setMonitorExit(committed.snapshot.run);
   }
 
   return main();

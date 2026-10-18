@@ -293,7 +293,8 @@ try {
     & node (Join-Path $PSScriptRoot "run-monitors-and-notify.mjs") --only-olx --olx-max-per-cpu $MaxPerCpu 2>&1 | ForEach-Object { Write-Host $_ }
   }
   $monitorExit = $LASTEXITCODE
-  $monitorFailed = $monitorExit -ne 0
+  $monitorFailed = $monitorExit -notin @(0, 2, 3)
+  if ($monitorExit -in @(2, 3)) { Write-Host 'Coleta parcial ou adiada por limite previsto; publicacao continua.' }
 
   if ($NoPush) {
     # Sem publicar: regenera o dashboard localmente apenas para inspecao.
@@ -428,7 +429,7 @@ try {
   $ErrorActionPreference = $prevEAP
 
   if ($monitorFailed) {
-    $phase = 'coleta parcial (dados ja publicados)'
+    $phase = 'falha de coleta (dados ja publicados)'
     throw "Monitor OLX local falhou com exit code $monitorExit."
   }
 } catch {
@@ -439,7 +440,7 @@ try {
   throw
 } finally {
   Pop-Location
-  # Registrar timestamp apenas quando a run completou sem erros de monitor ou publicacao.
+  # Registrar timestamp quando os dados foram publicados, inclusive com avisos.
   # O startup-catchup.ps1 usa este arquivo para decidir se deve rodar.
   if ($fullSuccess) {
     (Get-Date -Format "o") | Set-Content (Join-Path $env:USERPROFILE ".monitor-olx-enjoei-last-run")

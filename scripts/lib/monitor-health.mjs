@@ -16,6 +16,7 @@ export const monitorHealthSources = monitorHealthSourceDefinitions.map(([id, lab
 export async function buildMonitorHealth(root, { now = new Date() } = {}) {
   const sources = [];
   const mlSchedule = await readJsonValidated(path.join(root, 'data', 'status', 'mercadolivre-schedule.json')).catch(() => null);
+  const traffic = await readJsonValidated(path.join(root,'data/status/olx-traffic.json')).catch(()=>null);
   const mlBlocked = mlSchedule?.global?.requires_login || Date.parse(mlSchedule?.global?.blocked_until ?? '') > now.getTime();
   for (const [id, label, configuredMaxAgeMs] of monitorHealthSources) {
     const maxAgeMs=id==='mercadolivre-oled-monitores'?168*3600_000:configuredMaxAgeMs;
@@ -32,11 +33,18 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
     const configured = ['olx','enjoei-notebooks','mercadolivre-notebooks'].includes(id)
       ? configuredRaw.filter(key => key.startsWith('family:') || DEFAULT_CPU_TERMS.includes(key)) : configuredRaw;
     const ageByKey={};
+    for(const key of configured){
+      const term=id==='olx'?key:key.startsWith('OLX:')?key.slice(4):null;
+      if(!term)continue;
+      const watchlist=id==='olx'?'notebooks':id;
+      const records=Object.entries(traffic?.queries??{}).filter(([query])=>query===`${watchlist}:${term}`||query.startsWith(`${watchlist}:${term}@`)).map(([,record])=>record);
+      if(records.length)ageByKey[key]=Math.max(maxAgeMs,id==='olx'?notebookQueryMaxAgeHours(key,id)*3600_000:0,...records.map(record=>((record.interval_hours??24)+12)*3600_000));
+    }
     if(['oled-monitores','mercadolivre-oled-monitores'].includes(id))for(const key of configured){
       const source=id.startsWith('mercadolivre-')?'ML':key.split(':')[0];
       const term=source==='ML'?key:key.slice(key.indexOf(':')+1);
       const spec=oledQuerySpecs(source).find(s=>s.id===term);
-      if(spec)ageByKey[key]=(source==='ML'?oledMlIntervalHours(term,mlSchedule?.watchlists?.['oled-monitores']?.terms?.[term],now.getTime()):spec.max_age_hours)*3600_000;
+      if(spec)ageByKey[key]=Math.max(ageByKey[key]??0,(source==='ML'?oledMlIntervalHours(term,mlSchedule?.watchlists?.['oled-monitores']?.terms?.[term],now.getTime()):spec.max_age_hours)*3600_000);
     }
     const marketplaces = id === 'enjoei' && snapshot?.run?.search_schedule
       ? shoeScheduleHealth(snapshot.run.search_schedule, now)
@@ -47,10 +55,11 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
     const classifications = errors.map((error) => classifyMonitorError(typeof error === "string" ? error : error?.error));
     let state = "healthy";
     if (!snapshot) state = "missing";
+    else if (snapshot.run?.operational?.status === 'failed') state = 'failed';
     else if (classifications.some((item) => ["challenge", "authentication", "rate_limited"].includes(item.kind))) state = "blocked";
     else if (ageMs != null && ageMs > maxAgeMs) state = "stale";
     else if (snapshot.run?.partial) state = "partial";
-    else if (historySummary.sample >= 3 && (historySummary.partial + historySummary.failed) >= Math.ceil(historySummary.sample / 2)) state = "degraded";
+    else if (historySummary.sample >= 3 && (historySummary.failed + historySummary.blocked) >= Math.ceil(historySummary.sample / 2)) state = "degraded";
     if (marketplaces.length && snapshot) state = worstState([state, ...marketplaces.map((source) => source.state)]);
     if (snapshot?.run?.in_progress && state === 'healthy') state = 'partial';
     const profileBlocked = id.startsWith('mercadolivre-') && mlBlocked;
@@ -65,12 +74,14 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
       id,
       label,
       state,
+      operational_status: snapshot?.run?.operational?.status ?? null,
       updated_at: timestamp == null ? null : new Date(timestamp).toISOString(),
       age_ms: ageMs,
       invalid_snapshots: result.invalid.length,
       history: historySummary,
       marketplaces,
       message: freshnessNote + pauseNote + (hardDenial ? `OLX recusou o acesso; sem CAPTCHA disponível. ${hardDenial[1].reason ?? ''}` : profileBlocked ? `Perfil ML exige login/verificação${mlSchedule.global.blocked_until ? `; pausa até ${new Date(mlSchedule.global.blocked_until).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })}` : ''}`
+        : state === 'failed' ? healthMessage(state)
         : snapshot?.run?.in_progress ? 'Coleta em andamento; progresso salvo'
         : snapshot?.run?.aborted ? 'Coleta interrompida; resultados parciais preservados' : marketplaces.length
         ? marketplaces.map((source) => `${source.label}: ${healthMessage(source.state)} (${source.fresh_terms}/${source.total_terms} termos recentes${source.warming_terms ? `; ${source.warming_terms} em implantação` : ''})`).join(' · ')
@@ -99,11 +110,11 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
       last_error: item.last_error,
     })),
   });
-  return { schema_version: 2, generated_at: now.toISOString(), sources };
+  return { schema_version: 2, generated_at: now.toISOString(), sources, olx_traffic: traffic };
 }
 
 function worstState(states) {
-  return ['blocked', 'missing', 'stale', 'partial', 'degraded', 'healthy'].find((state) => states.includes(state)) ?? 'healthy';
+  return ['failed', 'blocked', 'missing', 'stale', 'partial', 'degraded', 'healthy'].find((state) => states.includes(state)) ?? 'healthy';
 }
 
 function shoeScheduleHealth(schedule, now) {
@@ -175,6 +186,7 @@ function compareNotificationItems(left, right) {
 }
 
 function healthMessage(state) {
+  if (state === "failed") return "Falha técnica na coleta";
   if (state === "partial") return "Cobertura parcial";
   if (state === "stale") return "Coleta desatualizada";
   if (state === "blocked") return "Login, limite ou desafio exigem atenção";

@@ -1,3 +1,4 @@
+import { setMonitorExit } from './lib/monitor-outcome.mjs';
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -103,7 +104,7 @@ async function main() {
   console.log(`Snapshot salvo: ${snapshotPath}`);
   console.log(`Relatorio salvo: ${reportPath}`);
   if (committed.invalidItems.length) console.warn(`${committed.invalidItems.length} item(ns) foram para a quarentena.`);
-  if (snapshot.run.partial) process.exitCode = 1;
+  setMonitorExit(committed.snapshot.run);
 }
 
 function buildSearchPageUrl(searchTerm) {
@@ -131,6 +132,8 @@ function mergeWithPreviousSnapshot({ now, collected, collection, previousSnapsho
       id: "enjoei-tenis-42",
       label: "Enjoei Tenis 42",
       partial: collection.failedTerms.length > 0 || [...collection.incompleteTerms, ...collection.deferredTerms].some(term => collection.schedule[term]?.tier === 'priority'),
+      failed_term_count: collection.failedTerms.length,
+      deferred_terms: collection.deferredTerms,
     },
     configuredCoverage: DEFAULT_TERMS,
     scheduledCoverage: collection.scheduledTerms,

@@ -32,7 +32,7 @@ export function historyFromArtifact({ manifest, snapshot }) {
   const end = Date.parse(completedAt);
   return {
     run_id: manifest.run_id, committed_at: manifest.committed_at, completed_at: completedAt,
-    outcome: snapshot.run?.partial ? 'partial' : 'success', partial: Boolean(snapshot.run?.partial),
+    outcome: snapshot.run?.operational?.status ?? (snapshot.run?.partial ? 'partial' : 'success'), partial: Boolean(snapshot.run?.partial),
     duration_ms: Number.isFinite(start) && Number.isFinite(end) ? Math.max(0, end - start) : null,
     item_count: snapshot.items.length, metadata: { ...manifest.metadata, in_progress: Boolean(snapshot.run?.in_progress ?? manifest.metadata?.in_progress) },
   };
@@ -46,14 +46,19 @@ function newestFirst(left, right) {
 export function summarizeMonitorHistory(runs, { sample = 10 } = {}) {
   // Intermediate batches are still in progress, not completed failed runs.
   const recent = runs.filter((run) => !run.metadata?.in_progress).sort(newestFirst).slice(0, sample);
-  const partial = recent.filter((run) => run.partial).length;
+  const partial = recent.filter(run=>run.outcome==='partial'||(run.partial&&!['failed','blocked','deferred'].includes(run.outcome))).length;
   const failed = recent.filter((run) => run.outcome === "failed").length;
+  const blocked = recent.filter(run=>run.outcome==='blocked').length;
+  const deferred = recent.filter(run=>run.outcome==='deferred').length;
   const durations = recent.filter((run) => run.duration_ms != null).map((run) => Number(run.duration_ms)).filter((value) => Number.isFinite(value) && value >= 0);
   return {
     sample: recent.length,
     partial,
     failed,
-    success_rate: recent.length ? recent.filter((run) => !run.partial && run.outcome !== 'failed').length / recent.length : null,
+    blocked,
+    deferred,
+    complete: recent.filter(run=>run.outcome==='success'&&!run.partial).length,
+    success_rate: recent.length ? recent.filter(run=>run.outcome==='success'&&!run.partial).length / recent.length : null,
     median_duration_ms: median(durations),
   };
 }

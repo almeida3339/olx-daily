@@ -1,3 +1,5 @@
+import { setMonitorExit } from './lib/monitor-outcome.mjs';
+import { reserveOlxAccess, recordOlxYield, readOlxTraffic } from './lib/olx-traffic.mjs';
 import { extractNotebookRamText, meetsNotebookRamMinimum, NOTEBOOK_MIN_RAM_GB, notebookCpuTerms, hasExplicitOtherNotebookCpu } from './lib/notebook-policy.mjs';
 import { OLX_NOTEBOOK_FAMILIES, planNotebookFamilies, notebookOpportunity } from './lib/notebook-search-plan.mjs';
 import fs from "node:fs/promises";
@@ -58,6 +60,12 @@ const configuredSearches = [...configuredCpuTerms, ...(!cpuArg ? OLX_NOTEBOOK_FA
 const olxQuery = term => OLX_NOTEBOOK_FAMILIES.find(spec => spec.id === term)?.query ?? cpuSearchQuery(term);
 let resumedProgress = null;
 let descriptionQueue;
+const searchedThisProcess = new Set();
+async function reserveNotebookSearch(term) {
+  await reserveOlxAccess({watchlist:'notebooks',query:term,kind:'search',
+    force:Boolean(cpuArg)||args.includes('--full-sweep'),retry:searchedThisProcess.has(term)});
+  searchedThisProcess.add(term);
+}
 const progressFile = path.join(automationRoot, "collection-progress.json");
 const RESUME_MAX_AGE_MS = 6 * 3600_000;
 const useCurrentChrome = args.includes("--current-chrome");
@@ -101,8 +109,7 @@ async function main() {
   let previousSnapshot = previousSnapshotResult.snapshot;
   const savedProgress = await readJsonValidated(progressFile).catch(() => null);
   if (Date.parse(savedProgress?.blocked_until ?? '') > now.getTime() && !args.includes('--resume-after-verification')) {
-    console.error(`OLX bloqueada até ${savedProgress.blocked_until}. Resolva a verificação antes de usar --resume-after-verification.`);
-    process.exitCode = 1;
+    await saveDeferredNotebookRun(previousSnapshot,now,`OLX em pausa até ${savedProgress.blocked_until}; consultas adiadas.`);
     return;
   }
   const sameConfiguration = savedProgress?.configuration === configuredSearches.join(',');
@@ -120,12 +127,15 @@ async function main() {
     runTimestamp = savedProgress.started_at;
     console.log(`Retomando somente ${savedProgress.pending_terms.length} termo(s) pendente(s); ${savedProgress.successful_terms.length} concluído(s) preservado(s).`);
   } else {
+    const traffic = await readOlxTraffic();
     cpuTerms = planOlxCpuTerms(configuredCpuTerms, previousSnapshot, {
       now: now.getTime(), fullSweep: Boolean(cpuArg) || args.includes('--full-sweep'),
       lowPriorityIntervalMs: Number(process.env.OLX_LOW_PRIORITY_INTERVAL_HOURS ?? 24) * 3600_000,
+      traffic,
     });
-    if (!cpuArg) cpuTerms.push(...planNotebookFamilies(previousSnapshot, { now: now.getTime(), fullSweep: args.includes('--full-sweep') }));
+    if (!cpuArg) cpuTerms.push(...planNotebookFamilies(previousSnapshot, { now: now.getTime(), fullSweep: args.includes('--full-sweep'), traffic }));
   }
+  if(!cpuTerms.length){await saveDeferredNotebookRun(previousSnapshot,now,'Consultas adiadas pela frequência adaptativa.');return;}
   descriptionQueue = await createDescriptionQueue(path.join(automationRoot, 'description-candidates.json'), runTimestamp);
   console.log(`Plano OLX: ${cpuTerms.length}/${configuredCpuTerms.length} termos nesta rodada; CPUs prioritárias primeiro.`);
 
@@ -167,6 +177,16 @@ async function main() {
     if (useCurrentChrome) await page.close().catch(() => {});
     await close();
   }
+}
+
+async function saveDeferredNotebookRun(previousSnapshot,now,reason){
+  const snapshot=mergeWithPreviousSnapshot({runDate:now.toISOString().slice(0,10),now,collected:[],previousSnapshot,
+    successfulTerms:[],failedTerms:[],scheduledTerms:[],run:{started_at:now.toISOString(),completed_at:now.toISOString(),
+      partial:true,in_progress:false,phase:'deferred',successful_terms:[],failed_terms:[],errors:[{kind:'deferred',error:reason}],
+      unattempted_terms:[],deferred_coverage:configuredSearches}});
+  const report=buildReport({runDate:now.toISOString().slice(0,10),snapshot,previousSnapshot,priceMin:PRICE_MIN_BRL,priceMax:PRICE_MAX_BRL});
+  const committed=await commitMonitorRun(automationRoot,{runId:now.toISOString().replace(/[:.]/g,'-'),snapshot,report,metadata:{source:'olx-notebooks',deferred:true}});
+  console.log(reason);setMonitorExit(committed.snapshot.run);
 }
 
 async function runWithRawCdp({ cdpUrl, runDate, runTimestamp, previousSnapshot }) {
@@ -216,7 +236,7 @@ async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transp
       && !failedTerms.some((failure) => failure.term === term));
     const snapshot = mergeWithPreviousSnapshot({
       runDate, now: savedAt, collected, previousSnapshot, successfulTerms, failedTerms,
-      scheduledTerms: cpuTerms,
+      scheduledTerms: cpuTerms.filter(term => !failedTerms.some(failure => failure.term === term && failure.kind === 'deferred')),
       run: {
         started_at: runTimestamp,
         completed_at: inProgress ? null : savedAt.toISOString(),
@@ -224,8 +244,9 @@ async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transp
         phase: inProgress ? "collecting" : failedTerms.length ? "partial" : "completed",
         partial: inProgress || failedTerms.length > 0 || unattemptedTerms.length > 0,
         successful_terms: [...successfulTerms],
-        failed_terms: [...failedTerms],
-        errors: [...failedTerms],
+        failed_terms: failedTerms.filter(failure => failure.kind !== 'deferred'),
+        errors: failedTerms.filter(failure => failure.kind !== 'deferred'),
+        deferred_coverage: failedTerms.filter(failure => failure.kind === 'deferred').map(failure => failure.term),
         unattempted_terms: unattemptedTerms,
         description_discovery: descriptionQueue.summary(),
         query_yield: queryYield,
@@ -250,6 +271,7 @@ async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transp
     console.log(`${inProgress ? "Progresso do lote" : "Snapshot"} salvo: ${committed.legacySnapshotPath}`);
     if (!inProgress) console.log(`Relatório salvo: ${committed.legacyReportPath}`);
     if (committed.invalidItems.length) console.warn(`${committed.invalidItems.length} item(ns) foram para a quarentena.`);
+    if (!inProgress) setMonitorExit(committed.snapshot.run);
     await persistProgress(inProgress);
   };
 
@@ -280,10 +302,12 @@ async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transp
           limited: Boolean(results.coverage_incomplete), listing_incomplete: Boolean(results.listing_incomplete),
           details_pending: results.details_pending ?? 0, total_results: results.total_results ?? null,
           recommendations_ignored: results.recommendations_ignored ?? 0 };
+        await recordOlxYield('notebooks',term,{complete:!results.coverage_incomplete,
+          items:results.filter(item=>isValidatedOlxItem(item)&&item.price_brl<=PRICE_MAX_BRL)});
         console.log(`  ${results.filter(isValidatedOlxItem).length} validado(s), ${results.filter(x => x.validation?.state === 'pending').length} pendente(s), ${results.filter(x => x.validation?.state === 'rejected').length} rejeitado(s).`);
       } catch (error) {
         const message = sanitizeErrorMessage(error?.message ?? error);
-        failedTerms.push({ term, error: message, kind: classifyMonitorError(error).kind });
+        failedTerms.push({ term, error: message, kind: error.kind ?? classifyMonitorError(error).kind });
         console.warn(`  Aviso: termo "${term}" falhou (${message}) — pulando para o próximo.`);
         if (error.sessionUnavailable) throw error;
         if (['challenge', 'authentication', 'rate_limited'].includes(classifyMonitorError(error).kind)) {
@@ -300,8 +324,7 @@ async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transp
   }
   await saveProgress(false);
   if (failedTerms.length) {
-    console.error(`Coleta OLX parcial: ${failedTerms.length} falha(s). Dados coletados e anúncios dos termos sem cobertura foram preservados.`);
-    process.exitCode = 1;
+    console.warn(`Coleta OLX: ${failedTerms.filter(item=>item.kind!=='deferred').length} consulta(s) incompleta(s), ${failedTerms.filter(item=>item.kind==='deferred').length} adiada(s). Dados sem cobertura preservados.`);
   }
 }
 
@@ -380,6 +403,7 @@ async function collectForCpuTerm(page, cpuTerm, maxCards, previousSnapshot) {
   const url = `${BASE_URL}?q=${query}&sp=1&opst=2`;
   console.log(`\nCPU: ${cpuTerm} -> ${url}`);
 
+  await reserveNotebookSearch(cpuTerm);
   await page.goto(url, { waitUntil: "domcontentloaded", timeout: NAVIGATION_TIMEOUT_MS });
   await waitOutCloudflareIfNeeded(page);
   const hasCards = await waitForListingReadinessPlaywright(page);
@@ -399,6 +423,7 @@ async function collectForCpuTerm(page, cpuTerm, maxCards, previousSnapshot) {
 async function collectForCpuTermRawCdp(tab, cpuTerm, maxCards, previousSnapshot) {
   const url = `${BASE_URL}?q=${encodeURIComponent(olxQuery(cpuTerm))}&sp=1&opst=2`;
   console.log(`\nCPU: ${cpuTerm} -> ${url}`);
+  await reserveNotebookSearch(cpuTerm);
   await navigateRawCdp(tab, url);
   await waitForRawLocation(tab, url);
   const hasCards = await waitForRawCardsFast(tab);
@@ -1019,6 +1044,7 @@ function buildReport({ runDate, snapshot, previousSnapshot, priceMin, priceMax }
     lines.push(`- Termos concluídos: **${snapshot.run.successful_terms.length}/${snapshot.run.scheduled_coverage.length}**`);
     lines.push(`- Termos com falha: **${snapshot.run.failed_terms.length}**`);
     lines.push(`- Termos não consultados: **${snapshot.run.unattempted_terms.length}**`);
+    lines.push(`- Consultas adiadas por frequência ou orçamento: **${snapshot.run.deferred_coverage?.length ?? 0}**`);
   }
   if (snapshot.run?.description_discovery) {
     const d = snapshot.run.description_discovery;

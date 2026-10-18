@@ -1,3 +1,5 @@
+import { setMonitorExit } from './monitor-outcome.mjs';
+import { reserveOlxAccess, readOlxTraffic } from './olx-traffic.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { collectOlx } from './watchlist-monitor.mjs';
@@ -67,6 +69,10 @@ async function collect({ root,dataDir }) {
       &&Date.now()-Date.parse(cached.checked_at)<OLED_DETAIL_TTL_MS;
     if(reusable){count[source].cache_hits++;item={...item,...cached.evidence};}
     else if(count[source].detail_reads<budgets[source].details) {
+      if(source==='OLX'){
+        try{await reserveOlxAccess({watchlist:'oled-monitores',query:item.term,kind:'detail'});}
+        catch(error){if(error.kind!=='deferred')throw error;item.detail_error=error.message;item.oled_validation={...assessOledMonitor(item),state:'pending',reasons:[error.message]};return checkpointItem(item);}
+      }
       count[source].detail_reads++; await save();
       try{
         const detail=await openDetail();
@@ -150,7 +156,7 @@ async function collect({ root,dataDir }) {
     }
   }
   if(!skipOlx) {
-    const plan=planOledQueries('OLX',coverage,{fullSweep,explicit}), visible=args.includes('--visible');
+    const plan=planOledQueries('OLX',coverage,{fullSweep,explicit,traffic:await readOlxTraffic()}), visible=args.includes('--visible');
     let remaining=Date.parse(blocks.OLX?.blocked_until??'')-Date.now();
     // The morning job can reach this collector a few minutes before a 24h
     // pause expires. Wait locally instead of losing the whole morning slot.
@@ -192,10 +198,18 @@ async function collect({ root,dataDir }) {
         if(result.blocked){const reason=[...result.failedTermErrors.values()].at(-1);blocks.OLX={blocked_until:new Date(Date.now()+24*3600_000).toISOString(),reason};}
         else if(!result.failedTerms.size)delete blocks.OLX;
         for(const query of result.failedTerms)failed.set(`OLX:${query}`,result.failedTermErrors.get(query));
+        for(const query of result.deferredTerms){
+          const id=`OLX:${query}`;deferred.push(id);
+          const index=scheduled.indexOf(id);if(index>=0)scheduled.splice(index,1);
+        }
       }catch(error){for(const spec of plan)failed.set(`OLX:${spec.id}`,error.message);}
     }
   }
-  if(!scheduled.length&&!deferred.length){console.log('OLED: consultas recentes; nenhuma coleta necessária.');return;}
+  if(!scheduled.length&&!deferred.length){
+    if(skipOlx&&skipEnjoei){console.log('OLED: todas as fontes desativadas nesta execução.');return;}
+    deferred.push(...configured.filter(id=>id.startsWith('OLX:')?!skipOlx:!skipEnjoei));
+    console.log('OLED: consultas adiadas pelos intervalos programados; nenhum acesso necessário.');
+  }
   const completed=nowIso(), current=[...collected.values()];
   for(const [id,m]of Object.entries(metrics)){
     const hits=current.filter(item=>item.search_terms?.includes(id));
@@ -209,7 +223,9 @@ async function collect({ root,dataDir }) {
     run:{label:'Monitores OLED',started_at:started,completed_at:completed,partial:unsuccessful.length>0||deferred.length>0,
       deferred_coverage:deferred,
       errors:[...unsuccessful.map(id=>`${id}: ${failed.get(id)??'Consulta não executada após interrupção'}`),
-        ...(deferred.length?[`OLX: consultas adiadas após bloqueio; retomada prevista em ${new Date(blocks.OLX.blocked_until).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'})} BRT.`]:[])],
+        ...(deferred.length?[blocks.OLX?.blocked_until&&Date.parse(blocks.OLX.blocked_until)>Date.now()
+          ?`OLX: consultas adiadas após bloqueio; retomada prevista em ${new Date(blocks.OLX.blocked_until).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'})} BRT.`
+          :'Consultas adiadas por frequência ou orçamento compartilhado.']:[])],
       oled_policy_version:OLED_POLICY_VERSION,discovery:{sources:count,budgets,query_yield:metrics}}});
   snapshot.items=snapshot.items.map(classifySavedOledItem);
   snapshot.pending_items=Object.values(state.pending).filter(item=>item.oled_validation?.state==='pending'&&oledPendingReason(item));
@@ -218,13 +234,13 @@ async function collect({ root,dataDir }) {
     last_success_at:snapshot.coverage_status[`${source}:${spec.id}`]?.last_success_at??null,
     state:snapshot.coverage_status[`${source}:${spec.id}`]?.state??'pending'})));
   const report=renderOledReport(snapshot,previous);
-  await commitMonitorRun(dataDir,{runId:completed.replace(/[:.]/g,'-'),snapshot,report,metadata:{source:'monitores-oled',collected_count:current.length}});
+  const committed = await commitMonitorRun(dataDir,{runId:completed.replace(/[:.]/g,'-'),snapshot,report,metadata:{source:'monitores-oled',collected_count:current.length}});
   await save();
   console.log(`OLED: ${current.filter(isApprovedOledMonitor).length} aprovado(s), ${snapshot.pending_items.length} pendente(s).`);
   if(snapshot.run.partial){
     console.error(`Coleta OLED parcial: ${unsuccessful.length} consulta(s) incompleta(s), ${deferred.length} adiada(s).`);
     for(const error of snapshot.run.errors.slice(0,3))console.error(error);
-    process.exitCode=1;
+    setMonitorExit(committed.snapshot.run);
   }
 }
 

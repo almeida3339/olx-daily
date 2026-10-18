@@ -1,3 +1,4 @@
+import { setMonitorExit } from './lib/monitor-outcome.mjs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildMonitorChanges, mergeMonitorSnapshot, normalizeMonitorText } from './lib/monitor-core.mjs';
@@ -128,7 +129,8 @@ async function main() {
     metadata: { source: 'enjoei-zegna', collected_count: result.items.length, failed_term_count: error ? 1 : 0 },
   });
   console.log(`Zegna 40: ${result.scanned} anúncios examinados; ${result.items.length} abaixo de R$ 250. Relatório: ${committed.legacyReportPath}`);
-  if (error) { console.error(error); process.exitCode = 1; }
+  if (error) console.error(error);
+  setMonitorExit(committed.snapshot.run);
 }
 
 main().catch(error => { console.error(error); process.exitCode = 1; });

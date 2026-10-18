@@ -108,6 +108,7 @@ export async function main({
 } = {}) {
   const prevFsApi = fsApi;
   const prevRunCommandFn = runCommandFn;
+  const priorTrafficRun = process.env.OLX_TRAFFIC_RUN_ID;
   fsApi = fsApiIn;
   runCommandFn = runCommandIn;
 
@@ -141,9 +142,11 @@ export async function main({
     const runNow = nowFn();
     const runStart = runNow.getTime();
     const logger = createMonitorLogger({ monitor: "orchestrator" });
+    process.env.OLX_TRAFFIC_RUN_ID = logger.runId;
   console.log(`Iniciando rodada: ${new Date().toISOString()}`);
   logger.start({ only_mercadolivre: onlyMercadoLivre, skip_monitors: skipMonitors });
   const errors = [];
+  const monitorOutcomes = [];
 
   if (skipMonitors) {
     console.log("--skip-monitors ativo: usando relatórios existentes.");
@@ -202,10 +205,18 @@ export async function main({
       const [name] = jobs[i];
       const result = results[i];
       if (result.status !== "rejected") {
+        const outcome = result.value ?? { status: 'success' };
+        monitorOutcomes.push({ source: name, ...outcome });
+        if (['partial','deferred'].includes(outcome.status)) {
+          logger.info(`monitor_${outcome.status}`, { source: name, ...outcome });
+          console.log(`${name}: ${outcome.status === 'partial' ? 'cobertura parcial por limite previsto' : 'consultas adiadas'}; resultados preservados.`);
+          continue;
+        }
         logger.info("monitor_succeeded", { source: name });
         continue;
       }
       const monitorError = sanitizeErrorMessage(result.reason?.message ?? result.reason);
+      monitorOutcomes.push({ source: name, status: result.reason?.operational?.status ?? 'failed', reasons: [monitorError] });
       if (name === "olx") { console.error(`OLX falhou: ${monitorError}`); errors.push(`OLX: ${monitorError}`); }
       if (name === "enjoei-tenis") { console.error(`Enjoei tênis falhou: ${monitorError}`); errors.push(`Enjoei tênis: ${monitorError}`); }
       if (name === "enjoei-notebooks") { console.error(`Enjoei NB falhou: ${monitorError}`); errors.push(`Enjoei NB: ${monitorError}`); }
@@ -475,7 +486,13 @@ export async function main({
   });
   status.monitoring = {
     scope: onlyMercadoLivre ? "mercadolivre" : "local-watchlists",
-    partial: errors.length > 0,
+    partial: errors.length > 0 || monitorOutcomes.some(item => item.status !== 'success'),
+    status: errors.length ? (monitorOutcomes.some(item=>item.status==='blocked')?'blocked':'failed')
+      : monitorOutcomes.some(item=>item.status==='partial')?'partial'
+        : monitorOutcomes.some(item=>item.status==='deferred')?'deferred':'success',
+    outcomes: monitorOutcomes,
+    warnings: monitorOutcomes.filter(item=>['partial','deferred'].includes(item.status))
+      .map(item=>({source:item.source,status:item.status,reasons:(item.reasons??[]).map(sanitizeErrorMessage)})),
     errors: errors.map(sanitizeErrorMessage),
   };
   status.notification_sent_ids = currentStatus.notification_sent_ids;
@@ -486,15 +503,19 @@ export async function main({
     await appendMonitorHistory(path.join(workspaceRoot, "data", "status"), {
       run_id: logger.runId,
       completed_at: new Date().toISOString(),
-      outcome: errors.length ? "failed" : "success",
-      partial: errors.length > 0,
+      outcome: errors.length ? (monitorOutcomes.some(item => item.status === 'blocked') ? 'blocked' : 'failed')
+        : monitorOutcomes.some(item => item.status === 'partial') ? 'partial'
+          : monitorOutcomes.some(item => item.status === 'deferred') ? 'deferred' : 'success',
+      partial: status.monitoring.partial,
       duration_ms: Date.now() - runStart,
       item_count: totalNew + totalPrice,
       quarantined_item_count: 0,
       metadata: { source: status.source, monitor_errors: errors.length, monitor_failures: errors, pending_notifications: notificationOutbox.length },
     });
   }
-  logger.done({ errors: errors.length, notification_outbox: notificationOutbox.length });
+  logger.done({ errors: errors.length, notification_outbox: notificationOutbox.length, operational_status: status.monitoring.status,
+    partial_monitors: monitorOutcomes.filter(item=>item.status==='partial').length,
+    deferred_monitors: monitorOutcomes.filter(item=>item.status==='deferred').length });
 
   // Propagação de erro se algum monitor falhou
   if (errors.length > 0) {
@@ -504,6 +525,8 @@ export async function main({
 } finally {
   fsApi = prevFsApi;
   runCommandFn = prevRunCommandFn;
+  if (priorTrafficRun === undefined) delete process.env.OLX_TRAFFIC_RUN_ID;
+  else process.env.OLX_TRAFFIC_RUN_ID = priorTrafficRun;
 }
 }
 
@@ -550,8 +573,8 @@ async function runJobsWithBrowserLimit(jobs, limit) {
   const results = new Array(jobs.length);
   const settle = async (index, factory) => {
     try {
-      await factory();
-      results[index] = { status: "fulfilled" };
+      const value = await factory();
+      results[index] = { status: "fulfilled", value };
     } catch (reason) {
       results[index] = { status: "rejected", reason };
     }

@@ -1,3 +1,5 @@
+import { setMonitorExit } from './monitor-outcome.mjs';
+import { reserveOlxAccess, recordOlxYield, OlxDeferredError } from './olx-traffic.mjs';
 // Monitor genérico de "watchlist": busca termos específicos em OLX (Playwright)
 // e Enjoei (API GraphQL) dentro de uma faixa de preço, faz merge com o snapshot
 // anterior e gera relatório. Usado por monitores finos (dockstations, fitbit…)
@@ -127,6 +129,7 @@ export async function runWatchlistMonitor(config) {
   // NÃO rebaixar a not_seen os itens correspondentes do snapshot anterior.
   const failedSourceTerms = new Set();
   const unattemptedSourceTerms = new Set();
+  const deferredSourceTerms = new Set();
   const sourceBlocks = { ...(previousSnapshot?.source_blocks ?? {}) };
 
   if (!skipEnjoei) {
@@ -150,12 +153,13 @@ export async function runWatchlistMonitor(config) {
         sourceBlocks.OLX.recovery_kind = /não há verificação interativa/i.test(previousBlock[1].error ?? '') ? 'hard_denial' : 'verification';
       }
       if (!visible && Date.parse(sourceBlocks.OLX?.blocked_until ?? '') > Date.now()) {
-        throw new Error(`Cloudflare: OLX em pausa até ${sourceBlocks.OLX.blocked_until}; ${sourceBlocks.OLX.recovery_kind === 'hard_denial' ? 'acesso recusado pelo site, sem verificação interativa disponível' : 'abra o perfil com --visible para recuperação manual'}.`);
+        throw new OlxDeferredError(`OLX em pausa até ${sourceBlocks.OLX.blocked_until}; consultas adiadas.`);
       }
       const categoryUrls = (config.olxCategoryUrls && config.olxCategoryUrls.length)
         ? config.olxCategoryUrls
         : [OLX_BASE_URL];
-      const { items, failedTerms, failedTermErrors, attemptedTerms, blocked } = await collectOlx({ terms, categoryUrls, userDataDir, headless, visible, inRange, sizeOk, notExcluded, itemFilter, olxDeliveryOnly: config.olxDeliveryOnly ?? false });
+      const { items, failedTerms, failedTermErrors, attemptedTerms, blocked, deferredTerms } = await collectOlx({ terms, categoryUrls, userDataDir, headless, visible, inRange, sizeOk, notExcluded, itemFilter, olxDeliveryOnly: config.olxDeliveryOnly ?? false });
+      for(const term of deferredTerms)deferredSourceTerms.add(`OLX:${term}`);
       for (const term of terms) if (!attemptedTerms.has(term)) unattemptedSourceTerms.add(`OLX:${term}`);
       if (blocked) {
         const reason = [...failedTermErrors.values()].find(message => classifyMonitorError(message).kind === 'challenge') ?? 'OLX exige atenção';
@@ -170,8 +174,8 @@ export async function runWatchlistMonitor(config) {
       }
     } catch (error) {
       console.warn(`Aviso: coleta OLX falhou — ${error.message}`);
-      errors.push(`OLX: ${error.message}`);
-      for (const t of terms) failedSourceTerms.add(`OLX:${t}`); // coleta inteira falhou
+      if(error.kind==='deferred'){for(const term of terms)deferredSourceTerms.add(`OLX:${term}`);}
+      else{errors.push(`OLX: ${error.message}`);for (const t of terms) failedSourceTerms.add(`OLX:${t}`);}
     }
   }
 
@@ -192,7 +196,7 @@ export async function runWatchlistMonitor(config) {
   );
   const scheduledCoverage = scheduledSources.flatMap((source) =>
     terms.map((term) => `${source}:${term}`)
-  );
+  ).filter(key=>!deferredSourceTerms.has(key));
   const successfulCoverage = scheduledCoverage.filter((key) => !failedSourceTerms.has(key) && !unattemptedSourceTerms.has(key));
   const snapshot = mergeMonitorSnapshot({
     collected: deduped,
@@ -209,8 +213,9 @@ export async function runWatchlistMonitor(config) {
       // local): comparar contra configuredCoverage (que inclui as duas fontes
       // sempre) marcava toda rodada só-Enjoei do CI como parcial mesmo sem
       // nada de errado, degradando a saúde reportada com falso positivo.
-      partial: errors.length > 0 || successfulCoverage.length < scheduledCoverage.length,
+      partial: errors.length > 0 || deferredSourceTerms.size>0 || successfulCoverage.length < scheduledCoverage.length,
       errors,
+      deferred_coverage: [...deferredSourceTerms],
       unattempted_coverage: [...unattemptedSourceTerms],
     },
     filters: {
@@ -239,7 +244,7 @@ export async function runWatchlistMonitor(config) {
   console.log(`\nColetados: ${deduped.length} | Snapshot: ${snapshotPath}`);
   console.log(`Relatório: ${reportPath}`);
   if (committed.invalidItems.length) console.warn(`${committed.invalidItems.length} item(ns) foram para a quarentena.`);
-  if (errors.length) process.exitCode = 1;
+  setMonitorExit(committed.snapshot.run);
 }
 
 // ── Enjoei (API GraphQL) ───────────────────────────────────────────────────────
@@ -357,13 +362,16 @@ export async function collectOlx({ terms, categoryUrls, userDataDir, headless, v
   const failedTerms = new Set();
   const failedTermErrors = new Map();
   const attemptedTerms = new Set();
+  const deferredTerms = new Set();
+  const trafficWatchlist=path.basename(userDataDir).replace(/^\.chrome-/,'').replace(/-profile$/,'');
+  const forceTraffic=process.argv.includes('--full-sweep')||process.argv.includes('--terms')||process.argv.includes('--models');
   let blocked = false;
   try {
     categories: for (const categoryUrl of categoryUrls) {
       for (const term of terms) {
         const url = `${categoryUrl}?q=${encodeURIComponent(term)}${olxDeliveryOnly ? "&opst=2" : ""}`;
         console.log(`OLX termo: ${term} -> ${url}`);
-        attemptedTerms.add(term);
+        const trafficQuery=categoryUrls.length>1?`${term}@${new URL(categoryUrl).pathname}`:term;
         try {
           let listingState;
           await retryTransient(async (attempt) => {
@@ -373,6 +381,8 @@ export async function collectOlx({ terms, categoryUrls, userDataDir, headless, v
               page.setDefaultTimeout(30_000);
               page.setDefaultNavigationTimeout(60_000);
             }
+            await reserveOlxAccess({watchlist:trafficWatchlist,query:trafficQuery,kind:'search',force:forceTraffic,retry:attempt>1});
+            attemptedTerms.add(term);
             await onSearchAttempt(term);
             await page.goto(url, { waitUntil: "domcontentloaded", timeout: NAVIGATION_TIMEOUT_MS });
             await waitOutCloudflare(page, headless, visible);
@@ -386,6 +396,7 @@ export async function collectOlx({ terms, categoryUrls, userDataDir, headless, v
           if (listingState === "empty") {
             console.log("  Nenhum card.");
             await onTerm(term, { raw:0, outside_price:0, rejected:0, accepted:0, limited:false });
+            await recordOlxYield(trafficWatchlist,trafficQuery,{complete:true,items:[]});
             continue;
           }
           const cards = await collectCardsFromInfiniteScroll(page, maxCards);
@@ -413,7 +424,10 @@ export async function collectOlx({ terms, categoryUrls, userDataDir, headless, v
           }
           if (metrics.limited) { failedTerms.add(term); failedTermErrors.set(term, 'Limite de cards atingido; cobertura incompleta'); }
           await onTerm(term, metrics);
+          await recordOlxYield(trafficWatchlist,trafficQuery,{complete:!metrics.limited,
+            items:out.filter(item=>item.term===term&&(!item.oled_validation||item.oled_validation.state==='approved'))});
         } catch (error) {
+          if(error.kind==='deferred'){deferredTerms.add(term);console.log(error.message);continue;}
           console.warn(`  Aviso: termo "${term}" em ${categoryUrl} falhou — ${error.message}`);
           failedTerms.add(term);
           failedTermErrors.set(term, error?.message ?? String(error));
@@ -428,7 +442,7 @@ export async function collectOlx({ terms, categoryUrls, userDataDir, headless, v
   } finally {
     await context.close().catch(() => {});
   }
-  return { items: out, failedTerms, failedTermErrors, attemptedTerms, blocked };
+  return { items: out, failedTerms, failedTermErrors, attemptedTerms, blocked, deferredTerms };
 }
 
 async function waitOutCloudflare(page, headless, visible = false) {

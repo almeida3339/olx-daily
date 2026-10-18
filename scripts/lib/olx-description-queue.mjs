@@ -3,6 +3,7 @@ import { extractOlxId, textContainsCpuTerm } from './parsers.mjs';
 import { DEFAULT_CPU_TERMS } from './cpu-terms.mjs';
 import { readJsonValidated, writeJsonAtomic } from './monitor-runtime.mjs';
 import { isOlxRecommendationUrl } from './olx-listing.mjs';
+import { reserveOlxAccess } from './olx-traffic.mjs';
 
 export const cardKey = card => extractOlxId(card.url) ?? card.url.split('?')[0];
 export function cardCpuState(text, term) {
@@ -56,6 +57,8 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
     async reserveDetail(term, discovery) {
       if ((state.metrics.total_details ?? 0) >= totalLimit) return false;
       if (discovery && ((state.metrics.by_term[term] ?? 0) >= perTerm || state.metrics.extra_details >= perRound)) return false;
+      try{await reserveOlxAccess({watchlist:'notebooks',query:term,kind:'detail'});}
+      catch(error){if(error.kind!=='deferred')throw error;state.metrics.traffic_deferred=(state.metrics.traffic_deferred??0)+1;state.metrics.traffic_reason=error.message;await save();return false;}
       state.metrics.total_details = (state.metrics.total_details ?? 0) + 1;
       if (discovery) { state.metrics.extra_details++; state.metrics.by_term[term] = (state.metrics.by_term[term] ?? 0) + 1; }
       await save(); return true;

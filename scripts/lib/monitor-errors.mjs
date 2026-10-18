@@ -18,7 +18,7 @@ export function classifyMonitorError(error) {
   if (state === "challenge" || /cloudflare|anti-bot|captcha|verifica[cç][aã]o|n[aã]o sou um rob[oó]/i.test(message)) {
     return { kind: "challenge", retriable: false, message };
   }
-  if (state === "logged_out" || /sess[aã]o expirada|fa[cç]a login|logged.?out/i.test(message)) {
+  if (state === "logged_out" || /sess[aã]o expirada|fa[cç]a login|exige login|logged.?out/i.test(message)) {
     return { kind: "authentication", retriable: false, message };
   }
   if (state === "limited" || /http 429|limitou|rate.?limit|muitas solicita[cç][oõ]es/i.test(message)) {
