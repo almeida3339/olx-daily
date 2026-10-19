@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-18T19:00:08.274Z",
+  "generated_at": "2026-10-19T10:00:07.356Z",
   "source": "local",
   "delivery": {
     "email": "skipped",
@@ -39,7 +39,7 @@
   "monitoring": {
     "scope": "local-watchlists",
     "partial": true,
-    "status": "partial",
+    "status": "blocked",
     "outcomes": [
       {
         "source": "olx",
@@ -48,56 +48,52 @@
         "reasons": [
           "Listagem incompleta: limite de 12 cards ou próxima página pendente"
         ],
-        "completed_terms": 7,
-        "incomplete_terms": 2,
+        "completed_terms": 8,
+        "incomplete_terms": 1,
         "deferred_terms": 0
       },
       {
         "source": "lifefactory",
-        "status": "partial",
-        "exit_code": 2,
+        "status": "success",
+        "exit_code": 0,
         "reasons": [],
-        "completed_terms": 1,
+        "completed_terms": 2,
         "incomplete_terms": 0,
-        "deferred_terms": 1
+        "deferred_terms": 0
       },
       {
         "source": "tela-book3",
-        "status": "partial",
-        "exit_code": 2,
+        "status": "success",
+        "exit_code": 0,
         "reasons": [],
-        "completed_terms": 1,
+        "completed_terms": 2,
         "incomplete_terms": 0,
-        "deferred_terms": 1
+        "deferred_terms": 0
       },
       {
         "source": "melanger",
-        "status": "partial",
-        "exit_code": 2,
+        "status": "success",
+        "exit_code": 0,
         "reasons": [],
-        "completed_terms": 1,
+        "completed_terms": 2,
         "incomplete_terms": 0,
-        "deferred_terms": 1
+        "deferred_terms": 0
       },
       {
         "source": "oneplus-buds",
-        "status": "partial",
-        "exit_code": 2,
+        "status": "success",
+        "exit_code": 0,
         "reasons": [],
-        "completed_terms": 5,
+        "completed_terms": 6,
         "incomplete_terms": 0,
-        "deferred_terms": 1
+        "deferred_terms": 0
       },
       {
         "source": "oled-monitores",
-        "status": "partial",
-        "exit_code": 2,
+        "status": "blocked",
         "reasons": [
-          "OLX: consultas adiadas após bloqueio; retomada prevista em 19/10/2026, 07:03:52 BRT."
-        ],
-        "completed_terms": 1,
-        "incomplete_terms": 0,
-        "deferred_terms": 9
+          "Saiu com código 4: Aviso: termo \"aw2725d\" em https://www.olx.com.br/brasil/informatica/monitores falhou — Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4cef4979b4c1fb4).\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.\nColeta OLED parcial: 9 consulta(s) incompleta(s), 0 adiada(s).\nOLX:aw2725d: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4cef4979b4c1fb4).\nOLX:aw2725df: Consulta não executada após interrupção\nOLX:odyssey oled g6: Consulta não executada após interrupção"
+        ]
       }
     ],
     "warnings": [
@@ -107,36 +103,11 @@
         "reasons": [
           "Listagem incompleta: limite de 12 cards ou próxima página pendente"
         ]
-      },
-      {
-        "source": "lifefactory",
-        "status": "partial",
-        "reasons": []
-      },
-      {
-        "source": "tela-book3",
-        "status": "partial",
-        "reasons": []
-      },
-      {
-        "source": "melanger",
-        "status": "partial",
-        "reasons": []
-      },
-      {
-        "source": "oneplus-buds",
-        "status": "partial",
-        "reasons": []
-      },
-      {
-        "source": "oled-monitores",
-        "status": "partial",
-        "reasons": [
-          "OLX: consultas adiadas após bloqueio; retomada prevista em 19/10/2026, 07:03:52 BRT."
-        ]
       }
     ],
-    "errors": []
+    "errors": [
+      "Monitores OLED: Saiu com código 4: Aviso: termo \"aw2725d\" em https://www.olx.com.br/brasil/informatica/monitores falhou — Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4cef4979b4c1fb4).\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.\nColeta OLED parcial: 9 consulta(s) incompleta(s), 0 adiada(s).\nOLX:aw2725d: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4cef4979b4c1fb4).\nOLX:aw2725df: Consulta não executada após interrupção\nOLX:odyssey oled g6: Consulta não executada após interrupção"
+    ]
   },
   "notification_sent_ids": [
     "ba389d82-208c-40a7-ada6-a22a454a4618",
@@ -169,7 +140,9 @@
     "a2a6971d-d449-49fa-ab3f-c2e239f96a04",
     "1366039d-602c-487c-9d9e-704eb3a5a8f9",
     "d5a4b0f4-f934-4745-882a-6e73571bf594",
-    "16dd8888-d2a1-4e39-8e3a-9d4f4a2ad759"
+    "16dd8888-d2a1-4e39-8e3a-9d4f4a2ad759",
+    "ba75c083-8527-49ee-bd63-e9ac6e207ba4",
+    "de3c8c88-1c27-49da-aa47-87a17e76e31b"
   ],
   "notification_archive": [
     {
