@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-19T00:52:50.020Z",
+  "generated_at": "2026-10-19T11:01:01.329Z",
   "source": "ci",
   "delivery": {
     "email": "skipped",
@@ -48,14 +48,14 @@
         "reasons": [],
         "completed_terms": 12,
         "incomplete_terms": 0,
-        "deferred_terms": 10
+        "deferred_terms": 2
       },
       {
         "source": "enjoei-notebooks",
         "status": "success",
         "exit_code": 0,
         "reasons": [],
-        "completed_terms": 20,
+        "completed_terms": 4,
         "incomplete_terms": 0,
         "deferred_terms": 0
       },
@@ -142,12 +142,14 @@
       },
       {
         "source": "oled-monitores",
-        "status": "success",
-        "exit_code": 0,
-        "reasons": [],
-        "completed_terms": 1,
+        "status": "deferred",
+        "exit_code": 3,
+        "reasons": [
+          "OLX: consultas adiadas após bloqueio; retomada prevista em 20/10/2026, 07:03:53 BRT."
+        ],
+        "completed_terms": 0,
         "incomplete_terms": 0,
-        "deferred_terms": 0
+        "deferred_terms": 21
       }
     ],
     "warnings": [
@@ -155,6 +157,13 @@
         "source": "enjoei-tenis",
         "status": "partial",
         "reasons": []
+      },
+      {
+        "source": "oled-monitores",
+        "status": "deferred",
+        "reasons": [
+          "OLX: consultas adiadas após bloqueio; retomada prevista em 20/10/2026, 07:03:53 BRT."
+        ]
       }
     ],
     "errors": []
@@ -191,7 +200,9 @@
     "1366039d-602c-487c-9d9e-704eb3a5a8f9",
     "d5a4b0f4-f934-4745-882a-6e73571bf594",
     "16dd8888-d2a1-4e39-8e3a-9d4f4a2ad759",
-    "ba75c083-8527-49ee-bd63-e9ac6e207ba4"
+    "ba75c083-8527-49ee-bd63-e9ac6e207ba4",
+    "de3c8c88-1c27-49da-aa47-87a17e76e31b",
+    "cb12b5f4-6731-420c-a1d1-da433e650694"
   ],
   "notification_archive": [
     {
