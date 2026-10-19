@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-17T19:01:09.308Z",
+  "generated_at": "2026-10-19T00:52:50.020Z",
   "source": "ci",
   "delivery": {
     "email": "skipped",
@@ -38,7 +38,125 @@
   "whatsapp": "sent",
   "monitoring": {
     "scope": "local-watchlists",
-    "partial": false,
+    "partial": true,
+    "status": "partial",
+    "outcomes": [
+      {
+        "source": "enjoei-tenis",
+        "status": "partial",
+        "exit_code": 2,
+        "reasons": [],
+        "completed_terms": 12,
+        "incomplete_terms": 0,
+        "deferred_terms": 10
+      },
+      {
+        "source": "enjoei-notebooks",
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 20,
+        "incomplete_terms": 0,
+        "deferred_terms": 0
+      },
+      {
+        "source": "enjoei-zegna",
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 1,
+        "incomplete_terms": 0,
+        "deferred_terms": 0
+      },
+      {
+        "source": "enjoei-ricardo-almeida",
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 1,
+        "incomplete_terms": 0,
+        "deferred_terms": 0
+      },
+      {
+        "source": "enjoei-jacob-cohen",
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 1,
+        "incomplete_terms": 0,
+        "deferred_terms": 0
+      },
+      {
+        "source": "enjoei-brunello-cucinelli",
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 1,
+        "incomplete_terms": 0,
+        "deferred_terms": 0
+      },
+      {
+        "source": "enjoei-japanese-jeans",
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 2,
+        "incomplete_terms": 0,
+        "deferred_terms": 0
+      },
+      {
+        "source": "lifefactory",
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 1,
+        "incomplete_terms": 0,
+        "deferred_terms": 0
+      },
+      {
+        "source": "tela-book3",
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 1,
+        "incomplete_terms": 0,
+        "deferred_terms": 0
+      },
+      {
+        "source": "melanger",
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 1,
+        "incomplete_terms": 0,
+        "deferred_terms": 0
+      },
+      {
+        "source": "oneplus-buds",
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 3,
+        "incomplete_terms": 0,
+        "deferred_terms": 0
+      },
+      {
+        "source": "oled-monitores",
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 1,
+        "incomplete_terms": 0,
+        "deferred_terms": 0
+      }
+    ],
+    "warnings": [
+      {
+        "source": "enjoei-tenis",
+        "status": "partial",
+        "reasons": []
+      }
+    ],
     "errors": []
   },
   "notification_sent_ids": [
@@ -68,8 +186,12 @@
     "f91342c0-0401-4f5b-b3e7-7073c55ea1f4",
     "0a0aee5c-21ee-4836-bdae-039048f61b14",
     "8dd66a33-52b6-4138-b5c4-d7f71d8ad3f7",
+    "8d15faea-7237-4a3a-a4f3-35e83a4e6c23",
     "a2a6971d-d449-49fa-ab3f-c2e239f96a04",
-    "1366039d-602c-487c-9d9e-704eb3a5a8f9"
+    "1366039d-602c-487c-9d9e-704eb3a5a8f9",
+    "d5a4b0f4-f934-4745-882a-6e73571bf594",
+    "16dd8888-d2a1-4e39-8e3a-9d4f4a2ad759",
+    "ba75c083-8527-49ee-bd63-e9ac6e207ba4"
   ],
   "notification_archive": [
     {
