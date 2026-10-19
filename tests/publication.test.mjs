@@ -111,8 +111,9 @@ test("orquestrador inclui Google Pixel Watch 5 nos achados notificáveis", async
 
 test("publicacao local nao aborta imediatamente em caso de erro do monitor", async () => {
   const script = await fs.readFile(path.join(root, "scripts", "run-local-olx-and-publish.ps1"), "utf8");
-  // Verifica se a variável $monitorFailed está definida
-  assert.match(script, /\$monitorFailed\s*=\s*\$monitorExit\s*-ne\s*0/);
+  // Sucesso, cobertura parcial e adiamento permitem publicar. Outros códigos
+  // continuam sinalizando falha depois da publicação dos dados preservados.
+  assert.match(script, /\$monitorFailed\s*=\s*\$monitorExit\s*-notin\s*@\(\s*0\s*,\s*2\s*,\s*3\s*\)/);
 
   // Verifica a ordem das chamadas: git add < git push < throw final do monitor
   assert.match(script, /\$stagePaths\s*=\s*@\(/);
