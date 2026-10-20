@@ -2,29 +2,28 @@
   "schema_version": 1,
   "quality_version": 2,
   "configuration": "9955hx3d,290hx,9955hx,285hx,275hx,aimax395,7945hx,7945hx3d,255hx,13980hx,8940hx,7940hx,13950hx,14900hx,13900hx,7845hx,8840hx,aimax390,14700hx,hx470,family:helios-neo-16,family:rog-strix-g16,family:legion-pro-5,family:dell-g16,family:avell-a65,family:avell-storm",
-  "started_at": "2026-10-19T19:00:27.329Z",
-  "updated_at": "2026-10-19T19:02:12.078Z",
+  "started_at": "2026-10-20T10:00:31.851Z",
+  "updated_at": "2026-10-20T10:02:53.337Z",
   "state": "partial",
   "scheduled_terms": [
     "14700hx",
     "13980hx",
     "14900hx",
     "13900hx",
-    "290hx",
-    "9955hx",
-    "275hx",
-    "aimax395",
-    "family:dell-g16"
+    "9955hx3d",
+    "285hx",
+    "7945hx",
+    "7945hx3d",
+    "family:avell-a65"
   ],
   "successful_terms": [
     "14700hx",
     "13980hx",
     "13900hx",
-    "290hx",
-    "9955hx",
-    "275hx",
-    "aimax395",
-    "family:dell-g16"
+    "9955hx3d",
+    "285hx",
+    "7945hx",
+    "7945hx3d"
   ],
   "collected": [
     {
@@ -50,7 +49,7 @@
       "validation": {
         "version": 2,
         "state": "validated",
-        "checked_at": "2026-10-19T10:00:29.031Z",
+        "checked_at": "2026-10-20T10:00:35.048Z",
         "reasons": [],
         "listing_price_brl": 8399,
         "detail_price_brl": 8399,
@@ -96,7 +95,7 @@
       "validation": {
         "version": 2,
         "state": "pending",
-        "checked_at": "2026-10-19T10:00:30.536Z",
+        "checked_at": "2026-10-20T10:00:36.183Z",
         "reasons": [
           "Especificação não confirmada: RAM"
         ],
@@ -144,7 +143,7 @@
       "validation": {
         "version": 2,
         "state": "rejected",
-        "checked_at": "2026-10-19T10:00:41.965Z",
+        "checked_at": "2026-10-20T10:00:57.111Z",
         "reasons": [
           "RAM abaixo do mínimo exigido",
           "Especificação divergente: SSD/armazenamento",
@@ -194,7 +193,7 @@
       "validation": {
         "version": 2,
         "state": "rejected",
-        "checked_at": "2026-10-19T10:00:44.471Z",
+        "checked_at": "2026-10-20T10:00:59.221Z",
         "reasons": [
           "RAM abaixo do mínimo exigido",
           "Especificação divergente: RAM",
@@ -234,7 +233,7 @@
       "ram_gb": 16,
       "storage_gb": 512,
       "gpu": "RTX 5060",
-      "location": "Vila Regente Feijó, São Paulo - SP",
+      "location": null,
       "condition": "novo",
       "status": "active",
       "first_seen": null,
@@ -244,7 +243,7 @@
       "validation": {
         "version": 2,
         "state": "rejected",
-        "checked_at": "2026-10-19T10:01:00.980Z",
+        "checked_at": "2026-10-20T10:01:09.198Z",
         "reasons": [
           "RAM abaixo do mínimo exigido",
           "RAM abaixo do mínimo de 32 GB"
@@ -293,7 +292,7 @@
       "validation": {
         "version": 2,
         "state": "pending",
-        "checked_at": "2026-10-19T10:01:02.135Z",
+        "checked_at": "2026-10-20T10:01:10.730Z",
         "reasons": [
           "Especificação não confirmada: RAM"
         ],
@@ -341,7 +340,7 @@
       "validation": {
         "version": 2,
         "state": "validated",
-        "checked_at": "2026-10-19T10:01:18.340Z",
+        "checked_at": "2026-10-20T10:01:32.766Z",
         "reasons": [],
         "listing_price_brl": 8000,
         "detail_price_brl": 8000,
@@ -373,11 +372,11 @@
         "13900hx"
       ],
       "description_discovery": false,
-      "price_brl": 10000,
+      "price_brl": 9000,
       "ram_gb": 32,
       "storage_gb": 1024,
       "gpu": "RTX 4070",
-      "location": "Franco da Rocha, Vila Lanfranchi",
+      "location": "São Paulo, Bela Vista",
       "condition": null,
       "status": "active",
       "first_seen": null,
@@ -391,14 +390,147 @@
           "Descrição e preço integral ainda não conferidos"
         ]
       }
+    },
+    {
+      "id": "1537565082",
+      "url": "https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/notebooks/notebook-gamer-avell-a65-ion-i9-12gen-32ram-rtx4060-512gb-1537565082",
+      "title": "Notebook Gamer Avell A65 ION - i9 12gen 32RAM RTX4060 512gb",
+      "cpu_term": "family:avell-a65",
+      "search_terms": [
+        "family:avell-a65"
+      ],
+      "description_discovery": true,
+      "price_brl": 7199,
+      "ram_gb": null,
+      "storage_gb": null,
+      "gpu": "RTX 4060",
+      "location": null,
+      "condition": "Usado - Excelente",
+      "status": "active",
+      "first_seen": null,
+      "last_seen": null,
+      "notes": null,
+      "desc_checked": true,
+      "validation": {
+        "version": 2,
+        "state": "rejected",
+        "checked_at": "2026-10-20T10:02:52.409Z",
+        "reasons": [
+          "CPU fora da busca",
+          "Especificação não confirmada: RAM",
+          "CPU não confirmada no anúncio"
+        ],
+        "listing_price_brl": 7199,
+        "detail_price_brl": 7199,
+        "visible_price_brl": null,
+        "structured_price_brl": 7199,
+        "title_specs": {
+          "ram_gb": null,
+          "storage_gb": null,
+          "gpu": "RTX 4060"
+        },
+        "description_specs": {
+          "ram_gb": null,
+          "storage_gb": null,
+          "gpu": "RTX 4060"
+        },
+        "cpu_confirmed": false,
+        "description_checked": true
+      },
+      "description_evidence": "Notebook Avell A65 IONIntel Core i9 12900HX 2.3GHz32gb memória RAMNVidia GeForce RTX 4060 8gbSSD 512gbTela 15.6 FHDTeclado retroiluminadoCarregador originalCom caixa!",
+      "detail_title": "Notebook Gamer Avell A65 ION - i9 12gen 32RAM RTX4060 512gb",
+      "configuration_warnings": [
+        "Armazenamento não informado"
+      ]
+    },
+    {
+      "id": "1531177640",
+      "url": "https://rs.olx.com.br/regioes-de-porto-alegre-torres-e-santa-cruz-do-sul/informatica/notebooks/notebook-gamer-avell-a65-ion-1531177640",
+      "title": "Notebook Gamer - Avell A65 ion",
+      "cpu_term": "family:avell-a65",
+      "search_terms": [
+        "family:avell-a65"
+      ],
+      "description_discovery": true,
+      "price_brl": 7400,
+      "ram_gb": null,
+      "storage_gb": null,
+      "gpu": null,
+      "location": "Porto Alegre, Passo da Areia",
+      "condition": null,
+      "status": "active",
+      "first_seen": null,
+      "last_seen": null,
+      "notes": null,
+      "desc_checked": false,
+      "validation": {
+        "version": 2,
+        "state": "pending",
+        "checked_at": "2026-10-20T10:02:52.414Z",
+        "reasons": [
+          "Ficha aguardando leitura dentro dos limites da rodada"
+        ]
+      }
+    },
+    {
+      "id": "1545040273",
+      "url": "https://mg.olx.com.br/regiao-de-pocos-de-caldas-e-varginha/informatica/notebooks/notebook-gamer-avell-a65-ion-i9-32gb-rtx-4060-1545040273",
+      "title": "Notebook Gamer Avell A65 Ion I9 32gb Rtx 4060",
+      "cpu_term": "family:avell-a65",
+      "search_terms": [
+        "family:avell-a65"
+      ],
+      "description_discovery": true,
+      "price_brl": 8000,
+      "ram_gb": null,
+      "storage_gb": null,
+      "gpu": "RTX 4060",
+      "location": null,
+      "condition": "Usado - Excelente",
+      "status": "active",
+      "first_seen": null,
+      "last_seen": null,
+      "notes": null,
+      "desc_checked": true,
+      "validation": {
+        "version": 2,
+        "state": "pending",
+        "checked_at": "2026-10-20T10:02:50.801Z",
+        "reasons": [
+          "Especificação não confirmada: RAM",
+          "CPU não confirmada no anúncio"
+        ],
+        "listing_price_brl": 8000,
+        "detail_price_brl": 8000,
+        "visible_price_brl": null,
+        "structured_price_brl": 8000,
+        "title_specs": {
+          "ram_gb": null,
+          "storage_gb": null,
+          "gpu": "RTX 4060"
+        },
+        "description_specs": {
+          "ram_gb": null,
+          "storage_gb": null,
+          "gpu": null
+        },
+        "cpu_confirmed": false,
+        "description_checked": true
+      },
+      "description_evidence": "Notebook Avell com menos de 1 ano de usoMotivo da troca: Migrei para MAC",
+      "detail_title": "Notebook Gamer Avell A65 Ion I9 32gb Rtx 4060 ",
+      "configuration_warnings": [
+        "Armazenamento não informado"
+      ]
     }
   ],
   "pending_terms": [
-    "14900hx"
+    "14900hx",
+    "family:avell-a65"
   ],
   "baseline_snapshot": {
     "schema_version": 2,
-    "generated_at": "2026-10-19T10:02:43.028Z",
+    "generated_at": "2026-10-19T19:02:11.151Z",
     "coverage_status": {
       "9955hx3d": {
         "checked_at": "2026-10-18T10:02:27.181Z",
@@ -407,14 +539,14 @@
         "error": null
       },
       "290hx": {
-        "checked_at": "2026-10-17T23:57:20.079Z",
-        "last_success_at": "2026-10-17T23:57:20.079Z",
+        "checked_at": "2026-10-19T19:02:11.151Z",
+        "last_success_at": "2026-10-19T19:02:11.151Z",
         "state": "success",
         "error": null
       },
       "9955hx": {
-        "checked_at": "2026-10-17T23:57:20.079Z",
-        "last_success_at": "2026-10-17T23:57:20.079Z",
+        "checked_at": "2026-10-19T19:02:11.151Z",
+        "last_success_at": "2026-10-19T19:02:11.151Z",
         "state": "success",
         "error": null
       },
@@ -425,14 +557,14 @@
         "error": null
       },
       "275hx": {
-        "checked_at": "2026-10-17T23:57:20.079Z",
-        "last_success_at": "2026-10-17T23:57:20.079Z",
+        "checked_at": "2026-10-19T19:02:11.151Z",
+        "last_success_at": "2026-10-19T19:02:11.151Z",
         "state": "success",
         "error": null
       },
       "aimax395": {
-        "checked_at": "2026-10-17T23:57:20.079Z",
-        "last_success_at": "2026-10-17T23:57:20.079Z",
+        "checked_at": "2026-10-19T19:02:11.151Z",
+        "last_success_at": "2026-10-19T19:02:11.151Z",
         "state": "success",
         "error": null
       },
@@ -455,8 +587,8 @@
         "error": null
       },
       "13980hx": {
-        "checked_at": "2026-10-19T10:02:43.028Z",
-        "last_success_at": "2026-10-19T10:02:43.028Z",
+        "checked_at": "2026-10-19T19:02:11.151Z",
+        "last_success_at": "2026-10-19T19:02:11.151Z",
         "state": "success",
         "error": null
       },
@@ -479,14 +611,14 @@
         "error": null
       },
       "14900hx": {
-        "checked_at": "2026-10-19T10:02:43.028Z",
+        "checked_at": "2026-10-19T19:02:11.151Z",
         "last_success_at": "2026-10-15T10:01:44.104Z",
         "state": "failed",
         "error": "Listagem incompleta: limite de 12 cards ou próxima página pendente"
       },
       "13900hx": {
-        "checked_at": "2026-10-19T10:02:43.028Z",
-        "last_success_at": "2026-10-19T10:02:43.028Z",
+        "checked_at": "2026-10-19T19:02:11.151Z",
+        "last_success_at": "2026-10-19T19:02:11.151Z",
         "state": "success",
         "error": null
       },
@@ -509,8 +641,8 @@
         "error": null
       },
       "14700hx": {
-        "checked_at": "2026-10-19T10:02:43.028Z",
-        "last_success_at": "2026-10-19T10:02:43.028Z",
+        "checked_at": "2026-10-19T19:02:11.151Z",
+        "last_success_at": "2026-10-19T19:02:11.151Z",
         "state": "success",
         "error": null
       },
@@ -539,8 +671,8 @@
         "error": null
       },
       "family:dell-g16": {
-        "checked_at": "2026-10-17T10:03:04.352Z",
-        "last_success_at": "2026-10-17T10:03:04.352Z",
+        "checked_at": "2026-10-19T19:02:11.151Z",
+        "last_success_at": "2026-10-19T19:02:11.151Z",
         "state": "success",
         "error": null
       },
@@ -560,8 +692,8 @@
     "run": {
       "date": "2026-10-19",
       "timezone": "America/Sao_Paulo",
-      "started_at": "2026-10-19T10:00:26.593Z",
-      "completed_at": "2026-10-19T10:02:43.028Z",
+      "started_at": "2026-10-19T19:00:27.329Z",
+      "completed_at": "2026-10-19T19:02:11.151Z",
       "in_progress": false,
       "phase": "partial",
       "partial": true,
@@ -569,11 +701,11 @@
         "14700hx",
         "13980hx",
         "13900hx",
-        "7845hx",
-        "8840hx",
-        "aimax390",
-        "hx470",
-        "family:legion-pro-5"
+        "290hx",
+        "9955hx",
+        "275hx",
+        "aimax395",
+        "family:dell-g16"
       ],
       "failed_terms": [
         {
@@ -593,10 +725,10 @@
       "unattempted_terms": [],
       "description_discovery": {
         "extra_details": 0,
-        "total_details": 7,
+        "total_details": 0,
         "detail_ms": 0,
         "recovered_validated": 0,
-        "cache_hits": 0,
+        "cache_hits": 7,
         "by_term": {},
         "total_detail_limit": 12,
         "queued_candidates": 11,
@@ -609,7 +741,7 @@
           "returned": 2,
           "validated": 1,
           "pending": 1,
-          "detail_reads": 2,
+          "detail_reads": 0,
           "limited": false,
           "listing_incomplete": false,
           "details_pending": 0,
@@ -620,7 +752,7 @@
           "returned": 2,
           "validated": 0,
           "pending": 0,
-          "detail_reads": 2,
+          "detail_reads": 0,
           "limited": false,
           "listing_incomplete": false,
           "details_pending": 0,
@@ -631,25 +763,36 @@
           "returned": 2,
           "validated": 0,
           "pending": 1,
-          "detail_reads": 2,
+          "detail_reads": 0,
           "limited": true,
           "listing_incomplete": true,
           "details_pending": 0,
-          "total_results": 15,
+          "total_results": 14,
           "recommendations_ignored": 0
         },
         "13900hx": {
           "returned": 2,
           "validated": 1,
           "pending": 1,
-          "detail_reads": 1,
+          "detail_reads": 0,
+          "limited": false,
+          "listing_incomplete": false,
+          "details_pending": 0,
+          "total_results": 4,
+          "recommendations_ignored": 0
+        },
+        "290hx": {
+          "returned": 0,
+          "validated": 0,
+          "pending": 0,
+          "detail_reads": 0,
           "limited": false,
           "listing_incomplete": false,
           "details_pending": 0,
           "total_results": 3,
           "recommendations_ignored": 0
         },
-        "7845hx": {
+        "9955hx": {
           "returned": 0,
           "validated": 0,
           "pending": 0,
@@ -657,10 +800,10 @@
           "limited": false,
           "listing_incomplete": false,
           "details_pending": 0,
-          "total_results": 0,
-          "recommendations_ignored": 40
+          "total_results": 2,
+          "recommendations_ignored": 0
         },
-        "8840hx": {
+        "275hx": {
           "returned": 0,
           "validated": 0,
           "pending": 0,
@@ -668,10 +811,10 @@
           "limited": false,
           "listing_incomplete": false,
           "details_pending": 0,
-          "total_results": 0,
-          "recommendations_ignored": 40
+          "total_results": 8,
+          "recommendations_ignored": 0
         },
-        "aimax390": {
+        "aimax395": {
           "returned": 0,
           "validated": 0,
           "pending": 0,
@@ -682,18 +825,7 @@
           "total_results": 1,
           "recommendations_ignored": 0
         },
-        "hx470": {
-          "returned": 0,
-          "validated": 0,
-          "pending": 0,
-          "detail_reads": 0,
-          "limited": false,
-          "listing_incomplete": false,
-          "details_pending": 0,
-          "total_results": 0,
-          "recommendations_ignored": 40
-        },
-        "family:legion-pro-5": {
+        "family:dell-g16": {
           "returned": 0,
           "validated": 0,
           "pending": 0,
@@ -710,21 +842,21 @@
         "13980hx",
         "14900hx",
         "13900hx",
-        "7845hx",
-        "8840hx",
-        "aimax390",
-        "hx470",
-        "family:legion-pro-5"
+        "290hx",
+        "9955hx",
+        "275hx",
+        "aimax395",
+        "family:dell-g16"
       ],
       "successful_coverage": [
         "14700hx",
         "13980hx",
         "13900hx",
-        "7845hx",
-        "8840hx",
-        "aimax390",
-        "hx470",
-        "family:legion-pro-5"
+        "290hx",
+        "9955hx",
+        "275hx",
+        "aimax395",
+        "family:dell-g16"
       ],
       "failed_coverage": [
         "14900hx"
@@ -923,7 +1055,7 @@
         "last_seen": "2026-10-19",
         "notes": null,
         "desc_checked": true,
-        "out_of_scope_at": "2026-10-19T10:02:43.028Z",
+        "out_of_scope_at": "2026-10-19T19:02:11.151Z",
         "price_history": [
           {
             "at": "2026-10-08T13:36:19.953Z",
@@ -1017,7 +1149,7 @@
         "description_evidence": "Eleve sua experiência gamer com o Notebook ASUS ROG Strix G16! Equipado com processador i9-13980HX e placa de vídeo RTX 4060, este notebook oferece desempenho excepcional para os jogos mais exigentes. Com 1TB de armazenamento WD BLACK e 32GB 5600MT/s de RAM DDR5 Kingston FURY Impact, você terá velocidade e espaço de sobra para todos os seus jogos e arquivos. Design moderno e refrigeração avançada para sessões de jogo intensas.Notebook em excelente estado, muito bem cuidado e super conservado. Eu utilizava um teclado externo, evitando o desgaste do teclado original.Acompanha: 16 GB de memória RAM que vieram originalmente com o notebook.Cabo HDMI.Motivo da venda: Migrei para um MacBook e, por isso, não estou mais utilizando este notebook.Importante: Não aceito propostas de negociação nem trocas. Apenas venda pelo valor anunciado.Notebook muito bem cuidado, pronto para o próximo dono!",
         "detail_title": "Notebook ASUS ROG Strix G16 | i9-13980HX | RTX 4060 | 1TB | 32GB DDR5",
         "configuration_warnings": [],
-        "out_of_scope_at": "2026-10-19T10:02:43.028Z",
+        "out_of_scope_at": "2026-10-19T19:02:11.151Z",
         "price_history": [
           {
             "at": "2026-10-17T19:01:57.525Z",
@@ -1041,7 +1173,7 @@
         "last_seen": "2026-10-19",
         "notes": null,
         "desc_checked": true,
-        "out_of_scope_at": "2026-10-19T10:02:43.028Z",
+        "out_of_scope_at": "2026-10-19T19:02:11.151Z",
         "price_history": [
           {
             "at": "2026-10-02T10:00:30.855Z",
@@ -9535,12 +9667,14 @@
   },
   "blocked_until": null,
   "description_discovery": {
-    "extra_details": 0,
-    "total_details": 0,
-    "detail_ms": 0,
+    "extra_details": 2,
+    "total_details": 9,
+    "detail_ms": 3006,
     "recovered_validated": 0,
-    "cache_hits": 7,
-    "by_term": {},
+    "cache_hits": 0,
+    "by_term": {
+      "family:avell-a65": 2
+    },
     "total_detail_limit": 12,
     "queued_candidates": 11,
     "validation_complete": false,
@@ -9552,7 +9686,7 @@
       "returned": 2,
       "validated": 1,
       "pending": 1,
-      "detail_reads": 0,
+      "detail_reads": 2,
       "limited": false,
       "listing_incomplete": false,
       "details_pending": 0,
@@ -9563,7 +9697,7 @@
       "returned": 2,
       "validated": 0,
       "pending": 0,
-      "detail_reads": 0,
+      "detail_reads": 2,
       "limited": false,
       "listing_incomplete": false,
       "details_pending": 0,
@@ -9574,7 +9708,7 @@
       "returned": 2,
       "validated": 0,
       "pending": 1,
-      "detail_reads": 0,
+      "detail_reads": 2,
       "limited": true,
       "listing_incomplete": true,
       "details_pending": 0,
@@ -9585,14 +9719,14 @@
       "returned": 2,
       "validated": 1,
       "pending": 1,
-      "detail_reads": 0,
+      "detail_reads": 1,
       "limited": false,
       "listing_incomplete": false,
       "details_pending": 0,
       "total_results": 4,
       "recommendations_ignored": 0
     },
-    "290hx": {
+    "9955hx3d": {
       "returned": 0,
       "validated": 0,
       "pending": 0,
@@ -9600,10 +9734,10 @@
       "limited": false,
       "listing_incomplete": false,
       "details_pending": 0,
-      "total_results": 3,
-      "recommendations_ignored": 0
+      "total_results": 0,
+      "recommendations_ignored": 39
     },
-    "9955hx": {
+    "285hx": {
       "returned": 0,
       "validated": 0,
       "pending": 0,
@@ -9611,21 +9745,10 @@
       "limited": false,
       "listing_incomplete": false,
       "details_pending": 0,
-      "total_results": 2,
-      "recommendations_ignored": 0
+      "total_results": 0,
+      "recommendations_ignored": 39
     },
-    "275hx": {
-      "returned": 0,
-      "validated": 0,
-      "pending": 0,
-      "detail_reads": 0,
-      "limited": false,
-      "listing_incomplete": false,
-      "details_pending": 0,
-      "total_results": 8,
-      "recommendations_ignored": 0
-    },
-    "aimax395": {
+    "7945hx": {
       "returned": 0,
       "validated": 0,
       "pending": 0,
@@ -9636,7 +9759,7 @@
       "total_results": 1,
       "recommendations_ignored": 0
     },
-    "family:dell-g16": {
+    "7945hx3d": {
       "returned": 0,
       "validated": 0,
       "pending": 0,
@@ -9644,7 +9767,18 @@
       "limited": false,
       "listing_incomplete": false,
       "details_pending": 0,
-      "total_results": 4,
+      "total_results": 0,
+      "recommendations_ignored": 39
+    },
+    "family:avell-a65": {
+      "returned": 3,
+      "validated": 0,
+      "pending": 2,
+      "detail_reads": 2,
+      "limited": true,
+      "listing_incomplete": false,
+      "details_pending": 1,
+      "total_results": 6,
       "recommendations_ignored": 0
     }
   }

@@ -1,7 +1,23 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-19T19:02:27.705Z",
+  "updated_at": "2026-10-20T10:03:25.380Z",
   "runs": [
+    {
+      "run_id": "2026-10-20T10-03-12-091Z",
+      "committed_at": "2026-10-20T10:03:24.901Z",
+      "completed_at": "2026-10-20T10:03:24.888Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 12797,
+      "item_count": 2,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "oneplus-buds-pro-3",
+        "label": "OnePlus Buds Pro 3",
+        "collected_count": 1,
+        "quarantined_item_count": 0
+      }
+    },
     {
       "run_id": "2026-10-19T19-02-18-938Z",
       "committed_at": "2026-10-19T19:02:27.219Z",
@@ -10,12 +26,44 @@
       "partial": true,
       "duration_ms": 8272,
       "item_count": 2,
-      "quarantined_item_count": 0,
       "metadata": {
         "source": "oneplus-buds-pro-3",
         "label": "OnePlus Buds Pro 3",
         "collected_count": 1,
-        "quarantined_item_count": 0
+        "quarantined_item_count": 0,
+        "in_progress": false
+      }
+    },
+    {
+      "run_id": "2026-10-19T19-01-17-131Z",
+      "committed_at": "2026-10-19T19:01:18.410Z",
+      "completed_at": "2026-10-19T19:01:18.390Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 1259,
+      "item_count": 2,
+      "metadata": {
+        "source": "oneplus-buds-pro-3",
+        "label": "OnePlus Buds Pro 3",
+        "collected_count": 0,
+        "quarantined_item_count": 0,
+        "in_progress": false
+      }
+    },
+    {
+      "run_id": "2026-10-19T11-01-03-357Z",
+      "committed_at": "2026-10-19T11:01:04.945Z",
+      "completed_at": "2026-10-19T11:01:04.916Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 1559,
+      "item_count": 2,
+      "metadata": {
+        "source": "oneplus-buds-pro-3",
+        "label": "OnePlus Buds Pro 3",
+        "collected_count": 0,
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     },
     {

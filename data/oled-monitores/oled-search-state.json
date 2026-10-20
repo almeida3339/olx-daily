@@ -6,6 +6,7 @@
       "pages": 1,
       "complete": true,
       "seen_ids": [
+        "153260035",
         "149604504",
         "133734951",
         "149848516",
@@ -21,15 +22,13 @@
         "95704936",
         "42713647",
         "151274107",
-        "149145569",
-        "149145579",
         "140251542",
         "61894210",
         "61893449"
       ],
-      "started_at": "2026-10-19T19:02:28.164Z",
+      "started_at": "2026-10-20T10:03:25.791Z",
       "signatures": [],
-      "total_reported": 20,
+      "total_reported": 19,
       "stalled": false,
       "last_error": null
     },
@@ -117,15 +116,27 @@
     }
   },
   "cache": {
+    "Enjoei:enjoei-153260035": {
+      "version": 1,
+      "title": "monitor portátil innocn oled 15.6 polegadas",
+      "price_brl": 2000,
+      "checked_at": "2026-10-20T10:03:26.672Z",
+      "evidence": {
+        "description_evidence": "monitor portátil da marca innocn com tela oled de 15.6 polegadas. o aparelho está zerado, usado poucas vezes. possui design fino com suporte articulado integrado na parte traseira, ideal para uso com computadores e consoles.",
+        "detail_title": "monitor portátil innocn oled 15.6 polegadas",
+        "details_checked_at": "2026-10-20T10:03:26.672Z",
+        "identity_error": null
+      }
+    },
     "Enjoei:enjoei-151274107": {
       "version": 1,
       "title": "monitor lg ultragear 39 oled curvo 240hz",
       "price_brl": 2950,
-      "checked_at": "2026-10-19T00:52:55.530Z",
+      "checked_at": "2026-10-20T10:03:26.993Z",
       "evidence": {
         "description_evidence": "monitor lg ultragear 39gs95qe, tela oled curva de 39 polegadas com taxa de atualização de 240hz. compatível com g-sync e hdr400, ideal para jogos. acompanha fonte de alimentação. usado em ótimo estado.",
         "detail_title": "monitor lg ultragear 39 oled curvo 240hz",
-        "details_checked_at": "2026-10-19T00:52:55.530Z",
+        "details_checked_at": "2026-10-20T10:03:26.993Z",
         "identity_error": null
       }
     }
@@ -412,7 +423,35 @@
         ]
       },
       "last_observed_at": "2026-10-15T19:03:28.707Z"
+    },
+    "Enjoei:enjoei-153260035": {
+      "id": "enjoei-153260035",
+      "title": "monitor portátil innocn oled 15.6 polegadas",
+      "price_brl": 2000,
+      "url": "https://www.enjoei.com.br/p/monitor-portatil-innocn-oled-15-6-polegadas-153260035",
+      "source": "Enjoei",
+      "term": "monitor oled",
+      "search_terms": [
+        "Enjoei:monitor oled"
+      ],
+      "status": "active",
+      "description_evidence": "monitor portátil da marca innocn com tela oled de 15.6 polegadas. o aparelho está zerado, usado poucas vezes. possui design fino com suporte articulado integrado na parte traseira, ideal para uso com computadores e consoles.",
+      "detail_title": "monitor portátil innocn oled 15.6 polegadas",
+      "details_checked_at": "2026-10-20T10:03:26.672Z",
+      "identity_error": null,
+      "oled_validation": {
+        "version": 1,
+        "state": "pending",
+        "model_ids": [],
+        "reasons": [
+          "Modelo OLED ainda não confirmado no catálogo"
+        ],
+        "warnings": [
+          "Ausência de defeito no texto não comprova estado físico ou ausência de burn-in"
+        ]
+      },
+      "last_observed_at": "2026-10-20T10:03:26.672Z"
     }
   },
-  "updated_at": "2026-10-19T19:02:29.256Z"
+  "updated_at": "2026-10-20T10:03:54.815Z"
 }

@@ -1,7 +1,24 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-19T19:02:30.499Z",
+  "updated_at": "2026-10-20T10:03:56.184Z",
   "runs": [
+    {
+      "run_id": "3456b4a5-15dc-48d3-a5a8-c01064ca3583",
+      "completed_at": "2026-10-20T10:03:56.173Z",
+      "outcome": "blocked",
+      "partial": true,
+      "duration_ms": 226888,
+      "item_count": 0,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "local",
+        "monitor_errors": 1,
+        "monitor_failures": [
+          "Monitores OLED: Saiu com código 4: Aviso: termo \"aw2726dm\" em https://www.olx.com.br/brasil/informatica/monitores falhou — Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4d731fd4af01352).\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.\nColeta OLED parcial: 9 consulta(s) incompleta(s), 0 adiada(s).\nOLX:aw2726dm: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4d731fd4af01352).\nOLX:aw2725df: Consulta não executada após interrupção\nOLX:odyssey oled g6: Consulta não executada após interrupção"
+        ],
+        "pending_notifications": 0
+      }
+    },
     {
       "run_id": "23744421-c426-4d42-a3f5-c2274dedc944",
       "completed_at": "2026-10-19T19:02:30.495Z",
@@ -1807,20 +1824,6 @@
       "partial": false,
       "duration_ms": 105540,
       "item_count": 2,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "local",
-        "monitor_errors": 0,
-        "pending_notifications": 1
-      }
-    },
-    {
-      "run_id": "6ca26e6f-66d8-403d-87d4-527a5148cd92",
-      "completed_at": "2026-08-26T19:01:04.926Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 60322,
-      "item_count": 1,
       "quarantined_item_count": 0,
       "metadata": {
         "source": "local",
