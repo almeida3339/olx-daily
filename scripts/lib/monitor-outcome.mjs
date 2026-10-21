@@ -10,11 +10,15 @@ export function classifyMonitorOutcome(run = {}, { quarantined = 0 } = {}) {
   const blocked = real.some(issue => ['challenge','authentication','rate_limited'].includes(issue.kind ?? classifyMonitorError(issue.message).kind));
   const failed = quarantined > 0 || (run.failed_term_count > 0 && !issues.length)
     || real.some(issue => !['incomplete','deferred'].includes(issue.kind) && !expected.test(issue.message));
+  const incomplete=(run.failed_coverage??run.failed_terms??[]).length;
+  const scheduled=run.scheduled_coverage??run.scheduled_terms??[];
+  const successful=run.successful_coverage??run.successful_terms??[];
+  const onlyDeferred=deferred>0&&!incomplete&&!real.length&&scheduled.every(term=>successful.includes(term));
   const status = blocked ? 'blocked' : failed || (run.aborted && !blocked) ? 'failed'
-    : deferred && !(run.scheduled_coverage ?? run.scheduled_terms ?? []).length ? 'deferred'
+    : onlyDeferred ? 'deferred'
       : run.partial || deferred || real.length ? 'partial' : 'success';
   return { status, exit_code: MONITOR_EXIT_CODES[status],
-    reasons: [...new Set(issues.map(issue => issue.message).filter(Boolean))],
+    reasons: [...new Set(issues.map(issue => issue.message).filter(Boolean)),...(onlyDeferred&&!issues.length?['Consultas adiadas pela programação; as consultas executadas foram concluídas.']:[])],
     completed_terms: (run.successful_coverage ?? run.successful_terms ?? []).length,
     incomplete_terms: (run.failed_coverage ?? run.failed_terms ?? []).length, deferred_terms: deferred };
 }

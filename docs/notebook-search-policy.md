@@ -66,3 +66,18 @@ física ainda precisam de conferência. Não estima preço de transações concl
 preservando datas de coleta e de conferência. Gera manifesto de reclassificação,
 sem nova visita e sem adicionar uma coleta ao histórico operacional. Os artefatos
 originais são preservados conforme a política de retenção existente.
+
+## Retomada de consultas incompletas — 21/10/2026
+
+O limite de leitura da listagem do `14900hx` cresce de 12 para 36 e, se ainda
+necessário, até 60 cards. Outras CPUs truncadas recebem expansão limitada na
+próxima consulta; famílias usam até 60. A quantidade global de fichas permanece
+limitada. Famílias podem usar quatro das oito leituras adicionais da rodada,
+alternando os candidatos pela última tentativa para avançar na fila. Consultas
+manuais por subconjunto preservam o catálogo completo e os itens dos demais
+processadores. Os filtros de CPU e mínimo de 32 GB de RAM continuam obrigatórios.
+
+No Mercado Livre, `--complete-coverage` avança para CPUs ainda não tentadas
+quando um lote termina limitado. Não repete essas CPUs na mesma invocação,
+nem declara cobertura completa por ter atingido o limite. Desafios, login,
+limitação do site e falhas técnicas continuam interrompendo a fila.

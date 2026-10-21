@@ -299,7 +299,7 @@ async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transp
         queryYield[term] = { returned: results.length, validated: results.filter(isValidatedOlxItem).length,
           pending: results.filter(item => item.validation?.state === 'pending').length,
           detail_reads: (descriptionQueue.summary().total_details ?? 0) - detailsBefore,
-          limited: Boolean(results.coverage_incomplete), listing_incomplete: Boolean(results.listing_incomplete),
+          limited: Boolean(results.coverage_incomplete), listing_incomplete: Boolean(results.listing_incomplete), listing_limit:results.listing_limit,
           details_pending: results.details_pending ?? 0, total_results: results.total_results ?? null,
           recommendations_ignored: results.recommendations_ignored ?? 0 };
         await recordOlxYield('notebooks',term,{complete:!results.coverage_incomplete,
@@ -399,6 +399,7 @@ async function connectToCurrentChrome(cdpEndpoint) {
 }
 
 async function collectForCpuTerm(page, cpuTerm, maxCards, previousSnapshot) {
+  maxCards=notebookListingLimit(cpuTerm,maxCards,previousSnapshot);
   const query = encodeURIComponent(olxQuery(cpuTerm));
   const url = `${BASE_URL}?q=${query}&sp=1&opst=2`;
   console.log(`\nCPU: ${cpuTerm} -> ${url}`);
@@ -421,6 +422,7 @@ async function collectForCpuTerm(page, cpuTerm, maxCards, previousSnapshot) {
 }
 
 async function collectForCpuTermRawCdp(tab, cpuTerm, maxCards, previousSnapshot) {
+  maxCards=notebookListingLimit(cpuTerm,maxCards,previousSnapshot);
   const url = `${BASE_URL}?q=${encodeURIComponent(olxQuery(cpuTerm))}&sp=1&opst=2`;
   console.log(`\nCPU: ${cpuTerm} -> ${url}`);
   await reserveNotebookSearch(cpuTerm);
@@ -429,6 +431,12 @@ async function collectForCpuTermRawCdp(tab, cpuTerm, maxCards, previousSnapshot)
   const hasCards = await waitForRawCardsFast(tab);
   const cards = hasCards ? await collectCardsRawCdp(tab, maxCards) : [];
   return processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, card => enrichAdRawCdp(cdpUrl, card));
+}
+
+function notebookListingLimit(term,base,previous){
+  const last=previous?.run?.query_yield?.[term];
+  const expanded=term==='14900hx'||term.startsWith('family:')||last?.listing_incomplete;
+  return expanded?Math.min(60,Math.max(base,term.startsWith('family:')?60:Number(last?.listing_limit??base)+24)):base;
 }
 
 async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openDetail) {
@@ -449,6 +457,7 @@ async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openD
   const toProcess = [...matches.slice(0, maxCards - reserveSlots), ...waiting, ...matches.slice(maxCards - reserveSlots)];
   const items = [], seen = new Set();
   items.listing_incomplete = Boolean(cards.listing_incomplete);
+  items.listing_limit=maxCards;
   items.total_results = cards.total_results ?? null;
   items.recommendations_ignored = cards.recommendations_ignored ?? 0;
   items.details_pending = 0;
@@ -471,7 +480,7 @@ async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openD
     if (!(card.description_discovery || forceOpenDetails || needsDetailEnrichment(listingItem) || inRange)) {
       items.push(listingItem); continue;
     }
-    if (items.length >= maxCards || !await descriptionQueue.reserveDetail(cpuTerm, Boolean(card.description_discovery))) {
+    if (items.length >= maxCards || !await descriptionQueue.reserveDetail(cpuTerm, Boolean(card.description_discovery), card)) {
       await descriptionQueue.enqueue([{ ...card, description_discovery: Boolean(card.description_discovery) }], cpuTerm);
       items.details_pending++;
       items.push(pendingOlxItem(listingItem, 'Ficha aguardando leitura dentro dos limites da rodada'));
@@ -1145,8 +1154,8 @@ function mergeWithPreviousSnapshot({ runDate, now, collected, previousSnapshot, 
       run: { timezone: "America/Sao_Paulo", ...run },
       scheduledCoverage: scheduledTerms,
       successfulCoverage: successfulTerms,
-      failedCoverage: failedTerms.map((failure) => failure.term),
-      configuredCoverage: configuredSearches,
+      failedCoverage: failedTerms.filter(failure=>failure.kind!=='deferred').map((failure) => failure.term),
+      configuredCoverage: [...new Set([...DEFAULT_CPU_TERMS,...OLX_NOTEBOOK_FAMILIES.map(spec=>spec.id),...configuredSearches])],
       itemCoverage: (item) => item.search_terms?.length ? item.search_terms : item.cpu_term ? [item.cpu_term]
         : DEFAULT_CPU_TERMS.filter((term) => textContainsCpuTerm(item.title ?? "", term)),
       filters: { ram_gb: { min: NOTEBOOK_MIN_RAM_GB }, price_brl: { min: PRICE_MIN_BRL, max: PRICE_MAX_BRL } },

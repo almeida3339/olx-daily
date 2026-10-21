@@ -1,5 +1,6 @@
 import { setMonitorExit } from './monitor-outcome.mjs';
-import { reserveOlxAccess, readOlxTraffic } from './olx-traffic.mjs';
+import { reserveOlxAccess, readOlxTraffic, recordOlxYield } from './olx-traffic.mjs';
+import { captureOlxAccessFailure } from './olx-access-diagnostics.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { collectOlx } from './watchlist-monitor.mjs';
@@ -10,7 +11,7 @@ import { classifyMonitorError } from './monitor-errors.mjs';
 import { readOlxNotebookDetail, assertOlxAccessible } from './olx-notebook-quality.mjs';
 import { parseBrlPrice, extractOlxId } from './parsers.mjs';
 import { OLED_PRICE, OLED_POLICY_VERSION, OLED_DETAIL_TTL_MS, assessOledMonitor, isCompleteOledMonitor,
-  isApprovedOledMonitor, hasApprovedOledEvidence, classifySavedOledItem, normalizeOledSearchTerm, oledPendingReason } from './oled-monitor-scope.mjs';
+  isApprovedOledMonitor, hasApprovedOledEvidence, classifySavedOledItem, normalizeOledSearchTerm, oledPendingReason, oledModelIds, oledSearchMatchesTitle } from './oled-monitor-scope.mjs';
 import { oledQuerySpecs, planOledQueries } from './oled-search-plan.mjs';
 
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
@@ -65,7 +66,7 @@ async function collect({ root,dataDir }) {
   };
   async function resolveItem(item,openDetail) {
     const source=item.source,k=key(item), cached=state.cache[k];
-    const reusable=cached?.version===OLED_POLICY_VERSION&&cached.title===item.title&&cached.price_brl===item.price_brl
+    const reusable=cached?.version===OLED_POLICY_VERSION&&String(cached.evidence?.description_evidence??'').trim()&&cached.title===item.title&&cached.price_brl===item.price_brl
       &&Date.now()-Date.parse(cached.checked_at)<OLED_DETAIL_TTL_MS;
     if(reusable){count[source].cache_hits++;item={...item,...cached.evidence};}
     else if(count[source].detail_reads<budgets[source].details) {
@@ -97,8 +98,9 @@ async function collect({ root,dataDir }) {
       rejected:hits.filter(i=>i.oled_validation.state==='rejected').length,exclusive:hits.filter(i=>isApprovedOledMonitor(i)&&i.search_terms.length===1).length};
     // Only unread/failed details prevent completion; reviewed ambiguities are
     // visible manual candidates, not an infinite automatic retry cycle.
-    const unread=hits.some(item=>item.oled_validation.state==='pending'&&(!item.details_checked_at||item.detail_error));
-    if(complete&&!unread)success.push(id);else failed.set(id,error??(unread?'Ficha pendente de leitura':'Cobertura incompleta'));
+    const unread=hits.some(item=>item.oled_validation.state==='pending'&&(!item.details_checked_at||item.detail_error||!String(item.description_evidence??'').trim()));
+    const previousSuccess=success.indexOf(id);if(previousSuccess>=0)success.splice(previousSuccess,1);
+    if(complete&&!unread){failed.delete(id);success.push(id);}else failed.set(id,error??(unread?'Ficha pendente de leitura':'Cobertura incompleta'));
     coverage[id]={checked_at:nowIso(),last_success_at:complete&&!unread?nowIso():coverage[id]?.last_success_at??null,state:complete&&!unread?'success':'failed',error:failed.get(id)??null};
     await save();
   }
@@ -156,7 +158,8 @@ async function collect({ root,dataDir }) {
     }
   }
   if(!skipOlx) {
-    const plan=planOledQueries('OLX',coverage,{fullSweep,explicit,traffic:await readOlxTraffic()}), visible=args.includes('--visible');
+    let plan=planOledQueries('OLX',coverage,{fullSweep,explicit,traffic:await readOlxTraffic()});
+    const visible=args.includes('--visible'),recovering=Boolean(blocks.OLX);
     let remaining=Date.parse(blocks.OLX?.blocked_until??'')-Date.now();
     // The morning job can reach this collector a few minutes before a 24h
     // pause expires. Wait locally instead of losing the whole morning slot.
@@ -169,39 +172,75 @@ async function collect({ root,dataDir }) {
       const retryAt=new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Sao_Paulo',dateStyle:'short',timeStyle:'short'}).format(new Date(blocks.OLX.blocked_until));
       console.log(`OLED OLX: pausa após bloqueio até ${retryAt} BRT; ${plan.length} consultas adiadas. Nenhum acesso realizado.`);
     }else{
+      if(recovering){
+        deferred.push(...plan.slice(1).map(spec=>`OLX:${spec.id}`));plan=plan.slice(0,1);
+        budgets.OLX.details=2;
+      }
       scheduled.push(...plan.map(s=>`OLX:${s.id}`));
       if(blocks.OLX)console.log('OLED OLX: prazo da pausa encerrado; retomando pela primeira consulta. Novo bloqueio interrompe a fonte.');
       try{
         const result=await collectOlx({terms:plan.map(s=>s.query),categoryUrls:['https://www.olx.com.br/brasil/informatica/monitores'],
           userDataDir:path.join(root,'.chrome-oled-monitores-profile'),headless:args.includes('--headless'),visible,
           inRange:price=>price>=OLED_PRICE.min&&price<=OLED_PRICE.max,sizeOk:()=>true,notExcluded:()=>true,
-          itemFilter:isCompleteOledMonitor,termMatcher:title=>isCompleteOledMonitor({title}),olxDeliveryOnly:true,
-          maxCards:budgets.OLX.cards,reportLimits:true,
-          transformItem:async(item,{context})=>{
+          itemFilter:isCompleteOledMonitor,termMatcher:oledSearchMatchesTitle,olxDeliveryOnly:true,
+          maxCards:budgets.OLX.cards,reportLimits:true,recordYield:false,
+          transformItem:async(item)=>{
             const id=`OLX:${item.term}`;item.search_terms=[id];
             const existing=collected.get(key(item));
             if(existing){existing.search_terms=[...new Set([...existing.search_terms,id])];return existing;}
-            return resolveItem(item,async()=>{
-              const tab=await context.newPage();
-              try{
-                await tab.goto(item.url,{waitUntil:'domcontentloaded',timeout:25000});
-                const d=await tab.evaluate(readOlxNotebookDetail);assertOlxAccessible(d.body_text);
-                const price=d.price_text?parseBrlPrice(d.price_text):Number(d.structured_price)||null;
-                return {description_evidence:d.description,detail_title:d.title,details_checked_at:nowIso(),
-                  identity_error:extractOlxId(d.url)===extractOlxId(item.url)?null:'Página aberta não corresponde ao anúncio',
-                  price_error:price==null?'Preço integral não localizado':Math.abs(price-item.price_brl)>1?'Preço da listagem diverge do detalhe':null};
-              }finally{await tab.close().catch(()=>{});}
-            });
+            item.oled_validation=assessOledMonitor(item);
+            return checkpointItem(item);
+          },afterSearches:async({context})=>{
+            const candidates=[...collected.values()].filter(item=>item.source==='OLX').sort((a,b)=>
+              Number(oledModelIds(b.title).length>0)-Number(oledModelIds(a.title).length>0)
+              ||(Date.parse(previous?.items?.find(old=>key(old)===key(a))?.details_checked_at??'')||0)
+                -(Date.parse(previous?.items?.find(old=>key(old)===key(b))?.details_checked_at??'')||0)
+              ||a.price_brl-b.price_brl);
+            for(const item of candidates){
+              await resolveItem(item,async()=>{
+                const tab=await context.newPage();let response;
+                try{
+                  response=await tab.goto(item.url,{waitUntil:'domcontentloaded',timeout:25000});
+                  await tab.waitForFunction(()=>document.querySelector('[data-testid="ad-description"], [data-testid="ad-description-description"], #ad-description')
+                    ||[...document.querySelectorAll('script[type="application/ld+json"]')].some(node=>/"description"/.test(node.textContent))
+                    ||/cloudflare|you have been blocked|verify you are human|faça login para continuar/i.test(document.body?.innerText??''),null,{timeout:12000}).catch(()=>{});
+                  const d=await tab.evaluate(readOlxNotebookDetail);assertOlxAccessible(d.body_text);
+                  const price=d.price_text?parseBrlPrice(d.price_text):Number(d.structured_price)||null;
+                  return {description_evidence:d.description,detail_title:d.title,details_checked_at:nowIso(),
+                    identity_error:extractOlxId(d.url)===extractOlxId(item.url)?null:'Página aberta não corresponde ao anúncio',
+                    price_error:price==null?'Preço integral não localizado':Math.abs(price-item.price_brl)>1?'Preço da listagem diverge do detalhe':null};
+                }catch(error){
+                  await captureOlxAccessFailure({page:tab,error,stage:'detail',query:item.term,url:item.url,response});throw error;
+                }finally{await tab.close().catch(()=>{});}
+              });
+            }
+            for(const spec of plan){const m=metrics[`OLX:${spec.id}`];
+              if(m){
+                await finishQuery('OLX',spec,!m.limited,null,m);
+                await recordOlxYield('oled-monitores',spec.query,{complete:!failed.has(`OLX:${spec.id}`),
+                  items:[...collected.values()].filter(item=>item.source==='OLX'&&item.search_terms.includes(`OLX:${spec.id}`)&&isApprovedOledMonitor(item))});
+              }
+            }
           },onSearchAttempt:async()=>{count.OLX.search_requests++;},
           onTerm:async(query,m)=>{await finishQuery('OLX',plan.find(s=>s.query===query),!m.limited,null,m);},
         });
-        if(result.blocked){const reason=[...result.failedTermErrors.values()].at(-1);blocks.OLX={blocked_until:new Date(Date.now()+24*3600_000).toISOString(),reason};}
-        else if(!result.failedTerms.size)delete blocks.OLX;
+        if(result.blocked){
+          const reason=[...result.failedTermErrors.values()].at(-1),diagnostic=result.accessDiagnostics.at(-1);
+          const consecutive=(blocks.OLX?.consecutive_blocks??(recovering?1:0))+1;
+          const hours=Math.min(72,24*2**(consecutive-1));
+          blocks.OLX={blocked_at:nowIso(),blocked_until:new Date(Date.now()+hours*3600_000).toISOString(),reason,
+            consecutive_blocks:consecutive,cooldown_hours:hours,recovery_kind:diagnostic?.kind??'verification',
+            diagnostic_id:diagnostic?.id,stage:diagnostic?.stage,ray_id:diagnostic?.ray_id};
+        }
+        else if(result.attemptedTerms.size&&!result.failedTerms.size)delete blocks.OLX;
         for(const query of result.failedTerms)failed.set(`OLX:${query}`,result.failedTermErrors.get(query));
         for(const query of result.deferredTerms){
           const id=`OLX:${query}`;deferred.push(id);
           const index=scheduled.indexOf(id);if(index>=0)scheduled.splice(index,1);
         }
+        for(const spec of plan){if(!result.attemptedTerms.has(spec.query)&&!result.deferredTerms.has(spec.query)){
+          const id=`OLX:${spec.id}`;deferred.push(id);const index=scheduled.indexOf(id);if(index>=0)scheduled.splice(index,1);
+        }}
       }catch(error){for(const spec of plan)failed.set(`OLX:${spec.id}`,error.message);}
     }
   }

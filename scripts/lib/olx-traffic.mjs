@@ -67,9 +67,16 @@ export async function reserveOlxAccess({watchlist,query,kind,force=false,retry=f
     usage[kind]++;round[kind]++;
     const source=usage.watchlists[watchlist]??={search:0,detail:0};source[kind]++;
     if(kind==='search')record.last_attempt_at=now.toISOString();
-    return {day,kind,used:usage[kind],limit:limits.daily[kind]};
+    const interval=limit('OLX_ACCESS_INTERVAL_MS',12000);
+    const reservedAt=Math.max(now.getTime(),(Date.parse(state.last_access_slot_at??'')||0)+interval);
+    state.last_access_slot_at=new Date(reservedAt).toISOString();
+    state.access_interval_ms=interval;
+    return {day,kind,used:usage[kind],limit:limits.daily[kind],reserved_at:reservedAt};
   });
   if(result.denied)throw new OlxDeferredError(result.denied);
+  const wait=result.reserved_at-Date.now();
+  if(wait>1000)console.log(`OLX: intervalo compartilhado; aguardando ${Math.ceil(wait/1000)} s antes do próximo acesso.`);
+  while(Date.now()<result.reserved_at)await new Promise(resolve=>setTimeout(resolve,Math.min(15000,result.reserved_at-Date.now())));
   return result;
 }
 export async function recordOlxYield(watchlist,query,{items=[],complete=false,blocked=false}={}) {

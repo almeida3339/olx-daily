@@ -1,5 +1,6 @@
 import { setMonitorExit } from './monitor-outcome.mjs';
 import { reserveOlxAccess, recordOlxYield, OlxDeferredError } from './olx-traffic.mjs';
+import { captureOlxAccessFailure } from './olx-access-diagnostics.mjs';
 // Monitor genérico de "watchlist": busca termos específicos em OLX (Playwright)
 // e Enjoei (API GraphQL) dentro de uma faixa de preço, faz merge com o snapshot
 // anterior e gera relatório. Usado por monitores finos (dockstations, fitbit…)
@@ -323,7 +324,8 @@ function buildEnjoeiApiUrl(term, slug) {
 // ── OLX (Playwright) ───────────────────────────────────────────────────────────
 
 export async function collectOlx({ terms, categoryUrls, userDataDir, headless, visible, inRange, sizeOk, notExcluded, itemFilter, olxDeliveryOnly = false,
-  termMatcher = textMatchesTerm, maxCards = OLX_MAX_CARDS, reportLimits = false, transformItem = async item => item, onTerm = async () => {}, onSearchAttempt = async () => {} }) {
+  termMatcher = textMatchesTerm, maxCards = OLX_MAX_CARDS, reportLimits = false, transformItem = async item => item, onTerm = async () => {}, onSearchAttempt = async () => {}, afterSearches = async () => {}, recordYield = true }) {
+  if(!terms.length)return {items:[],failedTerms:new Set(),failedTermErrors:new Map(),attemptedTerms:new Set(),blocked:false,deferredTerms:new Set(),accessDiagnostics:[]};
   const isCI = Boolean(process.env.CI);
   // Local, por padrão a janela roda FORA DA TELA (não atrapalha o trabalho).
   // --visible mostra maximizada (útil para depurar/resolver Cloudflare).
@@ -363,6 +365,7 @@ export async function collectOlx({ terms, categoryUrls, userDataDir, headless, v
   const failedTermErrors = new Map();
   const attemptedTerms = new Set();
   const deferredTerms = new Set();
+  const accessDiagnostics=[];
   const trafficWatchlist=path.basename(userDataDir).replace(/^\.chrome-/,'').replace(/-profile$/,'');
   const forceTraffic=process.argv.includes('--full-sweep')||process.argv.includes('--terms')||process.argv.includes('--models');
   let blocked = false;
@@ -372,6 +375,7 @@ export async function collectOlx({ terms, categoryUrls, userDataDir, headless, v
         const url = `${categoryUrl}?q=${encodeURIComponent(term)}${olxDeliveryOnly ? "&opst=2" : ""}`;
         console.log(`OLX termo: ${term} -> ${url}`);
         const trafficQuery=categoryUrls.length>1?`${term}@${new URL(categoryUrl).pathname}`:term;
+        let response;
         try {
           let listingState;
           await retryTransient(async (attempt) => {
@@ -384,7 +388,7 @@ export async function collectOlx({ terms, categoryUrls, userDataDir, headless, v
             await reserveOlxAccess({watchlist:trafficWatchlist,query:trafficQuery,kind:'search',force:forceTraffic,retry:attempt>1});
             attemptedTerms.add(term);
             await onSearchAttempt(term);
-            await page.goto(url, { waitUntil: "domcontentloaded", timeout: NAVIGATION_TIMEOUT_MS });
+            response=await page.goto(url, { waitUntil: "domcontentloaded", timeout: NAVIGATION_TIMEOUT_MS });
             await waitOutCloudflare(page, headless, visible);
             listingState = await waitForListing(page);
             if (listingState === "blocked") throw new Error("OLX bloqueou a página (Cloudflare/anti-bot)");
@@ -396,7 +400,7 @@ export async function collectOlx({ terms, categoryUrls, userDataDir, headless, v
           if (listingState === "empty") {
             console.log("  Nenhum card.");
             await onTerm(term, { raw:0, outside_price:0, rejected:0, accepted:0, limited:false });
-            await recordOlxYield(trafficWatchlist,trafficQuery,{complete:true,items:[]});
+            if(recordYield)await recordOlxYield(trafficWatchlist,trafficQuery,{complete:true,items:[]});
             continue;
           }
           const cards = await collectCardsFromInfiniteScroll(page, maxCards);
@@ -424,10 +428,12 @@ export async function collectOlx({ terms, categoryUrls, userDataDir, headless, v
           }
           if (metrics.limited) { failedTerms.add(term); failedTermErrors.set(term, 'Limite de cards atingido; cobertura incompleta'); }
           await onTerm(term, metrics);
-          await recordOlxYield(trafficWatchlist,trafficQuery,{complete:!metrics.limited,
+          if(recordYield)await recordOlxYield(trafficWatchlist,trafficQuery,{complete:!metrics.limited,
             items:out.filter(item=>item.term===term&&(!item.oled_validation||item.oled_validation.state==='approved'))});
         } catch (error) {
           if(error.kind==='deferred'){deferredTerms.add(term);console.log(error.message);continue;}
+          const diagnostic=await captureOlxAccessFailure({page,error,stage:'listing',query:term,url,response});
+          if(diagnostic)accessDiagnostics.push(diagnostic);
           console.warn(`  Aviso: termo "${term}" em ${categoryUrl} falhou — ${error.message}`);
           failedTerms.add(term);
           failedTermErrors.set(term, error?.message ?? String(error));
@@ -439,10 +445,20 @@ export async function collectOlx({ terms, categoryUrls, userDataDir, headless, v
         }
       }
     }
+    if(!blocked){
+      try{await afterSearches({context});}
+      catch(error){
+        if(!['challenge','authentication','rate_limited'].includes(classifyMonitorError(error).kind))throw error;
+        blocked=true;
+        const term=error.olx_diagnostic?.query??terms.at(-1);
+        failedTerms.add(term);failedTermErrors.set(term,error.message);
+        if(error.olx_diagnostic)accessDiagnostics.push(error.olx_diagnostic);
+      }
+    }
   } finally {
     await context.close().catch(() => {});
   }
-  return { items: out, failedTerms, failedTermErrors, attemptedTerms, blocked, deferredTerms };
+  return { items: out, failedTerms, failedTermErrors, attemptedTerms, blocked, deferredTerms, accessDiagnostics };
 }
 
 async function waitOutCloudflare(page, headless, visible = false) {

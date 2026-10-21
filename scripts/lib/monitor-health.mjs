@@ -8,6 +8,7 @@ import { watchlistHealthDefinitions } from "./watchlists-registry.mjs";
 import { DEFAULT_CPU_TERMS } from './cpu-terms.mjs';
 import { notebookQueryMaxAgeHours } from './notebook-search-plan.mjs';
 import { oledQuerySpecs, oledMlIntervalHours } from './oled-search-plan.mjs';
+import { classifyMonitorOutcome } from './monitor-outcome.mjs';
 
 const monitorHealthSourceDefinitions = watchlistHealthDefinitions();
 
@@ -53,12 +54,14 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
     const ageMs = timestamp == null ? null : Math.max(0, now.getTime() - timestamp);
     const errors = asArray(snapshot?.run?.errors ?? snapshot?.run?.failed_terms);
     const classifications = errors.map((error) => classifyMonitorError(typeof error === "string" ? error : error?.error));
+    const outcome=snapshot?(['failed','blocked'].includes(snapshot.run?.operational?.status)
+      ?snapshot.run.operational:classifyMonitorOutcome(snapshot.run)):null;
     let state = "healthy";
     if (!snapshot) state = "missing";
     else if (snapshot.run?.operational?.status === 'failed') state = 'failed';
     else if (classifications.some((item) => ["challenge", "authentication", "rate_limited"].includes(item.kind))) state = "blocked";
     else if (ageMs != null && ageMs > maxAgeMs) state = "stale";
-    else if (snapshot.run?.partial) state = "partial";
+    else if (snapshot.run?.partial && outcome?.status!=='deferred') state = "partial";
     else if (historySummary.sample >= 3 && (historySummary.failed + historySummary.blocked) >= Math.ceil(historySummary.sample / 2)) state = "degraded";
     if (marketplaces.length && snapshot) state = worstState([state, ...marketplaces.map((source) => source.state)]);
     if (snapshot?.run?.in_progress && state === 'healthy') state = 'partial';
@@ -74,7 +77,7 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
       id,
       label,
       state,
-      operational_status: snapshot?.run?.operational?.status ?? null,
+      operational_status: outcome?.status ?? null,
       updated_at: timestamp == null ? null : new Date(timestamp).toISOString(),
       age_ms: ageMs,
       invalid_snapshots: result.invalid.length,

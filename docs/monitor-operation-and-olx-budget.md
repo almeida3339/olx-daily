@@ -51,6 +51,13 @@ Configuração opcional por ambiente: `OLX_DAILY_SEARCH_LIMIT`,
 `OLX_DAILY_DETAIL_LIMIT`, `OLX_ROUND_SEARCH_LIMIT`, `OLX_ROUND_DETAIL_LIMIT`.
 `OLX_TRAFFIC_RUN_ID` identifica a rodada compartilhada entre os filhos.
 
+Desde 21/10, cada busca ou ficha também reserva um horário com intervalo mínimo
+compartilhado de 12 segundos (`OLX_ACCESS_INTERVAL_MS`). A espera acontece fora
+da trava de gravação, e o acesso continua contando se o processo for interrompido.
+Resultados adiados por programação não marcam a fonte como parcial no painel
+quando as consultas executadas terminaram e a cobertura anterior segue recente.
+Bloqueio, cobertura vencida e consulta incompleta continuam visíveis.
+
 ## Frequência conforme rendimento
 
 - As quatro CPUs prioritárias mantêm intervalo mínimo de 8h, permitindo as

@@ -53,13 +53,18 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
       state.queue = state.queue.slice(0, 500);
       await save();
     },
-    pending(term) { return state.queue.filter(x => x.terms.includes(term)).map(x => ({ ...x.card, cpu_term: term, description_discovery: x.card.description_discovery ?? true })); },
-    async reserveDetail(term, discovery) {
+    pending(term) { return state.queue.filter(x => x.terms.includes(term))
+      .sort((a,b)=>(Date.parse(a.last_detail_attempt_at??a.first_observed_at)||0)-(Date.parse(b.last_detail_attempt_at??b.first_observed_at)||0))
+      .map(x => ({ ...x.card, cpu_term: term, description_discovery: x.card.description_discovery ?? true })); },
+    async reserveDetail(term, discovery, card) {
       if ((state.metrics.total_details ?? 0) >= totalLimit) return false;
-      if (discovery && ((state.metrics.by_term[term] ?? 0) >= perTerm || state.metrics.extra_details >= perRound)) return false;
+      const termLimit=term.startsWith('family:')?Math.max(perTerm,4):perTerm;
+      if (discovery && ((state.metrics.by_term[term] ?? 0) >= termLimit || state.metrics.extra_details >= perRound)) return false;
       try{await reserveOlxAccess({watchlist:'notebooks',query:term,kind:'detail'});}
       catch(error){if(error.kind!=='deferred')throw error;state.metrics.traffic_deferred=(state.metrics.traffic_deferred??0)+1;state.metrics.traffic_reason=error.message;await save();return false;}
       state.metrics.total_details = (state.metrics.total_details ?? 0) + 1;
+      const waiting=card&&state.queue.find(entry=>entry.key===cardKey(card));
+      if(waiting)waiting.last_detail_attempt_at=new Date().toISOString();
       if (discovery) { state.metrics.extra_details++; state.metrics.by_term[term] = (state.metrics.by_term[term] ?? 0) + 1; }
       await save(); return true;
     },

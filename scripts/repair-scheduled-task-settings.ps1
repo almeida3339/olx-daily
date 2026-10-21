@@ -8,6 +8,7 @@ try {
   foreach ($name in @('Monitor-OLX-0700', 'Monitor-OLX-1600', 'Monitor-OLX-Catchup')) {
     $task = Get-ScheduledTask -TaskName $name -ErrorAction Stop
     $task.Settings.StartWhenAvailable = $true
+    $task.Settings.WakeToRun = $true
     $task.Settings.DisallowStartIfOnBatteries = $false
     $task.Settings.StopIfGoingOnBatteries = $false
     $task.Settings.ExecutionTimeLimit = 'PT4H'
@@ -15,7 +16,7 @@ try {
     $task.Settings.RestartInterval = 'PT15M'
     Set-ScheduledTask -InputObject $task -ErrorAction Stop | Out-Null
   }
-  'OK: horarios perdidos recuperados, bateria permitida, limite de quatro horas.' | Set-Content -LiteralPath $logPath
+  'OK: despertar habilitado, horarios perdidos recuperados, bateria permitida, limite de quatro horas.' | Set-Content -LiteralPath $logPath
 } catch {
   "ERRO: $($_.Exception.Message)" | Set-Content -LiteralPath $logPath
   throw

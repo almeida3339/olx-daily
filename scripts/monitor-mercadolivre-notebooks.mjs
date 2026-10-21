@@ -30,6 +30,7 @@ const requestedBudget = Number(option("--max-terms") ?? process.env.ML_NOTEBOOK_
 const budget = Number.isFinite(requestedBudget) && requestedBudget > 0 ? Math.floor(requestedBudget) : 6;
 let schedule = await readMercadoLivreSchedule(root);
 let lastRunPartial = false;
+const attemptedThisInvocation=new Set();
 if (process.argv.includes("--clear-cooldown")) {
   schedule = clearMercadoLivreCooldown(schedule);
   await writeMercadoLivreSchedule(root, schedule);
@@ -78,14 +79,18 @@ if (!plan.terms.length) {
     snapshot: result.snapshot,
   });
   await writeMercadoLivreSchedule(root, schedule);
-  if (result.snapshot.run?.aborted || result.snapshot.run?.failed_terms?.length) {
+  for(const task of plan.terms)attemptedThisInvocation.add(task.matchTerm??task.query??task);
+  const unexpectedFailures=(result.snapshot.run?.failed_terms??[]).filter(entry=>
+    !/limite de resultados atingido|ficha(?:s)? pendente(?:s)?/i.test(entry.error??String(entry)));
+  if (result.snapshot.run?.aborted || unexpectedFailures.length) {
     console.error("Mercado Livre Notebooks: coleta incompleta; resultados parciais preservados.");
     process.exitCode = 1;
     break;
   }
   if (!completeCoverage || requested) break;
-  const pending = configuredTasks.filter((task) => Date.parse(schedule.watchlists.notebooks?.terms[task.matchTerm]?.last_success_at ?? '') < collectionStart
-    || !schedule.watchlists.notebooks?.terms[task.matchTerm]?.last_success_at);
+  const pending = configuredTasks.filter((task) => !attemptedThisInvocation.has(task.matchTerm)
+    && (Date.parse(schedule.watchlists.notebooks?.terms[task.matchTerm]?.last_success_at ?? '') < collectionStart
+      || !schedule.watchlists.notebooks?.terms[task.matchTerm]?.last_success_at));
   plan = planMercadoLivreTerms(schedule, {
     watchlistId: 'notebooks', terms: pending, maxTerms: budget, force,
   });

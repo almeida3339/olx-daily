@@ -1,7 +1,7 @@
 import { normalizeMonitorText } from './monitor-core.mjs';
 import { isOlxRecommendationUrl } from './olx-listing.mjs';
 
-export const OLED_POLICY_VERSION = 1;
+export const OLED_POLICY_VERSION = 2;
 export const OLED_PRICE = { min: 1500, max: 3000 };
 export const OLED_DETAIL_TTL_MS = 24 * 3600_000;
 const codes = ['aw2726dm','aw2725d','aw2725df','aw3225qf','aw3423dw','aw3423dwf','aw3425dw',
@@ -54,7 +54,10 @@ export function assessOledMonitor(item, { requireDetail = true } = {}) {
     || /\b(?:somente|apenas|vendo|venda de)\s+(?:a\s+|o\s+)?(?:placa|carcaca|base|tela|fonte|suporte)\b/.test(title)
     || /\b(?:para\s+(?:retirada\s+de\s+)?pecas|pecas\s+(?:para|de)|kit\s+(?:placa|pecas))\b/.test(title);
   const other = /\b(?:smart\s*tv|televisor)\b|^(?:console\s+)?(?:nintendo|switch|steam\s*deck|notebook|laptop)\b/.test(title);
-  const nonOled = ['aw2725dm','aw2724dm','aw2720hf'].some(code=>codePattern(code).test(t))
+  const offeredTitle=title.split(/\b(?:por|versus|vs|comparado)\b/)[0];
+  const nonOled = (!oledModelIds(offeredTitle).length&&/\b(?:mini[ -]?led|qled)\b/.test(offeredTitle)
+      && !/\boled\b.*\b(?:mini[ -]?led|qled)\b/.test(offeredTitle))
+    || ['aw2725dm','aw2724dm','aw2720hf'].some(code=>codePattern(code).test(t))
     || /\b(?:painel|tecnologia|tela)\s*[:\-]?\s*(?:fast\s*)?(?:ips|va|tn|lcd)\b/.test(t);
   const defect = defectReason(text);
   if (part) reasons.push('Peça ou acessório, não monitor completo');
@@ -80,6 +83,14 @@ export function assessOledMonitor(item, { requireDetail = true } = {}) {
 
 export function isCompleteOledMonitor(item) {
   return assessOledMonitor(item, { requireDetail: false }).state !== 'rejected';
+}
+export function oledSearchMatchesTitle(title,query){
+  if(!isCompleteOledMonitor({title}))return false;
+  if(query==='monitor oled')return true;
+  const requested=oledModelIds(query),found=oledModelIds(title);
+  if(requested.length)return requested.some(id=>found.includes(id));
+  const code=value=>normalizeMonitorText(value).replace(/[^a-z0-9]/g,'');
+  return query==='monitor cepheus'?/\bcepheus\b/.test(normalizeMonitorText(title)):code(title).includes(code(query));
 }
 export function hasApprovedOledEvidence(item) {
   return Boolean(item && item.status !== 'out_of_scope' && item.oled_validation?.version === OLED_POLICY_VERSION

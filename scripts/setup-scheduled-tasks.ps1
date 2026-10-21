@@ -44,7 +44,7 @@ $catchupAction = New-ScheduledTaskAction `
 # - MultipleInstances IgnoreNew: evita rodar em paralelo se a anterior ainda estiver rodando
 $mainSettings = New-ScheduledTaskSettingsSet `
     -ExecutionTimeLimit (New-TimeSpan -Hours 4) `
-    -StartWhenAvailable -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries `
+    -StartWhenAvailable -WakeToRun -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries `
     -RestartCount 2 -RestartInterval (New-TimeSpan -Minutes 15) `
     -MultipleInstances IgnoreNew
 
@@ -76,7 +76,7 @@ $tBoot.Delay = "PT20M"
 
 $catchupSettings = New-ScheduledTaskSettingsSet `
     -ExecutionTimeLimit (New-TimeSpan -Hours 4) `
-    -StartWhenAvailable -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries `
+    -StartWhenAvailable -WakeToRun -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries `
     -RestartCount 2 -RestartInterval (New-TimeSpan -Minutes 15) `
     -MultipleInstances IgnoreNew
 

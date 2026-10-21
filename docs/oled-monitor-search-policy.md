@@ -1,5 +1,24 @@
 # Busca de monitores OLED
 
+## Ajustes de 21/10/2026
+
+- Política de identificação versão 2: buscas de modelo verificam o modelo no
+  título; `monitor oled` mantém descoberta ampla. MiniLED/QLED anunciado como
+  produto ou oferecido em troca por OLED é descartado antes de ler ficha.
+- OLX descobre candidatos primeiro, depois lê uma fila limitada, priorizando
+  modelos reconhecidos e conferências antigas. O intervalo compartilhado entre
+  navegações é de 12 segundos; os tetos globais não aumentaram.
+- A primeira rodada após bloqueio consulta um termo e no máximo duas fichas.
+  Uma nova recusa interrompe a fonte e eleva a pausa para 48h e depois 72h.
+  A pausa existente não é antecipada. Consultas não tentadas ficam adiadas,
+  sem renovar suas datas de conferência.
+- Bloqueios guardam etapa, URL sem parâmetros de rastreamento, status HTTP,
+  horário, título e Ray ID. Aviso e captura ficam em `logs/olx-access/`, com
+  retenção limitada, sem cookies ou cabeçalhos de autenticação. Esses arquivos
+  locais não são publicados. A configuração não garante liberação pelo site.
+
+As regras abaixo continuam válidas, com os ajustes acima tendo precedência.
+
 Atualizada em 15/10/2026. Faixa de R$1.500 a R$3.000 preservada nas três fontes.
 
 ## Identificação e aprovação
