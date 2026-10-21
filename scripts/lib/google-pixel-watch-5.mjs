@@ -1,16 +1,16 @@
 // Regras do Google Pixel Watch 5 (45 mm), compartilhadas pelo monitor OLX/
 // Enjoei e pela watchlist do Mercado Livre.
 //
-// Wi-Fi/Bluetooth (ou conectividade não declarada) custa até R$ 2.400;
-// 4G/LTE/celular custa até R$ 3.000. O tamanho precisa estar explícito para
+// Wi-Fi/Bluetooth e 4G/LTE/celular entre R$ 1.000 e R$ 2.200 (inclusive).
+// O tamanho precisa estar explícito para
 // impedir que a versão de 41 mm entre na mesma busca.
 import { normalizeMonitorCode, normalizeMonitorText } from "./monitor-core.mjs";
 
 export const GOOGLE_PIXEL_WATCH5_PRICE = Object.freeze({
-  min: 0,
-  max: 3000,
-  wifiMax: 2400,
-  lteMax: 3000,
+  min: 1000,
+  max: 2200,
+  wifiMax: 2200,
+  lteMax: 2200,
 });
 
 export const GOOGLE_PIXEL_WATCH5_TERMS = ["pixel watch 5"];

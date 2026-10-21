@@ -85,7 +85,7 @@ Big John e Denime foram excluídas das coletas em 15/10/2026 a pedido do usuári
 | **Galaxy Buds4 Pro** | OLX + Enjoei + Mercado Livre | R$ 500–1.000 | Busca pausada; dados históricos preservados |
 | **OnePlus Buds Pro 3** | OLX + Enjoei | R$ 300–800 | Exclui linha Nord e modelos próximos |
 | **Google Pixel Watch 4 — pausada** | OLX + Enjoei | Wi‑Fi até R$ 2.000 · LTE até R$ 2.500 | Somente 45 mm |
-| **Google Pixel Watch 5 — pausada** | OLX + Enjoei | Wi‑Fi até R$ 2.400 · LTE até R$ 3.000 | Somente 45 mm |
+| **Google Pixel Watch 5** | OLX + Enjoei + ML sob demanda | R$ 1.000–2.200 (inclusive) | Somente 45 mm; Wi-Fi e LTE |
 | **Oura Ring 5 — pausada** | OLX + Enjoei | R$ 1.800–2.700 | Tamanhos 9–11 |
 | **Monitores OLED** | OLX + Enjoei; ML sob demanda | R$ 1.500–3.000 | Modelo e descrição conferidos, cache de 24h, descoberta e rodízio |
 

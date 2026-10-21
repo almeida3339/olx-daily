@@ -656,7 +656,7 @@ function buildHtml({ health, priceInsights, japaneseJeans, zegna, zegnaUpdated, 
     { chip: "Buds4 Pro · pausado", title: "Galaxy Buds4 Pro — busca pausada", sub: "Histórico preservado · OLX, Enjoei e Mercado Livre", data: buds4Pro, dpath: "data/galaxy-buds4-pro", upd: buds4ProUpdated },
     { chip: "OnePlus Buds Pro 3", title: "OnePlus Buds Pro 3", sub: "OLX + Enjoei · R$ 300 – R$ 800",           data: onePlusBuds, dpath: "data/oneplus-buds-pro-3", upd: onePlusBudsUpdated },
     { chip: "Google Pixel Watch 4 · pausado", title: "Google Pixel Watch 4 — busca pausada", sub: "Histórico preservado · OLX + Enjoei · 45 mm · Wi‑Fi até R$ 2.000 · LTE até R$ 2.500", data: pixelWatch4, dpath: "data/google-pixel-watch-4", upd: pixelWatch4Updated },
-    { chip: "Google Pixel Watch 5 · pausado", title: "Google Pixel Watch 5 — busca pausada", sub: "Histórico preservado · OLX + Enjoei · 45 mm · Wi‑Fi até R$ 2.400 · LTE até R$ 3.000", data: pixelWatch5, dpath: "data/google-pixel-watch-5", upd: pixelWatch5Updated },
+    { chip: "Google Pixel Watch 5", title: "Google Pixel Watch 5", sub: "OLX + Enjoei · 45 mm · R$ 1.000 – R$ 2.200 · Wi‑Fi e LTE", data: pixelWatch5, dpath: "data/google-pixel-watch-5", upd: pixelWatch5Updated },
     { chip: "Oura Ring 5 · pausado",      title: "Oura Ring 5 — busca pausada",       sub: "Histórico preservado · OLX + Enjoei · tam 9-11 · R$ 1.800 – R$ 2.700",data: oura,           dpath: "data/oura-ring5",         upd: ouraUpdated },
     { chip: "Monitores OLED",   title: "Monitores OLED",    sub: "OLX c/ entrega + Enjoei · R$ 1.500 – R$ 3.000", data: oledMonitores,  dpath: "data/oled-monitores",     upd: oledMonitoresUpdated },
   ];

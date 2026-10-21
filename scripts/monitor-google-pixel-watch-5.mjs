@@ -1,5 +1,5 @@
 // Watchlist do Google Pixel Watch 5 — OLX + Enjoei.
-// Somente 45 mm: Wi-Fi/Bluetooth até R$ 2.400; LTE até R$ 3.000.
+// Somente 45 mm: Wi-Fi/Bluetooth e LTE entre R$ 1.000 e R$ 2.200.
 import path from "node:path";
 import { runWatchlistMonitor } from "./lib/watchlist-monitor.mjs";
 import {

@@ -50,7 +50,6 @@ export const mercadoLivreWatchlists = [
   },
   {
     id: "google-pixel-watch-5",
-    paused: true,
     label: "Google Pixel Watch 5",
     terms: GOOGLE_PIXEL_WATCH5_TERMS,
     matchVariants: GOOGLE_PIXEL_WATCH5_MATCH_VARIANTS,
