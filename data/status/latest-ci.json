@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-21T11:01:17.529Z",
+  "generated_at": "2026-10-21T19:01:06.474Z",
   "source": "ci",
   "delivery": {
     "email": "skipped",
@@ -38,15 +38,15 @@
   "whatsapp": "sent",
   "monitoring": {
     "scope": "local-watchlists",
-    "partial": false,
-    "status": "success",
+    "partial": true,
+    "status": "deferred",
     "outcomes": [
       {
         "source": "enjoei-tenis",
         "status": "success",
         "exit_code": 0,
         "reasons": [],
-        "completed_terms": 6,
+        "completed_terms": 4,
         "incomplete_terms": 0,
         "deferred_terms": 0
       },
@@ -55,7 +55,7 @@
         "status": "success",
         "exit_code": 0,
         "reasons": [],
-        "completed_terms": 20,
+        "completed_terms": 4,
         "incomplete_terms": 0,
         "deferred_terms": 0
       },
@@ -142,15 +142,25 @@
       },
       {
         "source": "oled-monitores",
-        "status": "success",
-        "exit_code": 0,
-        "reasons": [],
-        "completed_terms": 1,
+        "status": "deferred",
+        "exit_code": 3,
+        "reasons": [
+          "OLX: consultas adiadas após bloqueio; retomada prevista em 22/10/2026, 08:54:39 BRT."
+        ],
+        "completed_terms": 0,
         "incomplete_terms": 0,
-        "deferred_terms": 0
+        "deferred_terms": 21
       }
     ],
-    "warnings": [],
+    "warnings": [
+      {
+        "source": "oled-monitores",
+        "status": "deferred",
+        "reasons": [
+          "OLX: consultas adiadas após bloqueio; retomada prevista em 22/10/2026, 08:54:39 BRT."
+        ]
+      }
+    ],
     "errors": []
   },
   "notification_sent_ids": [
@@ -194,7 +204,9 @@
     "bf7a62e4-7c07-45fa-be5e-2766fa2fbc11",
     "c3cf5da4-01b9-4dfc-910e-180393959b1f",
     "4b1f9ce7-85da-43c3-9c3d-c87215c917ef",
-    "9adcc9af-8059-462d-a001-c2eedc8f9c8c"
+    "56a2b6bc-4159-4f7d-86e0-785b30293fcc",
+    "9adcc9af-8059-462d-a001-c2eedc8f9c8c",
+    "4ce940f4-0443-4ace-b3c1-f641d24550e6"
   ],
   "notification_archive": [
     {

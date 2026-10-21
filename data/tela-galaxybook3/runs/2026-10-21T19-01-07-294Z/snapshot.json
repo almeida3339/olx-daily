@@ -1,0 +1,66 @@
+{
+  "schema_version": 2,
+  "generated_at": "2026-10-21T19:01:07.294Z",
+  "coverage_status": {
+    "Enjoei:BA96-08462A": {
+      "checked_at": "2026-10-21T19:01:07.479Z",
+      "last_success_at": "2026-10-21T19:01:07.479Z",
+      "state": "success",
+      "error": null
+    },
+    "OLX:BA96-08462A": {
+      "checked_at": "2026-10-20T10:03:04.080Z",
+      "last_success_at": "2026-10-20T10:03:04.080Z",
+      "state": "success",
+      "error": null
+    }
+  },
+  "run": {
+    "date": "2026-10-21",
+    "timezone": "UTC",
+    "id": "tela-galaxy-book3",
+    "label": "Tela Galaxy Book3",
+    "started_at": "2026-10-21T19:01:07.294Z",
+    "completed_at": "2026-10-21T19:01:07.479Z",
+    "partial": false,
+    "errors": [],
+    "deferred_coverage": [],
+    "unattempted_coverage": [],
+    "scheduled_coverage": [
+      "Enjoei:BA96-08462A"
+    ],
+    "successful_coverage": [
+      "Enjoei:BA96-08462A"
+    ],
+    "failed_coverage": [],
+    "configured_coverage": [
+      "Enjoei:BA96-08462A",
+      "OLX:BA96-08462A"
+    ],
+    "quarantined_item_count": 0,
+    "operational": {
+      "status": "success",
+      "exit_code": 0,
+      "reasons": [],
+      "completed_terms": 1,
+      "incomplete_terms": 0,
+      "deferred_terms": 0
+    }
+  },
+  "filters": {
+    "price_brl": {
+      "min": 0,
+      "max": 1000
+    },
+    "size_ml": {
+      "min": null,
+      "max": null
+    }
+  },
+  "items": [],
+  "price_range_brl": {
+    "min": 0,
+    "max": 1000
+  },
+  "source_blocks": {}
+}
