@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-20T19:01:22.453Z",
+  "generated_at": "2026-10-21T11:01:17.529Z",
   "source": "ci",
   "delivery": {
     "email": "skipped",
@@ -38,15 +38,15 @@
   "whatsapp": "sent",
   "monitoring": {
     "scope": "local-watchlists",
-    "partial": true,
-    "status": "deferred",
+    "partial": false,
+    "status": "success",
     "outcomes": [
       {
         "source": "enjoei-tenis",
         "status": "success",
         "exit_code": 0,
         "reasons": [],
-        "completed_terms": 4,
+        "completed_terms": 6,
         "incomplete_terms": 0,
         "deferred_terms": 0
       },
@@ -55,7 +55,7 @@
         "status": "success",
         "exit_code": 0,
         "reasons": [],
-        "completed_terms": 4,
+        "completed_terms": 20,
         "incomplete_terms": 0,
         "deferred_terms": 0
       },
@@ -142,25 +142,15 @@
       },
       {
         "source": "oled-monitores",
-        "status": "deferred",
-        "exit_code": 3,
-        "reasons": [
-          "OLX: consultas adiadas após bloqueio; retomada prevista em 21/10/2026, 07:03:54 BRT."
-        ],
-        "completed_terms": 0,
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 1,
         "incomplete_terms": 0,
-        "deferred_terms": 21
+        "deferred_terms": 0
       }
     ],
-    "warnings": [
-      {
-        "source": "oled-monitores",
-        "status": "deferred",
-        "reasons": [
-          "OLX: consultas adiadas após bloqueio; retomada prevista em 21/10/2026, 07:03:54 BRT."
-        ]
-      }
-    ],
+    "warnings": [],
     "errors": []
   },
   "notification_sent_ids": [
@@ -201,8 +191,10 @@
     "cb12b5f4-6731-420c-a1d1-da433e650694",
     "b967e1e0-a32f-4bb4-b7bc-5b27e3d71277",
     "02dc3a44-3824-48d6-9e89-f6ab7f0b73df",
+    "bf7a62e4-7c07-45fa-be5e-2766fa2fbc11",
     "c3cf5da4-01b9-4dfc-910e-180393959b1f",
-    "4b1f9ce7-85da-43c3-9c3d-c87215c917ef"
+    "4b1f9ce7-85da-43c3-9c3d-c87215c917ef",
+    "9adcc9af-8059-462d-a001-c2eedc8f9c8c"
   ],
   "notification_archive": [
     {
