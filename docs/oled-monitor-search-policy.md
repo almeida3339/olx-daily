@@ -16,6 +16,10 @@
   horário, título e Ray ID. Aviso e captura ficam em `logs/olx-access/`, com
   retenção limitada, sem cookies ou cabeçalhos de autenticação. Esses arquivos
   locais não são publicados. A configuração não garante liberação pelo site.
+- No ML, consultas elegíveis alternam pela última tentativa, inclusive quando
+  ficaram incompletas. O lote normal reserva até dois lugares para secundárias
+  elegíveis, mantendo preferência das prioritárias e os mesmos seis termos por
+  lote. Seleção manual aceita uma lista de termos separados por vírgula.
 
 As regras abaixo continuam válidas, com os ajustes acima tendo precedência.
 

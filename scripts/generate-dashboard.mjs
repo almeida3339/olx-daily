@@ -266,6 +266,10 @@ async function gather(dir, prefix, excludePrefix, detailsByUrl = new Map()) {
       p.pendingCount = p.allPendingItems.length;
     }
     if ([OLED_MONITORES_DIR, path.join(ROOT, 'data', 'mercadolivre-oled-monitores')].includes(dir)) {
+      const accesses=[...txt.matchAll(/^- (?:OLX|Enjoei): (\d+) consultas, (\d+) detalhes/gm)];
+      if(accesses.length&&accesses.every(match=>Number(match[1])===0&&Number(match[2])===0)){
+        p.allNewItems=[];p.allPriceItems=[];
+      }
       for (const field of ['allNewItems', 'allPriceItems']) p[field] = p[field].filter(item => isApprovedOledMonitor(detailsByUrl.get(item.url)));
       p.allPendingItems=p.allPendingItems.filter(parsed=>{
         const item=detailsByUrl.get(parsed.url);
@@ -723,7 +727,7 @@ function buildHtml({ health, priceInsights, japaneseJeans, zegna, zegnaUpdated, 
       ? `<small>${source.history.sample} rodadas · ${source.history.complete ?? 0} completas · ${source.history.partial} parciais · ${source.history.deferred ?? 0} adiadas · ${source.history.blocked ?? 0} bloqueadas · ${source.history.failed} falhas</small>`
       : "";
     const datetime = updatedDate && !Number.isNaN(updatedDate.getTime()) ? ` datetime="${e(updatedDate.toISOString())}"` : "";
-    const labels={success:'Completa',partial:'Parcial; resultados preservados',deferred:'Adiada pela programação ou pausa',blocked:'Bloqueio ou login exigido',failed:'Falha técnica'};
+    const labels={success:'Completa',partial:'Parcial; resultados preservados',deferred:'Consultas adiadas; resultados preservados',blocked:'Bloqueio ou login exigido',failed:'Falha técnica'};
     const operational=labels[source.operational_status]?`<small>Última rodada: ${e(labels[source.operational_status])}</small>`:'';
     return `<div class="health ${e(source.state)}"><b>${e(source.label)}</b><span>${e(source.message)}</span>${operational}${history}<time${datetime}>${e(updated)}</time></div>`;
   }).join("\n");
@@ -738,6 +742,7 @@ function buildHtml({ health, priceInsights, japaneseJeans, zegna, zegnaUpdated, 
   const trafficHtml=traffic?`<section><h2>Orçamento da OLX</h2><ul>
     <li>Hoje: ${trafficUsage.search}/${traffic.limits.daily.search} buscas e ${trafficUsage.detail}/${traffic.limits.daily.detail} fichas</li>
     <li>Por rodada: até ${traffic.limits.round.search} buscas e ${traffic.limits.round.detail} fichas, somando todas as buscas da OLX</li>
+    ${traffic.access_interval_ms!=null?`<li>Intervalo mínimo compartilhado: ${Number(traffic.access_interval_ms)/1000} segundos entre buscas e fichas</li>`:''}
     ${Object.entries(trafficUsage.watchlists).map(([name,usage])=>`<li>${e(name)}<span>${usage.search} buscas · ${usage.detail} fichas</span></li>`).join('')}
     </ul><p class="hint">Contagem iniciada em ${e(formatDateTimeBrt(new Date(traffic.tracking_started_at)))}. Tentativas também contam. Cache não consome acessos.</p></section>`:'';
   const attentionCount = health.sources.length - healthyCount;

@@ -44,13 +44,21 @@ export function planMercadoLivreTerms(schedule, { watchlistId, terms, now = new 
   const due = normalizedTerms
     .map((task, index) => ({ task, index, state: state.terms[task.matchTerm] ?? {} }))
     .filter(({ state: termState,task }) => force || isTermDue(termState, time,watchlistId==='oled-monitores'?oledMlIntervalHours(task.matchTerm,termState,time):null));
-  // Missing and oldest successful terms take precedence over recent terms.
-  // This lets bounded batches complete coverage rather than repeat a subset.
+  // A limited listing still consumed an attempt. Rotate by last check so a
+  // permanently incomplete query cannot starve the rest of the catalog.
   const priority=term=>watchlistId==='oled-monitores'&&!['monitor oled',...OLED_PRIORITY_TERMS].includes(term)?1:0;
   const rotated = due.sort((left, right) => priority(left.task.matchTerm)-priority(right.task.matchTerm)
-    || (Date.parse(left.state.last_success_at ?? '') || 0) - (Date.parse(right.state.last_success_at ?? '') || 0));
+    || (Date.parse(left.state.last_checked_at ?? left.state.last_success_at ?? '') || 0)
+      - (Date.parse(right.state.last_checked_at ?? right.state.last_success_at ?? '') || 0));
   const limit = Number.isFinite(Number(maxTerms)) ? Math.max(1, Math.floor(Number(maxTerms))) : 6;
-  const selected = rotated.slice(0, limit);
+  let selected = rotated.slice(0, limit);
+  if(watchlistId==='oled-monitores'&&!force&&limit>1){
+    const primary=rotated.filter(entry=>priority(entry.task.matchTerm)===0);
+    const secondary=rotated.filter(entry=>priority(entry.task.matchTerm)>0);
+    const primarySlots=secondary.length?Math.max(1,limit-2):limit;
+    const first=primary.slice(0,primarySlots);
+    selected=[...first,...secondary.slice(0,limit-first.length),...primary.slice(primarySlots)].slice(0,limit);
+  }
   const nextAt = due.length > selected.length
     ? now.toISOString()
     : earliestNextAt(normalizedTerms, state, time,watchlistId);

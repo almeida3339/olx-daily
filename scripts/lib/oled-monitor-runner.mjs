@@ -286,6 +286,10 @@ async function collect({ root,dataDir }) {
 export function renderOledReport(snapshot,previous) {
   const changes=buildMonitorChanges(previous?{...previous,items:previous.items.filter(hasApprovedOledEvidence)}:null,snapshot,
     {include:item=>item.status==='active'&&isApprovedOledMonitor(item),reactivationIsNew:false});
+  const accessCounts=Object.values(snapshot.run.discovery?.sources??{});
+  if(accessCounts.length&&accessCounts.every(source=>!source.search_requests&&!source.detail_reads)){
+    changes.newItems=[];changes.priceChanges=[];
+  }
   const active=snapshot.items.filter(i=>i.status==='active'&&isApprovedOledMonitor(i));
   const line=item=>`- R$ ${Number(item.price_brl).toLocaleString('pt-BR',{minimumFractionDigits:2})} — ${item.title} — ${item.url}`;
   const lines=[`# Monitor Monitores OLED — ${snapshot.run.date??snapshot.generated_at.slice(0,10)}`,'','## Resumo executivo',

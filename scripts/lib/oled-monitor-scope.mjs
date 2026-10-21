@@ -93,7 +93,10 @@ export function oledSearchMatchesTitle(title,query){
   return query==='monitor cepheus'?/\bcepheus\b/.test(normalizeMonitorText(title)):code(title).includes(code(query));
 }
 export function hasApprovedOledEvidence(item) {
-  return Boolean(item && item.status !== 'out_of_scope' && item.oled_validation?.version === OLED_POLICY_VERSION
+  // Reassess older saved evidence with today's rules without turning an
+  // unchanged approved offer into a new one when the policy version changes.
+  return Boolean(item && item.status !== 'out_of_scope' && Number.isInteger(item.oled_validation?.version)
+    && item.oled_validation.version>=1 && item.oled_validation.version<=OLED_POLICY_VERSION
     && Number(item.price_brl)>=OLED_PRICE.min && Number(item.price_brl)<=OLED_PRICE.max
     && item.oled_validation.state === 'approved' && assessOledMonitor(item).state === 'approved'
     && Number.isFinite(Date.parse(item.details_checked_at)));

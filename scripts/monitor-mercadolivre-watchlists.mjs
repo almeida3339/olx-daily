@@ -19,6 +19,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const profileDir = process.env.MERCADOLIVRE_PROFILE_DIR ?? path.join(root, ".chrome-mercadolivre-profile");
 const selected = option("--watchlist");
 const selectedTerm = option("--term");
+const selectedTerms=selectedTerm?[...new Set(selectedTerm.split(',').map(term=>normalizeOledSearchTerm(term.trim())).filter(Boolean))]:null;
 const includePaused = process.argv.includes("--include-paused");
 const fullSweep = process.argv.includes("--full-sweep");
 const force = process.argv.includes("--force") || fullSweep;
@@ -48,9 +49,9 @@ if (process.argv.includes("--clear-cooldown")) {
 let remaining = selectedTerm ? Number.POSITIVE_INFINITY : Math.max(1, budget);
 for (const watchlist of watchlists) {
   const configuredTerms = selectedTerm
-    ? watchlist.terms.filter((term) => term.toLowerCase() === (watchlist.kind==='oled'?normalizeOledSearchTerm(selectedTerm):selectedTerm.toLowerCase()))
+    ? watchlist.terms.filter((term) => selectedTerms.includes(watchlist.kind==='oled'?normalizeOledSearchTerm(term):term.toLowerCase()))
     : watchlist.terms;
-  if (selectedTerm && configuredTerms.length === 0) throw new Error(`Termo desconhecido para ${watchlist.id}: ${selectedTerm}`);
+  if (selectedTerm && configuredTerms.length !== selectedTerms.length) throw new Error(`Termo desconhecido para ${watchlist.id}: ${selectedTerm}`);
   const plan = planMercadoLivreTerms(schedule, {
     watchlistId: watchlist.id,
     terms: configuredTerms,
