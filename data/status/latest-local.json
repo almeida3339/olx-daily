@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-20T19:00:08.960Z",
+  "generated_at": "2026-10-21T11:51:37.936Z",
   "source": "local",
   "delivery": {
     "email": "skipped",
@@ -39,7 +39,7 @@
   "monitoring": {
     "scope": "local-watchlists",
     "partial": true,
-    "status": "partial",
+    "status": "blocked",
     "outcomes": [
       {
         "source": "olx",
@@ -47,7 +47,7 @@
         "exit_code": 2,
         "reasons": [
           "Listagem incompleta: limite de 12 cards ou próxima página pendente",
-          "Listagem incompleta: limite de 12 cards ou próxima página pendente; 3 ficha(s) aguardando leitura dentro dos limites da rodada"
+          "Listagem incompleta: limite de 12 cards ou próxima página pendente; 9 ficha(s) aguardando leitura dentro dos limites da rodada"
         ],
         "completed_terms": 7,
         "incomplete_terms": 2,
@@ -91,14 +91,10 @@
       },
       {
         "source": "oled-monitores",
-        "status": "deferred",
-        "exit_code": 3,
+        "status": "blocked",
         "reasons": [
-          "OLX: consultas adiadas após bloqueio; retomada prevista em 21/10/2026, 07:03:54 BRT."
-        ],
-        "completed_terms": 0,
-        "incomplete_terms": 0,
-        "deferred_terms": 9
+          "Saiu com código 4: Aviso: termo \"aw2725d\" em https://www.olx.com.br/brasil/informatica/monitores falhou — Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4e011969d14dfda).\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.\nColeta OLED parcial: 10 consulta(s) incompleta(s), 0 adiada(s).\nOLX:aw2725d: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4e011969d14dfda).\nOLX:aw2726dm: Consulta não executada após interrupção\nOLX:aw2725df: Consulta não executada após interrupção"
+        ]
       }
     ],
     "warnings": [
@@ -107,7 +103,7 @@
         "status": "partial",
         "reasons": [
           "Listagem incompleta: limite de 12 cards ou próxima página pendente",
-          "Listagem incompleta: limite de 12 cards ou próxima página pendente; 3 ficha(s) aguardando leitura dentro dos limites da rodada"
+          "Listagem incompleta: limite de 12 cards ou próxima página pendente; 9 ficha(s) aguardando leitura dentro dos limites da rodada"
         ]
       },
       {
@@ -129,16 +125,11 @@
         "source": "oneplus-buds",
         "status": "partial",
         "reasons": []
-      },
-      {
-        "source": "oled-monitores",
-        "status": "deferred",
-        "reasons": [
-          "OLX: consultas adiadas após bloqueio; retomada prevista em 21/10/2026, 07:03:54 BRT."
-        ]
       }
     ],
-    "errors": []
+    "errors": [
+      "Monitores OLED: Saiu com código 4: Aviso: termo \"aw2725d\" em https://www.olx.com.br/brasil/informatica/monitores falhou — Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4e011969d14dfda).\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.\nColeta OLED parcial: 10 consulta(s) incompleta(s), 0 adiada(s).\nOLX:aw2725d: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4e011969d14dfda).\nOLX:aw2726dm: Consulta não executada após interrupção\nOLX:aw2725df: Consulta não executada após interrupção"
+    ]
   },
   "notification_sent_ids": [
     "ba389d82-208c-40a7-ada6-a22a454a4618",
@@ -178,7 +169,10 @@
     "cb12b5f4-6731-420c-a1d1-da433e650694",
     "b967e1e0-a32f-4bb4-b7bc-5b27e3d71277",
     "02dc3a44-3824-48d6-9e89-f6ab7f0b73df",
-    "bf7a62e4-7c07-45fa-be5e-2766fa2fbc11"
+    "bf7a62e4-7c07-45fa-be5e-2766fa2fbc11",
+    "c3cf5da4-01b9-4dfc-910e-180393959b1f",
+    "4b1f9ce7-85da-43c3-9c3d-c87215c917ef",
+    "56a2b6bc-4159-4f7d-86e0-785b30293fcc"
   ],
   "notification_archive": [
     {

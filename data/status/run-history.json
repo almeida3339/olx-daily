@@ -1,19 +1,21 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-21T11:01:30.121Z",
+  "updated_at": "2026-10-21T11:54:41.185Z",
   "runs": [
     {
-      "run_id": "df4c539d-4592-4e7e-aa19-fbee93b241b1",
-      "completed_at": "2026-10-21T11:01:30.120Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 12591,
+      "run_id": "984b0708-d7b0-42d2-b670-15350ea2b1b0",
+      "completed_at": "2026-10-21T11:54:41.154Z",
+      "outcome": "blocked",
+      "partial": true,
+      "duration_ms": 183218,
       "item_count": 0,
       "quarantined_item_count": 0,
       "metadata": {
-        "source": "ci",
-        "monitor_errors": 0,
-        "monitor_failures": [],
+        "source": "local",
+        "monitor_errors": 1,
+        "monitor_failures": [
+          "Monitores OLED: Saiu com código 4: Aviso: termo \"aw2725d\" em https://www.olx.com.br/brasil/informatica/monitores falhou — Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4e011969d14dfda).\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.\nColeta OLED parcial: 10 consulta(s) incompleta(s), 0 adiada(s).\nOLX:aw2725d: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4e011969d14dfda).\nOLX:aw2726dm: Consulta não executada após interrupção\nOLX:aw2725df: Consulta não executada após interrupção"
+        ],
         "pending_notifications": 0
       }
     },
