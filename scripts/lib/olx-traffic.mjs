@@ -79,9 +79,11 @@ export async function reserveOlxAccess({watchlist,query,kind,force=false,retry=f
   while(Date.now()<result.reserved_at)await new Promise(resolve=>setTimeout(resolve,Math.min(15000,result.reserved_at-Date.now())));
   return result;
 }
-export async function recordOlxYield(watchlist,query,{items=[],complete=false,blocked=false}={}) {
+export async function recordOlxYield(watchlist,query,{items=[],complete=false,blocked=false,listingLimit=null,listingIncomplete=null}={}) {
   await withState(state=>{
     const key=`${watchlist}:${query}`,record=state.queries[key]??={};
+    if(listingLimit!=null)record.listing_limit=listingLimit;
+    if(listingIncomplete!=null)record.listing_incomplete=listingIncomplete;
     const prices=Object.fromEntries(items.slice(0,100).map(item=>[item.id??item.url,Number(item.price_brl)]));
     const changed=Object.entries(prices).some(([id,price])=>record.prices?.[id]!==price);
     record.approved=items.length;

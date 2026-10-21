@@ -21,7 +21,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const profileDir = process.env.MERCADOLIVRE_PROFILE_DIR ?? path.join(root, ".chrome-mercadolivre-profile");
 const dataDir = process.env.MERCADOLIVRE_NOTEBOOKS_DATA_DIR ?? path.join(root, "data", "mercadolivre-notebooks");
 const requested = option("--cpu");
-const cpuTerms = requested ? [requested.toLowerCase()] : DEFAULT_CPU_TERMS;
+const cpuTerms = requested ? requested.split(',').map(term=>term.trim().toLowerCase()).filter(Boolean) : DEFAULT_CPU_TERMS;
 const fullSweep = process.argv.includes("--full-sweep");
 const completeCoverage = process.argv.includes("--complete-coverage") || fullSweep;
 const collectionStart = Date.now();

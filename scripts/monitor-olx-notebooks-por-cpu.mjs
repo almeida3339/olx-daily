@@ -303,6 +303,7 @@ async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transp
           details_pending: results.details_pending ?? 0, total_results: results.total_results ?? null,
           recommendations_ignored: results.recommendations_ignored ?? 0 };
         await recordOlxYield('notebooks',term,{complete:!results.coverage_incomplete,
+          listingLimit:results.listing_limit,listingIncomplete:Boolean(results.listing_incomplete),
           items:results.filter(item=>isValidatedOlxItem(item)&&item.price_brl<=PRICE_MAX_BRL)});
         console.log(`  ${results.filter(isValidatedOlxItem).length} validado(s), ${results.filter(x => x.validation?.state === 'pending').length} pendente(s), ${results.filter(x => x.validation?.state === 'rejected').length} rejeitado(s).`);
       } catch (error) {
@@ -399,7 +400,7 @@ async function connectToCurrentChrome(cdpEndpoint) {
 }
 
 async function collectForCpuTerm(page, cpuTerm, maxCards, previousSnapshot) {
-  maxCards=notebookListingLimit(cpuTerm,maxCards,previousSnapshot);
+  maxCards=await notebookListingLimit(cpuTerm,maxCards,previousSnapshot);
   const query = encodeURIComponent(olxQuery(cpuTerm));
   const url = `${BASE_URL}?q=${query}&sp=1&opst=2`;
   console.log(`\nCPU: ${cpuTerm} -> ${url}`);
@@ -422,7 +423,7 @@ async function collectForCpuTerm(page, cpuTerm, maxCards, previousSnapshot) {
 }
 
 async function collectForCpuTermRawCdp(tab, cpuTerm, maxCards, previousSnapshot) {
-  maxCards=notebookListingLimit(cpuTerm,maxCards,previousSnapshot);
+  maxCards=await notebookListingLimit(cpuTerm,maxCards,previousSnapshot);
   const url = `${BASE_URL}?q=${encodeURIComponent(olxQuery(cpuTerm))}&sp=1&opst=2`;
   console.log(`\nCPU: ${cpuTerm} -> ${url}`);
   await reserveNotebookSearch(cpuTerm);
@@ -433,10 +434,13 @@ async function collectForCpuTermRawCdp(tab, cpuTerm, maxCards, previousSnapshot)
   return processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, card => enrichAdRawCdp(cdpUrl, card));
 }
 
-function notebookListingLimit(term,base,previous){
-  const last=previous?.run?.query_yield?.[term];
-  const expanded=term==='14900hx'||term.startsWith('family:')||last?.listing_incomplete;
-  return expanded?Math.min(60,Math.max(base,term.startsWith('family:')?60:Number(last?.listing_limit??base)+24)):base;
+async function notebookListingLimit(term,base,previous){
+  if(term.startsWith('family:'))return Math.max(base,60);
+  const traffic=await readOlxTraffic(),saved=traffic?.queries?.[`notebooks:${term}`];
+  const last=previous?.run?.query_yield?.[term]??saved;
+  const truncated=last?.listing_incomplete??/listagem incompleta/i.test(previous?.coverage_status?.[term]?.error??'');
+  const prior=Number(last?.listing_limit??base);
+  return term==='14900hx'||truncated?Math.min(60,Math.max(base,truncated?prior+24:Math.max(prior,36))):base;
 }
 
 async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openDetail) {
