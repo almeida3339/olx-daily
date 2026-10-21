@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-10-21T19:01:12.755Z",
+  "generated_at": "2026-10-21T19:01:52.987Z",
   "sources": [
     {
       "id": "enjoei-momotaro",
@@ -8,7 +8,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T19:01:06.955Z",
-      "age_ms": 5800,
+      "age_ms": 46032,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -38,7 +38,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T19:01:08.085Z",
-      "age_ms": 4670,
+      "age_ms": 44902,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -68,7 +68,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T19:01:08.715Z",
-      "age_ms": 4040,
+      "age_ms": 44272,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -98,7 +98,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T19:01:09.234Z",
-      "age_ms": 3521,
+      "age_ms": 43753,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -128,7 +128,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T19:01:09.750Z",
-      "age_ms": 3005,
+      "age_ms": 43237,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -158,7 +158,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T19:01:10.783Z",
-      "age_ms": 1972,
+      "age_ms": 42204,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -188,7 +188,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T19:01:06.970Z",
-      "age_ms": 5785,
+      "age_ms": 46017,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -218,7 +218,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T19:01:06.995Z",
-      "age_ms": 5760,
+      "age_ms": 45992,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -248,7 +248,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T19:01:07.592Z",
-      "age_ms": 5163,
+      "age_ms": 45395,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -278,7 +278,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T19:01:07.004Z",
-      "age_ms": 5751,
+      "age_ms": 45983,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -306,18 +306,18 @@
       "id": "olx",
       "label": "OLX Notebooks",
       "state": "partial",
-      "operational_status": "partial",
-      "updated_at": "2026-10-21T14:45:19.885Z",
-      "age_ms": 15352870,
+      "operational_status": "success",
+      "updated_at": "2026-10-21T19:01:34.768Z",
+      "age_ms": 18219,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
-        "partial": 10,
+        "partial": 9,
         "failed": 0,
         "blocked": 0,
         "deferred": 0,
-        "complete": 0,
-        "success_rate": 0,
+        "complete": 1,
+        "success_rate": 0.1,
         "median_duration_ms": 119286
       },
       "marketplaces": [
@@ -327,18 +327,18 @@
           "total_terms": 20,
           "fresh_terms": 20,
           "warming_terms": 0,
-          "updated_at": "2026-10-21T14:45:19.885Z"
+          "updated_at": "2026-10-21T19:01:34.768Z"
         },
         {
           "label": "OLX modelos",
           "state": "partial",
           "total_terms": 6,
-          "fresh_terms": 2,
+          "fresh_terms": 3,
           "warming_terms": 0,
-          "updated_at": "2026-10-21T14:45:19.885Z"
+          "updated_at": "2026-10-21T19:01:34.768Z"
         }
       ],
-      "message": "OLX: Saudável (20/20 termos recentes) · OLX modelos: Cobertura parcial (2/6 termos recentes)"
+      "message": "OLX: Saudável (20/20 termos recentes) · OLX modelos: Cobertura parcial (3/6 termos recentes)"
     },
     {
       "id": "enjoei-notebooks",
@@ -346,7 +346,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T19:01:09.300Z",
-      "age_ms": 3455,
+      "age_ms": 43687,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -376,7 +376,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T19:01:09.090Z",
-      "age_ms": 3665,
+      "age_ms": 43897,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -428,19 +428,19 @@
       "id": "lifefactory",
       "label": "Lifefactory",
       "state": "healthy",
-      "operational_status": "success",
-      "updated_at": "2026-10-21T19:01:07.042Z",
-      "age_ms": 5713,
+      "operational_status": "deferred",
+      "updated_at": "2026-10-21T19:01:37.368Z",
+      "age_ms": 15619,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
         "partial": 3,
         "failed": 0,
         "blocked": 0,
-        "deferred": 0,
-        "complete": 7,
-        "success_rate": 0.7,
-        "median_duration_ms": 372
+        "deferred": 1,
+        "complete": 6,
+        "success_rate": 0.6,
+        "median_duration_ms": 909
       },
       "marketplaces": [
         {
@@ -449,7 +449,7 @@
           "total_terms": 1,
           "fresh_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-10-21T19:01:07.042Z"
+          "updated_at": "2026-10-21T19:01:37.368Z"
         },
         {
           "label": "OLX",
@@ -466,19 +466,19 @@
       "id": "tela-galaxybook3",
       "label": "Tela Book3",
       "state": "healthy",
-      "operational_status": "success",
-      "updated_at": "2026-10-21T19:01:07.479Z",
-      "age_ms": 5276,
+      "operational_status": "deferred",
+      "updated_at": "2026-10-21T19:01:38.815Z",
+      "age_ms": 14172,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
         "partial": 3,
         "failed": 0,
         "blocked": 0,
-        "deferred": 0,
-        "complete": 7,
-        "success_rate": 0.7,
-        "median_duration_ms": 208
+        "deferred": 1,
+        "complete": 6,
+        "success_rate": 0.6,
+        "median_duration_ms": 818
       },
       "marketplaces": [
         {
@@ -487,7 +487,7 @@
           "total_terms": 1,
           "fresh_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-10-21T19:01:07.479Z"
+          "updated_at": "2026-10-21T19:01:38.815Z"
         },
         {
           "label": "OLX",
@@ -504,19 +504,19 @@
       "id": "melanger",
       "label": "Melanger",
       "state": "healthy",
-      "operational_status": "success",
-      "updated_at": "2026-10-21T19:01:07.931Z",
-      "age_ms": 4824,
+      "operational_status": "deferred",
+      "updated_at": "2026-10-21T19:01:40.414Z",
+      "age_ms": 12573,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
         "partial": 3,
         "failed": 0,
         "blocked": 0,
-        "deferred": 0,
-        "complete": 7,
-        "success_rate": 0.7,
-        "median_duration_ms": 442
+        "deferred": 1,
+        "complete": 6,
+        "success_rate": 0.6,
+        "median_duration_ms": 860
       },
       "marketplaces": [
         {
@@ -525,7 +525,7 @@
           "total_terms": 1,
           "fresh_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-10-21T19:01:07.931Z"
+          "updated_at": "2026-10-21T19:01:40.414Z"
         },
         {
           "label": "OLX",
@@ -542,19 +542,19 @@
       "id": "oneplus-buds-pro-3",
       "label": "OnePlus Buds Pro 3",
       "state": "healthy",
-      "operational_status": "success",
-      "updated_at": "2026-10-21T19:01:09.478Z",
-      "age_ms": 3277,
+      "operational_status": "deferred",
+      "updated_at": "2026-10-21T19:01:43.225Z",
+      "age_ms": 9762,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
         "partial": 3,
         "failed": 0,
         "blocked": 0,
-        "deferred": 0,
-        "complete": 7,
-        "success_rate": 0.7,
-        "median_duration_ms": 1559
+        "deferred": 1,
+        "complete": 6,
+        "success_rate": 0.6,
+        "median_duration_ms": 2213
       },
       "marketplaces": [
         {
@@ -563,7 +563,7 @@
           "total_terms": 3,
           "fresh_terms": 3,
           "warming_terms": 0,
-          "updated_at": "2026-10-21T19:01:09.478Z"
+          "updated_at": "2026-10-21T19:01:43.225Z"
         },
         {
           "label": "OLX",
@@ -581,18 +581,18 @@
       "label": "Monitores OLED",
       "state": "blocked",
       "operational_status": "deferred",
-      "updated_at": "2026-10-21T19:01:09.724Z",
-      "age_ms": 3031,
+      "updated_at": "2026-10-21T19:01:43.797Z",
+      "age_ms": 9190,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
-        "partial": 1,
+        "partial": 0,
         "failed": 0,
         "blocked": 2,
-        "deferred": 6,
+        "deferred": 7,
         "complete": 1,
         "success_rate": 0.1,
-        "median_duration_ms": 29
+        "median_duration_ms": 27
       },
       "marketplaces": [
         {
@@ -620,7 +620,7 @@
       "state": "partial",
       "operational_status": "partial",
       "updated_at": "2026-10-21T17:24:45.580Z",
-      "age_ms": 5787175,
+      "age_ms": 5827407,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -650,7 +650,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T14:47:12.799Z",
-      "age_ms": 15239956,
+      "age_ms": 15280188,
       "invalid_snapshots": 0,
       "history": {
         "sample": 4,
@@ -680,7 +680,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T14:47:30.248Z",
-      "age_ms": 15222507,
+      "age_ms": 15262739,
       "invalid_snapshots": 0,
       "history": {
         "sample": 5,
@@ -710,7 +710,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T14:47:51.369Z",
-      "age_ms": 15201386,
+      "age_ms": 15241618,
       "invalid_snapshots": 0,
       "history": {
         "sample": 5,
@@ -740,7 +740,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T14:48:15.284Z",
-      "age_ms": 15177471,
+      "age_ms": 15217703,
       "invalid_snapshots": 0,
       "history": {
         "sample": 5,
@@ -770,7 +770,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T17:13:12.727Z",
-      "age_ms": 6480028,
+      "age_ms": 6520260,
       "invalid_snapshots": 0,
       "history": {
         "sample": 4,
@@ -800,7 +800,7 @@
       "state": "partial",
       "operational_status": "partial",
       "updated_at": "2026-10-21T17:34:08.325Z",
-      "age_ms": 5224430,
+      "age_ms": 5264662,
       "invalid_snapshots": 0,
       "history": {
         "sample": 9,
@@ -976,12 +976,12 @@
         }
       },
       "2026-10-21": {
-        "search": 14,
-        "detail": 13,
+        "search": 19,
+        "detail": 14,
         "watchlists": {
           "notebooks": {
-            "search": 11,
-            "detail": 13
+            "search": 16,
+            "detail": 14
           },
           "oneplus-buds-pro-3": {
             "search": 2,
@@ -1000,6 +1000,10 @@
           "recovery-notebooks-2026-10-21": {
             "search": 2,
             "detail": 4
+          },
+          "2f6cb634-c0b9-4532-862c-19c1bb5ec206": {
+            "search": 5,
+            "detail": 1
           }
         }
       }
@@ -1185,9 +1189,14 @@
         "interval_hours": 24
       },
       "notebooks:family:rog-strix-g16": {
-        "last_attempt_at": "2026-10-18T19:02:24.890Z",
+        "last_attempt_at": "2026-10-21T19:01:21.339Z",
         "approved": 0,
-        "interval_hours": 24
+        "interval_hours": 24,
+        "listing_limit": 60,
+        "listing_incomplete": false,
+        "last_success_at": "2026-10-21T19:01:34.759Z",
+        "empty_runs": 1,
+        "prices": {}
       },
       "notebooks:7845hx": {
         "last_attempt_at": "2026-10-21T11:53:17.056Z",
@@ -1233,36 +1242,44 @@
         "last_attempt_at": "2026-10-21T11:54:38.429Z"
       },
       "notebooks:290hx": {
-        "last_attempt_at": "2026-10-19T19:01:25.526Z",
+        "last_attempt_at": "2026-10-21T19:00:13.618Z",
         "approved": 0,
-        "last_success_at": "2026-10-19T19:01:26.021Z",
-        "empty_runs": 1,
+        "last_success_at": "2026-10-21T19:00:14.907Z",
+        "empty_runs": 2,
         "prices": {},
-        "interval_hours": 24
+        "interval_hours": 24,
+        "listing_limit": 12,
+        "listing_incomplete": false
       },
       "notebooks:9955hx": {
-        "last_attempt_at": "2026-10-19T19:01:34.973Z",
+        "last_attempt_at": "2026-10-21T19:00:34.358Z",
         "approved": 0,
-        "last_success_at": "2026-10-19T19:01:36.043Z",
-        "empty_runs": 1,
+        "last_success_at": "2026-10-21T19:00:34.879Z",
+        "empty_runs": 2,
         "prices": {},
-        "interval_hours": 24
+        "interval_hours": 24,
+        "listing_limit": 12,
+        "listing_incomplete": false
       },
       "notebooks:275hx": {
-        "last_attempt_at": "2026-10-19T19:01:40.701Z",
+        "last_attempt_at": "2026-10-21T19:00:47.586Z",
         "approved": 0,
-        "last_success_at": "2026-10-19T19:01:41.231Z",
-        "empty_runs": 1,
+        "last_success_at": "2026-10-21T19:00:48.030Z",
+        "empty_runs": 2,
         "prices": {},
-        "interval_hours": 24
+        "interval_hours": 24,
+        "listing_limit": 12,
+        "listing_incomplete": false
       },
       "notebooks:aimax395": {
-        "last_attempt_at": "2026-10-19T19:01:57.928Z",
+        "last_attempt_at": "2026-10-21T19:01:04.813Z",
         "approved": 0,
-        "last_success_at": "2026-10-19T19:01:58.391Z",
-        "empty_runs": 1,
+        "last_success_at": "2026-10-21T19:01:05.311Z",
+        "empty_runs": 2,
         "prices": {},
-        "interval_hours": 24
+        "interval_hours": 24,
+        "listing_limit": 12,
+        "listing_incomplete": false
       },
       "notebooks:family:dell-g16": {
         "last_attempt_at": "2026-10-19T19:02:10.753Z",
@@ -1273,7 +1290,7 @@
         "interval_hours": 24
       }
     },
-    "updated_at": "2026-10-21T14:45:19.875Z",
+    "updated_at": "2026-10-21T19:01:43.027Z",
     "limits": {
       "daily": {
         "search": 40,
@@ -1284,7 +1301,7 @@
         "detail": 14
       }
     },
-    "last_access_slot_at": "2026-10-21T14:45:18.656Z",
+    "last_access_slot_at": "2026-10-21T19:01:33.339Z",
     "access_interval_ms": 12000
   }
 }

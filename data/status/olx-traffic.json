@@ -139,12 +139,12 @@
       }
     },
     "2026-10-21": {
-      "search": 14,
-      "detail": 13,
+      "search": 19,
+      "detail": 14,
       "watchlists": {
         "notebooks": {
-          "search": 11,
-          "detail": 13
+          "search": 16,
+          "detail": 14
         },
         "oneplus-buds-pro-3": {
           "search": 2,
@@ -163,6 +163,10 @@
         "recovery-notebooks-2026-10-21": {
           "search": 2,
           "detail": 4
+        },
+        "2f6cb634-c0b9-4532-862c-19c1bb5ec206": {
+          "search": 5,
+          "detail": 1
         }
       }
     }
@@ -348,9 +352,14 @@
       "interval_hours": 24
     },
     "notebooks:family:rog-strix-g16": {
-      "last_attempt_at": "2026-10-18T19:02:24.890Z",
+      "last_attempt_at": "2026-10-21T19:01:21.339Z",
       "approved": 0,
-      "interval_hours": 24
+      "interval_hours": 24,
+      "listing_limit": 60,
+      "listing_incomplete": false,
+      "last_success_at": "2026-10-21T19:01:34.759Z",
+      "empty_runs": 1,
+      "prices": {}
     },
     "notebooks:7845hx": {
       "last_attempt_at": "2026-10-21T11:53:17.056Z",
@@ -396,36 +405,44 @@
       "last_attempt_at": "2026-10-21T11:54:38.429Z"
     },
     "notebooks:290hx": {
-      "last_attempt_at": "2026-10-19T19:01:25.526Z",
+      "last_attempt_at": "2026-10-21T19:00:13.618Z",
       "approved": 0,
-      "last_success_at": "2026-10-19T19:01:26.021Z",
-      "empty_runs": 1,
+      "last_success_at": "2026-10-21T19:00:14.907Z",
+      "empty_runs": 2,
       "prices": {},
-      "interval_hours": 24
+      "interval_hours": 24,
+      "listing_limit": 12,
+      "listing_incomplete": false
     },
     "notebooks:9955hx": {
-      "last_attempt_at": "2026-10-19T19:01:34.973Z",
+      "last_attempt_at": "2026-10-21T19:00:34.358Z",
       "approved": 0,
-      "last_success_at": "2026-10-19T19:01:36.043Z",
-      "empty_runs": 1,
+      "last_success_at": "2026-10-21T19:00:34.879Z",
+      "empty_runs": 2,
       "prices": {},
-      "interval_hours": 24
+      "interval_hours": 24,
+      "listing_limit": 12,
+      "listing_incomplete": false
     },
     "notebooks:275hx": {
-      "last_attempt_at": "2026-10-19T19:01:40.701Z",
+      "last_attempt_at": "2026-10-21T19:00:47.586Z",
       "approved": 0,
-      "last_success_at": "2026-10-19T19:01:41.231Z",
-      "empty_runs": 1,
+      "last_success_at": "2026-10-21T19:00:48.030Z",
+      "empty_runs": 2,
       "prices": {},
-      "interval_hours": 24
+      "interval_hours": 24,
+      "listing_limit": 12,
+      "listing_incomplete": false
     },
     "notebooks:aimax395": {
-      "last_attempt_at": "2026-10-19T19:01:57.928Z",
+      "last_attempt_at": "2026-10-21T19:01:04.813Z",
       "approved": 0,
-      "last_success_at": "2026-10-19T19:01:58.391Z",
-      "empty_runs": 1,
+      "last_success_at": "2026-10-21T19:01:05.311Z",
+      "empty_runs": 2,
       "prices": {},
-      "interval_hours": 24
+      "interval_hours": 24,
+      "listing_limit": 12,
+      "listing_incomplete": false
     },
     "notebooks:family:dell-g16": {
       "last_attempt_at": "2026-10-19T19:02:10.753Z",
@@ -436,7 +453,7 @@
       "interval_hours": 24
     }
   },
-  "updated_at": "2026-10-21T14:45:19.875Z",
+  "updated_at": "2026-10-21T19:01:43.027Z",
   "limits": {
     "daily": {
       "search": 40,
@@ -447,6 +464,6 @@
       "detail": 14
     }
   },
-  "last_access_slot_at": "2026-10-21T14:45:18.656Z",
+  "last_access_slot_at": "2026-10-21T19:01:33.339Z",
   "access_interval_ms": 12000
 }
