@@ -1,4 +1,4 @@
-import { isCompleteOledMonitor, OLED_SEARCH_TERMS, OLED_PRICE } from './oled-monitor-scope.mjs';
+import { isCompleteOledMonitor, OLED_SEARCH_TERMS, OLED_PRICE, oledSearchMatchesTitle } from './oled-monitor-scope.mjs';
 import { normalizeMonitorText } from "./monitor-core.mjs";
 import { textMatchesAnyTermVariant } from "./mercadolivre-monitor.mjs";
 import {
@@ -176,7 +176,7 @@ export function matchesMercadoLivreWatchlist(item, watchlist) {
 }
 
 export function mercadoLivreWatchlistTermMatcher(watchlist) {
-  if (watchlist.kind === 'oled') return title => isCompleteOledMonitor({title});
+  if (watchlist.kind === 'oled') return oledSearchMatchesTitle;
   if (!watchlist.matchVariants?.length) return null;
   return (text) => textMatchesAnyTermVariant(text, watchlist.matchVariants);
 }
