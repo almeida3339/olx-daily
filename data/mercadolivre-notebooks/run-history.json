@@ -1,7 +1,41 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-12T13:21:47.702Z",
+  "updated_at": "2026-10-21T17:24:45.698Z",
   "runs": [
+    {
+      "run_id": "2026-10-21T17-24-45-580Z",
+      "committed_at": "2026-10-21T17:24:45.643Z",
+      "completed_at": "2026-10-21T17:24:45.580Z",
+      "outcome": "partial",
+      "partial": true,
+      "duration_ms": 612019,
+      "item_count": 33,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "notebooks",
+        "label": "Notebooks por CPU",
+        "collected_count": 7,
+        "failed_term_count": 0,
+        "quarantined_item_count": 0
+      }
+    },
+    {
+      "run_id": "2026-10-21T14-46-52-284Z",
+      "committed_at": "2026-10-21T14:46:52.349Z",
+      "completed_at": "2026-10-21T14:46:52.284Z",
+      "outcome": "partial",
+      "partial": true,
+      "duration_ms": 244970,
+      "item_count": 31,
+      "metadata": {
+        "source": "notebooks",
+        "label": "Notebooks por CPU",
+        "collected_count": 3,
+        "failed_term_count": 0,
+        "quarantined_item_count": 0,
+        "in_progress": false
+      }
+    },
     {
       "run_id": "2026-10-12T13-21-47-644Z",
       "committed_at": "2026-10-12T13:21:47.658Z",
@@ -10,13 +44,13 @@
       "partial": false,
       "duration_ms": 126202,
       "item_count": 29,
-      "quarantined_item_count": 0,
       "metadata": {
         "source": "notebooks",
         "label": "Notebooks por CPU",
         "collected_count": 0,
         "failed_term_count": 0,
-        "quarantined_item_count": 0
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     },
     {

@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-10-21T11:54:51.866Z",
+  "generated_at": "2026-10-21T17:34:48.602Z",
   "sources": [
     {
       "id": "enjoei-momotaro",
@@ -8,7 +8,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T11:01:18.118Z",
-      "age_ms": 3213748,
+      "age_ms": 23610484,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -38,7 +38,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T11:01:19.271Z",
-      "age_ms": 3212595,
+      "age_ms": 23609331,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -68,7 +68,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T11:01:19.810Z",
-      "age_ms": 3212056,
+      "age_ms": 23608792,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -98,7 +98,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T11:01:20.448Z",
-      "age_ms": 3211418,
+      "age_ms": 23608154,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -128,7 +128,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T11:01:20.993Z",
-      "age_ms": 3210873,
+      "age_ms": 23607609,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -158,7 +158,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T11:01:22.052Z",
-      "age_ms": 3209814,
+      "age_ms": 23606550,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -188,7 +188,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T11:01:18.028Z",
-      "age_ms": 3213838,
+      "age_ms": 23610574,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -218,7 +218,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T11:01:18.108Z",
-      "age_ms": 3213758,
+      "age_ms": 23610494,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -248,7 +248,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T11:01:21.531Z",
-      "age_ms": 3210335,
+      "age_ms": 23607071,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -278,7 +278,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T11:01:18.011Z",
-      "age_ms": 3213855,
+      "age_ms": 23610591,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -307,8 +307,8 @@
       "label": "OLX Notebooks",
       "state": "partial",
       "operational_status": "partial",
-      "updated_at": "2026-10-21T11:54:18.367Z",
-      "age_ms": 33499,
+      "updated_at": "2026-10-21T14:45:19.885Z",
+      "age_ms": 10168717,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -318,16 +318,16 @@
         "deferred": 0,
         "complete": 0,
         "success_rate": 0,
-        "median_duration_ms": 120986
+        "median_duration_ms": 119286
       },
       "marketplaces": [
         {
           "label": "OLX",
-          "state": "partial",
+          "state": "healthy",
           "total_terms": 20,
-          "fresh_terms": 19,
+          "fresh_terms": 20,
           "warming_terms": 0,
-          "updated_at": "2026-10-21T11:54:18.367Z"
+          "updated_at": "2026-10-21T14:45:19.885Z"
         },
         {
           "label": "OLX modelos",
@@ -335,10 +335,10 @@
           "total_terms": 6,
           "fresh_terms": 2,
           "warming_terms": 0,
-          "updated_at": "2026-10-21T11:54:18.367Z"
+          "updated_at": "2026-10-21T14:45:19.885Z"
         }
       ],
-      "message": "OLX: Cobertura parcial (19/20 termos recentes) · OLX modelos: Cobertura parcial (2/6 termos recentes)"
+      "message": "OLX: Saudável (20/20 termos recentes) · OLX modelos: Cobertura parcial (2/6 termos recentes)"
     },
     {
       "id": "enjoei-notebooks",
@@ -346,7 +346,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T11:01:29.361Z",
-      "age_ms": 3202505,
+      "age_ms": 23599241,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -376,7 +376,7 @@
       "state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-21T11:01:21.058Z",
-      "age_ms": 3210808,
+      "age_ms": 23607544,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -427,10 +427,10 @@
     {
       "id": "lifefactory",
       "label": "Lifefactory",
-      "state": "partial",
-      "operational_status": "partial",
+      "state": "healthy",
+      "operational_status": "deferred",
       "updated_at": "2026-10-21T11:54:22.486Z",
-      "age_ms": 29380,
+      "age_ms": 20426116,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -465,10 +465,10 @@
     {
       "id": "tela-galaxybook3",
       "label": "Tela Book3",
-      "state": "partial",
-      "operational_status": "partial",
+      "state": "healthy",
+      "operational_status": "deferred",
       "updated_at": "2026-10-21T11:54:24.670Z",
-      "age_ms": 27196,
+      "age_ms": 20423932,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -503,10 +503,10 @@
     {
       "id": "melanger",
       "label": "Melanger",
-      "state": "partial",
-      "operational_status": "partial",
+      "state": "healthy",
+      "operational_status": "deferred",
       "updated_at": "2026-10-21T11:54:26.694Z",
-      "age_ms": 25172,
+      "age_ms": 20421908,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -541,10 +541,10 @@
     {
       "id": "oneplus-buds-pro-3",
       "label": "OnePlus Buds Pro 3",
-      "state": "partial",
-      "operational_status": "partial",
+      "state": "healthy",
+      "operational_status": "deferred",
       "updated_at": "2026-10-21T11:54:35.620Z",
-      "age_ms": 16246,
+      "age_ms": 20412982,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -580,19 +580,19 @@
       "id": "oled-monitores",
       "label": "Monitores OLED",
       "state": "blocked",
-      "operational_status": "blocked",
-      "updated_at": "2026-10-21T11:54:39.280Z",
-      "age_ms": 12586,
+      "operational_status": "deferred",
+      "updated_at": "2026-10-21T17:25:50.434Z",
+      "age_ms": 538168,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
         "partial": 1,
         "failed": 0,
-        "blocked": 3,
-        "deferred": 4,
+        "blocked": 2,
+        "deferred": 5,
         "complete": 2,
         "success_rate": 0.2,
-        "median_duration_ms": 710
+        "median_duration_ms": 556
       },
       "marketplaces": [
         {
@@ -617,190 +617,70 @@
     {
       "id": "mercadolivre-notebooks",
       "label": "Mercado Livre Notebooks",
-      "state": "stale",
-      "operational_status": null,
-      "updated_at": "2026-10-12T13:21:47.644Z",
-      "age_ms": 772384222,
+      "state": "partial",
+      "operational_status": "partial",
+      "updated_at": "2026-10-21T17:24:45.580Z",
+      "age_ms": 603022,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
-        "partial": 1,
+        "partial": 2,
         "failed": 0,
         "blocked": 0,
         "deferred": 0,
-        "complete": 9,
-        "success_rate": 0.9,
-        "median_duration_ms": 218368
+        "complete": 8,
+        "success_rate": 0.8,
+        "median_duration_ms": 244970
       },
       "marketplaces": [
         {
           "label": "ML",
-          "state": "stale",
+          "state": "partial",
           "total_terms": 20,
           "fresh_terms": 0,
           "warming_terms": 0,
-          "updated_at": "2026-10-12T13:21:47.644Z"
+          "updated_at": "2026-10-21T17:24:45.580Z"
         }
       ],
-      "message": "Sob demanda · última coleta há 8 dia(s) · ML: Coleta desatualizada (0/20 termos recentes)"
+      "message": "Sob demanda · última coleta há 10 min · ML: Cobertura parcial (0/20 termos recentes)"
     },
     {
       "id": "mercadolivre-oneplus-buds-pro-3",
       "label": "Mercado Livre OnePlus Buds Pro 3",
-      "state": "stale",
-      "operational_status": null,
-      "updated_at": "2026-10-12T13:22:47.993Z",
-      "age_ms": 772323873,
+      "state": "healthy",
+      "operational_status": "success",
+      "updated_at": "2026-10-21T14:47:12.799Z",
+      "age_ms": 10055803,
       "invalid_snapshots": 0,
       "history": {
-        "sample": 3,
+        "sample": 4,
         "partial": 0,
         "failed": 0,
         "blocked": 0,
         "deferred": 0,
-        "complete": 3,
+        "complete": 4,
         "success_rate": 1,
-        "median_duration_ms": 17266
+        "median_duration_ms": 19790
       },
       "marketplaces": [
         {
           "label": "ML",
-          "state": "stale",
+          "state": "healthy",
           "total_terms": 1,
-          "fresh_terms": 0,
+          "fresh_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-10-12T13:22:47.993Z"
+          "updated_at": "2026-10-21T14:47:12.799Z"
         }
       ],
-      "message": "Sob demanda · última coleta há 8 dia(s) · ML: Coleta desatualizada (0/1 termos recentes)"
+      "message": "Sob demanda · última coleta há 2 h · ML: Saudável (1/1 termos recentes)"
     },
     {
       "id": "mercadolivre-lifefactory",
       "label": "Mercado Livre Lifefactory",
-      "state": "stale",
-      "operational_status": null,
-      "updated_at": "2026-10-12T13:24:27.608Z",
-      "age_ms": 772224258,
-      "invalid_snapshots": 0,
-      "history": {
-        "sample": 4,
-        "partial": 0,
-        "failed": 0,
-        "blocked": 0,
-        "deferred": 0,
-        "complete": 4,
-        "success_rate": 1,
-        "median_duration_ms": 24006
-      },
-      "marketplaces": [
-        {
-          "label": "ML",
-          "state": "stale",
-          "total_terms": 1,
-          "fresh_terms": 0,
-          "warming_terms": 0,
-          "updated_at": "2026-10-12T13:24:27.608Z"
-        }
-      ],
-      "message": "Sob demanda · última coleta há 8 dia(s) · ML: Coleta desatualizada (0/1 termos recentes)"
-    },
-    {
-      "id": "mercadolivre-tela-galaxybook3",
-      "label": "Mercado Livre Tela Galaxy Book3",
-      "state": "stale",
-      "operational_status": null,
-      "updated_at": "2026-10-12T13:24:50.981Z",
-      "age_ms": 772200885,
-      "invalid_snapshots": 0,
-      "history": {
-        "sample": 4,
-        "partial": 0,
-        "failed": 0,
-        "blocked": 0,
-        "deferred": 0,
-        "complete": 4,
-        "success_rate": 1,
-        "median_duration_ms": 23347
-      },
-      "marketplaces": [
-        {
-          "label": "ML",
-          "state": "stale",
-          "total_terms": 1,
-          "fresh_terms": 0,
-          "warming_terms": 0,
-          "updated_at": "2026-10-12T13:24:50.981Z"
-        }
-      ],
-      "message": "Sob demanda · última coleta há 8 dia(s) · ML: Coleta desatualizada (0/1 termos recentes)"
-    },
-    {
-      "id": "mercadolivre-melanger",
-      "label": "Mercado Livre Melanger",
-      "state": "stale",
-      "operational_status": null,
-      "updated_at": "2026-10-12T13:25:07.202Z",
-      "age_ms": 772184664,
-      "invalid_snapshots": 0,
-      "history": {
-        "sample": 4,
-        "partial": 0,
-        "failed": 0,
-        "blocked": 0,
-        "deferred": 0,
-        "complete": 4,
-        "success_rate": 1,
-        "median_duration_ms": 20641
-      },
-      "marketplaces": [
-        {
-          "label": "ML",
-          "state": "stale",
-          "total_terms": 1,
-          "fresh_terms": 0,
-          "warming_terms": 0,
-          "updated_at": "2026-10-12T13:25:07.202Z"
-        }
-      ],
-      "message": "Sob demanda · última coleta há 8 dia(s) · ML: Coleta desatualizada (0/1 termos recentes)"
-    },
-    {
-      "id": "mercadolivre-tenis-42",
-      "label": "Mercado Livre Tênis 42",
-      "state": "stale",
-      "operational_status": null,
-      "updated_at": "2026-10-12T13:38:30.174Z",
-      "age_ms": 771381692,
-      "invalid_snapshots": 0,
-      "history": {
-        "sample": 3,
-        "partial": 0,
-        "failed": 0,
-        "blocked": 0,
-        "deferred": 0,
-        "complete": 3,
-        "success_rate": 1,
-        "median_duration_ms": 209724
-      },
-      "marketplaces": [
-        {
-          "label": "ML",
-          "state": "stale",
-          "total_terms": 6,
-          "fresh_terms": 0,
-          "warming_terms": 0,
-          "updated_at": "2026-10-12T13:38:30.174Z"
-        }
-      ],
-      "message": "Sob demanda · última coleta há 8 dia(s) · ML: Coleta desatualizada (0/6 termos recentes)"
-    },
-    {
-      "id": "mercadolivre-oled-monitores",
-      "label": "Mercado Livre Monitores OLED",
-      "state": "stale",
-      "operational_status": null,
-      "updated_at": "2026-10-12T13:41:58.723Z",
-      "age_ms": 771173143,
+      "state": "healthy",
+      "operational_status": "success",
+      "updated_at": "2026-10-21T14:47:30.248Z",
+      "age_ms": 10038354,
       "invalid_snapshots": 0,
       "history": {
         "sample": 5,
@@ -810,19 +690,139 @@
         "deferred": 0,
         "complete": 5,
         "success_rate": 1,
-        "median_duration_ms": 593187
+        "median_duration_ms": 23387
       },
       "marketplaces": [
         {
           "label": "ML",
-          "state": "stale",
-          "total_terms": 21,
-          "fresh_terms": 0,
-          "warming_terms": 7,
-          "updated_at": "2026-10-12T13:41:58.723Z"
+          "state": "healthy",
+          "total_terms": 1,
+          "fresh_terms": 1,
+          "warming_terms": 0,
+          "updated_at": "2026-10-21T14:47:30.248Z"
         }
       ],
-      "message": "Sob demanda · última coleta há 8 dia(s) · ML: Coleta desatualizada (0/21 termos recentes; 7 em implantação)"
+      "message": "Sob demanda · última coleta há 2 h · ML: Saudável (1/1 termos recentes)"
+    },
+    {
+      "id": "mercadolivre-tela-galaxybook3",
+      "label": "Mercado Livre Tela Galaxy Book3",
+      "state": "healthy",
+      "operational_status": "success",
+      "updated_at": "2026-10-21T14:47:51.369Z",
+      "age_ms": 10017233,
+      "invalid_snapshots": 0,
+      "history": {
+        "sample": 5,
+        "partial": 0,
+        "failed": 0,
+        "blocked": 0,
+        "deferred": 0,
+        "complete": 5,
+        "success_rate": 1,
+        "median_duration_ms": 22919
+      },
+      "marketplaces": [
+        {
+          "label": "ML",
+          "state": "healthy",
+          "total_terms": 1,
+          "fresh_terms": 1,
+          "warming_terms": 0,
+          "updated_at": "2026-10-21T14:47:51.369Z"
+        }
+      ],
+      "message": "Sob demanda · última coleta há 2 h · ML: Saudável (1/1 termos recentes)"
+    },
+    {
+      "id": "mercadolivre-melanger",
+      "label": "Mercado Livre Melanger",
+      "state": "healthy",
+      "operational_status": "success",
+      "updated_at": "2026-10-21T14:48:15.284Z",
+      "age_ms": 9993318,
+      "invalid_snapshots": 0,
+      "history": {
+        "sample": 5,
+        "partial": 0,
+        "failed": 0,
+        "blocked": 0,
+        "deferred": 0,
+        "complete": 5,
+        "success_rate": 1,
+        "median_duration_ms": 20641
+      },
+      "marketplaces": [
+        {
+          "label": "ML",
+          "state": "healthy",
+          "total_terms": 1,
+          "fresh_terms": 1,
+          "warming_terms": 0,
+          "updated_at": "2026-10-21T14:48:15.284Z"
+        }
+      ],
+      "message": "Sob demanda · última coleta há 2 h · ML: Saudável (1/1 termos recentes)"
+    },
+    {
+      "id": "mercadolivre-tenis-42",
+      "label": "Mercado Livre Tênis 42",
+      "state": "healthy",
+      "operational_status": "success",
+      "updated_at": "2026-10-21T17:13:12.727Z",
+      "age_ms": 1295875,
+      "invalid_snapshots": 0,
+      "history": {
+        "sample": 4,
+        "partial": 0,
+        "failed": 0,
+        "blocked": 0,
+        "deferred": 0,
+        "complete": 4,
+        "success_rate": 1,
+        "median_duration_ms": 212164
+      },
+      "marketplaces": [
+        {
+          "label": "ML",
+          "state": "healthy",
+          "total_terms": 6,
+          "fresh_terms": 6,
+          "warming_terms": 0,
+          "updated_at": "2026-10-21T17:13:12.727Z"
+        }
+      ],
+      "message": "Sob demanda · última coleta há 21 min · ML: Saudável (6/6 termos recentes)"
+    },
+    {
+      "id": "mercadolivre-oled-monitores",
+      "label": "Mercado Livre Monitores OLED",
+      "state": "partial",
+      "operational_status": "partial",
+      "updated_at": "2026-10-21T17:34:08.325Z",
+      "age_ms": 40277,
+      "invalid_snapshots": 0,
+      "history": {
+        "sample": 9,
+        "partial": 4,
+        "failed": 0,
+        "blocked": 0,
+        "deferred": 0,
+        "complete": 5,
+        "success_rate": 0.5555555555555556,
+        "median_duration_ms": 194188
+      },
+      "marketplaces": [
+        {
+          "label": "ML",
+          "state": "partial",
+          "total_terms": 21,
+          "fresh_terms": 3,
+          "warming_terms": 0,
+          "updated_at": "2026-10-21T17:34:08.325Z"
+        }
+      ],
+      "message": "Sob demanda · última coleta há 0 min · ML: Cobertura parcial (3/21 termos recentes)"
     },
     {
       "id": "notifications",
@@ -976,12 +976,12 @@
         }
       },
       "2026-10-21": {
-        "search": 12,
-        "detail": 9,
+        "search": 14,
+        "detail": 13,
         "watchlists": {
           "notebooks": {
-            "search": 9,
-            "detail": 9
+            "search": 11,
+            "detail": 13
           },
           "oneplus-buds-pro-3": {
             "search": 2,
@@ -996,15 +996,22 @@
           "984b0708-d7b0-42d2-b670-15350ea2b1b0": {
             "search": 12,
             "detail": 9
+          },
+          "recovery-notebooks-2026-10-21": {
+            "search": 2,
+            "detail": 4
           }
         }
       }
     },
     "queries": {
       "notebooks:14900hx": {
-        "last_attempt_at": "2026-10-21T11:52:46.554Z",
+        "last_attempt_at": "2026-10-21T14:44:17.897Z",
         "approved": 0,
-        "interval_hours": 8
+        "interval_hours": 8,
+        "last_success_at": "2026-10-21T14:44:19.116Z",
+        "empty_runs": 1,
+        "prices": {}
       },
       "notebooks:family:avell-a65": {
         "last_attempt_at": "2026-10-20T10:02:48.935Z",
@@ -1084,7 +1091,7 @@
         "interval_hours": 24
       },
       "notebooks:family:helios-neo-16": {
-        "last_attempt_at": "2026-10-21T11:54:12.638Z",
+        "last_attempt_at": "2026-10-21T14:44:30.656Z",
         "approved": 0,
         "interval_hours": 24
       },
@@ -1266,7 +1273,7 @@
         "interval_hours": 24
       }
     },
-    "updated_at": "2026-10-21T11:54:38.448Z",
+    "updated_at": "2026-10-21T14:45:19.875Z",
     "limits": {
       "daily": {
         "search": 40,
@@ -1276,6 +1283,8 @@
         "search": 22,
         "detail": 14
       }
-    }
+    },
+    "last_access_slot_at": "2026-10-21T14:45:18.656Z",
+    "access_interval_ms": 12000
   }
 }

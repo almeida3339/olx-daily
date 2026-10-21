@@ -139,12 +139,12 @@
       }
     },
     "2026-10-21": {
-      "search": 12,
-      "detail": 9,
+      "search": 14,
+      "detail": 13,
       "watchlists": {
         "notebooks": {
-          "search": 9,
-          "detail": 9
+          "search": 11,
+          "detail": 13
         },
         "oneplus-buds-pro-3": {
           "search": 2,
@@ -159,15 +159,22 @@
         "984b0708-d7b0-42d2-b670-15350ea2b1b0": {
           "search": 12,
           "detail": 9
+        },
+        "recovery-notebooks-2026-10-21": {
+          "search": 2,
+          "detail": 4
         }
       }
     }
   },
   "queries": {
     "notebooks:14900hx": {
-      "last_attempt_at": "2026-10-21T11:52:46.554Z",
+      "last_attempt_at": "2026-10-21T14:44:17.897Z",
       "approved": 0,
-      "interval_hours": 8
+      "interval_hours": 8,
+      "last_success_at": "2026-10-21T14:44:19.116Z",
+      "empty_runs": 1,
+      "prices": {}
     },
     "notebooks:family:avell-a65": {
       "last_attempt_at": "2026-10-20T10:02:48.935Z",
@@ -247,7 +254,7 @@
       "interval_hours": 24
     },
     "notebooks:family:helios-neo-16": {
-      "last_attempt_at": "2026-10-21T11:54:12.638Z",
+      "last_attempt_at": "2026-10-21T14:44:30.656Z",
       "approved": 0,
       "interval_hours": 24
     },
@@ -429,7 +436,7 @@
       "interval_hours": 24
     }
   },
-  "updated_at": "2026-10-21T11:54:38.448Z",
+  "updated_at": "2026-10-21T14:45:19.875Z",
   "limits": {
     "daily": {
       "search": 40,
@@ -439,5 +446,7 @@
       "search": 22,
       "detail": 14
     }
-  }
+  },
+  "last_access_slot_at": "2026-10-21T14:45:18.656Z",
+  "access_interval_ms": 12000
 }
