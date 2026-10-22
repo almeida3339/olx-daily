@@ -1,7 +1,24 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-22T10:07:26.360Z",
+  "updated_at": "2026-10-22T19:03:13.109Z",
   "runs": [
+    {
+      "run_id": "514c29b3-fdce-42df-b95e-e83019b85d39",
+      "completed_at": "2026-10-22T19:03:13.105Z",
+      "outcome": "blocked",
+      "partial": true,
+      "duration_ms": 184347,
+      "item_count": 0,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "local",
+        "monitor_errors": 1,
+        "monitor_failures": [
+          "Monitores OLED: Saiu com código 4: {\"event\":\"olx_access_blocked\",\"id\":\"olx-access-2026-10-22T19-03-10-736Z-f305485c\",\"at\":\"2026-10-22T19:03:10.736Z\",\"stage\":\"listing\",\"query\":\"aw2726dm\",\"url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"final_url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"http_status\":403,\"title\":\"Attention Required! | Cloudflare\",\"kind\":\"hard_denial\",\"ray_id\":\"a4eac2b30f8e0ad0\",\"message\":\"Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4eac2b30f8e0ad0).\"}\n  Aviso: termo \"aw2726dm\" em https://www.olx.com.br/brasil/informatica/monitores falhou — Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4eac2b30f8e0ad0).\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.\nColeta OLED parcial: 1 consulta(s) incompleta(s), 9 adiada(s).\nOLX:aw2726dm: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4eac2b30f8e0ad0).\nOLX: consultas adiadas…"
+        ],
+        "pending_notifications": 0
+      }
+    },
     {
       "run_id": "6368c844-d762-4a16-b43c-c03ff98d221f",
       "completed_at": "2026-10-22T10:07:26.356Z",
@@ -1819,20 +1836,6 @@
       "quarantined_item_count": 0,
       "metadata": {
         "source": "local",
-        "monitor_errors": 0,
-        "pending_notifications": 1
-      }
-    },
-    {
-      "run_id": "a867977c-0b16-4133-988d-84410fccd124",
-      "completed_at": "2026-08-28T19:01:05.329Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 14527,
-      "item_count": 0,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "ci",
         "monitor_errors": 0,
         "pending_notifications": 1
       }
