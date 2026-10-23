@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-23T10:13:43.878Z",
+  "generated_at": "2026-10-23T19:00:08.558Z",
   "source": "local",
   "delivery": {
     "email": "skipped",
@@ -39,15 +39,18 @@
   "monitoring": {
     "scope": "local-watchlists",
     "partial": true,
-    "status": "deferred",
+    "status": "partial",
     "outcomes": [
       {
         "source": "olx",
-        "status": "success",
-        "exit_code": 0,
-        "reasons": [],
-        "completed_terms": 9,
-        "incomplete_terms": 0,
+        "status": "partial",
+        "exit_code": 2,
+        "reasons": [
+          "Listagem incompleta: limite de 12 cards ou próxima página pendente",
+          "2 ficha(s) aguardando leitura dentro dos limites da rodada"
+        ],
+        "completed_terms": 6,
+        "incomplete_terms": 3,
         "deferred_terms": 0
       },
       {
@@ -96,12 +99,14 @@
       },
       {
         "source": "pixel-watch-5",
-        "status": "success",
-        "exit_code": 0,
-        "reasons": [],
-        "completed_terms": 2,
+        "status": "deferred",
+        "exit_code": 3,
+        "reasons": [
+          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+        ],
+        "completed_terms": 1,
         "incomplete_terms": 0,
-        "deferred_terms": 0
+        "deferred_terms": 1
       },
       {
         "source": "oled-monitores",
@@ -110,12 +115,20 @@
         "reasons": [
           "OLX: consultas adiadas após bloqueio; retomada prevista em 24/10/2026, 16:03:11 BRT."
         ],
-        "completed_terms": 4,
+        "completed_terms": 3,
         "incomplete_terms": 0,
-        "deferred_terms": 9
+        "deferred_terms": 10
       }
     ],
     "warnings": [
+      {
+        "source": "olx",
+        "status": "partial",
+        "reasons": [
+          "Listagem incompleta: limite de 12 cards ou próxima página pendente",
+          "2 ficha(s) aguardando leitura dentro dos limites da rodada"
+        ]
+      },
       {
         "source": "lifefactory",
         "status": "deferred",
@@ -139,6 +152,13 @@
       },
       {
         "source": "oneplus-buds",
+        "status": "deferred",
+        "reasons": [
+          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+        ]
+      },
+      {
+        "source": "pixel-watch-5",
         "status": "deferred",
         "reasons": [
           "Consultas adiadas pela programação; as consultas executadas foram concluídas."
@@ -201,7 +221,8 @@
     "4ce940f4-0443-4ace-b3c1-f641d24550e6",
     "47ab14ef-b42f-49e0-baab-dc376f166c87",
     "b1952286-269b-485b-bdbf-35fdca35d0de",
-    "e57fc50d-0be0-487b-a25c-825797e8fef7"
+    "e57fc50d-0be0-487b-a25c-825797e8fef7",
+    "492fc30b-ec63-40a5-8fb2-c3f834397803"
   ],
   "notification_archive": [
     {

@@ -2,30 +2,27 @@
   "schema_version": 1,
   "quality_version": 2,
   "configuration": "9955hx3d,290hx,9955hx,285hx,275hx,aimax395,7945hx,7945hx3d,255hx,13980hx,8940hx,7940hx,13950hx,14900hx,13900hx,7845hx,8840hx,aimax390,14700hx,hx470,family:helios-neo-16,family:rog-strix-g16,family:legion-pro-5,family:dell-g16,family:avell-a65,family:avell-storm",
-  "started_at": "2026-10-23T10:14:09.399Z",
-  "updated_at": "2026-10-23T10:17:46.654Z",
-  "state": "completed",
+  "started_at": "2026-10-23T19:00:28.951Z",
+  "updated_at": "2026-10-23T19:03:27.198Z",
+  "state": "partial",
   "scheduled_terms": [
     "14700hx",
     "13980hx",
     "14900hx",
     "13900hx",
-    "7845hx",
-    "8840hx",
-    "aimax390",
-    "hx470",
-    "family:avell-a65"
+    "290hx",
+    "9955hx",
+    "275hx",
+    "aimax395",
+    "family:avell-storm"
   ],
   "successful_terms": [
-    "14700hx",
     "13980hx",
     "14900hx",
     "13900hx",
-    "7845hx",
-    "8840hx",
-    "aimax390",
-    "hx470",
-    "family:avell-a65"
+    "290hx",
+    "9955hx",
+    "aimax395"
   ],
   "collected": [
     {
@@ -320,19 +317,71 @@
       "configuration_warnings": []
     },
     {
-      "id": "1537565082",
-      "url": "https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/notebooks/notebook-gamer-avell-a65-ion-i9-12gen-32ram-rtx4060-512gb-1537565082",
-      "title": "Notebook Gamer Avell A65 ION - i9 12gen 32RAM RTX4060 512gb",
-      "cpu_term": "family:avell-a65",
+      "id": "1545231932",
+      "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/avell-storm-450-1545231932",
+      "title": "Avell Storm 450",
+      "cpu_term": "family:avell-storm",
       "search_terms": [
-        "family:avell-a65"
+        "family:avell-storm"
       ],
       "description_discovery": true,
-      "price_brl": 7199,
+      "price_brl": 5300,
+      "ram_gb": 16,
+      "storage_gb": null,
+      "gpu": "RTX 4050",
+      "location": null,
+      "condition": "novo",
+      "status": "active",
+      "first_seen": null,
+      "last_seen": null,
+      "notes": null,
+      "desc_checked": true,
+      "validation": {
+        "version": 2,
+        "state": "rejected",
+        "checked_at": "2026-10-23T19:02:50.097Z",
+        "reasons": [
+          "RAM abaixo do mínimo exigido",
+          "RAM abaixo do mínimo de 32 GB",
+          "CPU não confirmada no anúncio"
+        ],
+        "listing_price_brl": 5300,
+        "detail_price_brl": 5300,
+        "visible_price_brl": null,
+        "structured_price_brl": 5300,
+        "title_specs": {
+          "ram_gb": null,
+          "storage_gb": null,
+          "gpu": null
+        },
+        "description_specs": {
+          "ram_gb": 16,
+          "storage_gb": null,
+          "gpu": "RTX 4050"
+        },
+        "cpu_confirmed": false,
+        "description_checked": true
+      },
+      "description_evidence": "Sim Envio OLX payDispenso trocasSem garantia minha, Apenas garantia da AvellNa compra utilize o cupom: DESCONTAO5Notebook quase novo com algumas marcas na carcaça, ainda na garantia da Avell comprado em Abril deste anoCom Windows 11 Pro Ativado originalNVIDIA GeForce RTX 4050 (6GB GDDR6) 105WAMD Ryzen 5 7640HS (4.3 Ghz até 5 Ghz) 54WGráfico integrado Radeon 760M16GB RAM / 2x8GB DDR5 5600Mhz1x SSD M.2 NVME 256GB - Geração 4 - [ 4.800 MB/s ]1x SSD NVME Sata 256GB 15.6\" FHD (1920x1080p) - 144Hz / Matte / Contraste: 800:1 / Brilho 250 cd/m²Potencialize seu dia a dia com o Avell Storm 450! Equipado com processador AMD Ryzen 5 e placa de vídeo NVIDIA GeForce RTX, ele oferece desempenho excepcional para trabalhar, estudar e se divertir. Com amplo armazenamento e design moderno, este notebook é a escolha ideal para quem busca performance e estilo.",
+      "detail_title": "Avell Storm 450",
+      "configuration_warnings": [
+        "Armazenamento não informado"
+      ]
+    },
+    {
+      "id": "1546506873",
+      "url": "https://pa.olx.com.br/regiao-de-maraba/informatica/notebooks/notebook-gamer-avell-storm-bs-350-1546506873",
+      "title": "Notebook Gamer Avell Storm BS 350",
+      "cpu_term": "family:avell-storm",
+      "search_terms": [
+        "family:avell-storm"
+      ],
+      "description_discovery": true,
+      "price_brl": 5300,
       "ram_gb": null,
       "storage_gb": null,
-      "gpu": "RTX 4060",
-      "location": null,
+      "gpu": "RTX 3050",
+      "location": "Belo Horizonte, Marabá - PA",
       "condition": "Usado - Excelente",
       "status": "active",
       "first_seen": null,
@@ -342,48 +391,48 @@
       "validation": {
         "version": 2,
         "state": "rejected",
-        "checked_at": "2026-10-23T10:17:32.924Z",
+        "checked_at": "2026-10-23T19:03:26.076Z",
         "reasons": [
           "CPU fora da busca",
           "Especificação não confirmada: RAM",
           "CPU não confirmada no anúncio"
         ],
-        "listing_price_brl": 7199,
-        "detail_price_brl": 7199,
+        "listing_price_brl": 5300,
+        "detail_price_brl": 5300,
         "visible_price_brl": null,
-        "structured_price_brl": 7199,
+        "structured_price_brl": 5300,
         "title_specs": {
           "ram_gb": null,
           "storage_gb": null,
-          "gpu": "RTX 4060"
+          "gpu": null
         },
         "description_specs": {
           "ram_gb": null,
           "storage_gb": null,
-          "gpu": "RTX 4060"
+          "gpu": "RTX 3050"
         },
         "cpu_confirmed": false,
         "description_checked": true
       },
-      "description_evidence": "Notebook Avell A65 IONIntel Core i9 12900HX 2.3GHz32gb memória RAMNVidia GeForce RTX 4060 8gbSSD 512gbTela 15.6 FHDTeclado retroiluminadoCarregador originalCom caixa!",
-      "detail_title": "Notebook Gamer Avell A65 ION - i9 12gen 32RAM RTX4060 512gb",
+      "description_evidence": "Vendo Notebook Gamer Avell em excelente estado de conservação, sem nenhum detalhe, usado poucas vezes. Especificações de hardware:? GeForce® RTX 3050 (4GB GDDR6)? Intel® Core?M i7-12650H Alder Lake (24MB cache, 3.5GHz ~ 4.7GHz Turbo Boost Max 3.0)? Upgrade Grátis - 32GB [2x 16GB - Dual Channel] Memória DDR4 (3200MHZ)? SSD M.2 NVME 512GB - Geração 4 - [3.400 MB/s? 15.6\" FHD WVA (1920x1080p) - 144Hz / Matte / Contraste: 1000:1/ Brilho 250 cd/m²",
+      "detail_title": "Notebook Gamer Avell Storm BS 350",
       "configuration_warnings": [
         "Armazenamento não informado"
       ]
     },
     {
-      "id": "1531177640",
-      "url": "https://rs.olx.com.br/regioes-de-porto-alegre-torres-e-santa-cruz-do-sul/informatica/notebooks/notebook-gamer-avell-a65-ion-1531177640",
-      "title": "Notebook Gamer - Avell A65 ion",
-      "cpu_term": "family:avell-a65",
+      "id": "1541340529",
+      "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-450r-ryzen-7-rtx-4050-32gb-ddr5-tela-165hz-1541340529",
+      "title": "Notebook Gamer Avell Storm 450r - Ryzen 7 + RTX 4050 + 32GB DDR5 + Tela 165Hz",
+      "cpu_term": "family:avell-storm",
       "search_terms": [
-        "family:avell-a65"
+        "family:avell-storm"
       ],
       "description_discovery": true,
-      "price_brl": 7400,
+      "price_brl": 6000,
       "ram_gb": 32,
       "storage_gb": null,
-      "gpu": null,
+      "gpu": "RTX 4050",
       "location": null,
       "condition": "Usado - Excelente",
       "status": "active",
@@ -394,49 +443,106 @@
       "validation": {
         "version": 2,
         "state": "pending",
-        "checked_at": "2026-10-23T10:17:20.998Z",
+        "checked_at": "2026-10-23T19:03:02.201Z",
         "reasons": [
-          "Especificação não confirmada: GPU",
           "CPU não confirmada no anúncio"
         ],
-        "listing_price_brl": 7400,
-        "detail_price_brl": 7400,
+        "listing_price_brl": 6000,
+        "detail_price_brl": 6000,
         "visible_price_brl": null,
-        "structured_price_brl": 7400,
+        "structured_price_brl": 6000,
         "title_specs": {
-          "ram_gb": null,
+          "ram_gb": 32,
           "storage_gb": null,
-          "gpu": null
+          "gpu": "RTX 4050"
         },
         "description_specs": {
           "ram_gb": 32,
           "storage_gb": null,
-          "gpu": null
+          "gpu": "RTX 4050"
         },
         "cpu_confirmed": false,
         "description_checked": true
       },
-      "description_evidence": "Notebook Gamer Avell A65 IonPlaca de Vídeo: GeForce RTX 4060Processador: Intel i9 12900HXMemória RAM: 32GB DDR5 (2x16GB)Armazenamento: SSD GEN4 1TBSistema: Windows 11 HSL Tela: 16''Usado por 2 anos e meio e em perfeitas condições.",
-      "detail_title": "Notebook Gamer - Avell A65 ion",
+      "description_evidence": "Eleve sua experiência de jogo com o Notebook Gamer Avell Storm 450r! Equipado com processador Ryzen 7, placa de vídeo RTX 4050 e incríveis 32GB de RAM DDR5, este notebook é a máquina perfeita para rodar seus jogos favoritos com gráficos impressionantes e fluidez incomparável. A tela de 165Hz garante visuais super fluidos, proporcionando a vantagem que você precisa nas competições. Prepare-se para o próximo nível!",
+      "detail_title": "Notebook Gamer Avell Storm 450r - Ryzen 7 + RTX 4050 + 32GB DDR5 + Tela 165Hz",
       "configuration_warnings": [
         "Armazenamento não informado"
       ]
     },
     {
-      "id": "1545040273",
-      "url": "https://mg.olx.com.br/regiao-de-pocos-de-caldas-e-varginha/informatica/notebooks/notebook-gamer-avell-a65-ion-i9-32gb-rtx-4060-1545040273",
-      "title": "Notebook Gamer Avell A65 Ion I9 32gb Rtx 4060",
-      "cpu_term": "family:avell-a65",
+      "id": "1541030102",
+      "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-i7-rtx4050-32gb-1541030102",
+      "title": "Notebook Gamer Avell Storm i7 RTX4050 32GB",
+      "cpu_term": "family:avell-storm",
       "search_terms": [
-        "family:avell-a65"
+        "family:avell-storm"
       ],
       "description_discovery": true,
-      "price_brl": 8000,
+      "price_brl": 6000,
       "ram_gb": null,
       "storage_gb": null,
-      "gpu": "RTX 4060",
-      "location": null,
-      "condition": "Usado - Excelente",
+      "gpu": "RTX 4050",
+      "location": "São Paulo, Jardim Dom José",
+      "condition": null,
+      "status": "active",
+      "first_seen": null,
+      "last_seen": null,
+      "notes": null,
+      "desc_checked": false,
+      "validation": {
+        "version": 2,
+        "state": "pending",
+        "checked_at": "2026-10-23T19:03:26.085Z",
+        "reasons": [
+          "Ficha aguardando leitura dentro dos limites da rodada"
+        ]
+      }
+    },
+    {
+      "id": "1540971354",
+      "url": "https://go.olx.com.br/grande-goiania-e-anapolis/informatica/notebooks/vendo-notebook-gamer-avell-storm-450-ryzen-7-rtx-4050-32gb-ram-ddr5-1tb-ssd-144hz-1540971354",
+      "title": "[Vendo] Notebook Gamer Avell Storm 450 - Ryzen 7, RTX 4050, 32GB RAM DDR5, 1TB SSD, 144Hz",
+      "cpu_term": "family:avell-storm",
+      "search_terms": [
+        "family:avell-storm"
+      ],
+      "description_discovery": true,
+      "price_brl": 6100,
+      "ram_gb": 32,
+      "storage_gb": 1024,
+      "gpu": "RTX 4050",
+      "location": "Aparecida de Goiânia, Residencial Brasicon I",
+      "condition": null,
+      "status": "active",
+      "first_seen": null,
+      "last_seen": null,
+      "notes": null,
+      "desc_checked": false,
+      "validation": {
+        "version": 2,
+        "state": "pending",
+        "checked_at": "2026-10-23T19:03:26.088Z",
+        "reasons": [
+          "Ficha aguardando leitura dentro dos limites da rodada"
+        ]
+      }
+    },
+    {
+      "id": "1545937266",
+      "url": "https://sp.olx.com.br/regiao-de-sorocaba/informatica/notebooks/avell-storm-450-rtx-4050-ryzen-7-1545937266",
+      "title": "avell storm 450 rtx 4050 ryzen 7",
+      "cpu_term": "family:avell-storm",
+      "search_terms": [
+        "family:avell-storm"
+      ],
+      "description_discovery": true,
+      "price_brl": 7500,
+      "ram_gb": 16,
+      "storage_gb": 1024,
+      "gpu": "RTX 4050",
+      "location": "Jardim Americano, Sorocaba - SP",
+      "condition": "novo",
       "status": "active",
       "first_seen": null,
       "last_seen": null,
@@ -444,40 +550,43 @@
       "desc_checked": true,
       "validation": {
         "version": 2,
-        "state": "pending",
-        "checked_at": "2026-10-23T10:17:45.030Z",
+        "state": "rejected",
+        "checked_at": "2026-10-23T19:03:14.105Z",
         "reasons": [
-          "Especificação não confirmada: RAM",
+          "RAM abaixo do mínimo exigido",
+          "RAM abaixo do mínimo de 32 GB",
           "CPU não confirmada no anúncio"
         ],
-        "listing_price_brl": 8000,
-        "detail_price_brl": 8000,
+        "listing_price_brl": 7500,
+        "detail_price_brl": 7500,
         "visible_price_brl": null,
-        "structured_price_brl": 8000,
+        "structured_price_brl": 7500,
         "title_specs": {
           "ram_gb": null,
           "storage_gb": null,
-          "gpu": "RTX 4060"
+          "gpu": "RTX 4050"
         },
         "description_specs": {
-          "ram_gb": null,
-          "storage_gb": null,
-          "gpu": null
+          "ram_gb": 16,
+          "storage_gb": 1024,
+          "gpu": "RTX 4050"
         },
         "cpu_confirmed": false,
         "description_checked": true
       },
-      "description_evidence": "Notebook Avell com menos de 1 ano de usoMotivo da troca: Migrei para MAC",
-      "detail_title": "Notebook Gamer Avell A65 Ion I9 32gb Rtx 4060 ",
-      "configuration_warnings": [
-        "Armazenamento não informado"
-      ]
+      "description_evidence": "Notebook Avell Storm Ryzen 7 + RTX 4050 | Apenas 9 meses de uso!Potencialize seus jogos, projetos e tarefas com o Avell Storm! Equipado com processador AMD Ryzen 7 e placa de vídeo NVIDIA GeForce RTX 4050, oferece excelente desempenho para jogos, desenvolvimento de games, edição e produtividade.ESPECIFICAÇÕES TÉCNICASProcessador: AMD Ryzen? 7 7435HS, 8 núcleos, cache de 16 MB e frequência de 3,1 GHz até 4,5 GHz Max BoostPlaca de vídeo: NVIDIA GeForce® RTX 4050 com 6 GB GDDR6Memória RAM: 16 GB DDR5 4800 MHz (2x 8 GB, Dual Channel)Armazenamento: SSD M.2 NVMe de 1 TB, geração 4, com velocidade de até 5.000 MB/sTela: 15,6\" Full HD (1920 x 1080), WVA, 165 Hz, acabamento Matte e 100% sRGBESTADO DE CONSERVAÇÃOApenas 9 meses de usoExtremamente bem cuidado e conservadoAinda na garantia do fabricante, conforme o prazo vigenteFuncionamento e desempenho excelentesSISTEMA OPERACIONALO notebook foi adquirido originalmente sem sistema operacional. Entrego formatado e com Windows instalado, pronto para uso.Uma excelente opção para quem busca um notebook gamer potente, com SSD de 1 TB, tela de 165 Hz e uma RTX 4050, sem precisar investir em um equipamento novo!Entre em contato para mais informações.",
+      "detail_title": "avell storm 450 rtx 4050 ryzen 7",
+      "configuration_warnings": []
     }
   ],
-  "pending_terms": [],
+  "pending_terms": [
+    "14700hx",
+    "275hx",
+    "family:avell-storm"
+  ],
   "baseline_snapshot": {
     "schema_version": 2,
-    "generated_at": "2026-10-22T19:02:34.947Z",
+    "generated_at": "2026-10-23T10:17:45.052Z",
     "coverage_status": {
       "9955hx3d": {
         "checked_at": "2026-10-22T10:05:45.496Z",
@@ -534,8 +643,8 @@
         "error": "Listagem incompleta: limite de 12 cards ou próxima página pendente"
       },
       "13980hx": {
-        "checked_at": "2026-10-22T19:02:34.947Z",
-        "last_success_at": "2026-10-22T19:02:34.947Z",
+        "checked_at": "2026-10-23T10:17:45.052Z",
+        "last_success_at": "2026-10-23T10:17:45.052Z",
         "state": "success",
         "error": null
       },
@@ -558,44 +667,44 @@
         "error": null
       },
       "14900hx": {
-        "checked_at": "2026-10-22T19:02:34.947Z",
-        "last_success_at": "2026-10-22T10:05:45.496Z",
-        "state": "failed",
-        "error": "Listagem incompleta: limite de 36 cards ou próxima página pendente"
+        "checked_at": "2026-10-23T10:17:45.052Z",
+        "last_success_at": "2026-10-23T10:17:45.052Z",
+        "state": "success",
+        "error": null
       },
       "13900hx": {
-        "checked_at": "2026-10-22T19:02:34.947Z",
-        "last_success_at": "2026-10-22T19:02:34.947Z",
+        "checked_at": "2026-10-23T10:17:45.052Z",
+        "last_success_at": "2026-10-23T10:17:45.052Z",
         "state": "success",
         "error": null
       },
       "7845hx": {
-        "checked_at": "2026-10-21T11:54:18.367Z",
-        "last_success_at": "2026-10-21T11:54:18.367Z",
+        "checked_at": "2026-10-23T10:17:45.052Z",
+        "last_success_at": "2026-10-23T10:17:45.052Z",
         "state": "success",
         "error": null
       },
       "8840hx": {
-        "checked_at": "2026-10-21T11:54:18.367Z",
-        "last_success_at": "2026-10-21T11:54:18.367Z",
+        "checked_at": "2026-10-23T10:17:45.052Z",
+        "last_success_at": "2026-10-23T10:17:45.052Z",
         "state": "success",
         "error": null
       },
       "aimax390": {
-        "checked_at": "2026-10-21T11:54:18.367Z",
-        "last_success_at": "2026-10-21T11:54:18.367Z",
+        "checked_at": "2026-10-23T10:17:45.052Z",
+        "last_success_at": "2026-10-23T10:17:45.052Z",
         "state": "success",
         "error": null
       },
       "14700hx": {
-        "checked_at": "2026-10-22T19:02:34.947Z",
-        "last_success_at": "2026-10-22T10:05:45.496Z",
-        "state": "failed",
-        "error": "Listagem incompleta: limite de 12 cards ou próxima página pendente"
+        "checked_at": "2026-10-23T10:17:45.052Z",
+        "last_success_at": "2026-10-23T10:17:45.052Z",
+        "state": "success",
+        "error": null
       },
       "hx470": {
-        "checked_at": "2026-10-21T11:54:18.367Z",
-        "last_success_at": "2026-10-21T11:54:18.367Z",
+        "checked_at": "2026-10-23T10:17:45.052Z",
+        "last_success_at": "2026-10-23T10:17:45.052Z",
         "state": "success",
         "error": null
       },
@@ -624,10 +733,10 @@
         "error": null
       },
       "family:avell-a65": {
-        "checked_at": "2026-10-20T10:02:52.424Z",
-        "last_success_at": null,
-        "state": "failed",
-        "error": "1 ficha(s) aguardando leitura dentro dos limites da rodada"
+        "checked_at": "2026-10-23T10:17:45.052Z",
+        "last_success_at": "2026-10-23T10:17:45.052Z",
+        "state": "success",
+        "error": null
       },
       "family:avell-storm": {
         "checked_at": "2026-10-20T19:02:03.601Z",
@@ -637,66 +746,39 @@
       }
     },
     "run": {
-      "date": "2026-10-22",
+      "date": "2026-10-23",
       "timezone": "America/Sao_Paulo",
-      "started_at": "2026-10-22T19:00:27.882Z",
-      "completed_at": "2026-10-22T19:02:34.947Z",
+      "started_at": "2026-10-23T10:14:09.399Z",
+      "completed_at": "2026-10-23T10:17:45.052Z",
       "in_progress": false,
-      "phase": "partial",
-      "partial": true,
+      "phase": "completed",
+      "partial": false,
       "successful_terms": [
+        "14700hx",
         "13980hx",
+        "14900hx",
         "13900hx",
-        "8940hx",
-        "7940hx",
-        "13950hx",
-        "family:dell-g16"
+        "7845hx",
+        "8840hx",
+        "aimax390",
+        "hx470",
+        "family:avell-a65"
       ],
-      "failed_terms": [
-        {
-          "term": "14700hx",
-          "error": "Listagem incompleta: limite de 12 cards ou próxima página pendente",
-          "kind": "incomplete"
-        },
-        {
-          "term": "14900hx",
-          "error": "Listagem incompleta: limite de 36 cards ou próxima página pendente",
-          "kind": "incomplete"
-        },
-        {
-          "term": "255hx",
-          "error": "Listagem incompleta: limite de 12 cards ou próxima página pendente",
-          "kind": "incomplete"
-        }
-      ],
-      "errors": [
-        {
-          "term": "14700hx",
-          "error": "Listagem incompleta: limite de 12 cards ou próxima página pendente",
-          "kind": "incomplete"
-        },
-        {
-          "term": "14900hx",
-          "error": "Listagem incompleta: limite de 36 cards ou próxima página pendente",
-          "kind": "incomplete"
-        },
-        {
-          "term": "255hx",
-          "error": "Listagem incompleta: limite de 12 cards ou próxima página pendente",
-          "kind": "incomplete"
-        }
-      ],
+      "failed_terms": [],
+      "errors": [],
       "deferred_coverage": [],
       "unattempted_terms": [],
       "description_discovery": {
-        "extra_details": 0,
-        "total_details": 0,
-        "detail_ms": 0,
+        "extra_details": 3,
+        "total_details": 9,
+        "detail_ms": 4103,
         "recovered_validated": 0,
-        "cache_hits": 6,
-        "by_term": {},
+        "cache_hits": 0,
+        "by_term": {
+          "family:avell-a65": 3
+        },
         "total_detail_limit": 12,
-        "queued_candidates": 19,
+        "queued_candidates": 18,
         "validation_complete": false,
         "per_term_limit": 2,
         "per_round_limit": 8
@@ -706,42 +788,42 @@
           "returned": 2,
           "validated": 1,
           "pending": 1,
-          "detail_reads": 0,
-          "limited": true,
-          "listing_incomplete": true,
-          "listing_limit": 12,
+          "detail_reads": 2,
+          "limited": false,
+          "listing_incomplete": false,
+          "listing_limit": 36,
           "details_pending": 0,
-          "total_results": 18,
+          "total_results": 19,
           "recommendations_ignored": 0
         },
         "13980hx": {
           "returned": 2,
           "validated": 0,
           "pending": 0,
-          "detail_reads": 0,
+          "detail_reads": 2,
           "limited": false,
           "listing_incomplete": false,
           "listing_limit": 12,
           "details_pending": 0,
-          "total_results": 8,
+          "total_results": 7,
           "recommendations_ignored": 0
         },
         "14900hx": {
           "returned": 2,
           "validated": 0,
           "pending": 1,
-          "detail_reads": 0,
-          "limited": true,
-          "listing_incomplete": true,
-          "listing_limit": 36,
+          "detail_reads": 2,
+          "limited": false,
+          "listing_incomplete": false,
+          "listing_limit": 60,
           "details_pending": 0,
-          "total_results": 39,
+          "total_results": 38,
           "recommendations_ignored": 0
         },
         "13900hx": {
-          "returned": 1,
+          "returned": 0,
           "validated": 0,
-          "pending": 1,
+          "pending": 0,
           "detail_reads": 0,
           "limited": false,
           "listing_incomplete": false,
@@ -750,19 +832,7 @@
           "total_results": 11,
           "recommendations_ignored": 0
         },
-        "255hx": {
-          "returned": 0,
-          "validated": 0,
-          "pending": 0,
-          "detail_reads": 0,
-          "limited": true,
-          "listing_incomplete": true,
-          "listing_limit": 12,
-          "details_pending": 0,
-          "total_results": 14,
-          "recommendations_ignored": 0
-        },
-        "8940hx": {
+        "7845hx": {
           "returned": 0,
           "validated": 0,
           "pending": 0,
@@ -771,10 +841,10 @@
           "listing_incomplete": false,
           "listing_limit": 12,
           "details_pending": 0,
-          "total_results": 6,
+          "total_results": 2,
           "recommendations_ignored": 0
         },
-        "7940hx": {
+        "8840hx": {
           "returned": 0,
           "validated": 0,
           "pending": 0,
@@ -784,9 +854,9 @@
           "listing_limit": 12,
           "details_pending": 0,
           "total_results": 0,
-          "recommendations_ignored": 37
+          "recommendations_ignored": 39
         },
-        "13950hx": {
+        "aimax390": {
           "returned": 0,
           "validated": 0,
           "pending": 0,
@@ -798,16 +868,28 @@
           "total_results": 1,
           "recommendations_ignored": 0
         },
-        "family:dell-g16": {
+        "hx470": {
           "returned": 0,
           "validated": 0,
           "pending": 0,
           "detail_reads": 0,
           "limited": false,
           "listing_incomplete": false,
+          "listing_limit": 12,
+          "details_pending": 0,
+          "total_results": 0,
+          "recommendations_ignored": 26
+        },
+        "family:avell-a65": {
+          "returned": 3,
+          "validated": 0,
+          "pending": 2,
+          "detail_reads": 3,
+          "limited": false,
+          "listing_incomplete": false,
           "listing_limit": 60,
           "details_pending": 0,
-          "total_results": 4,
+          "total_results": 6,
           "recommendations_ignored": 0
         }
       },
@@ -816,25 +898,24 @@
         "13980hx",
         "14900hx",
         "13900hx",
-        "255hx",
-        "8940hx",
-        "7940hx",
-        "13950hx",
-        "family:dell-g16"
+        "7845hx",
+        "8840hx",
+        "aimax390",
+        "hx470",
+        "family:avell-a65"
       ],
       "successful_coverage": [
-        "13980hx",
-        "13900hx",
-        "8940hx",
-        "7940hx",
-        "13950hx",
-        "family:dell-g16"
-      ],
-      "failed_coverage": [
         "14700hx",
+        "13980hx",
         "14900hx",
-        "255hx"
+        "13900hx",
+        "7845hx",
+        "8840hx",
+        "aimax390",
+        "hx470",
+        "family:avell-a65"
       ],
+      "failed_coverage": [],
       "configured_coverage": [
         "9955hx3d",
         "290hx",
@@ -865,14 +946,11 @@
       ],
       "quarantined_item_count": 0,
       "operational": {
-        "status": "partial",
-        "exit_code": 2,
-        "reasons": [
-          "Listagem incompleta: limite de 12 cards ou próxima página pendente",
-          "Listagem incompleta: limite de 36 cards ou próxima página pendente"
-        ],
-        "completed_terms": 6,
-        "incomplete_terms": 3,
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 9,
+        "incomplete_terms": 0,
         "deferred_terms": 0
       }
     },
@@ -899,7 +977,7 @@
         "condition": "novo",
         "status": "active",
         "first_seen": "2026-07-30",
-        "last_seen": "2026-10-22",
+        "last_seen": "2026-10-23",
         "notes": null,
         "desc_checked": true,
         "out_of_scope_at": null,
@@ -933,7 +1011,7 @@
         "validation": {
           "version": 2,
           "state": "validated",
-          "checked_at": "2026-10-22T10:02:42.622Z",
+          "checked_at": "2026-10-23T10:14:23.359Z",
           "reasons": [],
           "listing_price_brl": 8399,
           "detail_price_brl": 8399,
@@ -977,7 +1055,7 @@
         "condition": "Usado - Excelente",
         "status": "active",
         "first_seen": "2026-06-01",
-        "last_seen": "2026-10-22",
+        "last_seen": "2026-10-23",
         "notes": null,
         "desc_checked": true,
         "out_of_scope_at": null,
@@ -986,7 +1064,7 @@
         "validation": {
           "version": 2,
           "state": "pending",
-          "checked_at": "2026-10-22T10:02:54.593Z",
+          "checked_at": "2026-10-23T10:14:34.858Z",
           "reasons": [
             "Especificação não confirmada: RAM"
           ],
@@ -1027,10 +1105,10 @@
         "condition": "Usado - Excelente",
         "status": "out_of_scope",
         "first_seen": "2026-10-08",
-        "last_seen": "2026-10-22",
+        "last_seen": "2026-10-23",
         "notes": null,
         "desc_checked": true,
-        "out_of_scope_at": "2026-10-22T19:02:34.947Z",
+        "out_of_scope_at": "2026-10-23T10:17:45.052Z",
         "price_history": [
           {
             "at": "2026-10-08T13:36:19.953Z",
@@ -1045,7 +1123,7 @@
         "validation": {
           "version": 2,
           "state": "rejected",
-          "checked_at": "2026-10-22T10:03:22.164Z",
+          "checked_at": "2026-10-23T10:14:59.473Z",
           "reasons": [
             "RAM abaixo do mínimo exigido",
             "Especificação divergente: SSD/armazenamento",
@@ -1092,13 +1170,13 @@
         "condition": "Usado - Excelente",
         "status": "out_of_scope",
         "first_seen": "2026-10-17",
-        "last_seen": "2026-10-22",
+        "last_seen": "2026-10-23",
         "notes": null,
         "desc_checked": true,
         "validation": {
           "version": 2,
           "state": "rejected",
-          "checked_at": "2026-10-22T10:03:34.548Z",
+          "checked_at": "2026-10-23T10:15:11.236Z",
           "reasons": [
             "RAM abaixo do mínimo exigido",
             "Especificação divergente: RAM",
@@ -1124,7 +1202,7 @@
         "description_evidence": "Eleve sua experiência gamer com o Notebook ASUS ROG Strix G16! Equipado com processador i9-13980HX e placa de vídeo RTX 4060, este notebook oferece desempenho excepcional para os jogos mais exigentes. Com 1TB de armazenamento WD BLACK e 32GB 5600MT/s de RAM DDR5 Kingston FURY Impact, você terá velocidade e espaço de sobra para todos os seus jogos e arquivos. Design moderno e refrigeração avançada para sessões de jogo intensas.Notebook em excelente estado, muito bem cuidado e super conservado. Eu utilizava um teclado externo, evitando o desgaste do teclado original.Acompanha: 16 GB de memória RAM que vieram originalmente com o notebook.Cabo HDMI.Motivo da venda: Migrei para um MacBook e, por isso, não estou mais utilizando este notebook.Importante: Não aceito propostas de negociação nem trocas. Apenas venda pelo valor anunciado.Notebook muito bem cuidado, pronto para o próximo dono!",
         "detail_title": "Notebook ASUS ROG Strix G16 | i9-13980HX | RTX 4060 | 1TB | 32GB DDR5",
         "configuration_warnings": [],
-        "out_of_scope_at": "2026-10-22T19:02:34.947Z",
+        "out_of_scope_at": "2026-10-23T10:17:45.052Z",
         "price_history": [
           {
             "at": "2026-10-17T19:01:57.525Z",
@@ -1145,10 +1223,10 @@
         "condition": "novo",
         "status": "out_of_scope",
         "first_seen": "2026-10-02",
-        "last_seen": "2026-10-22",
+        "last_seen": "2026-10-23",
         "notes": null,
         "desc_checked": true,
-        "out_of_scope_at": "2026-10-22T19:02:34.947Z",
+        "out_of_scope_at": "2026-10-23T10:17:45.052Z",
         "price_history": [
           {
             "at": "2026-10-02T10:00:30.855Z",
@@ -1159,7 +1237,7 @@
         "validation": {
           "version": 2,
           "state": "rejected",
-          "checked_at": "2026-10-22T10:03:58.097Z",
+          "checked_at": "2026-10-23T10:15:37.412Z",
           "reasons": [
             "RAM abaixo do mínimo exigido",
             "RAM abaixo do mínimo de 32 GB"
@@ -1202,13 +1280,13 @@
         "condition": "Usado - Excelente",
         "status": "active",
         "first_seen": "2026-10-13",
-        "last_seen": "2026-10-22",
+        "last_seen": "2026-10-23",
         "notes": null,
         "desc_checked": true,
         "validation": {
           "version": 2,
           "state": "pending",
-          "checked_at": "2026-10-22T10:04:10.505Z",
+          "checked_at": "2026-10-23T10:15:49.736Z",
           "reasons": [
             "Especificação não confirmada: RAM"
           ],
@@ -1244,6 +1322,188 @@
         "detail_title": "Laptop Predator Helios Neo intel® core i9-14900hx com rtx4070"
       },
       {
+        "id": "1537565082",
+        "url": "https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/notebooks/notebook-gamer-avell-a65-ion-i9-12gen-32ram-rtx4060-512gb-1537565082",
+        "title": "Notebook Gamer Avell A65 ION - i9 12gen 32RAM RTX4060 512gb",
+        "cpu_term": "family:avell-a65",
+        "search_terms": [
+          "family:avell-a65"
+        ],
+        "description_discovery": true,
+        "price_brl": 7199,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": "RTX 4060",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "out_of_scope",
+        "first_seen": "2026-10-17",
+        "last_seen": "2026-10-23",
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-10-23T10:17:32.924Z",
+          "reasons": [
+            "CPU fora da busca",
+            "Especificação não confirmada: RAM",
+            "CPU não confirmada no anúncio",
+            "CPU fora da seleção atual"
+          ],
+          "listing_price_brl": 7199,
+          "detail_price_brl": 7199,
+          "visible_price_brl": null,
+          "structured_price_brl": 7199,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "description_evidence": "Notebook Avell A65 IONIntel Core i9 12900HX 2.3GHz32gb memória RAMNVidia GeForce RTX 4060 8gbSSD 512gbTela 15.6 FHDTeclado retroiluminadoCarregador originalCom caixa!",
+        "detail_title": "Notebook Gamer Avell A65 ION - i9 12gen 32RAM RTX4060 512gb",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ],
+        "out_of_scope_at": "2026-10-23T10:17:45.052Z",
+        "price_history": [
+          {
+            "at": "2026-10-17T19:01:57.525Z",
+            "price_brl": 7499
+          },
+          {
+            "at": "2026-10-20T10:02:52.424Z",
+            "price_brl": 7199
+          }
+        ]
+      },
+      {
+        "id": "1531177640",
+        "url": "https://rs.olx.com.br/regioes-de-porto-alegre-torres-e-santa-cruz-do-sul/informatica/notebooks/notebook-gamer-avell-a65-ion-1531177640",
+        "title": "Notebook Gamer - Avell A65 ion",
+        "cpu_term": "family:avell-a65",
+        "search_terms": [
+          "family:avell-a65"
+        ],
+        "description_discovery": true,
+        "price_brl": 7400,
+        "ram_gb": 32,
+        "storage_gb": null,
+        "gpu": null,
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": "2026-10-17",
+        "last_seen": "2026-10-23",
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-10-23T10:17:20.998Z",
+          "reasons": [
+            "Especificação não confirmada: GPU",
+            "CPU não confirmada no anúncio",
+            "CPU fora da seleção atual"
+          ],
+          "listing_price_brl": 7400,
+          "detail_price_brl": 7400,
+          "visible_price_brl": null,
+          "structured_price_brl": 7400,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": 32,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "description_evidence": "Notebook Gamer Avell A65 IonPlaca de Vídeo: GeForce RTX 4060Processador: Intel i9 12900HXMemória RAM: 32GB DDR5 (2x16GB)Armazenamento: SSD GEN4 1TBSistema: Windows 11 HSL Tela: 16''Usado por 2 anos e meio e em perfeitas condições.",
+        "detail_title": "Notebook Gamer - Avell A65 ion",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ],
+        "out_of_scope_at": null,
+        "price_history": [
+          {
+            "at": "2026-10-17T19:01:57.525Z",
+            "price_brl": 7400
+          }
+        ]
+      },
+      {
+        "id": "1545040273",
+        "url": "https://mg.olx.com.br/regiao-de-pocos-de-caldas-e-varginha/informatica/notebooks/notebook-gamer-avell-a65-ion-i9-32gb-rtx-4060-1545040273",
+        "title": "Notebook Gamer Avell A65 Ion I9 32gb Rtx 4060",
+        "cpu_term": "family:avell-a65",
+        "search_terms": [
+          "family:avell-a65"
+        ],
+        "description_discovery": true,
+        "price_brl": 8000,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": "RTX 4060",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": "2026-10-17",
+        "last_seen": "2026-10-23",
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-10-23T10:17:45.030Z",
+          "reasons": [
+            "Especificação não confirmada: RAM",
+            "CPU não confirmada no anúncio",
+            "CPU fora da seleção atual"
+          ],
+          "listing_price_brl": 8000,
+          "detail_price_brl": 8000,
+          "visible_price_brl": null,
+          "structured_price_brl": 8000,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "out_of_scope_at": null,
+        "price_history": [
+          {
+            "at": "2026-10-17T19:01:57.525Z",
+            "price_brl": 8000
+          }
+        ],
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ],
+        "description_evidence": "Notebook Avell com menos de 1 ano de usoMotivo da troca: Migrei para MAC",
+        "detail_title": "Notebook Gamer Avell A65 Ion I9 32gb Rtx 4060 "
+      },
+      {
         "id": "1541831402",
         "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/dell-alienware-m16-r1-i9-13900hx-rtx-4070-32-gb-ram-ssd-1-tb-br-1541831402",
         "title": "Dell Alienware m16 R1 - i9 13900HX | RTX 4070 | 32 GB RAM | SSD 1 TB<br>",
@@ -1255,7 +1515,7 @@
         "gpu": "RTX 4070",
         "location": "São Paulo, Bela Vista",
         "condition": null,
-        "status": "active",
+        "status": "not_seen",
         "first_seen": "2026-10-14",
         "last_seen": "2026-10-22",
         "notes": null,
@@ -2601,171 +2861,6 @@
         "configuration_warnings": [
           "Armazenamento não informado"
         ]
-      },
-      {
-        "id": "1537565082",
-        "url": "https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/notebooks/notebook-gamer-avell-a65-ion-i9-12gen-32ram-rtx4060-512gb-1537565082",
-        "title": "Notebook Gamer Avell A65 ION - i9 12gen 32RAM RTX4060 512gb",
-        "cpu_term": "family:avell-a65",
-        "search_terms": [
-          "family:avell-a65"
-        ],
-        "description_discovery": true,
-        "price_brl": 7199,
-        "ram_gb": null,
-        "storage_gb": null,
-        "gpu": "RTX 4060",
-        "location": null,
-        "condition": "Usado - Excelente",
-        "status": "out_of_scope",
-        "first_seen": "2026-10-17",
-        "last_seen": "2026-10-20",
-        "notes": null,
-        "desc_checked": true,
-        "validation": {
-          "version": 2,
-          "state": "rejected",
-          "checked_at": "2026-10-20T10:02:52.409Z",
-          "reasons": [
-            "CPU fora da busca",
-            "Especificação não confirmada: RAM",
-            "CPU não confirmada no anúncio",
-            "CPU fora da seleção atual"
-          ],
-          "listing_price_brl": 7199,
-          "detail_price_brl": 7199,
-          "visible_price_brl": null,
-          "structured_price_brl": 7199,
-          "title_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": "RTX 4060"
-          },
-          "description_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": "RTX 4060"
-          },
-          "cpu_confirmed": false,
-          "description_checked": true
-        },
-        "description_evidence": "Notebook Avell A65 IONIntel Core i9 12900HX 2.3GHz32gb memória RAMNVidia GeForce RTX 4060 8gbSSD 512gbTela 15.6 FHDTeclado retroiluminadoCarregador originalCom caixa!",
-        "detail_title": "Notebook Gamer Avell A65 ION - i9 12gen 32RAM RTX4060 512gb",
-        "configuration_warnings": [
-          "Armazenamento não informado"
-        ],
-        "out_of_scope_at": "2026-10-20T10:02:52.424Z",
-        "price_history": [
-          {
-            "at": "2026-10-17T19:01:57.525Z",
-            "price_brl": 7499
-          },
-          {
-            "at": "2026-10-20T10:02:52.424Z",
-            "price_brl": 7199
-          }
-        ]
-      },
-      {
-        "id": "1531177640",
-        "url": "https://rs.olx.com.br/regioes-de-porto-alegre-torres-e-santa-cruz-do-sul/informatica/notebooks/notebook-gamer-avell-a65-ion-1531177640",
-        "title": "Notebook Gamer - Avell A65 ion",
-        "cpu_term": "family:avell-a65",
-        "search_terms": [
-          "family:avell-a65"
-        ],
-        "description_discovery": true,
-        "price_brl": 7400,
-        "ram_gb": null,
-        "storage_gb": null,
-        "gpu": null,
-        "location": "Porto Alegre, Passo da Areia",
-        "condition": null,
-        "status": "out_of_scope",
-        "first_seen": "2026-10-17",
-        "last_seen": "2026-10-20",
-        "notes": null,
-        "desc_checked": false,
-        "validation": {
-          "version": 2,
-          "state": "rejected",
-          "checked_at": "2026-10-20T10:02:52.414Z",
-          "reasons": [
-            "Ficha aguardando leitura dentro dos limites da rodada",
-            "CPU fora da seleção atual"
-          ]
-        },
-        "description_evidence": "Notebook Gamer Avell A65 IonPlaca de Vídeo: GeForce RTX 4060Processador: Intel i9 12900HXMemória RAM: 32GB DDR5 (2x16GB)Armazenamento: SSD GEN4 1TBSistema: Windows 11 HSL Tela: 16''Usado por 2 anos e meio e em perfeitas condições.",
-        "detail_title": "Notebook Gamer - Avell A65 ion",
-        "configuration_warnings": [
-          "Armazenamento não informado"
-        ],
-        "out_of_scope_at": "2026-10-20T19:02:03.601Z",
-        "price_history": [
-          {
-            "at": "2026-10-17T19:01:57.525Z",
-            "price_brl": 7400
-          }
-        ]
-      },
-      {
-        "id": "1545040273",
-        "url": "https://mg.olx.com.br/regiao-de-pocos-de-caldas-e-varginha/informatica/notebooks/notebook-gamer-avell-a65-ion-i9-32gb-rtx-4060-1545040273",
-        "title": "Notebook Gamer Avell A65 Ion I9 32gb Rtx 4060",
-        "cpu_term": "family:avell-a65",
-        "search_terms": [
-          "family:avell-a65"
-        ],
-        "description_discovery": true,
-        "price_brl": 8000,
-        "ram_gb": null,
-        "storage_gb": null,
-        "gpu": "RTX 4060",
-        "location": null,
-        "condition": "Usado - Excelente",
-        "status": "out_of_scope",
-        "first_seen": "2026-10-17",
-        "last_seen": "2026-10-20",
-        "notes": null,
-        "desc_checked": true,
-        "validation": {
-          "version": 2,
-          "state": "rejected",
-          "checked_at": "2026-10-20T10:02:50.801Z",
-          "reasons": [
-            "Especificação não confirmada: RAM",
-            "CPU não confirmada no anúncio",
-            "CPU fora da seleção atual"
-          ],
-          "listing_price_brl": 8000,
-          "detail_price_brl": 8000,
-          "visible_price_brl": null,
-          "structured_price_brl": 8000,
-          "title_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": "RTX 4060"
-          },
-          "description_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": null
-          },
-          "cpu_confirmed": false,
-          "description_checked": true
-        },
-        "out_of_scope_at": "2026-10-20T19:02:03.601Z",
-        "price_history": [
-          {
-            "at": "2026-10-17T19:01:57.525Z",
-            "price_brl": 8000
-          }
-        ],
-        "configuration_warnings": [
-          "Armazenamento não informado"
-        ],
-        "description_evidence": "Notebook Avell com menos de 1 ano de usoMotivo da troca: Migrei para MAC",
-        "detail_title": "Notebook Gamer Avell A65 Ion I9 32gb Rtx 4060 "
       },
       {
         "id": "1538879177",
@@ -10269,16 +10364,16 @@
   },
   "blocked_until": null,
   "description_discovery": {
-    "extra_details": 3,
-    "total_details": 9,
-    "detail_ms": 4103,
+    "extra_details": 4,
+    "total_details": 4,
+    "detail_ms": 4821,
     "recovered_validated": 0,
-    "cache_hits": 0,
+    "cache_hits": 6,
     "by_term": {
-      "family:avell-a65": 3
+      "family:avell-storm": 4
     },
     "total_detail_limit": 12,
-    "queued_candidates": 18,
+    "queued_candidates": 17,
     "validation_complete": false,
     "per_term_limit": 2,
     "per_round_limit": 8
@@ -10288,36 +10383,36 @@
       "returned": 2,
       "validated": 1,
       "pending": 1,
-      "detail_reads": 2,
-      "limited": false,
-      "listing_incomplete": false,
-      "listing_limit": 36,
+      "detail_reads": 0,
+      "limited": true,
+      "listing_incomplete": true,
+      "listing_limit": 12,
       "details_pending": 0,
-      "total_results": 19,
+      "total_results": 20,
       "recommendations_ignored": 0
     },
     "13980hx": {
       "returned": 2,
       "validated": 0,
       "pending": 0,
-      "detail_reads": 2,
+      "detail_reads": 0,
       "limited": false,
       "listing_incomplete": false,
       "listing_limit": 12,
       "details_pending": 0,
-      "total_results": 7,
+      "total_results": 8,
       "recommendations_ignored": 0
     },
     "14900hx": {
       "returned": 2,
       "validated": 0,
       "pending": 1,
-      "detail_reads": 2,
+      "detail_reads": 0,
       "limited": false,
       "listing_incomplete": false,
       "listing_limit": 60,
       "details_pending": 0,
-      "total_results": 38,
+      "total_results": 41,
       "recommendations_ignored": 0
     },
     "13900hx": {
@@ -10332,31 +10427,7 @@
       "total_results": 11,
       "recommendations_ignored": 0
     },
-    "7845hx": {
-      "returned": 0,
-      "validated": 0,
-      "pending": 0,
-      "detail_reads": 0,
-      "limited": false,
-      "listing_incomplete": false,
-      "listing_limit": 12,
-      "details_pending": 0,
-      "total_results": 2,
-      "recommendations_ignored": 0
-    },
-    "8840hx": {
-      "returned": 0,
-      "validated": 0,
-      "pending": 0,
-      "detail_reads": 0,
-      "limited": false,
-      "listing_incomplete": false,
-      "listing_limit": 12,
-      "details_pending": 0,
-      "total_results": 0,
-      "recommendations_ignored": 39
-    },
-    "aimax390": {
+    "290hx": {
       "returned": 0,
       "validated": 0,
       "pending": 0,
@@ -10368,7 +10439,7 @@
       "total_results": 1,
       "recommendations_ignored": 0
     },
-    "hx470": {
+    "9955hx": {
       "returned": 0,
       "validated": 0,
       "pending": 0,
@@ -10377,19 +10448,43 @@
       "listing_incomplete": false,
       "listing_limit": 12,
       "details_pending": 0,
-      "total_results": 0,
-      "recommendations_ignored": 26
+      "total_results": 2,
+      "recommendations_ignored": 0
     },
-    "family:avell-a65": {
-      "returned": 3,
+    "275hx": {
+      "returned": 0,
       "validated": 0,
-      "pending": 2,
-      "detail_reads": 3,
+      "pending": 0,
+      "detail_reads": 0,
+      "limited": true,
+      "listing_incomplete": true,
+      "listing_limit": 12,
+      "details_pending": 0,
+      "total_results": 26,
+      "recommendations_ignored": 0
+    },
+    "aimax395": {
+      "returned": 0,
+      "validated": 0,
+      "pending": 0,
+      "detail_reads": 0,
       "limited": false,
       "listing_incomplete": false,
-      "listing_limit": 60,
+      "listing_limit": 12,
       "details_pending": 0,
-      "total_results": 6,
+      "total_results": 1,
+      "recommendations_ignored": 0
+    },
+    "family:avell-storm": {
+      "returned": 6,
+      "validated": 0,
+      "pending": 3,
+      "detail_reads": 4,
+      "limited": true,
+      "listing_incomplete": false,
+      "listing_limit": 60,
+      "details_pending": 2,
+      "total_results": 21,
       "recommendations_ignored": 0
     }
   }

@@ -1,0 +1,72 @@
+{
+  "schema_version": 2,
+  "generated_at": "2026-10-23T19:03:54.610Z",
+  "coverage_status": {
+    "Enjoei:pixel watch 5": {
+      "checked_at": "2026-10-23T19:03:55.406Z",
+      "last_success_at": "2026-10-23T19:03:55.406Z",
+      "state": "success",
+      "error": null
+    },
+    "OLX:pixel watch 5": {
+      "checked_at": "2026-10-23T10:18:21.406Z",
+      "last_success_at": "2026-10-23T10:18:21.406Z",
+      "state": "success",
+      "error": null
+    }
+  },
+  "run": {
+    "date": "2026-10-23",
+    "timezone": "America/Sao_Paulo",
+    "id": "google-pixel-watch-5",
+    "label": "Google Pixel Watch 5",
+    "started_at": "2026-10-23T19:03:54.610Z",
+    "completed_at": "2026-10-23T19:03:55.406Z",
+    "partial": true,
+    "errors": [],
+    "deferred_coverage": [
+      "OLX:pixel watch 5"
+    ],
+    "unattempted_coverage": [
+      "OLX:pixel watch 5"
+    ],
+    "scheduled_coverage": [
+      "Enjoei:pixel watch 5"
+    ],
+    "successful_coverage": [
+      "Enjoei:pixel watch 5"
+    ],
+    "failed_coverage": [],
+    "configured_coverage": [
+      "Enjoei:pixel watch 5",
+      "OLX:pixel watch 5"
+    ],
+    "quarantined_item_count": 0,
+    "operational": {
+      "status": "deferred",
+      "exit_code": 3,
+      "reasons": [
+        "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+      ],
+      "completed_terms": 1,
+      "incomplete_terms": 0,
+      "deferred_terms": 1
+    }
+  },
+  "filters": {
+    "price_brl": {
+      "min": 1000,
+      "max": 2200
+    },
+    "size_ml": {
+      "min": null,
+      "max": null
+    }
+  },
+  "items": [],
+  "price_range_brl": {
+    "min": 1000,
+    "max": 2200
+  },
+  "source_blocks": {}
+}

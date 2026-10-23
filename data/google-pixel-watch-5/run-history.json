@@ -1,7 +1,23 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-23T10:18:22.063Z",
+  "updated_at": "2026-10-23T19:03:55.772Z",
   "runs": [
+    {
+      "run_id": "2026-10-23T19-03-54-610Z",
+      "committed_at": "2026-10-23T19:03:55.412Z",
+      "completed_at": "2026-10-23T19:03:55.406Z",
+      "outcome": "deferred",
+      "partial": true,
+      "duration_ms": 796,
+      "item_count": 0,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "google-pixel-watch-5",
+        "label": "Google Pixel Watch 5",
+        "collected_count": 0,
+        "quarantined_item_count": 0
+      }
+    },
     {
       "run_id": "2026-10-23T10-18-14-699Z",
       "committed_at": "2026-10-23T10:18:21.432Z",
@@ -10,12 +26,12 @@
       "partial": false,
       "duration_ms": 6707,
       "item_count": 0,
-      "quarantined_item_count": 0,
       "metadata": {
         "source": "google-pixel-watch-5",
         "label": "Google Pixel Watch 5",
         "collected_count": 0,
-        "quarantined_item_count": 0
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     },
     {
