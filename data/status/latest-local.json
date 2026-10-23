@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-22T19:00:08.758Z",
+  "generated_at": "2026-10-23T10:13:43.878Z",
   "source": "local",
   "delivery": {
     "email": "skipped",
@@ -39,18 +39,15 @@
   "monitoring": {
     "scope": "local-watchlists",
     "partial": true,
-    "status": "blocked",
+    "status": "deferred",
     "outcomes": [
       {
         "source": "olx",
-        "status": "partial",
-        "exit_code": 2,
-        "reasons": [
-          "Listagem incompleta: limite de 12 cards ou próxima página pendente",
-          "Listagem incompleta: limite de 36 cards ou próxima página pendente"
-        ],
-        "completed_terms": 6,
-        "incomplete_terms": 3,
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 9,
+        "incomplete_terms": 0,
         "deferred_terms": 0
       },
       {
@@ -99,32 +96,26 @@
       },
       {
         "source": "pixel-watch-5",
-        "status": "deferred",
-        "exit_code": 3,
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ],
-        "completed_terms": 1,
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 2,
         "incomplete_terms": 0,
-        "deferred_terms": 1
+        "deferred_terms": 0
       },
       {
         "source": "oled-monitores",
-        "status": "blocked",
+        "status": "deferred",
+        "exit_code": 3,
         "reasons": [
-          "Saiu com código 4: {\"event\":\"olx_access_blocked\",\"id\":\"olx-access-2026-10-22T19-03-10-736Z-f305485c\",\"at\":\"2026-10-22T19:03:10.736Z\",\"stage\":\"listing\",\"query\":\"aw2726dm\",\"url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"final_url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"http_status\":403,\"title\":\"Attention Required! | Cloudflare\",\"kind\":\"hard_denial\",\"ray_id\":\"a4eac2b30f8e0ad0\",\"message\":\"Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4eac2b30f8e0ad0).\"}\n  Aviso: termo \"aw2726dm\" em https://www.olx.com.br/brasil/informatica/monitores falhou — Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4eac2b30f8e0ad0).\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.\nColeta OLED parcial: 1 consulta(s) incompleta(s), 9 adiada(s).\nOLX:aw2726dm: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4eac2b30f8e0ad0).\nOLX: consultas adiadas…"
-        ]
+          "OLX: consultas adiadas após bloqueio; retomada prevista em 24/10/2026, 16:03:11 BRT."
+        ],
+        "completed_terms": 4,
+        "incomplete_terms": 0,
+        "deferred_terms": 9
       }
     ],
     "warnings": [
-      {
-        "source": "olx",
-        "status": "partial",
-        "reasons": [
-          "Listagem incompleta: limite de 12 cards ou próxima página pendente",
-          "Listagem incompleta: limite de 36 cards ou próxima página pendente"
-        ]
-      },
       {
         "source": "lifefactory",
         "status": "deferred",
@@ -154,16 +145,14 @@
         ]
       },
       {
-        "source": "pixel-watch-5",
+        "source": "oled-monitores",
         "status": "deferred",
         "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+          "OLX: consultas adiadas após bloqueio; retomada prevista em 24/10/2026, 16:03:11 BRT."
         ]
       }
     ],
-    "errors": [
-      "Monitores OLED: Saiu com código 4: {\"event\":\"olx_access_blocked\",\"id\":\"olx-access-2026-10-22T19-03-10-736Z-f305485c\",\"at\":\"2026-10-22T19:03:10.736Z\",\"stage\":\"listing\",\"query\":\"aw2726dm\",\"url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"final_url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"http_status\":403,\"title\":\"Attention Required! | Cloudflare\",\"kind\":\"hard_denial\",\"ray_id\":\"a4eac2b30f8e0ad0\",\"message\":\"Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4eac2b30f8e0ad0).\"}\n  Aviso: termo \"aw2726dm\" em https://www.olx.com.br/brasil/informatica/monitores falhou — Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4eac2b30f8e0ad0).\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.\nColeta OLED parcial: 1 consulta(s) incompleta(s), 9 adiada(s).\nOLX:aw2726dm: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4eac2b30f8e0ad0).\nOLX: c…"
-    ]
+    "errors": []
   },
   "notification_sent_ids": [
     "ba389d82-208c-40a7-ada6-a22a454a4618",
@@ -211,7 +200,8 @@
     "9b312050-1701-4ea5-b309-0ed90b55352d",
     "4ce940f4-0443-4ace-b3c1-f641d24550e6",
     "47ab14ef-b42f-49e0-baab-dc376f166c87",
-    "b1952286-269b-485b-bdbf-35fdca35d0de"
+    "b1952286-269b-485b-bdbf-35fdca35d0de",
+    "e57fc50d-0be0-487b-a25c-825797e8fef7"
   ],
   "notification_archive": [
     {
