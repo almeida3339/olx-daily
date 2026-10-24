@@ -1,4 +1,4 @@
-# Monitor Tela Galaxy Book3 até R$ 1.000,00 — 2026-09-08
+# Monitor Tela Galaxy Book3 até R$ 1.000,00 — 2026-10-24
 
 ## Resumo executivo
 - Novos produtos: **0**

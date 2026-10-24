@@ -241,15 +241,35 @@
           "detail": 4
         }
       }
+    },
+    "2026-10-24": {
+      "search": 8,
+      "detail": 10,
+      "watchlists": {
+        "notebooks": {
+          "search": 6,
+          "detail": 10
+        },
+        "oneplus-buds-pro-3": {
+          "search": 2,
+          "detail": 0
+        }
+      },
+      "rounds": {
+        "20dd05dc-aec8-4b74-9744-465e16f94c41": {
+          "search": 8,
+          "detail": 10
+        }
+      }
     }
   },
   "queries": {
     "notebooks:14900hx": {
-      "last_attempt_at": "2026-10-23T19:01:06.853Z",
+      "last_attempt_at": "2026-10-24T10:01:45.174Z",
       "approved": 0,
       "interval_hours": 8,
-      "last_success_at": "2026-10-23T19:01:07.584Z",
-      "empty_runs": 4,
+      "last_success_at": "2026-10-24T10:02:12.016Z",
+      "empty_runs": 5,
       "prices": {},
       "listing_limit": 60,
       "listing_incomplete": false
@@ -280,30 +300,30 @@
       "interval_hours": 48
     },
     "notebooks:14700hx": {
-      "last_attempt_at": "2026-10-23T19:00:29.094Z",
+      "last_attempt_at": "2026-10-24T10:00:27.245Z",
       "approved": 0,
-      "last_success_at": "2026-10-23T10:14:34.874Z",
-      "empty_runs": 9,
+      "last_success_at": "2026-10-24T10:00:52.440Z",
+      "empty_runs": 10,
       "prices": {},
       "interval_hours": 8,
-      "listing_limit": 12,
-      "listing_incomplete": true
+      "listing_limit": 36,
+      "listing_incomplete": false
     },
     "notebooks:13980hx": {
-      "last_attempt_at": "2026-10-23T19:00:47.955Z",
+      "last_attempt_at": "2026-10-24T10:01:10.844Z",
       "approved": 0,
-      "last_success_at": "2026-10-23T19:00:48.430Z",
-      "empty_runs": 11,
+      "last_success_at": "2026-10-24T10:01:36.377Z",
+      "empty_runs": 12,
       "prices": {},
       "interval_hours": 8,
       "listing_limit": 12,
       "listing_incomplete": false
     },
     "notebooks:13900hx": {
-      "last_attempt_at": "2026-10-23T19:01:22.105Z",
+      "last_attempt_at": "2026-10-24T10:02:24.498Z",
       "approved": 0,
-      "last_success_at": "2026-10-23T19:01:23.069Z",
-      "empty_runs": 3,
+      "last_success_at": "2026-10-24T10:02:24.887Z",
+      "empty_runs": 4,
       "prices": {},
       "interval_hours": 8,
       "last_change_at": "2026-10-19T10:01:18.348Z",
@@ -351,9 +371,11 @@
       "listing_incomplete": false
     },
     "notebooks:family:helios-neo-16": {
-      "last_attempt_at": "2026-10-21T14:44:30.656Z",
+      "last_attempt_at": "2026-10-24T10:02:42.729Z",
       "approved": 0,
-      "interval_hours": 24
+      "interval_hours": 24,
+      "listing_limit": 60,
+      "listing_incomplete": true
     },
     "tela-galaxybook3:BA96-08462A": {
       "last_attempt_at": "2026-10-22T10:06:01.563Z",
@@ -380,10 +402,10 @@
       "interval_hours": 48
     },
     "oneplus-buds-pro-3:oneplus buds pro 3": {
-      "last_attempt_at": "2026-10-23T19:03:36.270Z",
+      "last_attempt_at": "2026-10-24T10:03:48.467Z",
       "approved": 1,
       "last_change_at": "2026-10-18T10:02:44.246Z",
-      "last_success_at": "2026-10-23T19:03:39.730Z",
+      "last_success_at": "2026-10-24T10:03:49.800Z",
       "empty_runs": 0,
       "prices": {
         "1544242559": 799
@@ -391,10 +413,10 @@
       "interval_hours": 8
     },
     "oneplus-buds-pro-3:buds pro 3": {
-      "last_attempt_at": "2026-10-23T19:03:39.736Z",
+      "last_attempt_at": "2026-10-24T10:03:49.807Z",
       "approved": 1,
       "last_change_at": "2026-10-18T10:02:50.931Z",
-      "last_success_at": "2026-10-23T19:03:53.180Z",
+      "last_success_at": "2026-10-24T10:04:04.662Z",
       "empty_runs": 0,
       "prices": {
         "1544242559": 799
@@ -413,14 +435,14 @@
       "last_attempt_at": "2026-10-22T19:03:07.371Z"
     },
     "notebooks:255hx": {
-      "last_attempt_at": "2026-10-22T19:01:22.782Z",
+      "last_attempt_at": "2026-10-24T10:02:29.955Z",
       "approved": 0,
-      "last_success_at": "2026-10-20T19:01:24.089Z",
-      "empty_runs": 2,
+      "last_success_at": "2026-10-24T10:02:37.304Z",
+      "empty_runs": 3,
       "prices": {},
-      "interval_hours": 24,
-      "listing_limit": 12,
-      "listing_incomplete": true
+      "interval_hours": 48,
+      "listing_limit": 36,
+      "listing_incomplete": false
     },
     "notebooks:8940hx": {
       "last_attempt_at": "2026-10-22T19:01:45.157Z",
@@ -574,7 +596,7 @@
       "interval_hours": 24
     }
   },
-  "updated_at": "2026-10-23T19:03:55.270Z",
+  "updated_at": "2026-10-24T10:04:04.669Z",
   "limits": {
     "daily": {
       "search": 40,
@@ -585,6 +607,6 @@
       "detail": 14
     }
   },
-  "last_access_slot_at": "2026-10-23T19:03:48.901Z",
+  "last_access_slot_at": "2026-10-24T10:04:00.498Z",
   "access_interval_ms": 12000
 }

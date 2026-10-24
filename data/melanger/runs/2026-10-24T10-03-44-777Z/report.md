@@ -1,4 +1,4 @@
-# Monitor Melanger R$ 1.000,00–R$ 5.000,00 — 2026-09-09
+# Monitor Melanger R$ 1.000,00–R$ 5.000,00 — 2026-10-24
 
 ## Resumo executivo
 - Novos produtos: **0**
