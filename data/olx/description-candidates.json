@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "round": "2026-10-24T10:00:27.110Z",
+  "round": "2026-10-24T19:00:31.178Z",
   "queue": [
     {
       "key": "1513973272",
@@ -324,6 +324,44 @@
       ],
       "first_observed_at": "2026-10-24T10:02:50.169Z",
       "last_observed_at": "2026-10-24T10:03:37.670Z"
+    },
+    {
+      "key": "1542357974",
+      "card": {
+        "title": "ASUS ROG STRIX G16 - i9-13980HX + RTX 4060 8GB | SSDs 1.5TB | 165Hz",
+        "url": "https://pi.olx.com.br/regiao-de-teresina-e-parnaiba/informatica/notebooks/asus-rog-strix-g16-i9-13980hx-rtx-4060-8gb-ssds-1-5tb-165hz-1542357974",
+        "price_brl": 7990,
+        "location": "Parnaíba, Planalto de Monteserra The",
+        "text": "",
+        "ram_gb": 8,
+        "storage_gb": 1536,
+        "cpu_term": "family:rog-strix-g16",
+        "description_discovery": true
+      },
+      "terms": [
+        "family:rog-strix-g16"
+      ],
+      "first_observed_at": "2026-10-24T19:02:29.418Z",
+      "last_observed_at": "2026-10-24T19:02:29.418Z"
+    },
+    {
+      "key": "1545009098",
+      "card": {
+        "title": "Notebook ASUS ROG Strix G16 | i9-13980HX | RTX 4060 | 1TB | 32GB DDR5",
+        "url": "https://sc.olx.com.br/florianopolis-e-regiao/informatica/notebooks/notebook-asus-rog-strix-g16-i9-13980hx-rtx-4060-1tb-32gb-ddr5-1545009098",
+        "price_brl": 8000,
+        "location": "Florianópolis, Itacorubi",
+        "text": "",
+        "ram_gb": 32,
+        "storage_gb": 1024,
+        "cpu_term": "family:rog-strix-g16",
+        "description_discovery": true
+      },
+      "terms": [
+        "family:rog-strix-g16"
+      ],
+      "first_observed_at": "2026-10-24T19:02:29.418Z",
+      "last_observed_at": "2026-10-24T19:02:29.418Z"
     }
   ],
   "cache": [
@@ -886,16 +924,74 @@
         "detail_title": "Notebook Gamer Acer Predator Helios Neo 16",
         "configuration_warnings": []
       }
+    },
+    {
+      "key": "1546291504",
+      "title": "MacBook Air M5 - 13?, 512gb - Garantia apple até 04.2027",
+      "price_brl": 7800,
+      "checked_at": "2026-10-24T19:02:42.470Z",
+      "item": {
+        "id": "1546291504",
+        "url": "https://rn.olx.com.br/rio-grande-do-norte/informatica/notebooks/macbook-air-m5-13-512gb-garantia-apple-ate-04-2027-1546291504",
+        "title": "MacBook Air M5 - 13?, 512gb - Garantia apple até 04.2027",
+        "cpu_term": "family:rog-strix-g16",
+        "search_terms": [
+          "family:rog-strix-g16"
+        ],
+        "description_discovery": true,
+        "price_brl": 7800,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": null,
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "pending",
+          "checked_at": "2026-10-24T19:02:42.466Z",
+          "reasons": [
+            "Especificação não confirmada: RAM",
+            "Especificação não confirmada: GPU",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 7800,
+          "detail_price_brl": 7800,
+          "visible_price_brl": null,
+          "structured_price_brl": 7800,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "description_evidence": "MacBook com chip m5 Muito bem cuidado!Sempre usado com película na tela, capinha e película no teclado desde o 1 Dia.Bateria 100% com 40 CiclosGarantia apple até 01.04Vendendo pois quero um com sistema operacional windows.So troco por Asus Rog Strix G16 com volta a combinar",
+        "detail_title": "MacBook Air M5 - 13?, 512gb - Garantia apple até 04.2027",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ]
+      }
     }
   ],
   "metrics": {
-    "extra_details": 4,
-    "total_details": 10,
-    "detail_ms": 8229,
+    "extra_details": 1,
+    "total_details": 1,
+    "detail_ms": 1594,
     "recovered_validated": 0,
-    "cache_hits": 0,
+    "cache_hits": 6,
     "by_term": {
-      "family:helios-neo-16": 4
+      "family:rog-strix-g16": 1
     }
   }
 }

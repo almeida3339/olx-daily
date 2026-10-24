@@ -1,7 +1,24 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-23T19:03:59.575Z",
+  "updated_at": "2026-10-24T19:04:31.195Z",
   "runs": [
+    {
+      "run_id": "926a8aab-3d4b-432e-8234-828ca48cf29a",
+      "completed_at": "2026-10-24T19:04:31.190Z",
+      "outcome": "blocked",
+      "partial": true,
+      "duration_ms": 259809,
+      "item_count": 0,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "local",
+        "monitor_errors": 1,
+        "monitor_failures": [
+          "Monitores OLED: Saiu com código 4: {\"event\":\"olx_access_blocked\",\"id\":\"olx-access-2026-10-24T19-04-29-092Z-05ce99a5\",\"at\":\"2026-10-24T19:04:29.092Z\",\"stage\":\"listing\",\"query\":\"aw2725d\",\"url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"final_url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"http_status\":403,\"title\":\"Attention Required! | Cloudflare\",\"kind\":\"hard_denial\",\"ray_id\":\"a4fb3f5cfd2a7a2f\",\"message\":\"Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4fb3f5cfd2a7a2f).\"}\n  Aviso: termo \"aw2725d\" em https://www.olx.com.br/brasil/informatica/monitores falhou — Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4fb3f5cfd2a7a2f).\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.\nColeta OLED parcial: 1 consulta(s) incompleta(s), 9 adiada(s).\nOLX:aw2725d: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4fb3f5cfd2a7a2f).\nOLX: consultas adiadas ap…"
+        ],
+        "pending_notifications": 0
+      }
+    },
     {
       "run_id": "463f25f5-53a9-443c-b0c4-fc949b3a1c1b",
       "completed_at": "2026-10-23T19:03:59.570Z",
@@ -1820,20 +1837,6 @@
       "outcome": "success",
       "partial": false,
       "duration_ms": 61453,
-      "item_count": 0,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "local",
-        "monitor_errors": 0,
-        "pending_notifications": 1
-      }
-    },
-    {
-      "run_id": "237a3d13-29c6-47c7-b7bb-fc3a89fb6792",
-      "completed_at": "2026-08-30T10:00:56.345Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 52170,
       "item_count": 0,
       "quarantined_item_count": 0,
       "metadata": {

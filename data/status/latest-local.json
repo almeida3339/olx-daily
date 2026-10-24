@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-23T19:00:08.558Z",
+  "generated_at": "2026-10-24T19:00:11.381Z",
   "source": "local",
   "delivery": {
     "email": "skipped",
@@ -39,85 +39,70 @@
   "monitoring": {
     "scope": "local-watchlists",
     "partial": true,
-    "status": "partial",
+    "status": "blocked",
     "outcomes": [
       {
         "source": "olx",
         "status": "partial",
         "exit_code": 2,
         "reasons": [
-          "Listagem incompleta: limite de 12 cards ou próxima página pendente",
-          "2 ficha(s) aguardando leitura dentro dos limites da rodada"
+          "Listagem incompleta: limite de 12 cards ou próxima página pendente"
         ],
-        "completed_terms": 6,
-        "incomplete_terms": 3,
+        "completed_terms": 8,
+        "incomplete_terms": 1,
         "deferred_terms": 0
       },
       {
         "source": "lifefactory",
-        "status": "deferred",
-        "exit_code": 3,
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ],
-        "completed_terms": 1,
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 2,
         "incomplete_terms": 0,
-        "deferred_terms": 1
+        "deferred_terms": 0
       },
       {
         "source": "tela-book3",
-        "status": "deferred",
-        "exit_code": 3,
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ],
-        "completed_terms": 1,
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 2,
         "incomplete_terms": 0,
-        "deferred_terms": 1
+        "deferred_terms": 0
       },
       {
         "source": "melanger",
-        "status": "deferred",
-        "exit_code": 3,
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ],
-        "completed_terms": 1,
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 2,
         "incomplete_terms": 0,
-        "deferred_terms": 1
+        "deferred_terms": 0
       },
       {
         "source": "oneplus-buds",
-        "status": "deferred",
-        "exit_code": 3,
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ],
-        "completed_terms": 5,
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 6,
         "incomplete_terms": 0,
-        "deferred_terms": 1
+        "deferred_terms": 0
       },
       {
         "source": "pixel-watch-5",
-        "status": "deferred",
-        "exit_code": 3,
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ],
-        "completed_terms": 1,
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 2,
         "incomplete_terms": 0,
-        "deferred_terms": 1
+        "deferred_terms": 0
       },
       {
         "source": "oled-monitores",
-        "status": "deferred",
-        "exit_code": 3,
+        "status": "blocked",
         "reasons": [
-          "OLX: consultas adiadas após bloqueio; retomada prevista em 24/10/2026, 16:03:11 BRT."
-        ],
-        "completed_terms": 3,
-        "incomplete_terms": 0,
-        "deferred_terms": 10
+          "Saiu com código 4: {\"event\":\"olx_access_blocked\",\"id\":\"olx-access-2026-10-24T19-04-29-092Z-05ce99a5\",\"at\":\"2026-10-24T19:04:29.092Z\",\"stage\":\"listing\",\"query\":\"aw2725d\",\"url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"final_url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"http_status\":403,\"title\":\"Attention Required! | Cloudflare\",\"kind\":\"hard_denial\",\"ray_id\":\"a4fb3f5cfd2a7a2f\",\"message\":\"Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4fb3f5cfd2a7a2f).\"}\n  Aviso: termo \"aw2725d\" em https://www.olx.com.br/brasil/informatica/monitores falhou — Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4fb3f5cfd2a7a2f).\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.\nColeta OLED parcial: 1 consulta(s) incompleta(s), 9 adiada(s).\nOLX:aw2725d: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4fb3f5cfd2a7a2f).\nOLX: consultas adiadas ap…"
+        ]
       }
     ],
     "warnings": [
@@ -125,54 +110,13 @@
         "source": "olx",
         "status": "partial",
         "reasons": [
-          "Listagem incompleta: limite de 12 cards ou próxima página pendente",
-          "2 ficha(s) aguardando leitura dentro dos limites da rodada"
-        ]
-      },
-      {
-        "source": "lifefactory",
-        "status": "deferred",
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ]
-      },
-      {
-        "source": "tela-book3",
-        "status": "deferred",
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ]
-      },
-      {
-        "source": "melanger",
-        "status": "deferred",
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ]
-      },
-      {
-        "source": "oneplus-buds",
-        "status": "deferred",
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ]
-      },
-      {
-        "source": "pixel-watch-5",
-        "status": "deferred",
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ]
-      },
-      {
-        "source": "oled-monitores",
-        "status": "deferred",
-        "reasons": [
-          "OLX: consultas adiadas após bloqueio; retomada prevista em 24/10/2026, 16:03:11 BRT."
+          "Listagem incompleta: limite de 12 cards ou próxima página pendente"
         ]
       }
     ],
-    "errors": []
+    "errors": [
+      "Monitores OLED: Saiu com código 4: {\"event\":\"olx_access_blocked\",\"id\":\"olx-access-2026-10-24T19-04-29-092Z-05ce99a5\",\"at\":\"2026-10-24T19:04:29.092Z\",\"stage\":\"listing\",\"query\":\"aw2725d\",\"url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"final_url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"http_status\":403,\"title\":\"Attention Required! | Cloudflare\",\"kind\":\"hard_denial\",\"ray_id\":\"a4fb3f5cfd2a7a2f\",\"message\":\"Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4fb3f5cfd2a7a2f).\"}\n  Aviso: termo \"aw2725d\" em https://www.olx.com.br/brasil/informatica/monitores falhou — Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4fb3f5cfd2a7a2f).\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.\nColeta OLED parcial: 1 consulta(s) incompleta(s), 9 adiada(s).\nOLX:aw2725d: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a4fb3f5cfd2a7a2f).\nOLX: cons…"
+    ]
   },
   "notification_sent_ids": [
     "ba389d82-208c-40a7-ada6-a22a454a4618",
@@ -222,7 +166,8 @@
     "47ab14ef-b42f-49e0-baab-dc376f166c87",
     "b1952286-269b-485b-bdbf-35fdca35d0de",
     "e57fc50d-0be0-487b-a25c-825797e8fef7",
-    "492fc30b-ec63-40a5-8fb2-c3f834397803"
+    "492fc30b-ec63-40a5-8fb2-c3f834397803",
+    "b4ccfd76-6943-4c19-b8fd-894a3507862c"
   ],
   "notification_archive": [
     {
