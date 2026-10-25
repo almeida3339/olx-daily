@@ -2,32 +2,84 @@
   "schema_version": 1,
   "quality_version": 2,
   "configuration": "9955hx3d,290hx,9955hx,285hx,275hx,aimax395,7945hx,7945hx3d,255hx,13980hx,8940hx,7940hx,13950hx,14900hx,13900hx,7845hx,8840hx,aimax390,14700hx,hx470,family:helios-neo-16,family:rog-strix-g16,family:legion-pro-5,family:dell-g16,family:avell-a65,family:avell-storm",
-  "started_at": "2026-10-25T10:00:28.139Z",
-  "updated_at": "2026-10-25T10:03:48.800Z",
-  "state": "completed",
+  "started_at": "2026-10-25T19:00:28.614Z",
+  "updated_at": "2026-10-25T19:02:47.688Z",
+  "state": "partial",
   "scheduled_terms": [
     "14700hx",
     "13980hx",
     "14900hx",
     "13900hx",
-    "8940hx",
-    "7940hx",
-    "13950hx",
-    "275hx",
-    "family:legion-pro-5"
+    "7845hx",
+    "8840hx",
+    "aimax390",
+    "hx470",
+    "family:dell-g16"
   ],
   "successful_terms": [
-    "14700hx",
     "13980hx",
     "14900hx",
     "13900hx",
-    "8940hx",
-    "7940hx",
-    "13950hx",
-    "275hx",
-    "family:legion-pro-5"
+    "7845hx",
+    "8840hx",
+    "aimax390",
+    "hx470",
+    "family:dell-g16"
   ],
   "collected": [
+    {
+      "id": "1547313199",
+      "url": "https://se.olx.com.br/sergipe/informatica/notebooks/predator-helios-neo-16-1547313199",
+      "title": "Predator Helios Neo 16",
+      "cpu_term": "14700hx",
+      "search_terms": [
+        "14700hx"
+      ],
+      "description_discovery": true,
+      "price_brl": 7000,
+      "ram_gb": null,
+      "storage_gb": null,
+      "gpu": null,
+      "location": null,
+      "condition": "novo",
+      "status": "active",
+      "first_seen": null,
+      "last_seen": null,
+      "notes": null,
+      "desc_checked": true,
+      "validation": {
+        "version": 2,
+        "state": "rejected",
+        "checked_at": "2026-10-25T19:00:41.960Z",
+        "reasons": [
+          "Defeito ou avaria declarados no anúncio",
+          "Especificação não confirmada: RAM",
+          "Especificação não confirmada: GPU",
+          "CPU não confirmada no anúncio"
+        ],
+        "listing_price_brl": 7000,
+        "detail_price_brl": 7000,
+        "visible_price_brl": null,
+        "structured_price_brl": 7000,
+        "title_specs": {
+          "ram_gb": null,
+          "storage_gb": null,
+          "gpu": null
+        },
+        "description_specs": {
+          "ram_gb": null,
+          "storage_gb": null,
+          "gpu": null
+        },
+        "cpu_confirmed": false,
+        "description_checked": true
+      },
+      "description_evidence": "Notebook semi novo sou o único dono nunca teve nenhum defeito nem avarias seja em qualquer componente.Processador i7 14700hxMemória 40gbSsd nvme 500gbSsd nvme 1tbPlaca de vídeo nvidia rtx 4070Em perfeito estado!!!!",
+      "detail_title": "Predator Helios Neo 16",
+      "configuration_warnings": [
+        "Armazenamento não informado"
+      ]
+    },
     {
       "id": "1522141686",
       "url": "https://sc.olx.com.br/florianopolis-e-regiao/informatica/notebooks/notebook-gamer-nave-estelar-i7-14700hx-32gb-rtx-4060-8gb-1522141686",
@@ -367,62 +419,14 @@
       "description_evidence": "Leve o poder do Predator Helios Neo para onde você for! Este notebook gamer combina performance e design para suas batalhas virtuais. E para completar, ganhe uma mochila exclusiva de brinde, perfeita para transportar seu setup com segurança e estilo. intel® core? i9-14900hx - 2,2 ghz / 5,8 ghz32gb ddr5 5600 mhzdiisco: 1 tb windows 11nvidia rtx 4070 graphics 8gb gddr6Possuo caixa original",
       "detail_title": "Laptop Predator Helios Neo intel® core i9-14900hx com rtx4070",
       "configuration_warnings": []
-    },
-    {
-      "id": "1545924542",
-      "url": "https://es.olx.com.br/norte-do-espirito-santo/informatica/notebooks/notebook-gamer-asus-rog-strix-g16-ultra-9-275hx-rtx5060-2-5k-240hz-16gb-512gb-cnf-lacrado-1545924542",
-      "title": "Notebook Gamer Asus Rog Strix G16 Ultra 9 275HX RTX5060 2.5K 240Hz 16GB 512GB cNF LACRADO!",
-      "cpu_term": "275hx",
-      "search_terms": [
-        "275hx"
-      ],
-      "description_discovery": false,
-      "price_brl": 9719,
-      "ram_gb": 16,
-      "storage_gb": 512,
-      "gpu": "RTX 5060",
-      "location": null,
-      "condition": "novo",
-      "status": "active",
-      "first_seen": null,
-      "last_seen": null,
-      "notes": null,
-      "desc_checked": true,
-      "validation": {
-        "version": 2,
-        "state": "rejected",
-        "checked_at": "2026-10-25T10:03:36.645Z",
-        "reasons": [
-          "RAM abaixo do mínimo exigido",
-          "RAM abaixo do mínimo de 32 GB",
-          "CPU não confirmada no anúncio"
-        ],
-        "listing_price_brl": 9719,
-        "detail_price_brl": 9719,
-        "visible_price_brl": null,
-        "structured_price_brl": 9719,
-        "title_specs": {
-          "ram_gb": null,
-          "storage_gb": null,
-          "gpu": "RTX 5060"
-        },
-        "description_specs": {
-          "ram_gb": 16,
-          "storage_gb": 512,
-          "gpu": "RTX 5060"
-        },
-        "cpu_confirmed": false,
-        "description_checked": true
-      },
-      "description_evidence": "ASUS ROG Strix G16 ? Core Ultra 9 + RTX 5060# LACRADO!# Nota Fiscal e Garantia de 12 Meses!# Parcelamento em até 10x SEM JUROS!# Pix com desconto, para retirada!# Aproveite agora! Sua oportunidade chegou!> Última unidade disponível a pronta entrega.ASUS ROG Strix G16 G615LM-S5007W ? Potência extrema para jogar e criarPrepare-se para uma experiência de alto nível com o ASUS ROG Strix G16, um notebook desenvolvido para quem busca alto desempenho em jogos, criação de conteúdo e aplicações pesadas.Equipado com o poderoso Intel® Core? Ultra 9 275HX e a NVIDIA® GeForce® RTX? 5060, ele entrega desempenho de sobra para games atuais, edição de vídeo, modelagem 3D, programação e multitarefas exigentes.Principais Destaques: NVIDIA GeForce RTX 5060Gráficos de última geração para jogos mais realistas, alta taxa de quadros e recursos avançados de aceleração por IA. Intel Core Ultra 9 275HXProcessador de alto desempenho para games, criação de conteúdo e aplicações exigentes. Tela ROG Nebula de 16\"Resolução 2.5K, painel nível IPS e incríveis 240 Hz, proporcionando imagens nítidas, fluidas e excelente experiência em jogos. 16 GB DDR5Memória de alta velocidade para multitarefa e aplicações pesadas. SSD PCIe 4.0 de 512 GBInicialização rápida do sistema e carregamento ágil de jogos e aplicativos. Wi-Fi 7Conectividade de última geração para maior velocidade e estabilidade em redes compatíveis. Teclado ABNT2Layout em português, com Ç e tecla Copilot. Eclipse GrayDesign premium e agressivo característico da linha ROG Strix.EspecificaçõesModelo: ASUS ROG Strix G16 G615LM-S5007WSistema: Windows 11 HomeTela: 16\" LCD LED, nível IPS, 2.5K, 240 HzProcessador: Intel® Core? Ultra 9 275HXGPU: NVIDIA® GeForce® RTX? 5060RAM: 16 GB DDR5Armazenamento: 512 GB SSD PCIe® 4.0Wi-Fi: Wi-Fi 7 (802.11be)Teclado: Português ABNT2, Ç + CopilotCor: Eclipse GrayUm verdadeiro notebook gamer de alto desempenho, com tela 2.5K de 240 Hz, Core Ultra 9 e RTX 5060.# Model: G615LM-S5007W Eclipse Gray# Tagsnotebook, notebook gamer, notebook gaming, notebook para jogos, notebook potente, notebook performance, notebook novo, notebook gamer novo, computador, laptop, laptop gamer, pc gamer, computador gamer, informática, tecnologia, eletrônicos, eletrônicos gamer, gamer, gaming, jogos, jogos pc, jogos online, pc gaming, setup gamer, setup, acessórios gamer, hardware, hardware gamer, tecnologia gamer, notebook para trabalho, notebook para estudo, notebook para faculdade, notebook para programação, notebook para edição, notebook para designer, notebook para arquitetura, notebook para engenharia, notebook para criação de conteúdo, notebook profissional, alto desempenho, desempenho, performance, processador, placa de vídeo, gpu, cpu, memória ram, ram ddr5, ssd, ssd nvme, armazenamento, tela gamer, tela 144hz, tela 240hz, tela ips, tela 2.5k, full hd, 16 polegadas, 16gb ram, windows 11, wifi 6e, wifi 7, intel, intel core, intel core i5, intel core ultra, nvidia, geforce, geforce rtx, rtx, rtx 5050, rtx 5060, ray tracing, dlss, inteligência artificial, ia, nvidia rtx, asus, asus notebook, asus gamer, asus tuf, tuf gaming, asus tuf gaming, tuf f16, tuf gaming f16, asus rog, rog, rog strix, rog strix g16, strix g16, rog gaming, republic of gamers, rog strix g16, core ultra 9, i5 14450hx, ultra 9 275hx, notebook asus tuf, notebook asus rog, notebook rtx 5050, notebook rtx 5060, notebook intel, notebook nvidia, notebook 16gb, notebook ssd, notebook 512gb, notebook 144hz, notebook 240hz, notebook 2.5k, notebook ips, notebook para gamer, notebook para jogos pesados, notebook para jogos atuais, notebook para fps, notebook para fortnite, notebook para valorant, notebook para cs2, notebook para gta, notebook para minecraft, notebook para steam, notebook para epic games, notebook para streaming, notebook para edição de vídeo, notebook para photoshop, notebook para premiere, notebook para blender, notebook para 3d, notebook rápido, notebook moderno, notebook premium, notebook robusto, notebook potente gamer, computador portátil, pc portátil, máquina gamer, máquina potente, oferta notebook, promoção notebook, notebook em promoção, notebook barato, notebook custo benefício, melhor notebook gamer, melhor notebook, notebook 2026, lançamento notebook, notebook novo 2026, comprar notebook, comprar notebook gamer, notebook brasil, informática brasil, tecnologia brasil, gamer brasil, loja de informática, produto gamer, produto novo, oportunidade, oferta gamer, promoção gamer, preço notebook, notebook original, notebook lacrado, notebook com garantia, desempenho gamer, experiência gamer, imersão gamer, alta performance, máxima performance, gráficos realistas, jogos em alta qualidade, gaming notebook, gaming laptop, powerful laptop, gaming pc, gamer setup, tech, technology, computer, laptop gaming, rtx laptop, asus gaming",
-      "detail_title": "Notebook Gamer Asus Rog Strix G16 Ultra 9 275HX RTX5060 2.5K 240Hz 16GB 512GB cNF LACRADO!",
-      "configuration_warnings": []
     }
   ],
-  "pending_terms": [],
+  "pending_terms": [
+    "14700hx"
+  ],
   "baseline_snapshot": {
     "schema_version": 2,
-    "generated_at": "2026-10-24T19:02:42.484Z",
+    "generated_at": "2026-10-25T10:03:47.960Z",
     "coverage_status": {
       "9955hx3d": {
         "checked_at": "2026-10-24T19:02:42.484Z",
@@ -449,10 +453,10 @@
         "error": null
       },
       "275hx": {
-        "checked_at": "2026-10-23T19:03:26.100Z",
-        "last_success_at": "2026-10-21T19:01:34.768Z",
-        "state": "failed",
-        "error": "Listagem incompleta: limite de 12 cards ou próxima página pendente"
+        "checked_at": "2026-10-25T10:03:47.960Z",
+        "last_success_at": "2026-10-25T10:03:47.960Z",
+        "state": "success",
+        "error": null
       },
       "aimax395": {
         "checked_at": "2026-10-23T19:03:26.100Z",
@@ -479,38 +483,38 @@
         "error": null
       },
       "13980hx": {
-        "checked_at": "2026-10-24T19:02:42.484Z",
-        "last_success_at": "2026-10-24T19:02:42.484Z",
+        "checked_at": "2026-10-25T10:03:47.960Z",
+        "last_success_at": "2026-10-25T10:03:47.960Z",
         "state": "success",
         "error": null
       },
       "8940hx": {
-        "checked_at": "2026-10-22T19:02:34.947Z",
-        "last_success_at": "2026-10-22T19:02:34.947Z",
+        "checked_at": "2026-10-25T10:03:47.960Z",
+        "last_success_at": "2026-10-25T10:03:47.960Z",
         "state": "success",
         "error": null
       },
       "7940hx": {
-        "checked_at": "2026-10-22T19:02:34.947Z",
-        "last_success_at": "2026-10-22T19:02:34.947Z",
+        "checked_at": "2026-10-25T10:03:47.960Z",
+        "last_success_at": "2026-10-25T10:03:47.960Z",
         "state": "success",
         "error": null
       },
       "13950hx": {
-        "checked_at": "2026-10-22T19:02:34.947Z",
-        "last_success_at": "2026-10-22T19:02:34.947Z",
+        "checked_at": "2026-10-25T10:03:47.960Z",
+        "last_success_at": "2026-10-25T10:03:47.960Z",
         "state": "success",
         "error": null
       },
       "14900hx": {
-        "checked_at": "2026-10-24T19:02:42.484Z",
-        "last_success_at": "2026-10-24T19:02:42.484Z",
+        "checked_at": "2026-10-25T10:03:47.960Z",
+        "last_success_at": "2026-10-25T10:03:47.960Z",
         "state": "success",
         "error": null
       },
       "13900hx": {
-        "checked_at": "2026-10-24T19:02:42.484Z",
-        "last_success_at": "2026-10-24T19:02:42.484Z",
+        "checked_at": "2026-10-25T10:03:47.960Z",
+        "last_success_at": "2026-10-25T10:03:47.960Z",
         "state": "success",
         "error": null
       },
@@ -533,10 +537,10 @@
         "error": null
       },
       "14700hx": {
-        "checked_at": "2026-10-24T19:02:42.484Z",
-        "last_success_at": "2026-10-24T10:03:37.683Z",
-        "state": "failed",
-        "error": "Listagem incompleta: limite de 12 cards ou próxima página pendente"
+        "checked_at": "2026-10-25T10:03:47.960Z",
+        "last_success_at": "2026-10-25T10:03:47.960Z",
+        "state": "success",
+        "error": null
       },
       "hx470": {
         "checked_at": "2026-10-23T10:17:45.052Z",
@@ -557,8 +561,8 @@
         "error": null
       },
       "family:legion-pro-5": {
-        "checked_at": "2026-10-22T10:05:45.496Z",
-        "last_success_at": "2026-10-22T10:05:45.496Z",
+        "checked_at": "2026-10-25T10:03:47.960Z",
+        "last_success_at": "2026-10-25T10:03:47.960Z",
         "state": "success",
         "error": null
       },
@@ -582,50 +586,39 @@
       }
     },
     "run": {
-      "date": "2026-10-24",
+      "date": "2026-10-25",
       "timezone": "America/Sao_Paulo",
-      "started_at": "2026-10-24T19:00:31.178Z",
-      "completed_at": "2026-10-24T19:02:42.484Z",
+      "started_at": "2026-10-25T10:00:28.139Z",
+      "completed_at": "2026-10-25T10:03:47.960Z",
       "in_progress": false,
-      "phase": "partial",
-      "partial": true,
+      "phase": "completed",
+      "partial": false,
       "successful_terms": [
+        "14700hx",
         "13980hx",
         "14900hx",
         "13900hx",
-        "9955hx3d",
-        "285hx",
-        "7945hx",
-        "7945hx3d",
-        "family:rog-strix-g16"
+        "8940hx",
+        "7940hx",
+        "13950hx",
+        "275hx",
+        "family:legion-pro-5"
       ],
-      "failed_terms": [
-        {
-          "term": "14700hx",
-          "error": "Listagem incompleta: limite de 12 cards ou próxima página pendente",
-          "kind": "incomplete"
-        }
-      ],
-      "errors": [
-        {
-          "term": "14700hx",
-          "error": "Listagem incompleta: limite de 12 cards ou próxima página pendente",
-          "kind": "incomplete"
-        }
-      ],
+      "failed_terms": [],
+      "errors": [],
       "deferred_coverage": [],
       "unattempted_terms": [],
       "description_discovery": {
         "extra_details": 1,
-        "total_details": 1,
-        "detail_ms": 1594,
+        "total_details": 8,
+        "detail_ms": 3507,
         "recovered_validated": 0,
-        "cache_hits": 6,
+        "cache_hits": 0,
         "by_term": {
-          "family:rog-strix-g16": 1
+          "13980hx": 1
         },
         "total_detail_limit": 12,
-        "queued_candidates": 19,
+        "queued_candidates": 17,
         "validation_complete": false,
         "per_term_limit": 2,
         "per_round_limit": 8
@@ -635,19 +628,19 @@
           "returned": 2,
           "validated": 1,
           "pending": 1,
-          "detail_reads": 0,
-          "limited": true,
-          "listing_incomplete": true,
-          "listing_limit": 12,
+          "detail_reads": 2,
+          "limited": false,
+          "listing_incomplete": false,
+          "listing_limit": 36,
           "details_pending": 0,
-          "total_results": 21,
+          "total_results": 20,
           "recommendations_ignored": 0
         },
         "13980hx": {
-          "returned": 2,
+          "returned": 3,
           "validated": 0,
-          "pending": 0,
-          "detail_reads": 0,
+          "pending": 1,
+          "detail_reads": 3,
           "limited": false,
           "listing_incomplete": false,
           "listing_limit": 12,
@@ -659,12 +652,12 @@
           "returned": 2,
           "validated": 0,
           "pending": 1,
-          "detail_reads": 0,
+          "detail_reads": 2,
           "limited": false,
           "listing_incomplete": false,
           "listing_limit": 60,
           "details_pending": 0,
-          "total_results": 41,
+          "total_results": 40,
           "recommendations_ignored": 0
         },
         "13900hx": {
@@ -679,7 +672,19 @@
           "total_results": 11,
           "recommendations_ignored": 0
         },
-        "9955hx3d": {
+        "8940hx": {
+          "returned": 0,
+          "validated": 0,
+          "pending": 0,
+          "detail_reads": 0,
+          "limited": false,
+          "listing_incomplete": false,
+          "listing_limit": 12,
+          "details_pending": 0,
+          "total_results": 7,
+          "recommendations_ignored": 0
+        },
+        "7940hx": {
           "returned": 0,
           "validated": 0,
           "pending": 0,
@@ -691,7 +696,7 @@
           "total_results": 0,
           "recommendations_ignored": 40
         },
-        "285hx": {
+        "13950hx": {
           "returned": 0,
           "validated": 0,
           "pending": 0,
@@ -700,43 +705,31 @@
           "listing_incomplete": false,
           "listing_limit": 12,
           "details_pending": 0,
-          "total_results": 2,
+          "total_results": 1,
           "recommendations_ignored": 0
         },
-        "7945hx": {
-          "returned": 0,
+        "275hx": {
+          "returned": 1,
           "validated": 0,
           "pending": 0,
-          "detail_reads": 0,
-          "limited": false,
-          "listing_incomplete": false,
-          "listing_limit": 12,
-          "details_pending": 0,
-          "total_results": 2,
-          "recommendations_ignored": 0
-        },
-        "7945hx3d": {
-          "returned": 0,
-          "validated": 0,
-          "pending": 0,
-          "detail_reads": 0,
-          "limited": false,
-          "listing_incomplete": false,
-          "listing_limit": 12,
-          "details_pending": 0,
-          "total_results": 0,
-          "recommendations_ignored": 40
-        },
-        "family:rog-strix-g16": {
-          "returned": 3,
-          "validated": 0,
-          "pending": 1,
           "detail_reads": 1,
+          "limited": false,
+          "listing_incomplete": false,
+          "listing_limit": 36,
+          "details_pending": 0,
+          "total_results": 22,
+          "recommendations_ignored": 0
+        },
+        "family:legion-pro-5": {
+          "returned": 0,
+          "validated": 0,
+          "pending": 0,
+          "detail_reads": 0,
           "limited": false,
           "listing_incomplete": false,
           "listing_limit": 60,
           "details_pending": 0,
-          "total_results": 48,
+          "total_results": 6,
           "recommendations_ignored": 0
         }
       },
@@ -745,25 +738,24 @@
         "13980hx",
         "14900hx",
         "13900hx",
-        "9955hx3d",
-        "285hx",
-        "7945hx",
-        "7945hx3d",
-        "family:rog-strix-g16"
+        "8940hx",
+        "7940hx",
+        "13950hx",
+        "275hx",
+        "family:legion-pro-5"
       ],
       "successful_coverage": [
+        "14700hx",
         "13980hx",
         "14900hx",
         "13900hx",
-        "9955hx3d",
-        "285hx",
-        "7945hx",
-        "7945hx3d",
-        "family:rog-strix-g16"
+        "8940hx",
+        "7940hx",
+        "13950hx",
+        "275hx",
+        "family:legion-pro-5"
       ],
-      "failed_coverage": [
-        "14700hx"
-      ],
+      "failed_coverage": [],
       "configured_coverage": [
         "9955hx3d",
         "290hx",
@@ -794,13 +786,11 @@
       ],
       "quarantined_item_count": 0,
       "operational": {
-        "status": "partial",
-        "exit_code": 2,
-        "reasons": [
-          "Listagem incompleta: limite de 12 cards ou próxima página pendente"
-        ],
-        "completed_terms": 8,
-        "incomplete_terms": 1,
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 9,
+        "incomplete_terms": 0,
         "deferred_terms": 0
       }
     },
@@ -827,7 +817,7 @@
         "condition": "novo",
         "status": "active",
         "first_seen": "2026-07-30",
-        "last_seen": "2026-10-24",
+        "last_seen": "2026-10-25",
         "notes": null,
         "desc_checked": true,
         "out_of_scope_at": null,
@@ -861,7 +851,7 @@
         "validation": {
           "version": 2,
           "state": "validated",
-          "checked_at": "2026-10-24T10:00:40.471Z",
+          "checked_at": "2026-10-25T10:00:41.939Z",
           "reasons": [],
           "listing_price_brl": 8399,
           "detail_price_brl": 8399,
@@ -905,7 +895,7 @@
         "condition": "Usado - Excelente",
         "status": "active",
         "first_seen": "2026-06-01",
-        "last_seen": "2026-10-24",
+        "last_seen": "2026-10-25",
         "notes": null,
         "desc_checked": true,
         "out_of_scope_at": null,
@@ -914,7 +904,7 @@
         "validation": {
           "version": 2,
           "state": "pending",
-          "checked_at": "2026-10-24T10:00:52.422Z",
+          "checked_at": "2026-10-25T10:00:53.776Z",
           "reasons": [
             "Especificação não confirmada: RAM"
           ],
@@ -943,6 +933,62 @@
         "detail_title": "Notebook Acer Predator - RTX 4070 / Intel Core i7 14700HX / Tela 240Hz (Aceito Trocas)"
       },
       {
+        "id": "1539191902",
+        "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-gamer-rog-strix-g16-rtx-4060-1539191902",
+        "title": "Notebook Gamer ROG STRIX G16 RTX 4060",
+        "cpu_term": "13980hx",
+        "search_terms": [
+          "13980hx"
+        ],
+        "description_discovery": true,
+        "price_brl": 7500,
+        "ram_gb": null,
+        "storage_gb": 480,
+        "gpu": "RTX 4060",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": "2026-10-25",
+        "last_seen": "2026-10-25",
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "pending",
+          "checked_at": "2026-10-25T10:01:49.920Z",
+          "reasons": [
+            "Especificação não confirmada: RAM",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 7500,
+          "detail_price_brl": 7500,
+          "visible_price_brl": null,
+          "structured_price_brl": 7500,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": 480,
+            "gpu": null
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "description_evidence": "Notebook em excelente estado, apenas trocado o SSDi9-13980HX16GB RAM DDR5RTX 4060 8GB 480GB Armazenamento SSD M.2Tela 165HzEm jogos:Fortnite - Tudo no baixo, resolução 3D em 100%, Full HD - Média de 280 FPSCS 2 - Tudo no baixo, Full HD - Média de 390 FPSRainbow Six - Tudo no baixo, TAA 100, sombras no alto, Full HD - Média de 240 FPSGTA V - Tudo no alto, Full HD - Média de 200 FPSRed Dead Redemption 2 - Tudo no médio, Full HD - Média de 140 FPSSe quiser teste em algum jogo/config específico, favor entrar em contato.Não aceito trocas.",
+        "detail_title": "Notebook Gamer ROG STRIX G16 RTX 4060",
+        "configuration_warnings": [],
+        "out_of_scope_at": null,
+        "price_history": [
+          {
+            "at": "2026-10-25T10:03:47.960Z",
+            "price_brl": 7500
+          }
+        ]
+      },
+      {
         "id": "1542357974",
         "url": "https://pi.olx.com.br/regiao-de-teresina-e-parnaiba/informatica/notebooks/asus-rog-strix-g16-i9-13980hx-rtx-4060-8gb-ssds-1-5tb-165hz-1542357974",
         "title": "ASUS ROG STRIX G16 - i9-13980HX + RTX 4060 8GB | SSDs 1.5TB | 165Hz",
@@ -955,10 +1001,10 @@
         "condition": "Usado - Excelente",
         "status": "out_of_scope",
         "first_seen": "2026-10-08",
-        "last_seen": "2026-10-24",
+        "last_seen": "2026-10-25",
         "notes": null,
         "desc_checked": true,
-        "out_of_scope_at": "2026-10-24T19:02:42.484Z",
+        "out_of_scope_at": "2026-10-25T10:03:47.960Z",
         "price_history": [
           {
             "at": "2026-10-08T13:36:19.953Z",
@@ -973,7 +1019,7 @@
         "validation": {
           "version": 2,
           "state": "rejected",
-          "checked_at": "2026-10-24T10:01:26.762Z",
+          "checked_at": "2026-10-25T10:01:24.131Z",
           "reasons": [
             "RAM abaixo do mínimo exigido",
             "Especificação divergente: SSD/armazenamento",
@@ -998,8 +1044,7 @@
         },
         "configuration_warnings": [],
         "search_terms": [
-          "13980hx",
-          "family:rog-strix-g16"
+          "13980hx"
         ],
         "description_evidence": "Estou vendendo este ASUS ROG Strix G16 G614JV-N3094W, uma máquina potente e completa para quem precisa de alto desempenho, seja para trabalho, programação, edição, estudos ou jogos.Ele vem equipado com Core i9-13980HX de 24 núcleos / 32 threads + RTX 4060 8GB, configuração que atende tranquilamente jogos, programação, edição de vídeo, 3D, máquinas virtuais, IA e tarefas pesadas.Configuração- Intel Core i9-13980HX ? 24 núcleos / 32 threads- NVIDIA GeForce RTX 4060 com 8GB GDDR6- 16GB DDR5 4800MHz- SSD NVMe 512GB PCIe 4.0- SSD NVMe 1TB - WD Green SN350- Tela 16\" WUXGA 1920×1200 ? 165Hz- Painel IPS-level / 16:10 / 100% sRGB- Teclado RGB ASUS Aura Sync- Windows 11- Wi-Fi 6E- Thunderbolt 4- HDMI 2.1- USB-C + USB-A- RJ-45- Acompanha carregador e caixa de transporte original ASUS.Outras observações:- Foi adicionado no Slot 2 o SDD de 1 TB. Portanto, na configuração atual, são 1 TB + 512 GB de armazenamento SSD, totalizando 1,5 TB. - Não tenho interesse em trocas.- O notebook está em excelente estado, sem marcas de uso.- O único motivo da venda é que estou interessado em adquirir um MacBook, equipamento mais adequado para meu uso profissional.Confira mais sobre esse note em:https://quenotebookcomprar.com.br/asus-rog-strix-g16-g614jv-n3094w/",
         "detail_title": "ASUS ROG STRIX G16 - i9-13980HX + RTX 4060 8GB | SSDs 1.5TB | 165Hz"
@@ -1010,8 +1055,7 @@
         "title": "Notebook ASUS ROG Strix G16 | i9-13980HX | RTX 4060 | 1TB | 32GB DDR5",
         "cpu_term": "13980hx",
         "search_terms": [
-          "13980hx",
-          "family:rog-strix-g16"
+          "13980hx"
         ],
         "description_discovery": false,
         "price_brl": 8000,
@@ -1022,13 +1066,13 @@
         "condition": "Usado - Excelente",
         "status": "out_of_scope",
         "first_seen": "2026-10-17",
-        "last_seen": "2026-10-24",
+        "last_seen": "2026-10-25",
         "notes": null,
         "desc_checked": true,
         "validation": {
           "version": 2,
           "state": "rejected",
-          "checked_at": "2026-10-24T10:01:36.370Z",
+          "checked_at": "2026-10-25T10:01:36.282Z",
           "reasons": [
             "RAM abaixo do mínimo exigido",
             "Especificação divergente: RAM",
@@ -1054,7 +1098,7 @@
         "description_evidence": "Eleve sua experiência gamer com o Notebook ASUS ROG Strix G16! Equipado com processador i9-13980HX e placa de vídeo RTX 4060, este notebook oferece desempenho excepcional para os jogos mais exigentes. Com 1TB de armazenamento WD BLACK e 32GB 5600MT/s de RAM DDR5 Kingston FURY Impact, você terá velocidade e espaço de sobra para todos os seus jogos e arquivos. Design moderno e refrigeração avançada para sessões de jogo intensas.Notebook em excelente estado, muito bem cuidado e super conservado. Eu utilizava um teclado externo, evitando o desgaste do teclado original.Acompanha: 16 GB de memória RAM que vieram originalmente com o notebook.Cabo HDMI.Motivo da venda: Migrei para um MacBook e, por isso, não estou mais utilizando este notebook.Importante: Não aceito propostas de negociação nem trocas. Apenas venda pelo valor anunciado.Notebook muito bem cuidado, pronto para o próximo dono!",
         "detail_title": "Notebook ASUS ROG Strix G16 | i9-13980HX | RTX 4060 | 1TB | 32GB DDR5",
         "configuration_warnings": [],
-        "out_of_scope_at": "2026-10-24T19:02:42.484Z",
+        "out_of_scope_at": "2026-10-25T10:03:47.960Z",
         "price_history": [
           {
             "at": "2026-10-17T19:01:57.525Z",
@@ -1075,10 +1119,10 @@
         "condition": "novo",
         "status": "out_of_scope",
         "first_seen": "2026-10-02",
-        "last_seen": "2026-10-24",
+        "last_seen": "2026-10-25",
         "notes": null,
         "desc_checked": true,
-        "out_of_scope_at": "2026-10-24T19:02:42.484Z",
+        "out_of_scope_at": "2026-10-25T10:03:47.960Z",
         "price_history": [
           {
             "at": "2026-10-02T10:00:30.855Z",
@@ -1089,7 +1133,7 @@
         "validation": {
           "version": 2,
           "state": "rejected",
-          "checked_at": "2026-10-24T10:01:59.992Z",
+          "checked_at": "2026-10-25T10:02:12.282Z",
           "reasons": [
             "RAM abaixo do mínimo exigido",
             "RAM abaixo do mínimo de 32 GB"
@@ -1132,13 +1176,13 @@
         "condition": "Usado - Excelente",
         "status": "active",
         "first_seen": "2026-10-13",
-        "last_seen": "2026-10-24",
+        "last_seen": "2026-10-25",
         "notes": null,
         "desc_checked": true,
         "validation": {
           "version": 2,
           "state": "pending",
-          "checked_at": "2026-10-24T10:02:12.009Z",
+          "checked_at": "2026-10-25T10:02:24.249Z",
           "reasons": [
             "Especificação não confirmada: RAM"
           ],
@@ -1174,6 +1218,63 @@
         "detail_title": "Laptop Predator Helios Neo intel® core i9-14900hx com rtx4070"
       },
       {
+        "id": "1545924542",
+        "url": "https://es.olx.com.br/norte-do-espirito-santo/informatica/notebooks/notebook-gamer-asus-rog-strix-g16-ultra-9-275hx-rtx5060-2-5k-240hz-16gb-512gb-cnf-lacrado-1545924542",
+        "title": "Notebook Gamer Asus Rog Strix G16 Ultra 9 275HX RTX5060 2.5K 240Hz 16GB 512GB cNF LACRADO!",
+        "cpu_term": "275hx",
+        "search_terms": [
+          "275hx"
+        ],
+        "description_discovery": false,
+        "price_brl": 9719,
+        "ram_gb": 16,
+        "storage_gb": 512,
+        "gpu": "RTX 5060",
+        "location": null,
+        "condition": "novo",
+        "status": "out_of_scope",
+        "first_seen": "2026-10-25",
+        "last_seen": "2026-10-25",
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-10-25T10:03:36.645Z",
+          "reasons": [
+            "RAM abaixo do mínimo exigido",
+            "RAM abaixo do mínimo de 32 GB",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 9719,
+          "detail_price_brl": 9719,
+          "visible_price_brl": null,
+          "structured_price_brl": 9719,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 5060"
+          },
+          "description_specs": {
+            "ram_gb": 16,
+            "storage_gb": 512,
+            "gpu": "RTX 5060"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "description_evidence": "ASUS ROG Strix G16 ? Core Ultra 9 + RTX 5060# LACRADO!# Nota Fiscal e Garantia de 12 Meses!# Parcelamento em até 10x SEM JUROS!# Pix com desconto, para retirada!# Aproveite agora! Sua oportunidade chegou!> Última unidade disponível a pronta entrega.ASUS ROG Strix G16 G615LM-S5007W ? Potência extrema para jogar e criarPrepare-se para uma experiência de alto nível com o ASUS ROG Strix G16, um notebook desenvolvido para quem busca alto desempenho em jogos, criação de conteúdo e aplicações pesadas.Equipado com o poderoso Intel® Core? Ultra 9 275HX e a NVIDIA® GeForce® RTX? 5060, ele entrega desempenho de sobra para games atuais, edição de vídeo, modelagem 3D, programação e multitarefas exigentes.Principais Destaques: NVIDIA GeForce RTX 5060Gráficos de última geração para jogos mais realistas, alta taxa de quadros e recursos avançados de aceleração por IA. Intel Core Ultra 9 275HXProcessador de alto desempenho para games, criação de conteúdo e aplicações exigentes. Tela ROG Nebula de 16\"Resolução 2.5K, painel nível IPS e incríveis 240 Hz, proporcionando imagens nítidas, fluidas e excelente experiência em jogos. 16 GB DDR5Memória de alta velocidade para multitarefa e aplicações pesadas. SSD PCIe 4.0 de 512 GBInicialização rápida do sistema e carregamento ágil de jogos e aplicativos. Wi-Fi 7Conectividade de última geração para maior velocidade e estabilidade em redes compatíveis. Teclado ABNT2Layout em português, com Ç e tecla Copilot. Eclipse GrayDesign premium e agressivo característico da linha ROG Strix.EspecificaçõesModelo: ASUS ROG Strix G16 G615LM-S5007WSistema: Windows 11 HomeTela: 16\" LCD LED, nível IPS, 2.5K, 240 HzProcessador: Intel® Core? Ultra 9 275HXGPU: NVIDIA® GeForce® RTX? 5060RAM: 16 GB DDR5Armazenamento: 512 GB SSD PCIe® 4.0Wi-Fi: Wi-Fi 7 (802.11be)Teclado: Português ABNT2, Ç + CopilotCor: Eclipse GrayUm verdadeiro notebook gamer de alto desempenho, com tela 2.5K de 240 Hz, Core Ultra 9 e RTX 5060.# Model: G615LM-S5007W Eclipse Gray# Tagsnotebook, notebook gamer, notebook gaming, notebook para jogos, notebook potente, notebook performance, notebook novo, notebook gamer novo, computador, laptop, laptop gamer, pc gamer, computador gamer, informática, tecnologia, eletrônicos, eletrônicos gamer, gamer, gaming, jogos, jogos pc, jogos online, pc gaming, setup gamer, setup, acessórios gamer, hardware, hardware gamer, tecnologia gamer, notebook para trabalho, notebook para estudo, notebook para faculdade, notebook para programação, notebook para edição, notebook para designer, notebook para arquitetura, notebook para engenharia, notebook para criação de conteúdo, notebook profissional, alto desempenho, desempenho, performance, processador, placa de vídeo, gpu, cpu, memória ram, ram ddr5, ssd, ssd nvme, armazenamento, tela gamer, tela 144hz, tela 240hz, tela ips, tela 2.5k, full hd, 16 polegadas, 16gb ram, windows 11, wifi 6e, wifi 7, intel, intel core, intel core i5, intel core ultra, nvidia, geforce, geforce rtx, rtx, rtx 5050, rtx 5060, ray tracing, dlss, inteligência artificial, ia, nvidia rtx, asus, asus notebook, asus gamer, asus tuf, tuf gaming, asus tuf gaming, tuf f16, tuf gaming f16, asus rog, rog, rog strix, rog strix g16, strix g16, rog gaming, republic of gamers, rog strix g16, core ultra 9, i5 14450hx, ultra 9 275hx, notebook asus tuf, notebook asus rog, notebook rtx 5050, notebook rtx 5060, notebook intel, notebook nvidia, notebook 16gb, notebook ssd, notebook 512gb, notebook 144hz, notebook 240hz, notebook 2.5k, notebook ips, notebook para gamer, notebook para jogos pesados, notebook para jogos atuais, notebook para fps, notebook para fortnite, notebook para valorant, notebook para cs2, notebook para gta, notebook para minecraft, notebook para steam, notebook para epic games, notebook para streaming, notebook para edição de vídeo, notebook para photoshop, notebook para premiere, notebook para blender, notebook para 3d, notebook rápido, notebook moderno, notebook premium, notebook robusto, notebook potente gamer, computador portátil, pc portátil, máquina gamer, máquina potente, oferta notebook, promoção notebook, notebook em promoção, notebook barato, notebook custo benefício, melhor notebook gamer, melhor notebook, notebook 2026, lançamento notebook, notebook novo 2026, comprar notebook, comprar notebook gamer, notebook brasil, informática brasil, tecnologia brasil, gamer brasil, loja de informática, produto gamer, produto novo, oportunidade, oferta gamer, promoção gamer, preço notebook, notebook original, notebook lacrado, notebook com garantia, desempenho gamer, experiência gamer, imersão gamer, alta performance, máxima performance, gráficos realistas, jogos em alta qualidade, gaming notebook, gaming laptop, powerful laptop, gaming pc, gamer setup, tech, technology, computer, laptop gaming, rtx laptop, asus gaming",
+        "detail_title": "Notebook Gamer Asus Rog Strix G16 Ultra 9 275HX RTX5060 2.5K 240Hz 16GB 512GB cNF LACRADO!",
+        "configuration_warnings": [],
+        "out_of_scope_at": "2026-10-25T10:03:47.960Z",
+        "price_history": [
+          {
+            "at": "2026-10-25T10:03:47.960Z",
+            "price_brl": 9719
+          }
+        ]
+      },
+      {
         "id": "1546291504",
         "url": "https://rn.olx.com.br/rio-grande-do-norte/informatica/notebooks/macbook-air-m5-13-512gb-garantia-apple-ate-04-2027-1546291504",
         "title": "MacBook Air M5 - 13?, 512gb - Garantia apple até 04.2027",
@@ -1188,7 +1289,7 @@
         "gpu": null,
         "location": null,
         "condition": "Usado - Excelente",
-        "status": "active",
+        "status": "out_of_scope",
         "first_seen": "2026-10-24",
         "last_seen": "2026-10-24",
         "notes": null,
@@ -1225,7 +1326,7 @@
         "configuration_warnings": [
           "Armazenamento não informado"
         ],
-        "out_of_scope_at": null,
+        "out_of_scope_at": "2026-10-25T10:03:47.960Z",
         "price_history": [
           {
             "at": "2026-10-24T19:02:42.484Z",
@@ -10540,12 +10641,12 @@
   "blocked_until": null,
   "description_discovery": {
     "extra_details": 1,
-    "total_details": 8,
-    "detail_ms": 3507,
+    "total_details": 1,
+    "detail_ms": 1246,
     "recovered_validated": 0,
-    "cache_hits": 0,
+    "cache_hits": 7,
     "by_term": {
-      "13980hx": 1
+      "14700hx": 1
     },
     "total_detail_limit": 12,
     "queued_candidates": 17,
@@ -10555,22 +10656,22 @@
   },
   "query_yield": {
     "14700hx": {
-      "returned": 2,
+      "returned": 3,
       "validated": 1,
       "pending": 1,
-      "detail_reads": 2,
-      "limited": false,
-      "listing_incomplete": false,
-      "listing_limit": 36,
+      "detail_reads": 1,
+      "limited": true,
+      "listing_incomplete": true,
+      "listing_limit": 12,
       "details_pending": 0,
-      "total_results": 20,
+      "total_results": 21,
       "recommendations_ignored": 0
     },
     "13980hx": {
       "returned": 3,
       "validated": 0,
       "pending": 1,
-      "detail_reads": 3,
+      "detail_reads": 0,
       "limited": false,
       "listing_incomplete": false,
       "listing_limit": 12,
@@ -10582,7 +10683,7 @@
       "returned": 2,
       "validated": 0,
       "pending": 1,
-      "detail_reads": 2,
+      "detail_reads": 0,
       "limited": false,
       "listing_incomplete": false,
       "listing_limit": 60,
@@ -10602,7 +10703,7 @@
       "total_results": 11,
       "recommendations_ignored": 0
     },
-    "8940hx": {
+    "7845hx": {
       "returned": 0,
       "validated": 0,
       "pending": 0,
@@ -10611,10 +10712,10 @@
       "listing_incomplete": false,
       "listing_limit": 12,
       "details_pending": 0,
-      "total_results": 7,
+      "total_results": 2,
       "recommendations_ignored": 0
     },
-    "7940hx": {
+    "8840hx": {
       "returned": 0,
       "validated": 0,
       "pending": 0,
@@ -10626,7 +10727,7 @@
       "total_results": 0,
       "recommendations_ignored": 40
     },
-    "13950hx": {
+    "aimax390": {
       "returned": 0,
       "validated": 0,
       "pending": 0,
@@ -10638,19 +10739,19 @@
       "total_results": 1,
       "recommendations_ignored": 0
     },
-    "275hx": {
-      "returned": 1,
+    "hx470": {
+      "returned": 0,
       "validated": 0,
       "pending": 0,
-      "detail_reads": 1,
+      "detail_reads": 0,
       "limited": false,
       "listing_incomplete": false,
-      "listing_limit": 36,
+      "listing_limit": 12,
       "details_pending": 0,
-      "total_results": 22,
-      "recommendations_ignored": 0
+      "total_results": 0,
+      "recommendations_ignored": 24
     },
-    "family:legion-pro-5": {
+    "family:dell-g16": {
       "returned": 0,
       "validated": 0,
       "pending": 0,
@@ -10659,7 +10760,7 @@
       "listing_incomplete": false,
       "listing_limit": 60,
       "details_pending": 0,
-      "total_results": 6,
+      "total_results": 3,
       "recommendations_ignored": 0
     }
   }

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-25T10:00:08.944Z",
+  "generated_at": "2026-10-25T19:00:09.664Z",
   "source": "local",
   "delivery": {
     "email": "skipped",
@@ -39,15 +39,17 @@
   "monitoring": {
     "scope": "local-watchlists",
     "partial": true,
-    "status": "deferred",
+    "status": "partial",
     "outcomes": [
       {
         "source": "olx",
-        "status": "success",
-        "exit_code": 0,
-        "reasons": [],
-        "completed_terms": 9,
-        "incomplete_terms": 0,
+        "status": "partial",
+        "exit_code": 2,
+        "reasons": [
+          "Listagem incompleta: limite de 12 cards ou próxima página pendente"
+        ],
+        "completed_terms": 8,
+        "incomplete_terms": 1,
         "deferred_terms": 0
       },
       {
@@ -112,12 +114,19 @@
         "reasons": [
           "OLX: consultas adiadas após bloqueio; retomada prevista em 27/10/2026, 16:04:29 BRT."
         ],
-        "completed_terms": 4,
+        "completed_terms": 3,
         "incomplete_terms": 0,
         "deferred_terms": 9
       }
     ],
     "warnings": [
+      {
+        "source": "olx",
+        "status": "partial",
+        "reasons": [
+          "Listagem incompleta: limite de 12 cards ou próxima página pendente"
+        ]
+      },
       {
         "source": "lifefactory",
         "status": "deferred",
@@ -213,7 +222,8 @@
     "e57fc50d-0be0-487b-a25c-825797e8fef7",
     "492fc30b-ec63-40a5-8fb2-c3f834397803",
     "b4ccfd76-6943-4c19-b8fd-894a3507862c",
-    "57e22de8-507f-49e2-bac9-b40b3d871aad"
+    "57e22de8-507f-49e2-bac9-b40b3d871aad",
+    "87edbace-c3b5-4ce6-b539-52808b6ebc08"
   ],
   "notification_archive": [
     {
