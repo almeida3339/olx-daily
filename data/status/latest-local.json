@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-25T19:00:09.664Z",
+  "generated_at": "2026-10-26T10:00:10.848Z",
   "source": "local",
   "delivery": {
     "email": "skipped",
@@ -39,17 +39,15 @@
   "monitoring": {
     "scope": "local-watchlists",
     "partial": true,
-    "status": "partial",
+    "status": "deferred",
     "outcomes": [
       {
         "source": "olx",
-        "status": "partial",
-        "exit_code": 2,
-        "reasons": [
-          "Listagem incompleta: limite de 12 cards ou próxima página pendente"
-        ],
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
         "completed_terms": 8,
-        "incomplete_terms": 1,
+        "incomplete_terms": 0,
         "deferred_terms": 0
       },
       {
@@ -116,17 +114,10 @@
         ],
         "completed_terms": 3,
         "incomplete_terms": 0,
-        "deferred_terms": 9
+        "deferred_terms": 10
       }
     ],
     "warnings": [
-      {
-        "source": "olx",
-        "status": "partial",
-        "reasons": [
-          "Listagem incompleta: limite de 12 cards ou próxima página pendente"
-        ]
-      },
       {
         "source": "lifefactory",
         "status": "deferred",
@@ -223,7 +214,8 @@
     "492fc30b-ec63-40a5-8fb2-c3f834397803",
     "b4ccfd76-6943-4c19-b8fd-894a3507862c",
     "57e22de8-507f-49e2-bac9-b40b3d871aad",
-    "87edbace-c3b5-4ce6-b539-52808b6ebc08"
+    "87edbace-c3b5-4ce6-b539-52808b6ebc08",
+    "a277f992-5cfb-4e82-962f-1ac14a90e18a"
   ],
   "notification_archive": [
     {
