@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "round": "2026-10-26T10:00:31.140Z",
+  "round": "2026-10-26T19:01:42.822Z",
   "queue": [
     {
       "key": "1513973272",
@@ -212,44 +212,6 @@
       "last_observed_at": "2026-10-24T10:03:37.659Z"
     },
     {
-      "key": "1541030102",
-      "card": {
-        "title": "Notebook Gamer Avell Storm i7 RTX4050 32GB",
-        "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-i7-rtx4050-32gb-1541030102",
-        "price_brl": 6000,
-        "location": "São Paulo, Jardim Dom José",
-        "text": "",
-        "ram_gb": null,
-        "storage_gb": null,
-        "cpu_term": "family:avell-storm",
-        "description_discovery": true
-      },
-      "terms": [
-        "family:avell-storm"
-      ],
-      "first_observed_at": "2026-10-23T19:02:37.531Z",
-      "last_observed_at": "2026-10-23T19:03:26.081Z"
-    },
-    {
-      "key": "1540971354",
-      "card": {
-        "title": "[Vendo] Notebook Gamer Avell Storm 450 - Ryzen 7, RTX 4050, 32GB RAM DDR5, 1TB SSD, 144Hz",
-        "url": "https://go.olx.com.br/grande-goiania-e-anapolis/informatica/notebooks/vendo-notebook-gamer-avell-storm-450-ryzen-7-rtx-4050-32gb-ram-ddr5-1tb-ssd-144hz-1540971354",
-        "price_brl": 6100,
-        "location": "Aparecida de Goiânia, Residencial Brasicon I",
-        "text": "",
-        "ram_gb": 32,
-        "storage_gb": 1024,
-        "cpu_term": "family:avell-storm",
-        "description_discovery": true
-      },
-      "terms": [
-        "family:avell-storm"
-      ],
-      "first_observed_at": "2026-10-23T19:02:37.531Z",
-      "last_observed_at": "2026-10-23T19:03:26.085Z"
-    },
-    {
       "key": "1543818410",
       "card": {
         "title": "Notebook Gamer Acer Predator Helios Neo 16",
@@ -324,6 +286,44 @@
       ],
       "first_observed_at": "2026-10-24T10:02:50.169Z",
       "last_observed_at": "2026-10-24T10:03:37.670Z"
+    },
+    {
+      "key": "1545937266",
+      "card": {
+        "title": "Notebook avell storm 450 rtx 4050 ryzen 7",
+        "url": "https://sp.olx.com.br/regiao-de-sorocaba/informatica/notebooks/notebook-avell-storm-450-rtx-4050-ryzen-7-1545937266",
+        "price_brl": 7500,
+        "location": "Sorocaba, Jardim Americano",
+        "text": "",
+        "ram_gb": null,
+        "storage_gb": null,
+        "cpu_term": "family:avell-storm",
+        "description_discovery": true
+      },
+      "terms": [
+        "family:avell-storm"
+      ],
+      "first_observed_at": "2026-10-26T19:03:28.490Z",
+      "last_observed_at": "2026-10-26T19:04:17.291Z"
+    },
+    {
+      "key": "1547281460",
+      "card": {
+        "title": "Notebook Gamer Avell Storm 450 Intel I7 32gram 500gb Rtx4050",
+        "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-450-intel-i7-32gram-500gb-rtx4050-1547281460",
+        "price_brl": 7980,
+        "location": "Guarulhos, Vila Paulista",
+        "text": "",
+        "ram_gb": null,
+        "storage_gb": null,
+        "cpu_term": "family:avell-storm",
+        "description_discovery": true
+      },
+      "terms": [
+        "family:avell-storm"
+      ],
+      "first_observed_at": "2026-10-26T19:03:28.490Z",
+      "last_observed_at": "2026-10-26T19:04:17.294Z"
     }
   ],
   "cache": [
@@ -939,18 +939,353 @@
           "Armazenamento não informado"
         ]
       }
+    },
+    {
+      "key": "1545266033",
+      "title": "Notebook Helios Neo 16 RTX 4070",
+      "price_brl": 8000,
+      "checked_at": "2026-10-26T19:01:56.946Z",
+      "item": {
+        "id": "1545266033",
+        "url": "https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/notebooks/notebook-helios-neo-16-rtx-4070-1545266033",
+        "title": "Notebook Helios Neo 16 RTX 4070",
+        "cpu_term": "14700hx",
+        "search_terms": [
+          "14700hx"
+        ],
+        "description_discovery": true,
+        "price_brl": 8000,
+        "ram_gb": 16,
+        "storage_gb": null,
+        "gpu": "RTX 4070",
+        "location": null,
+        "condition": "NOVO",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-10-26T19:01:56.940Z",
+          "reasons": [
+            "RAM abaixo do mínimo exigido",
+            "RAM abaixo do mínimo de 32 GB",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 8000,
+          "detail_price_brl": 8000,
+          "visible_price_brl": null,
+          "structured_price_brl": 8000,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 4070"
+          },
+          "description_specs": {
+            "ram_gb": 16,
+            "storage_gb": null,
+            "gpu": "RTX 4070"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "description_evidence": "Notebook Helios Neo 16Intel Core I7-14700HXNVIDIA RTX 4070 8GB 16 GB RAM DDR5512 GB PCIe NVMe SSDTela 16? 240Hz WQXGANOTEBOOK EM ESTADO DE NOVO",
+        "detail_title": "Notebook Helios Neo 16 RTX 4070 ",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ]
+      }
+    },
+    {
+      "key": "1448456884",
+      "title": "Notebook Gamer Avell Storm 470 Black I9-14900HX Rtx 4070  32gb de ram  1,5TB SSD Nvme",
+      "price_brl": 8900,
+      "checked_at": "2026-10-26T19:02:32.141Z",
+      "item": {
+        "id": "1448456884",
+        "url": "https://ce.olx.com.br/fortaleza-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-470-black-i9-14900hx-rtx-4070-32gb-de-ram-1-5tb-ssd-nvme-1448456884",
+        "title": "Notebook Gamer Avell Storm 470 Black I9-14900HX Rtx 4070  32gb de ram  1,5TB SSD Nvme",
+        "cpu_term": "14900hx",
+        "search_terms": [
+          "14900hx"
+        ],
+        "description_discovery": false,
+        "price_brl": 8900,
+        "ram_gb": 32,
+        "storage_gb": 1536,
+        "gpu": "RTX 4060",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "pending",
+          "checked_at": "2026-10-26T19:02:32.139Z",
+          "reasons": [
+            "Especificação divergente: GPU"
+          ],
+          "listing_price_brl": 8900,
+          "detail_price_brl": 8900,
+          "visible_price_brl": null,
+          "structured_price_brl": 8900,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": 1536,
+            "gpu": "RTX 4070"
+          },
+          "description_specs": {
+            "ram_gb": 32,
+            "storage_gb": 1536,
+            "gpu": "RTX 4060"
+          },
+          "cpu_confirmed": true,
+          "description_checked": true
+        },
+        "description_evidence": "GeForce® RTX 4060 (8GB GDDR6)Intel® Core? i9-14900HX (36 MB Intel® Smart Cache, 2.2 GHz, Turbo Max 5.8 GHz)32GB [2x 16GB - Dual Channel] Memória DDR5 (5600 MHZ)SSD M.2 NVME 1,5 TB - Geração 4 - [ 5.000 MB/s ]16\" QHD WVA (2560x1600p) - 240Hz / Matte / Contraste: 1300:1 / Brilho 500 cd/m²Original Windows 11 ProGarantia de 12 meses Loja",
+        "detail_title": "Notebook Gamer Avell Storm 470 Black I9-14900HX Rtx 4070  32gb de ram  1,5TB SSD Nvme",
+        "configuration_warnings": []
+      }
+    },
+    {
+      "key": "1541030102",
+      "title": "Notebook Gamer Avell Storm i7 RTX4050 32GB",
+      "price_brl": 6000,
+      "checked_at": "2026-10-26T19:03:42.154Z",
+      "item": {
+        "id": "1541030102",
+        "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-i7-rtx4050-32gb-1541030102",
+        "title": "Notebook Gamer Avell Storm i7 RTX4050 32GB",
+        "cpu_term": "family:avell-storm",
+        "search_terms": [
+          "family:avell-storm"
+        ],
+        "description_discovery": true,
+        "price_brl": 6000,
+        "ram_gb": 32,
+        "storage_gb": 64,
+        "gpu": "RTX 4050",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-10-26T19:03:42.151Z",
+          "reasons": [
+            "CPU fora da busca",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 6000,
+          "detail_price_brl": 6000,
+          "visible_price_brl": null,
+          "structured_price_brl": 6000,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 4050"
+          },
+          "description_specs": {
+            "ram_gb": 32,
+            "storage_gb": 64,
+            "gpu": null
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "description_evidence": "Placa de vídeo NVIDIA GeForceRTX 4050 6GB GDDR6ProcessadorIntel Core i7-12650H(12ª geração)10 núcleos / 16 threads24 MB de cachede 1.70 GHz até 4.70 GHzMemória RAM32 GB DDR4 3200 MHzMáximo de 64 GBArmazenamento SSDSSD de 512 GB NVMeSSD de 256 GB NVMeTela16:9 LED 15,6\" pol.Full HD (1920 x 1080 px) 144HzWi-Fi 6 (802.11ax)Bluetooth 5.21x USB 2.02x USB 3.11x USB-C1x USB-C (DisplayPort)1x HDMI1x P2 (fone + mic)1x rede RJ-451x leitor de cartões",
+        "detail_title": "Notebook Gamer Avell Storm i7 RTX4050 32GB",
+        "configuration_warnings": []
+      }
+    },
+    {
+      "key": "1540971354",
+      "title": "[Vendo] Notebook Gamer Avell Storm 450 - Ryzen 7, RTX 4050, 32GB RAM DDR5, 1TB SSD, 144Hz",
+      "price_brl": 6100,
+      "checked_at": "2026-10-26T19:03:53.458Z",
+      "item": {
+        "id": "1540971354",
+        "url": "https://go.olx.com.br/grande-goiania-e-anapolis/informatica/notebooks/vendo-notebook-gamer-avell-storm-450-ryzen-7-rtx-4050-32gb-ram-ddr5-1tb-ssd-144hz-1540971354",
+        "title": "[Vendo] Notebook Gamer Avell Storm 450 - Ryzen 7, RTX 4050, 32GB RAM DDR5, 1TB SSD, 144Hz",
+        "cpu_term": "family:avell-storm",
+        "search_terms": [
+          "family:avell-storm"
+        ],
+        "description_discovery": true,
+        "price_brl": 6100,
+        "ram_gb": 32,
+        "storage_gb": 1024,
+        "gpu": "RTX 4050",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-10-26T19:03:53.456Z",
+          "reasons": [
+            "Defeito ou avaria declarados no anúncio",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 6100,
+          "detail_price_brl": 6100,
+          "visible_price_brl": null,
+          "structured_price_brl": 6100,
+          "title_specs": {
+            "ram_gb": 32,
+            "storage_gb": 1024,
+            "gpu": "RTX 4050"
+          },
+          "description_specs": {
+            "ram_gb": 32,
+            "storage_gb": 1024,
+            "gpu": null
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "description_evidence": "**ACEITO PROPOSTA**Vendo notebook de alta performance Avell Storm 450, ideal para quem busca potência gráfica para jogos competitivos e tarefas profissionais exigentes. Equipamento com menos de 1 ano de uso e estado estético impecável.Configuração:CPU: AMD Ryzen 7 - RS 8745HSGPU: NVIDIA GeForce RTX 4050RAM: 32 GB DDR5Armazenamento: 1 TB SSDDisplay: 144 HzVai carregador e Caixa original Destaques:Estado de conservação excelente (sem detalhes ou avarias visíveis).Teclado com iluminação 100% funcional.Acompanha fonte original e caixa de fábrica.Entrego em mãos em local seguro ou envio pela plataforma. Envie sua mensagem para tirar dúvidas!",
+        "detail_title": "[Vendo] Notebook Gamer Avell Storm 450 - Ryzen 7, RTX 4050, 32GB RAM DDR5, 1TB SSD, 144Hz",
+        "configuration_warnings": []
+      }
+    },
+    {
+      "key": "1546506873",
+      "title": "Notebook Gamer Avell Storm BS 350",
+      "price_brl": 5300,
+      "checked_at": "2026-10-26T19:04:05.552Z",
+      "item": {
+        "id": "1546506873",
+        "url": "https://pa.olx.com.br/regiao-de-maraba/informatica/notebooks/notebook-gamer-avell-storm-bs-350-1546506873",
+        "title": "Notebook Gamer Avell Storm BS 350",
+        "cpu_term": "family:avell-storm",
+        "search_terms": [
+          "family:avell-storm"
+        ],
+        "description_discovery": true,
+        "price_brl": 5300,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": "RTX 3050",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-10-26T19:04:05.549Z",
+          "reasons": [
+            "CPU fora da busca",
+            "Especificação não confirmada: RAM",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 5300,
+          "detail_price_brl": 5300,
+          "visible_price_brl": null,
+          "structured_price_brl": 5300,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 3050"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "description_evidence": "Vendo Notebook Gamer Avell em excelente estado de conservação, sem nenhum detalhe, usado poucas vezes. Especificações de hardware:? GeForce® RTX 3050 (4GB GDDR6)? Intel® Core?M i7-12650H Alder Lake (24MB cache, 3.5GHz ~ 4.7GHz Turbo Boost Max 3.0)? Upgrade Grátis - 32GB [2x 16GB - Dual Channel] Memória DDR4 (3200MHZ)? SSD M.2 NVME 512GB - Geração 4 - [3.400 MB/s? 15.6\" FHD WVA (1920x1080p) - 144Hz / Matte / Contraste: 1000:1/ Brilho 250 cd/m²",
+        "detail_title": "Notebook Gamer Avell Storm BS 350",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ]
+      }
+    },
+    {
+      "key": "1541340529",
+      "title": "Notebook Gamer Avell Storm 450r - Ryzen 7 + RTX 4050 + 32GB DDR5 + Tela 165Hz",
+      "price_brl": 6000,
+      "checked_at": "2026-10-26T19:04:17.287Z",
+      "item": {
+        "id": "1541340529",
+        "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-450r-ryzen-7-rtx-4050-32gb-ddr5-tela-165hz-1541340529",
+        "title": "Notebook Gamer Avell Storm 450r - Ryzen 7 + RTX 4050 + 32GB DDR5 + Tela 165Hz",
+        "cpu_term": "family:avell-storm",
+        "search_terms": [
+          "family:avell-storm"
+        ],
+        "description_discovery": true,
+        "price_brl": 6000,
+        "ram_gb": 32,
+        "storage_gb": null,
+        "gpu": "RTX 4050",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "pending",
+          "checked_at": "2026-10-26T19:04:17.285Z",
+          "reasons": [
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 6000,
+          "detail_price_brl": 6000,
+          "visible_price_brl": null,
+          "structured_price_brl": 6000,
+          "title_specs": {
+            "ram_gb": 32,
+            "storage_gb": null,
+            "gpu": "RTX 4050"
+          },
+          "description_specs": {
+            "ram_gb": 32,
+            "storage_gb": null,
+            "gpu": "RTX 4050"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "description_evidence": "Eleve sua experiência de jogo com o Notebook Gamer Avell Storm 450r! Equipado com processador Ryzen 7, placa de vídeo RTX 4050 e incríveis 32GB de RAM DDR5, este notebook é a máquina perfeita para rodar seus jogos favoritos com gráficos impressionantes e fluidez incomparável. A tela de 165Hz garante visuais super fluidos, proporcionando a vantagem que você precisa nas competições. Prepare-se para o próximo nível!",
+        "detail_title": "Notebook Gamer Avell Storm 450r - Ryzen 7 + RTX 4050 + 32GB DDR5 + Tela 165Hz",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ]
+      }
     }
   ],
   "metrics": {
     "extra_details": 5,
-    "total_details": 11,
-    "detail_ms": 7595,
+    "total_details": 6,
+    "detail_ms": 9011,
     "recovered_validated": 0,
-    "cache_hits": 0,
+    "cache_hits": 8,
     "by_term": {
       "14700hx": 1,
-      "13980hx": 1,
-      "family:avell-a65": 3
+      "family:avell-storm": 4
     }
   }
 }

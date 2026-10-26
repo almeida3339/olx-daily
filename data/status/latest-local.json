@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-26T10:00:10.848Z",
+  "generated_at": "2026-10-26T19:01:25.424Z",
   "source": "local",
   "delivery": {
     "email": "skipped",
@@ -39,71 +39,64 @@
   "monitoring": {
     "scope": "local-watchlists",
     "partial": true,
-    "status": "deferred",
+    "status": "partial",
     "outcomes": [
       {
         "source": "olx",
-        "status": "success",
-        "exit_code": 0,
-        "reasons": [],
-        "completed_terms": 8,
-        "incomplete_terms": 0,
+        "status": "partial",
+        "exit_code": 2,
+        "reasons": [
+          "Listagem incompleta: limite de 12 cards ou próxima página pendente",
+          "2 ficha(s) aguardando leitura dentro dos limites da rodada"
+        ],
+        "completed_terms": 5,
+        "incomplete_terms": 2,
         "deferred_terms": 0
       },
       {
         "source": "lifefactory",
-        "status": "deferred",
-        "exit_code": 3,
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ],
-        "completed_terms": 1,
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 2,
         "incomplete_terms": 0,
-        "deferred_terms": 1
+        "deferred_terms": 0
       },
       {
         "source": "tela-book3",
-        "status": "deferred",
-        "exit_code": 3,
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ],
-        "completed_terms": 1,
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 2,
         "incomplete_terms": 0,
-        "deferred_terms": 1
+        "deferred_terms": 0
       },
       {
         "source": "melanger",
-        "status": "deferred",
-        "exit_code": 3,
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ],
-        "completed_terms": 1,
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 2,
         "incomplete_terms": 0,
-        "deferred_terms": 1
+        "deferred_terms": 0
       },
       {
         "source": "oneplus-buds",
-        "status": "deferred",
-        "exit_code": 3,
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ],
-        "completed_terms": 5,
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 6,
         "incomplete_terms": 0,
-        "deferred_terms": 1
+        "deferred_terms": 0
       },
       {
         "source": "pixel-watch-5",
-        "status": "deferred",
-        "exit_code": 3,
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ],
-        "completed_terms": 1,
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 2,
         "incomplete_terms": 0,
-        "deferred_terms": 1
+        "deferred_terms": 0
       },
       {
         "source": "oled-monitores",
@@ -112,45 +105,18 @@
         "reasons": [
           "OLX: consultas adiadas após bloqueio; retomada prevista em 27/10/2026, 16:04:29 BRT."
         ],
-        "completed_terms": 3,
+        "completed_terms": 0,
         "incomplete_terms": 0,
         "deferred_terms": 10
       }
     ],
     "warnings": [
       {
-        "source": "lifefactory",
-        "status": "deferred",
+        "source": "olx",
+        "status": "partial",
         "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ]
-      },
-      {
-        "source": "tela-book3",
-        "status": "deferred",
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ]
-      },
-      {
-        "source": "melanger",
-        "status": "deferred",
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ]
-      },
-      {
-        "source": "oneplus-buds",
-        "status": "deferred",
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ]
-      },
-      {
-        "source": "pixel-watch-5",
-        "status": "deferred",
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+          "Listagem incompleta: limite de 12 cards ou próxima página pendente",
+          "2 ficha(s) aguardando leitura dentro dos limites da rodada"
         ]
       },
       {
@@ -215,7 +181,8 @@
     "b4ccfd76-6943-4c19-b8fd-894a3507862c",
     "57e22de8-507f-49e2-bac9-b40b3d871aad",
     "87edbace-c3b5-4ce6-b539-52808b6ebc08",
-    "a277f992-5cfb-4e82-962f-1ac14a90e18a"
+    "a277f992-5cfb-4e82-962f-1ac14a90e18a",
+    "06937e91-9770-45e6-95ca-f9fe477c9265"
   ],
   "notification_archive": [
     {
