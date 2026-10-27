@@ -1,0 +1,72 @@
+{
+  "schema_version": 2,
+  "generated_at": "2026-10-27T19:03:14.859Z",
+  "coverage_status": {
+    "Enjoei:BA96-08462A": {
+      "checked_at": "2026-10-27T19:03:15.949Z",
+      "last_success_at": "2026-10-27T19:03:15.949Z",
+      "state": "success",
+      "error": null
+    },
+    "OLX:BA96-08462A": {
+      "checked_at": "2026-10-26T19:04:41.746Z",
+      "last_success_at": "2026-10-26T19:04:41.746Z",
+      "state": "success",
+      "error": null
+    }
+  },
+  "run": {
+    "date": "2026-10-27",
+    "timezone": "America/Sao_Paulo",
+    "id": "tela-galaxy-book3",
+    "label": "Tela Galaxy Book3",
+    "started_at": "2026-10-27T19:03:14.859Z",
+    "completed_at": "2026-10-27T19:03:15.949Z",
+    "partial": true,
+    "errors": [],
+    "deferred_coverage": [
+      "OLX:BA96-08462A"
+    ],
+    "unattempted_coverage": [
+      "OLX:BA96-08462A"
+    ],
+    "scheduled_coverage": [
+      "Enjoei:BA96-08462A"
+    ],
+    "successful_coverage": [
+      "Enjoei:BA96-08462A"
+    ],
+    "failed_coverage": [],
+    "configured_coverage": [
+      "Enjoei:BA96-08462A",
+      "OLX:BA96-08462A"
+    ],
+    "quarantined_item_count": 0,
+    "operational": {
+      "status": "deferred",
+      "exit_code": 3,
+      "reasons": [
+        "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+      ],
+      "completed_terms": 1,
+      "incomplete_terms": 0,
+      "deferred_terms": 1
+    }
+  },
+  "filters": {
+    "price_brl": {
+      "min": 0,
+      "max": 1000
+    },
+    "size_ml": {
+      "min": null,
+      "max": null
+    }
+  },
+  "items": [],
+  "price_range_brl": {
+    "min": 0,
+    "max": 1000
+  },
+  "source_blocks": {}
+}

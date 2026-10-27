@@ -1,7 +1,43 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-21T19:01:09.350Z",
+  "updated_at": "2026-10-27T19:00:16.880Z",
   "runs": [
+    {
+      "run_id": "2026-10-27T19-00-10-808Z",
+      "committed_at": "2026-10-27T19:00:16.713Z",
+      "completed_at": "2026-10-27T19:00:16.575Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 5767,
+      "item_count": 19,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "enjoei-notebooks",
+        "collected_count": 1,
+        "failed_term_count": 0,
+        "incomplete_term_count": 0,
+        "collection_started_at": "2026-10-15T11:01:00.934Z",
+        "quarantined_item_count": 0
+      }
+    },
+    {
+      "run_id": "2026-10-27T19-00-00-918Z",
+      "committed_at": "2026-10-27T19:00:13.777Z",
+      "completed_at": "2026-10-27T19:00:13.752Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 12834,
+      "item_count": 19,
+      "metadata": {
+        "source": "enjoei-notebooks",
+        "collected_count": 1,
+        "failed_term_count": 0,
+        "incomplete_term_count": 0,
+        "collection_started_at": "2026-10-15T11:01:00.934Z",
+        "quarantined_item_count": 0,
+        "in_progress": false
+      }
+    },
     {
       "run_id": "2026-10-21T19-01-06-530Z",
       "committed_at": "2026-10-21T19:01:09.310Z",
@@ -10,14 +46,14 @@
       "partial": false,
       "duration_ms": 2770,
       "item_count": 18,
-      "quarantined_item_count": 0,
       "metadata": {
         "source": "enjoei-notebooks",
         "collected_count": 0,
         "failed_term_count": 0,
         "incomplete_term_count": 0,
         "collection_started_at": "2026-10-15T11:01:00.934Z",
-        "quarantined_item_count": 0
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     },
     {
@@ -1938,38 +1974,6 @@
       "run_id": "2026-07-28T11-01-12-761Z",
       "committed_at": "2026-07-28T11:01:24.613Z",
       "completed_at": "2026-07-28T11:01:24.613Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": null,
-      "item_count": 12,
-      "metadata": {
-        "source": "enjoei-notebooks",
-        "collected_count": 3,
-        "failed_term_count": 0,
-        "quarantined_item_count": 0,
-        "in_progress": false
-      }
-    },
-    {
-      "run_id": "2026-07-27T19-01-03-737Z",
-      "committed_at": "2026-07-27T19:01:14.180Z",
-      "completed_at": "2026-07-27T19:01:14.180Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": null,
-      "item_count": 12,
-      "metadata": {
-        "source": "enjoei-notebooks",
-        "collected_count": 3,
-        "failed_term_count": 0,
-        "quarantined_item_count": 0,
-        "in_progress": false
-      }
-    },
-    {
-      "run_id": "2026-07-27T11-01-05-452Z",
-      "committed_at": "2026-07-27T11:01:18.697Z",
-      "completed_at": "2026-07-27T11:01:18.697Z",
       "outcome": "success",
       "partial": false,
       "duration_ms": null,

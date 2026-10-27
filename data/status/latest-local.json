@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-27T10:00:12.668Z",
+  "generated_at": "2026-10-27T19:00:10.600Z",
   "source": "local",
   "delivery": {
     "email": "skipped",
@@ -39,17 +39,26 @@
   "monitoring": {
     "scope": "local-watchlists",
     "partial": true,
-    "status": "partial",
+    "status": "blocked",
     "outcomes": [
+      {
+        "source": "enjoei-recovery",
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 2,
+        "incomplete_terms": 0,
+        "deferred_terms": 0
+      },
       {
         "source": "olx",
         "status": "partial",
         "exit_code": 2,
         "reasons": [
-          "Listagem incompleta: limite de 60 cards ou próxima página pendente; 16 ficha(s) aguardando leitura dentro dos limites da rodada"
+          "Listagem incompleta: limite de 12 cards ou próxima página pendente"
         ],
         "completed_terms": 7,
-        "incomplete_terms": 1,
+        "incomplete_terms": 2,
         "deferred_terms": 0
       },
       {
@@ -109,14 +118,10 @@
       },
       {
         "source": "oled-monitores",
-        "status": "deferred",
-        "exit_code": 3,
+        "status": "blocked",
         "reasons": [
-          "OLX: consultas adiadas após bloqueio; retomada prevista em 27/10/2026, 16:04:29 BRT."
-        ],
-        "completed_terms": 1,
-        "incomplete_terms": 0,
-        "deferred_terms": 10
+          "Saiu com código 4: {\"event\":\"olx_access_blocked\",\"id\":\"olx-access-2026-10-27T19-04-30-322Z-a943b747\",\"at\":\"2026-10-27T19:04:30.322Z\",\"stage\":\"listing\",\"query\":\"aw2725df\",\"url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"final_url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"http_status\":403,\"title\":\"Attention Required! | Cloudflare\",\"kind\":\"hard_denial\",\"ray_id\":\"a513f783d9829872\",\"message\":\"Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a513f783d9829872).\"}\n  Aviso: termo \"aw2725df\" em https://www.olx.com.br/brasil/informatica/monitores falhou — Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a513f783d9829872).\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.\nColeta OLED parcial: 1 consulta(s) incompleta(s), 9 adiada(s).\nOLX:aw2725df: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a513f783d9829872).\nOLX: consultas adiadas…"
+        ]
       }
     ],
     "warnings": [
@@ -124,7 +129,7 @@
         "source": "olx",
         "status": "partial",
         "reasons": [
-          "Listagem incompleta: limite de 60 cards ou próxima página pendente; 16 ficha(s) aguardando leitura dentro dos limites da rodada"
+          "Listagem incompleta: limite de 12 cards ou próxima página pendente"
         ]
       },
       {
@@ -161,16 +166,11 @@
         "reasons": [
           "Consultas adiadas pela programação; as consultas executadas foram concluídas."
         ]
-      },
-      {
-        "source": "oled-monitores",
-        "status": "deferred",
-        "reasons": [
-          "OLX: consultas adiadas após bloqueio; retomada prevista em 27/10/2026, 16:04:29 BRT."
-        ]
       }
     ],
-    "errors": []
+    "errors": [
+      "Monitores OLED: Saiu com código 4: {\"event\":\"olx_access_blocked\",\"id\":\"olx-access-2026-10-27T19-04-30-322Z-a943b747\",\"at\":\"2026-10-27T19:04:30.322Z\",\"stage\":\"listing\",\"query\":\"aw2725df\",\"url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"final_url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"http_status\":403,\"title\":\"Attention Required! | Cloudflare\",\"kind\":\"hard_denial\",\"ray_id\":\"a513f783d9829872\",\"message\":\"Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a513f783d9829872).\"}\n  Aviso: termo \"aw2725df\" em https://www.olx.com.br/brasil/informatica/monitores falhou — Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a513f783d9829872).\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.\nColeta OLED parcial: 1 consulta(s) incompleta(s), 9 adiada(s).\nOLX:aw2725df: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a513f783d9829872).\nOLX: c…"
+    ]
   },
   "notification_sent_ids": [
     "ba389d82-208c-40a7-ada6-a22a454a4618",
@@ -226,7 +226,8 @@
     "87edbace-c3b5-4ce6-b539-52808b6ebc08",
     "a277f992-5cfb-4e82-962f-1ac14a90e18a",
     "06937e91-9770-45e6-95ca-f9fe477c9265",
-    "4fb76733-708c-4a55-868b-063d69f02ace"
+    "4fb76733-708c-4a55-868b-063d69f02ace",
+    "340b6cb9-2cab-4690-95ea-54b2c2a7b7ca"
   ],
   "notification_archive": [
     {
