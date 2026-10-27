@@ -13,7 +13,7 @@ import { readLatestCommittedRun, readLatestValidSnapshot, writeJsonAtomic, write
 import { mercadoLivreDashboardCards, resolveWatchlistDataDir } from "./lib/watchlists-registry.mjs";
 import { buildLocalTriggerCommands } from "./lib/dashboard-triggers.mjs";
 import { createDashboardParser, runTimestampFromFile } from "./lib/dashboard-parsing.mjs";
-import { isValidatedOlxItem } from './lib/olx-notebook-quality.mjs';
+import { isValidatedOlxItem, revalidateSavedOlxItem } from './lib/olx-notebook-quality.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -153,7 +153,8 @@ async function main() {
 
 async function latestSnapshotDetails(dir) {
   const { snapshot } = await readLatestValidSnapshot(dir);
-  return new Map([...(snapshot?.items ?? []), ...(snapshot?.pending_items ?? [])].filter((item) => item.url).map((item) => {
+  return new Map([...(snapshot?.items ?? []), ...(snapshot?.pending_items ?? [])].filter((item) => item.url)
+    .map(item => dir === OLX_DIR ? revalidateSavedOlxItem(item) : item).map((item) => {
     const notebook = extractMercadoLivreNotebookSpecs(item.specs);
     return [item.url, {
       ...item,
@@ -169,7 +170,9 @@ async function buildPriceInsights(descriptors) {
   const insights = [];
   for (const [source, dir] of descriptors) {
     const { snapshot } = await readLatestValidSnapshot(dir);
-    for (const item of snapshot?.items ?? []) {
+    for (const savedItem of snapshot?.items ?? []) {
+      const item = source === 'OLX' ? revalidateSavedOlxItem(savedItem) : savedItem;
+      const notebookSource = ['OLX', 'Enjoei Notebooks', 'Mercado Livre Notebooks'].includes(source);
       if (dir === ENJOEI_DIR && !isConfirmedBarefootShoe(item)) continue;
       if (['OLX', 'Enjoei Notebooks', 'Mercado Livre Notebooks'].includes(source) && !isEligibleNotebook(item)) continue;
       if ([OLED_MONITORES_DIR, path.join(ROOT, 'data', 'mercadolivre-oled-monitores')].includes(dir) && !isApprovedOledMonitor(item)) continue;
@@ -177,7 +180,8 @@ async function buildPriceInsights(descriptors) {
       if (item.status !== "active" || !item.url || !Number.isFinite(Number(item.price_brl))) continue;
       const observations = [...(item.price_history ?? [])]
         .map((entry) => Number(entry?.price_brl))
-        .filter(Number.isFinite);
+        .filter(value => Number.isFinite(value) && value > 0
+          && (!notebookSource || (value >= (snapshot?.price_range_brl?.min ?? 2000) && value <= PRICE_CAP_BRL)));
       if (!observations.includes(Number(item.price_brl))) observations.push(Number(item.price_brl));
       // O painel de inteligencia mostra apenas variacoes realmente observadas.
       // Isso evita promover resultados legados de baixa confianca (ex.: acessorio

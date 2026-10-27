@@ -1165,9 +1165,16 @@ function mergeWithPreviousSnapshot({ runDate, now, collected, previousSnapshot, 
       filters: { ram_gb: { min: NOTEBOOK_MIN_RAM_GB }, price_brl: { min: PRICE_MIN_BRL, max: PRICE_MAX_BRL } },
     });
     result.price_range_brl = { min: PRICE_MIN_BRL, max: PRICE_MAX_BRL };
+    result.items = result.items.map(item => {
+      const current = revalidateSavedOlxItem(item);
+      if (item.status === 'out_of_scope' && item.validation?.state === 'rejected'
+          && current.validation?.state !== 'rejected') {
+        return { ...current, status: item.last_seen === runDate ? 'active' : 'not_seen', out_of_scope_at: null };
+      }
+      return current;
+    });
     result.items = result.items.map(item => item.validation?.state === 'rejected'
       ? { ...item, status: 'out_of_scope', out_of_scope_at: item.out_of_scope_at ?? now.toISOString() } : item);
-    result.items = result.items.map(revalidateSavedOlxItem);
     const comparable = result.items.filter(item => item.status === 'active' && isValidatedOlxItem(item));
     result.items = result.items.map(item => isValidatedOlxItem(item) ? { ...item, opportunity: notebookOpportunity(item, comparable) } : item);
     return result;

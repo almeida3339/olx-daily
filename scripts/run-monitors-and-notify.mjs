@@ -348,7 +348,7 @@ export async function main({
     for (const error of mlErrors) console.error(error);
   }
 
-  if (!onlyMercadoLivre) {
+  if (!onlyMercadoLivre && args.includes('--recover-stale-enjoei')) {
     const collectionHealth = await buildMonitorHealth(workspaceRoot);
     const alerts = collectionHealthAlerts(collectionHealth).filter(alert => alert.automatic);
     for (const alert of alerts) {

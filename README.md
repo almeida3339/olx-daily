@@ -653,7 +653,7 @@ A busca por CPU também aproveita resultados cujo cartão não identifica o proc
 
 - No máximo **2 consultas adicionais por termo** e **8 por rodada**, incluindo a retomada. Elas ocupam posições dentro do limite atual `--max-per-cpu`; não há paginação ou buscas adicionais.
 - Os candidatos aguardam em `description-candidates.json`, deduplicados pelo ID/URL e atendidos pela ordem de entrada nos termos consultados. A fila guarda até 500 candidatos; entradas sem observação por sete dias expiram.
-- Leituras são reutilizadas por até 12 horas quando título e preço do cartão permanecem iguais, inclusive resultados pendentes ou rejeitados. Alterações exigem nova leitura; na mesma rodada, um anúncio repetido não abre novamente enquanto esses campos permanecem iguais.
+- Leituras aprovadas são reutilizadas por até 12 horas, rejeições por até 72 horas e pendências por até 30 minutos quando título e preço permanecem iguais. Alterações exigem nova leitura. A fila prioriza fichas ainda não lidas antes de repetir pendências.
 - O CPU confirmado na descrição define a classificação, desde que pertença à lista existente. CPU não identificado ou descrição com mais de um CPU fica pendente; modelo identificado fora da lista é rejeitado. Os critérios de preço integral e configuração continuam necessários para validar.
 - O console e o relatório registram consultas adicionais, tempo gasto, ofertas válidas recuperadas e tamanho da fila. Termos pesquisados e fila totalmente validada são indicadores separados: concluir as buscas não significa ter aberto todos os candidatos.
 - `--listing-only` não abre descrições nem alimenta a fila. `--open-details` força a renovação das leituras, mantendo os limites adicionais. Bloqueios interrompem a coleta e preservam a fila.
@@ -662,6 +662,10 @@ A busca por CPU também aproveita resultados cujo cartão não identifica o proc
 
 OLX, Enjoei Notebooks e Mercado Livre Notebooks só apresentam ofertas e enviam alertas quando o anúncio informa pelo menos **32 GB de RAM instalada**. RAM desconhecida ou capacidades conflitantes não atendem ao filtro até confirmação. VRAM e capacidade máxima de expansão não contam como RAM instalada. O filtro vale também para ofertas antigas exibidas no dashboard e relatórios reutilizados para notificação; o histórico bruto permanece preservado.
 
+A leitura aceita velocidade entre capacidade e RAM, como `32GB 5600MT/s de RAM`. Módulos originais que acompanham a venda separadamente não substituem a capacidade instalada. A evidência original é reprocessada sem atualizar a data da visita. Preços históricos impossíveis de notebook, abaixo do piso de coleta, não entram no cálculo de mínimo do painel; o histórico bruto é preservado.
+
 ### Atualidade e recuperação das coletas
+
+As tarefas locais usam `--recover-stale-enjoei`: quando um grupo exclusivo do Enjoei fica mais de 36 horas sem atualização, a coleta é recuperada localmente, sem depender do CI. A execução usa trava contra duplicação e respeita os filtros e orçamentos dos coletores. `node scripts/recover-enjoei.mjs --stale-only` faz essa recuperação sem enviar notificações. As rodadas agendadas incorporam seus achados ao resumo normal. Fontes paradas ganham aviso visível no painel; atrasos automáticos persistentes também aparecem na notificação agendada.
 
 A saúde das fontes do Mercado Livre usa uma janela de 24 horas e indica que a execução é sob demanda. O histórico continua visível, mas dados mais antigos aparecem como desatualizados. Nas watchlists OLX, listagens incompletas aguardam até 18 segundos e recebem uma única nova tentativa em outra aba após 30 segundos; bloqueios interrompem a fonte. Recusas sem CAPTCHA são identificadas separadamente de verificações interativas, preservando os resultados anteriores e a pausa de segurança.
