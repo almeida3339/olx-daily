@@ -53,6 +53,7 @@ const maxAdsPerCpu = Number(getOptionValue(args, "--max-per-cpu") ?? 20);
 const debug = args.includes("--debug");
 const forceOpenDetails = args.includes("--open-details");
 const listingOnly = args.includes("--listing-only");
+const descriptionsOnly = args.includes('--descriptions-only');
 const cpuArg = getOptionValue(args, "--cpu");
 const configuredCpuTerms = cpuArg ? cpuArg.split(",").map((s) => s.trim().toLowerCase()).filter(Boolean) : DEFAULT_CPU_TERMS;
 let cpuTerms = orderOlxCpuTerms(configuredCpuTerms);
@@ -135,8 +136,11 @@ async function main() {
     });
     if (!cpuArg) cpuTerms.push(...planNotebookFamilies(previousSnapshot, { now: now.getTime(), fullSweep: args.includes('--full-sweep'), traffic }));
   }
-  if(!cpuTerms.length){await saveDeferredNotebookRun(previousSnapshot,now,'Consultas adiadas pela frequência adaptativa.');return;}
+  if (descriptionsOnly) { cpuTerms = []; resumedProgress = null; runTimestamp = now.toISOString(); }
   descriptionQueue = await createDescriptionQueue(path.join(automationRoot, 'description-candidates.json'), runTimestamp);
+  if(!cpuTerms.length && !(descriptionsOnly && descriptionQueue.summary().queued_candidates)){
+    await saveDeferredNotebookRun(previousSnapshot,now,'Consultas adiadas pela frequência adaptativa.');return;
+  }
   console.log(`Plano OLX: ${cpuTerms.length}/${configuredCpuTerms.length} termos nesta rodada; CPUs prioritárias primeiro.`);
 
   console.log(`Execução: ${runTimestamp}`);
@@ -165,6 +169,7 @@ async function main() {
     await collectOlxTerms({
       runDate, runTimestamp, previousSnapshot, transport: "playwright",
       collectTerm: (term) => collectForCpuTerm(page, term, maxAdsPerCpu, previousSnapshot),
+      drainDetails: () => drainDescriptionQueue(card => enrichAd(page, card)),
       resetSession: async () => {
         const context = page.context();
         await page.close().catch(() => {});
@@ -206,6 +211,7 @@ async function runWithRawCdp({ cdpUrl, runDate, runTimestamp, previousSnapshot }
     await collectOlxTerms({
       runDate, runTimestamp, previousSnapshot, transport: "cdp",
       collectTerm: (term) => collectForCpuTermRawCdp(tab, term, maxAdsPerCpu, previousSnapshot),
+      drainDetails: () => drainDescriptionQueue(card => enrichAdRawCdp(cdpUrl, card)),
       resetSession,
     });
   } finally {
@@ -214,7 +220,7 @@ async function runWithRawCdp({ cdpUrl, runDate, runTimestamp, previousSnapshot }
 
 }
 
-async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transport, collectTerm, resetSession }) {
+async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transport, collectTerm, resetSession, drainDetails }) {
   const collected = [...(resumedProgress?.collected ?? [])];
   const successfulTerms = [...(resumedProgress?.successful_terms ?? [])];
   const failedTerms = [];
@@ -242,7 +248,7 @@ async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transp
         completed_at: inProgress ? null : savedAt.toISOString(),
         in_progress: inProgress,
         phase: inProgress ? "collecting" : failedTerms.length ? "partial" : "completed",
-        partial: inProgress || failedTerms.length > 0 || unattemptedTerms.length > 0,
+        partial: inProgress || failedTerms.length > 0 || unattemptedTerms.length > 0 || descriptionQueue.summary().queued_candidates > 0,
         successful_terms: [...successfulTerms],
         failed_terms: failedTerms.filter(failure => failure.kind !== 'deferred'),
         errors: failedTerms.filter(failure => failure.kind !== 'deferred'),
@@ -318,6 +324,12 @@ async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transp
       }
       await persistProgress(true);
     }, { onBatchCompleted: () => saveProgress(true), onBatchResumed: resetSession });
+    if (!listingOnly && drainDetails) {
+      for (const item of await drainDetails()) {
+        const existing = collected.findIndex(x => (x.id ?? x.url) === (item.id ?? item.url));
+        if (existing < 0) collected.push(item); else collected[existing] = item;
+      }
+    }
   } catch (error) {
     if (!failedTerms.some(f => f.error === sanitizeErrorMessage(error?.message ?? error))) failedTerms.push({ term: "coleta", error: sanitizeErrorMessage(error?.message ?? error), kind: classifyMonitorError(error).kind });
     await saveProgress(false);
@@ -441,6 +453,31 @@ async function notebookListingLimit(term,base,previous){
   const prior=Number(last?.listing_limit??base);
   if(term.startsWith('family:'))return Math.min(90,Math.max(base,60,truncated?prior+30:prior));
   return term==='14900hx'||truncated?Math.min(60,Math.max(base,truncated?prior+24:Math.max(prior,36))):base;
+}
+
+async function drainDescriptionQueue(openDetail) {
+  const items = [];
+  for (const card of descriptionQueue.pending()) {
+    const metrics = descriptionQueue.summary();
+    if (metrics.total_details >= metrics.total_detail_limit || metrics.extra_details >= metrics.per_round_limit) break;
+    const cached = descriptionQueue.cached(card);
+    if (cached) {
+      if (cached.validation?.state !== 'pending') await descriptionQueue.useCached(card, cached);
+      continue;
+    }
+    if (!await descriptionQueue.reserveDetail(card.cpu_term, true, card)) continue;
+    console.log(`Fila de descrições: ${card.title.slice(0, 80)}`);
+    const started = Date.now();
+    let item;
+    try { item = await openDetail(card); }
+    catch (error) {
+      if (['challenge', 'authentication', 'rate_limited'].includes(classifyMonitorError(error).kind)) throw error;
+      item = pendingOlxItem(listingCardToItem(card), sanitizeErrorMessage(error.message));
+    }
+    await descriptionQueue.remember(card, item, Date.now() - started);
+    items.push(item);
+  }
+  return items;
 }
 
 async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openDetail) {

@@ -656,6 +656,7 @@ A busca por CPU também aproveita resultados cujo cartão não identifica o proc
 - Leituras aprovadas são reutilizadas por até 12 horas, rejeições por até 72 horas e pendências por até 30 minutos quando título e preço permanecem iguais. Alterações exigem nova leitura. A fila prioriza fichas ainda não lidas antes de repetir pendências.
 - O CPU confirmado na descrição define a classificação, desde que pertença à lista existente. CPU não identificado ou descrição com mais de um CPU fica pendente; modelo identificado fora da lista é rejeitado. Os critérios de preço integral e configuração continuam necessários para validar.
 - O console e o relatório registram consultas adicionais, tempo gasto, ofertas válidas recuperadas e tamanho da fila. Termos pesquisados e fila totalmente validada são indicadores separados: concluir as buscas não significa ter aberto todos os candidatos.
+- Ao final da rodada, o orçamento de fichas ainda disponível avança também a fila de outras famílias, sem novas buscas. `--descriptions-only` permite essa recuperação isolada; os limites diários, por rodada e por termo continuam valendo.
 - `--listing-only` não abre descrições nem alimenta a fila. `--open-details` força a renovação das leituras, mantendo os limites adicionais. Bloqueios interrompem a coleta e preservam a fila.
 
 ### Preferência de RAM dos notebooks

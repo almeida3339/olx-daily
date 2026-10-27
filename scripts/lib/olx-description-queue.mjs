@@ -20,6 +20,7 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
   const state = {
     schema_version: 1, round,
     queue: (old?.queue ?? []).filter(entry => !isOlxRecommendationUrl(entry.card.url)
+      && !hasExplicitOtherNotebookCpu(`${entry.card.title}\n${entry.card.text ?? ''}`)
       && now - Date.parse(entry.last_observed_at) < 7 * 86400_000
       && (extractNotebookRamText(`${entry.card.title}\n${entry.card.text ?? ''}`) ?? NOTEBOOK_MIN_RAM_GB) >= NOTEBOOK_MIN_RAM_GB),
     cache: (old?.cache ?? []).filter(entry => now - Date.parse(entry.checked_at) < 72 * 3600_000),
@@ -53,10 +54,10 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
       state.queue = state.queue.slice(0, 500);
       await save();
     },
-    pending(term) { return state.queue.filter(x => x.terms.includes(term))
+    pending(term) { return state.queue.filter(x => term == null || x.terms.includes(term))
       .sort((a,b)=>Number(Boolean(a.last_detail_attempt_at))-Number(Boolean(b.last_detail_attempt_at))
         ||(Date.parse(a.last_detail_attempt_at??a.first_observed_at)||0)-(Date.parse(b.last_detail_attempt_at??b.first_observed_at)||0))
-      .map(x => ({ ...x.card, cpu_term: term, description_discovery: x.card.description_discovery ?? true })); },
+      .map(x => ({ ...x.card, cpu_term: term ?? x.card.cpu_term ?? x.terms[0], description_discovery: x.card.description_discovery ?? true })); },
     async reserveDetail(term, discovery, card) {
       if ((state.metrics.total_details ?? 0) >= totalLimit) return false;
       const termLimit=term.startsWith('family:')?Math.max(perTerm,4):perTerm;
