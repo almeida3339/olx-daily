@@ -59,7 +59,7 @@ watchlistQueue: for (const watchlist of watchlists) {
     watchlistId: watchlist.id,
     terms: configuredTerms.filter(term => !attempted.has(term)),
     maxTerms: fullSweep ? configuredTerms.length : Math.min(remaining, configuredTerms.length, watchlist.kind==='oled'?6:Infinity),
-    force: force || Boolean(selectedTerm),
+    force: force || Boolean(selectedTerm) || completeCoverage,
   });
   if (!plan.terms.length) {
     console.log(`${watchlist.label}: pulada (${plan.reason}${plan.next_at ? ` ate ${plan.next_at}` : ""}).`);
