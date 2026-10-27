@@ -22,6 +22,7 @@ const selectedTerm = option("--term");
 const selectedTerms=selectedTerm?[...new Set(selectedTerm.split(',').map(term=>normalizeOledSearchTerm(term.trim())).filter(Boolean))]:null;
 const includePaused = process.argv.includes("--include-paused");
 const fullSweep = process.argv.includes("--full-sweep");
+const completeCoverage = process.argv.includes('--complete-coverage');
 const force = process.argv.includes("--force") || fullSweep;
 // Orçamento padrão cobre todos os termos configurados hoje (30, ver soma de
 // watchlist.terms.length abaixo) com folga — evita que uma watchlist grande
@@ -47,14 +48,16 @@ if (process.argv.includes("--clear-cooldown")) {
   console.log("Pausa de seguranca do Mercado Livre removida.");
 }
 let remaining = selectedTerm ? Number.POSITIVE_INFINITY : Math.max(1, budget);
-for (const watchlist of watchlists) {
+watchlistQueue: for (const watchlist of watchlists) {
   const configuredTerms = selectedTerm
     ? watchlist.terms.filter((term) => selectedTerms.includes(watchlist.kind==='oled'?normalizeOledSearchTerm(term):term.toLowerCase()))
     : watchlist.terms;
   if (selectedTerm && configuredTerms.length !== selectedTerms.length) throw new Error(`Termo desconhecido para ${watchlist.id}: ${selectedTerm}`);
+  const attempted = new Set();
+  for (let batch = 0; batch < configuredTerms.length; batch++) {
   const plan = planMercadoLivreTerms(schedule, {
     watchlistId: watchlist.id,
-    terms: configuredTerms,
+    terms: configuredTerms.filter(term => !attempted.has(term)),
     maxTerms: fullSweep ? configuredTerms.length : Math.min(remaining, configuredTerms.length, watchlist.kind==='oled'?6:Infinity),
     force: force || Boolean(selectedTerm),
   });
@@ -64,9 +67,9 @@ for (const watchlist of watchlists) {
       await writeMercadoLivreSchedule(root, schedule);
       process.exitCode = 1;
       console.error("Fila Mercado Livre bloqueada; resolva a verificacao ou login no perfil exclusivo.");
-      break;
+      break watchlistQueue;
     }
-    continue;
+    break;
   }
   console.log(`${watchlist.label}: ${plan.terms.length}/${configuredTerms.length} termo(s) nesta rodada.`);
   const result = await runMercadoLivreBatch({
@@ -92,15 +95,20 @@ for (const watchlist of watchlists) {
     snapshot: result.snapshot,
   });
   await writeMercadoLivreSchedule(root, schedule);
+  for (const term of plan.terms) attempted.add(term);
   if (result.snapshot.run?.aborted || result.snapshot.run?.failed_terms?.length) {
     console.error(`${watchlist.label}: coleta incompleta; resultados parciais preservados.`);
     process.exitCode = 1;
   }
-  if (result.snapshot.run?.aborted || schedule.global.requires_login || Date.parse(schedule.global.blocked_until ?? "") > Date.now()) break;
+  if (result.snapshot.run?.aborted || schedule.global.requires_login || Date.parse(schedule.global.blocked_until ?? "") > Date.now()) break watchlistQueue;
   remaining -= plan.terms.length;
   if (remaining <= 0 && !selectedTerm && !fullSweep) {
     console.log("Orcamento de termos desta rodada atingido; as demais buscas ficam para a proxima execucao.");
-    break;
+    break watchlistQueue;
+  }
+  // Recuperação explícita avança em lotes de até seis termos OLED. Cada termo
+  // é tentado uma única vez; os limites de fichas e as pausas permanecem ativos.
+  if (!completeCoverage || selectedTerm || fullSweep) break;
   }
 }
 
