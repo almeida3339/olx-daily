@@ -120,6 +120,29 @@ function worstState(states) {
   return ['failed', 'blocked', 'missing', 'stale', 'partial', 'degraded', 'healthy'].find((state) => states.includes(state)) ?? 'healthy';
 }
 
+// Separar coleta atrasada de publicação recente: o Windows pode publicar OLX
+// normalmente enquanto o job remoto do Enjoei deixou de executar há dias.
+export function collectionHealthAlerts(health) {
+  const sources = health?.sources ?? [];
+  const alerts = [];
+  const enjoei = sources.filter(source => source.id === 'enjoei' || source.id.startsWith('enjoei-'));
+  const staleEnjoei = enjoei.filter(source => ['missing', 'failed', 'stale'].includes(source.state)
+    && (source.age_ms == null || source.age_ms > 36 * 3600_000 || source.state === 'failed'));
+  if (staleEnjoei.length) alerts.push({ id: 'enjoei', automatic: true,
+    message: `Enjoei: ${staleEnjoei.length} busca(s) sem coleta recente ou com falha. A publicação de outras fontes não atualiza essas buscas; recuperação local disponível.` });
+  const notebooks = sources.find(source => source.id === 'olx');
+  if (notebooks && ['missing', 'stale', 'failed'].includes(notebooks.state)) alerts.push({ id: 'olx', automatic: true,
+    message: 'OLX Notebooks: coleta ausente, desatualizada ou com falha; ausência de alertas não significa ausência de ofertas.' });
+  const oled = sources.find(source => source.id === 'oled-monitores');
+  if (oled?.state === 'blocked') alerts.push({ id: 'oled', automatic: false,
+    message: `Monitores OLED: cobertura da OLX bloqueada. ${oled.message}` });
+  const staleMl = sources.filter(source => source.id.startsWith('mercadolivre-')
+    && (source.age_ms == null || source.age_ms > 7 * 86400_000));
+  if (staleMl.length) alerts.push({ id: 'mercadolivre', automatic: false,
+    message: `Mercado Livre: ${staleMl.length} busca(s) sem coleta há mais de sete dias. Use o disparo sob demanda para atualizar.` });
+  return alerts;
+}
+
 function shoeScheduleHealth(schedule, now) {
   const labels = { priority: 'Enjoei prioritárias', daily: 'Enjoei diárias', rotation: 'Enjoei rodízio', discovery: 'Enjoei descoberta semanal' };
   return Object.entries(labels).flatMap(([tier, label]) => {

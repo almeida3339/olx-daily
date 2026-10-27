@@ -20,14 +20,14 @@ test("Pixel Watch 5 aceita somente a versão de 45 mm", () => {
   assert.equal(isPixelWatch5_45mm("Google Pixel Watch 5"), false);
 });
 
-test("Pixel Watch 5 aplica teto diferente para Wi-Fi e LTE", () => {
+test("Pixel Watch 5 aplica a faixa de 1000 a 2200 para Wi-Fi e LTE", () => {
   assert.equal(isPixelWatch5Lte("Pixel Watch 5 45mm Wi-Fi Bluetooth"), false);
   assert.equal(isPixelWatch5Lte("Pixel Watch 5 45mm 4G LTE + Wi-Fi"), true);
-  assert.equal(matchesGooglePixelWatch5({ title: "Google Pixel Watch 5 45mm Wi-Fi", price_brl: 2400 }), true);
-  assert.equal(matchesGooglePixelWatch5({ title: "Google Pixel Watch 5 45mm Wi-Fi", price_brl: 2401 }), false);
-  assert.equal(matchesGooglePixelWatch5({ title: "Google Pixel Watch 5 45mm LTE", price_brl: 3000 }), true);
-  assert.equal(matchesGooglePixelWatch5({ title: "Google Pixel Watch 5 45mm LTE", price_brl: 3001 }), false);
-  assert.equal(GOOGLE_PIXEL_WATCH5_PRICE.max, 3000);
+  assert.equal(matchesGooglePixelWatch5({ title: "Google Pixel Watch 5 45mm Wi-Fi", price_brl: 2200 }), true);
+  assert.equal(matchesGooglePixelWatch5({ title: "Google Pixel Watch 5 45mm Wi-Fi", price_brl: 2201 }), false);
+  assert.equal(matchesGooglePixelWatch5({ title: "Google Pixel Watch 5 45mm LTE", price_brl: 1000 }), true);
+  assert.equal(matchesGooglePixelWatch5({ title: "Google Pixel Watch 5 45mm LTE", price_brl: 999 }), false);
+  assert.equal(GOOGLE_PIXEL_WATCH5_PRICE.max, 2200);
 });
 
 test("Pixel Watch 5 rejeita acessórios e gerações diferentes", () => {
@@ -38,8 +38,8 @@ test("Pixel Watch 5 rejeita acessórios e gerações diferentes", () => {
 
 test("watchlist do Mercado Livre do Pixel Watch 5 usa a mesma regra", () => {
   assert.ok(mlWatchlist);
-  assert.equal(mlWatchlist.minPrice, 0);
-  assert.equal(mlWatchlist.maxPrice, 3000);
-  assert.equal(matchesMercadoLivreWatchlist({ title: "Google Pixel Watch 5 45mm LTE", price_brl: 3000 }, mlWatchlist), true);
-  assert.equal(matchesMercadoLivreWatchlist({ title: "Google Pixel Watch 5 45mm Wi-Fi", price_brl: 2401 }, mlWatchlist), false);
+  assert.equal(mlWatchlist.minPrice, 1000);
+  assert.equal(mlWatchlist.maxPrice, 2200);
+  assert.equal(matchesMercadoLivreWatchlist({ title: "Google Pixel Watch 5 45mm LTE", price_brl: 2200 }, mlWatchlist), true);
+  assert.equal(matchesMercadoLivreWatchlist({ title: "Google Pixel Watch 5 45mm Wi-Fi", price_brl: 2201 }, mlWatchlist), false);
 });

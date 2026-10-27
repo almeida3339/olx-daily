@@ -152,12 +152,24 @@ export function isValidatedOlxItem(item) {
 export function revalidateSavedOlxItem(item) {
   if (!item?.validation || ![1, OLX_QUALITY_VERSION].includes(item.validation.version)) return item;
   const old = item.validation;
+  if (old.description_checked && item.description_evidence && item.detail_title
+      && old.detail_price_brl != null && Number.isFinite(Date.parse(old.checked_at))) {
+    // Reprocessar evidência salva não representa uma nova visita: mantenha a
+    // data original da conferência e os preços observados naquela página.
+    return validateOlxNotebook({ ...item, price_brl: old.listing_price_brl ?? item.price_brl }, {
+      url: item.url, title: item.detail_title, description: item.description_evidence,
+      price_text: old.visible_price_brl, structured_price: old.structured_price_brl ?? old.detail_price_brl,
+      body_text: '',
+    }, new Date(old.checked_at));
+  }
   const reasons = (old.reasons ?? []).filter(reason => reason !== 'Especificação não confirmada: SSD/armazenamento');
   const titleTerms = notebookCpuTerms(item.title ?? '');
   const cpuAllowed = DEFAULT_CPU_TERMS.includes(item.cpu_term) && !hasExplicitOtherNotebookCpu(item.title ?? '')
     && (!titleTerms.length || (titleTerms.length === 1 && titleTerms[0] === item.cpu_term));
-  if (!cpuAllowed && !reasons.includes('CPU fora da seleção atual')) reasons.push('CPU fora da seleção atual');
-  const state = !cpuAllowed || old.state === 'rejected' ? 'rejected'
+  const unknownFamilyCpu = String(item.cpu_term ?? '').startsWith('family:')
+    && !item.desc_checked && !titleTerms.length && !hasExplicitOtherNotebookCpu(item.title ?? '');
+  if (!cpuAllowed && !unknownFamilyCpu && !reasons.includes('CPU fora da seleção atual')) reasons.push('CPU fora da seleção atual');
+  const state = unknownFamilyCpu ? 'pending' : !cpuAllowed || old.state === 'rejected' ? 'rejected'
     : old.cpu_confirmed && old.description_checked && !reasons.length ? 'validated' : 'pending';
   return { ...item, validation: { ...old, version: OLX_QUALITY_VERSION, state, reasons },
     configuration_warnings: item.storage_gb == null ? ['Armazenamento não informado'] : [] };

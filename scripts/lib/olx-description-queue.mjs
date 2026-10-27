@@ -22,7 +22,7 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
     queue: (old?.queue ?? []).filter(entry => !isOlxRecommendationUrl(entry.card.url)
       && now - Date.parse(entry.last_observed_at) < 7 * 86400_000
       && (extractNotebookRamText(`${entry.card.title}\n${entry.card.text ?? ''}`) ?? NOTEBOOK_MIN_RAM_GB) >= NOTEBOOK_MIN_RAM_GB),
-    cache: (old?.cache ?? []).filter(entry => now - Date.parse(entry.checked_at) < 12 * 3600_000),
+    cache: (old?.cache ?? []).filter(entry => now - Date.parse(entry.checked_at) < 72 * 3600_000),
     metrics: old?.round === round ? old.metrics : { extra_details: 0, total_details: 0, detail_ms: 0, recovered_validated: 0, cache_hits: 0, by_term: {} },
   };
   const results = new Map();
@@ -34,7 +34,7 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
     cached(card) {
       const key = cardKey(card);
       const entry = state.cache.find(x => x.key === key && x.title === card.title && x.price_brl === card.price_brl
-        && Date.now() - Date.parse(x.checked_at) < 12 * 3600_000);
+        && Date.now() - Date.parse(x.checked_at) < (x.item?.validation?.state === 'rejected' ? 72 : x.item?.validation?.state === 'pending' ? 0.5 : 12) * 3600_000);
       return entry?.item ?? null;
     },
     result(card) {
@@ -54,7 +54,8 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
       await save();
     },
     pending(term) { return state.queue.filter(x => x.terms.includes(term))
-      .sort((a,b)=>(Date.parse(a.last_detail_attempt_at??a.first_observed_at)||0)-(Date.parse(b.last_detail_attempt_at??b.first_observed_at)||0))
+      .sort((a,b)=>Number(Boolean(a.last_detail_attempt_at))-Number(Boolean(b.last_detail_attempt_at))
+        ||(Date.parse(a.last_detail_attempt_at??a.first_observed_at)||0)-(Date.parse(b.last_detail_attempt_at??b.first_observed_at)||0))
       .map(x => ({ ...x.card, cpu_term: term, description_discovery: x.card.description_discovery ?? true })); },
     async reserveDetail(term, discovery, card) {
       if ((state.metrics.total_details ?? 0) >= totalLimit) return false;
@@ -81,7 +82,10 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
       state.cache = state.cache.filter(x => x.key !== key);
       state.cache.push({ key, title: card.title, price_brl: card.price_brl, checked_at: new Date().toISOString(), item });
       state.cache = state.cache.slice(-1000);
-      state.queue = state.queue.filter(x => x.key !== key);
+      if (item.validation?.state === 'pending') {
+        const waiting = state.queue.find(x => x.key === key);
+        if (waiting) waiting.last_detail_attempt_at = new Date().toISOString();
+      } else state.queue = state.queue.filter(x => x.key !== key);
       if (card.description_discovery && elapsed) {
         state.metrics.detail_ms += elapsed;
         if (item.validation?.state === 'validated') state.metrics.recovered_validated++;

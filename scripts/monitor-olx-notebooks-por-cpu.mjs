@@ -435,11 +435,11 @@ async function collectForCpuTermRawCdp(tab, cpuTerm, maxCards, previousSnapshot)
 }
 
 async function notebookListingLimit(term,base,previous){
-  if(term.startsWith('family:'))return Math.max(base,60);
   const traffic=await readOlxTraffic(),saved=traffic?.queries?.[`notebooks:${term}`];
   const last=previous?.run?.query_yield?.[term]??saved;
   const truncated=last?.listing_incomplete??/listagem incompleta/i.test(previous?.coverage_status?.[term]?.error??'');
   const prior=Number(last?.listing_limit??base);
+  if(term.startsWith('family:'))return Math.min(90,Math.max(base,60,truncated?prior+30:prior));
   return term==='14900hx'||truncated?Math.min(60,Math.max(base,truncated?prior+24:Math.max(prior,36))):base;
 }
 

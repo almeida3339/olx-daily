@@ -290,7 +290,7 @@ try {
   if ($NoNotify) {
     & (Join-Path $PSScriptRoot "run-olx-monitor.ps1") -MaxPerCpu $MaxPerCpu 2>&1 | ForEach-Object { Write-Host $_ }
   } else {
-    & node (Join-Path $PSScriptRoot "run-monitors-and-notify.mjs") --only-olx --olx-max-per-cpu $MaxPerCpu 2>&1 | ForEach-Object { Write-Host $_ }
+    & node (Join-Path $PSScriptRoot "run-monitors-and-notify.mjs") --only-olx --recover-stale-enjoei --olx-max-per-cpu $MaxPerCpu 2>&1 | ForEach-Object { Write-Host $_ }
   }
   $monitorExit = $LASTEXITCODE
   $monitorFailed = $monitorExit -notin @(0, 2, 3)

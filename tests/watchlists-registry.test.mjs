@@ -23,8 +23,8 @@ test("registry de watchlists mantém IDs e diretórios únicos", () => {
 test("registry fornece cards do dashboard e prazos de saúde para as mesmas fontes", () => {
   const cards = mercadoLivreDashboardCards();
   const health = watchlistHealthDefinitions();
-  assert.ok(cards.some(([chip, , subtitle, folder]) => chip === "Google Pixel Watch 5 · pausado" && subtitle.includes("R$ 2.400") && folder === "mercadolivre-google-pixel-watch-5"));
-  assert.ok(!health.some(([id]) => id === "google-pixel-watch-5"));
+  assert.ok(cards.some(([chip, , subtitle, folder]) => chip === "Google Pixel Watch 5" && subtitle.includes("R$ 2.200") && folder === "mercadolivre-google-pixel-watch-5"));
+  assert.ok(health.some(([id]) => id === "google-pixel-watch-5"));
 });
 
 test("orquestrador usa data/ do checkout no GitHub Actions sem env duplicada", () => {

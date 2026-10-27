@@ -1,4 +1,6 @@
 import { filterNotebookReportRam } from './lib/notebook-policy.mjs';
+import { staleEnjoeiJobs } from './lib/enjoei-recovery.mjs';
+import { buildMonitorHealth, collectionHealthAlerts } from './lib/monitor-health.mjs';
 import { filterOledReport } from './lib/oled-monitor-scope.mjs';
 import { filterBarefootReport } from './lib/shoe-search-rules.mjs';
 import { ENJOEI_JAPANESE_JEANS } from './lib/enjoei-japanese-jeans.mjs';
@@ -147,6 +149,8 @@ export async function main({
   logger.start({ only_mercadolivre: onlyMercadoLivre, skip_monitors: skipMonitors });
   const errors = [];
   const monitorOutcomes = [];
+  const recoverEnjoei = args.includes('--recover-stale-enjoei') && onlyOlx && !onlyMercadoLivre
+    && !skipMonitors && !skipEnjoei && (await staleEnjoeiJobs(workspaceRoot)).length > 0;
 
   if (skipMonitors) {
     console.log("--skip-monitors ativo: usando relatórios existentes.");
@@ -169,6 +173,7 @@ export async function main({
     // Chrome) seguem irrestritos, sem impacto nisso.
     const browserJobConcurrency = Number(process.env.OLX_JOB_CONCURRENCY) || 1;
     const jobs = [];
+    if (recoverEnjoei) jobs.push(['enjoei-recovery', () => runScript('recover-enjoei.mjs', ['--stale-only']), false]);
     if (!skipOlx) jobs.push(["olx", () => runOlxMonitor(olxMaxPerCpu), true]);
     else console.log("OLX pulado nesta rodada.");
     if (!onlyOlx && !skipEnjoei) {
@@ -216,6 +221,7 @@ export async function main({
         continue;
       }
       const monitorError = sanitizeErrorMessage(result.reason?.message ?? result.reason);
+      if (name === 'enjoei-recovery') errors.push(`Recuperação Enjoei: ${monitorError}`);
       monitorOutcomes.push({ source: name, status: result.reason?.operational?.status ?? 'failed', reasons: [monitorError] });
       if (name === "olx") { console.error(`OLX falhou: ${monitorError}`); errors.push(`OLX: ${monitorError}`); }
       if (name === "enjoei-tenis") { console.error(`Enjoei tênis falhou: ${monitorError}`); errors.push(`Enjoei tênis: ${monitorError}`); }
@@ -248,7 +254,7 @@ export async function main({
   const reportMinTime = Number.isFinite(parsedReportMinTime)
     ? parsedReportMinTime
     : (skipMonitors ? null : runStart);
-  const enjoeiOn = !onlyOlx && !onlyMercadoLivre && !skipEnjoei;
+  const enjoeiOn = (!onlyOlx || recoverEnjoei) && !onlyMercadoLivre && !skipEnjoei;
   const zegnaReport = enjoeiOn ? await readLatestReport(ENJOEI_ZEGNA_DIR, reportMinTime).catch(() => null) : null;
   const ricardoAlmeidaReport = enjoeiOn ? await readLatestReport(ENJOEI_RICARDO_ALMEIDA_DIR, reportMinTime).catch(() => null) : null;
   const jacobCohenReport = enjoeiOn ? await readLatestReport(ENJOEI_JACOB_COHEN_DIR, reportMinTime).catch(() => null) : null;
@@ -342,6 +348,14 @@ export async function main({
     for (const error of mlErrors) console.error(error);
   }
 
+  if (!onlyMercadoLivre) {
+    const collectionHealth = await buildMonitorHealth(workspaceRoot);
+    const alerts = collectionHealthAlerts(collectionHealth).filter(alert => alert.automatic);
+    for (const alert of alerts) {
+      errors.push(alert.message);
+      logger.info('collection_health_alert', { group: alert.id, message: alert.message });
+    }
+  }
   const totalNew   = sources.reduce((sum, s) => sum + s.newCount, 0);
   const totalPrice = sources.reduce((sum, s) => sum + s.priceCount, 0);
 

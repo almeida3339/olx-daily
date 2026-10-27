@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 import { extractGpuLabel, extractRamGb, formatBrlPrice, parseBrlPrice, textContainsCpuTerm } from "./lib/parsers.mjs";
 import { extractMercadoLivreNotebookSpecs } from "./lib/mercadolivre-monitor.mjs";
 import { isMercadoLivreNotebookDisplayPrice } from "./lib/mercadolivre-notebook-ranges.mjs";
-import { buildMonitorHealth } from "./lib/monitor-health.mjs";
+import { buildMonitorHealth, collectionHealthAlerts } from "./lib/monitor-health.mjs";
 import { readLatestCommittedRun, readLatestValidSnapshot, writeJsonAtomic, writeTextAtomic } from "./lib/monitor-runtime.mjs";
 import { mercadoLivreDashboardCards, resolveWatchlistDataDir } from "./lib/watchlists-registry.mjs";
 import { buildLocalTriggerCommands } from "./lib/dashboard-triggers.mjs";
@@ -747,7 +747,9 @@ function buildHtml({ health, priceInsights, japaneseJeans, zegna, zegnaUpdated, 
     </ul><p class="hint">Contagem iniciada em ${e(formatDateTimeBrt(new Date(traffic.tracking_started_at)))}. Tentativas também contam. Cache não consome acessos.</p></section>`:'';
   const attentionCount = health.sources.length - healthyCount;
   const healthSummary = `${healthyCount} ${healthyCount === 1 ? "saudável" : "saudáveis"} · ${attentionCount} em atenção`;
-  const healthPanelHtml = `<details class="health-panel ${attentionCount ? "attention" : "ok"}"><summary><span><b>Saúde da coleta</b><small>${e(healthSummary)}</small></span><strong>${attentionCount ? "Atenção" : "Operacional"}</strong></summary><div class="health-grid">${healthHtml}</div></details>`;
+  const collectionAlerts = collectionHealthAlerts(health);
+  const collectionAlertHtml = collectionAlerts.length ? `<section class="collection-alert" role="status"><b>Coletas precisam de atenção</b><ul>${collectionAlerts.map(alert => `<li>${e(alert.message)}</li>`).join('')}</ul><p>A ausência de novidades depende da cobertura de cada fonte.</p></section>` : '';
+  const healthPanelHtml = `${collectionAlertHtml}<details class="health-panel ${attentionCount ? "attention" : "ok"}"${collectionAlerts.some(alert => alert.automatic) ? ' open' : ''}><summary><span><b>Saúde da coleta</b><small>${e(healthSummary)}</small></span><strong>${attentionCount ? "Atenção" : "Operacional"}</strong></summary><div class="health-grid">${healthHtml}</div></details>`;
   const pendingNotifications = health.sources.find((source) => source.id === "notifications")?.outbox ?? [];
   const notificationGroups = groupPendingNotifications(pendingNotifications);
   const notificationsHtml = notificationGroups.length
@@ -767,6 +769,7 @@ function buildHtml({ health, priceInsights, japaneseJeans, zegna, zegnaUpdated, 
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;font-size:14px;line-height:1.5;padding:28px 24px;max-width:1680px;margin:0 auto}
+.collection-alert{border:1px solid #9e6a03;background:#29210e;border-radius:8px;padding:12px 16px;margin-bottom:14px;color:#e3b341}.collection-alert ul{padding-left:18px;margin:6px 0}.collection-alert p{font-size:.8rem;color:#c9d1d9}
 h1{font-size:1.3rem;color:#f0f6fc;margin-bottom:5px}
 .meta{color:#8b949e;font-size:.8rem;margin-bottom:8px}
 .updates{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.8rem;margin-bottom:26px}

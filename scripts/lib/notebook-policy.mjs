@@ -70,12 +70,16 @@ export function isEligibleNotebook(item) {
 
 function notebookRamValues(text) {
   let cleaned = String(text ?? '')
+    // Módulos originais entregues à parte não são a RAM instalada. Só retire
+    // esse trecho quando o anúncio disser explicitamente que são originais.
+    .replace(/\b(?:acompanha|inclui|vai\s+junto)\s*:?[^.!?\n]*(?:[.!?\n]|$)/gi, segment =>
+      /\borigina(?:is|lmente|l)\b/i.test(segment) && /\b(?:ram|mem[oó]ria)\b/i.test(segment) ? '' : segment)
     .replace(/(?:suporta(?:\s+at[eé])?|expans[ií]vel(?:\s+(?:at[eé]|para))?|m[aá]ximo(?:\s+de)?|upgrade(?:\s+para)?)\s*:?\s*\d{1,3}\s*gb/gi, '')
     .replace(/\b(?:rtx|gtx|radeon|arc)\s*[\w-]+(?:\s+(?:ti|super))?\s*[-|/([]?\s*(?:com\s+)?\d{1,3}\s*gb\b(?!\s*(?:ram|ddr\d))/gi, '')
     .replace(/\b\d{1,3}\s*gb\s*(?:gddr\d\w*|vram|de\s+(?:video|vídeo))\b/gi, '')
     .replace(/\b(?:vram|mem[oó]ria\s+(?:de\s+)?v[ií]deo)\s*:?\s*\d{1,3}\s*gb\b/gi, '');
-  cleaned = cleaned.replace(/\b([24])\s*[x×]\s*(\d{1,3})\s*gb\s*(?:ram|ddr[345])\b/gi, (_, count, size) => `${Number(count)*Number(size)} GB RAM`);
-  const explicit = [...cleaned.matchAll(/\b(\d{1,3})\s*gb\s*(?:de\s*)?(?:ram|mem[oó]ria|ddr[345])\b|\b(?:mem[oó]ria\s+ram|ram|mem[oó]ria)\s*[:\r\n-]*\s*(\d{1,3})\s*gb\b/gi)]
+  cleaned = cleaned.replace(/\b([24])\s*[x×]\s*(\d{1,3})\s*gb\s*(?:\d{3,5}\s*(?:mhz|mt\/?s)\s*)?(?:ram|ddr[345])\b/gi, (_, count, size) => `${Number(count)*Number(size)} GB RAM`);
+  const explicit = [...cleaned.matchAll(/\b(\d{1,3})\s*gb\s*(?:\d{3,5}\s*(?:mhz|mt\/?s)\s*)?(?:de\s*)?(?:ram|mem[oó]ria|ddr[345])\b|\b(?:mem[oó]ria\s+ram|ram|mem[oó]ria)\s*[:\r\n-]*\s*(\d{1,3})\s*gb\b/gi)]
     .map(match => Number(match[1] ?? match[2])).filter(value => value >= 2 && value <= 256);
   return [...new Set(explicit.length ? explicit : [extractRamGb(cleaned)].filter(value => value != null))];
 }
@@ -93,11 +97,13 @@ export function notebookRamGb(item) {
   const descriptionRam = extractNotebookRamText(item.description ?? item.description_evidence);
   const listingRam = extractNotebookRamText(item.listing_title ?? item.detail_title);
   // Conflicting capacities require confirmation, rather than choosing the larger.
-  const values = [structured, stored, titleRam, descriptionRam, listingRam,
+  const values = [structured, titleRam, descriptionRam, listingRam,
     ...notebookRamValues(item.description ?? item.description_evidence), ...notebookRamValues(item.title ?? item.fullTitle)]
     .filter(x => Number.isFinite(x) && x > 0);
   if (new Set(values).size > 1) return null;
-  return values[0] ?? null;
+  // O campo derivado de um snapshot antigo não deve contradizer a evidência
+  // original após uma correção do parser. Divergências entre fontes permanecem pendentes.
+  return values[0] ?? (Number.isFinite(stored) && stored > 0 ? stored : null);
 }
 
 export function meetsNotebookRamMinimum(item) {
