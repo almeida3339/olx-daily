@@ -1,7 +1,41 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-21T17:13:12.765Z",
+  "updated_at": "2026-10-27T19:33:35.701Z",
   "runs": [
+    {
+      "run_id": "2026-10-27T19-33-35-670Z",
+      "committed_at": "2026-10-27T19:33:35.678Z",
+      "completed_at": "2026-10-27T19:33:35.670Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 156381,
+      "item_count": 1,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "tenis-42",
+        "label": "Tenis 42",
+        "collected_count": 0,
+        "failed_term_count": 0,
+        "quarantined_item_count": 0
+      }
+    },
+    {
+      "run_id": "2026-10-27T19-27-14-352Z",
+      "committed_at": "2026-10-27T19:27:14.357Z",
+      "completed_at": "2026-10-27T19:27:14.352Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 19465,
+      "item_count": 1,
+      "metadata": {
+        "source": "tenis-42",
+        "label": "Tenis 42",
+        "collected_count": 1,
+        "failed_term_count": 0,
+        "quarantined_item_count": 0,
+        "in_progress": false
+      }
+    },
     {
       "run_id": "2026-10-21T17-13-12-727Z",
       "committed_at": "2026-10-21T17:13:12.734Z",
@@ -10,13 +44,13 @@
       "partial": false,
       "duration_ms": 240338,
       "item_count": 1,
-      "quarantined_item_count": 0,
       "metadata": {
         "source": "tenis-42",
         "label": "Tenis 42",
         "collected_count": 1,
         "failed_term_count": 0,
-        "quarantined_item_count": 0
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     },
     {

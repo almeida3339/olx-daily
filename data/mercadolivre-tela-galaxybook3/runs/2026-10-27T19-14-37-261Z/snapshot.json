@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "generated_at": "2026-10-27T19:14:37.261Z",
+  "coverage_status": {
+    "BA96-08462A": {
+      "checked_at": "2026-10-27T19:14:37.261Z",
+      "last_success_at": "2026-10-27T19:14:37.261Z",
+      "state": "success",
+      "error": null
+    }
+  },
+  "run": {
+    "date": "2026-10-27",
+    "timezone": "America/Sao_Paulo",
+    "id": "tela-galaxybook3",
+    "label": "Tela Galaxy Book3",
+    "kind": "product",
+    "started_at": "2026-10-27T19:14:22.113Z",
+    "completed_at": "2026-10-27T19:14:37.261Z",
+    "partial": false,
+    "limited_terms": [],
+    "pending_details": 0,
+    "detail_reads": 0,
+    "pending_detail_terms": [],
+    "aborted": false,
+    "blocked_error": null,
+    "successful_terms": [
+      "BA96-08462A"
+    ],
+    "scheduled_terms": [
+      "BA96-08462A"
+    ],
+    "configured_terms": [
+      "BA96-08462A"
+    ],
+    "failed_terms": [],
+    "scheduled_coverage": [
+      "BA96-08462A"
+    ],
+    "successful_coverage": [
+      "BA96-08462A"
+    ],
+    "failed_coverage": [],
+    "configured_coverage": [
+      "BA96-08462A"
+    ],
+    "quarantined_item_count": 0,
+    "operational": {
+      "status": "success",
+      "exit_code": 0,
+      "reasons": [],
+      "completed_terms": 1,
+      "incomplete_terms": 0,
+      "deferred_terms": 0
+    }
+  },
+  "filters": {
+    "collection_price_brl": {
+      "min": 0,
+      "max": 1000
+    },
+    "display_price_brl": {
+      "min": 0,
+      "max": 1000
+    }
+  },
+  "items": []
+}

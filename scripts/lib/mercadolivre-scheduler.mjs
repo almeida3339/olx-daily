@@ -81,8 +81,9 @@ export function recordMercadoLivreRun(schedule, {
   const next = normalizeSchedule(structuredClone(schedule));
   const state = next.watchlists[watchlistId] ?? { terms: {}, rotation_cursor: 0, last_full_sweep_at: null };
   const run = snapshot?.run ?? {};
-  const successful = new Set(run.successful_terms ?? []);
-  const failures = new Map((run.failed_terms ?? []).map((entry) => [typeof entry === "string" ? entry : entry.term, entry]));
+  const successful = new Set((run.successful_terms ?? []).map(term => normalizeTermTask(term).matchTerm));
+  const failures = new Map((run.failed_terms ?? []).map((entry) => [normalizeTermTask(typeof entry === "string" ? entry : entry.term).matchTerm, entry]));
+  const pendingTerms = new Set((run.pending_detail_terms ?? []).map(term => normalizeTermTask(term).matchTerm));
   // Clear the previous block once, before processing this run's failures.
   // A successful term later in the list must not erase a new challenge.
   if (successful.size > 0) {
@@ -96,14 +97,15 @@ export function recordMercadoLivreRun(schedule, {
     if (item.status !== "active") continue;
     if(watchlistId==='oled-monitores'&&!isApprovedOledMonitor(item))continue;
     for (const term of item.terms ?? (item.term ? [item.term] : [])) {
-      itemsByTerm.set(term, (itemsByTerm.get(term) ?? 0) + 1);
+      const key = normalizeTermTask(term).matchTerm;
+      itemsByTerm.set(key, (itemsByTerm.get(key) ?? 0) + 1);
     }
   }
   for (const raw of scheduledTerms ?? []) {
     const task = normalizeTermTask(raw);
     const current = state.terms[task.matchTerm] ?? {};
     const failure = failures.get(task.matchTerm);
-    if ((run.pending_detail_terms ?? []).includes(task.matchTerm)) {
+    if (pendingTerms.has(task.matchTerm)) {
       state.terms[task.matchTerm] = { ...current, pending_details: true, last_checked_at: now.toISOString() };
       continue;
     }

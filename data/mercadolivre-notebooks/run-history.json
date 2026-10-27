@@ -1,7 +1,58 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-27T19:04:06.841Z",
+  "updated_at": "2026-10-27T19:14:02.107Z",
   "runs": [
+    {
+      "run_id": "2026-10-27T19-14-02-002Z",
+      "committed_at": "2026-10-27T19:14:02.047Z",
+      "completed_at": "2026-10-27T19:14:02.002Z",
+      "outcome": "partial",
+      "partial": true,
+      "duration_ms": 100252,
+      "item_count": 35,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "notebooks",
+        "label": "Notebooks por CPU",
+        "collected_count": 3,
+        "failed_term_count": 0,
+        "quarantined_item_count": 0
+      }
+    },
+    {
+      "run_id": "2026-10-27T19-12-21-654Z",
+      "committed_at": "2026-10-27T19:12:21.683Z",
+      "completed_at": "2026-10-27T19:12:21.654Z",
+      "outcome": "partial",
+      "partial": true,
+      "duration_ms": 286119,
+      "item_count": 35,
+      "metadata": {
+        "source": "notebooks",
+        "label": "Notebooks por CPU",
+        "collected_count": 5,
+        "failed_term_count": 0,
+        "quarantined_item_count": 0,
+        "in_progress": false
+      }
+    },
+    {
+      "run_id": "2026-10-27T19-07-35-424Z",
+      "committed_at": "2026-10-27T19:07:35.468Z",
+      "completed_at": "2026-10-27T19:07:35.424Z",
+      "outcome": "partial",
+      "partial": true,
+      "duration_ms": 208564,
+      "item_count": 33,
+      "metadata": {
+        "source": "notebooks",
+        "label": "Notebooks por CPU",
+        "collected_count": 0,
+        "failed_term_count": 0,
+        "quarantined_item_count": 0,
+        "in_progress": false
+      }
+    },
     {
       "run_id": "2026-10-27T19-04-06-472Z",
       "committed_at": "2026-10-27T19:04:06.551Z",
@@ -10,13 +61,13 @@
       "partial": true,
       "duration_ms": 218430,
       "item_count": 33,
-      "quarantined_item_count": 0,
       "metadata": {
         "source": "notebooks",
         "label": "Notebooks por CPU",
         "collected_count": 2,
         "failed_term_count": 0,
-        "quarantined_item_count": 0
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     },
     {

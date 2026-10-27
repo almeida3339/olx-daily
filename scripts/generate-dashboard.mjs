@@ -181,7 +181,7 @@ async function buildPriceInsights(descriptors) {
       const observations = [...(item.price_history ?? [])]
         .map((entry) => Number(entry?.price_brl))
         .filter(value => Number.isFinite(value) && value > 0
-          && (!notebookSource || (value >= (snapshot?.price_range_brl?.min ?? 2000) && value <= PRICE_CAP_BRL)));
+          && (!notebookSource || (value >= (snapshot?.price_range_brl?.min ?? (source === 'Enjoei Notebooks' ? 1500 : 2000)) && value <= PRICE_CAP_BRL)));
       if (!observations.includes(Number(item.price_brl))) observations.push(Number(item.price_brl));
       // O painel de inteligencia mostra apenas variacoes realmente observadas.
       // Isso evita promover resultados legados de baixa confianca (ex.: acessorio

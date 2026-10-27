@@ -137,17 +137,20 @@ export async function runMercadoLivreBatch({
             throw error;
           }
           const raw = await collectSearchResults(page);
-          if (checkedProduct && (raw.length > maxItemsPerTerm || await page.locator('.andes-pagination__button--next:not(.andes-pagination__button--disabled)').count() > 0)) limitedTerms.push(task.matchTerm);
           if (raw.length === 0) throw new Error("Nenhum card reconhecido; possivel mudanca de layout.");
           const exclusions = excludeTerms.map(normalizeText);
           if(kind==='oled')queryYield[task.matchTerm]={raw:raw.length,outside_price:raw.filter(i=>i.price_brl<minPrice||i.price_brl>maxPrice).length,
             scope_rejected:raw.filter(i=>i.price_brl>=minPrice&&i.price_brl<=maxPrice&&!termMatcher(i.title,task.matchTerm)).length};
-          return raw
+          const matching = raw
             .filter((item) => item.price_brl >= minPrice && item.price_brl <= maxPrice)
             .filter((item) => termMatcher(item.title, task.matchTerm))
             .filter((item) => !exclusions.some((term) => normalizeText(item.title).includes(term)))
-            .filter((item) => !itemFilter || itemFilter(item))
-            .slice(0, maxItemsPerTerm)
+            .filter((item) => !itemFilter || itemFilter(item));
+          // Todos os cards desta página já foram lidos. O teto limita os
+          // candidatos elegíveis; anúncios descartados não truncam a coleta.
+          if (checkedProduct && (matching.length > maxItemsPerTerm
+              || await page.locator('.andes-pagination__button--next:not(.andes-pagination__button--disabled)').count() > 0)) limitedTerms.push(task.matchTerm);
+          return matching.slice(0, maxItemsPerTerm)
             .map((item) => ({
               ...item,
               id: extractMercadoLivreId(item.url) ?? item.id ?? item.url,

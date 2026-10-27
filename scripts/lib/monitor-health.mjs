@@ -87,7 +87,7 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
         : state === 'failed' ? healthMessage(state)
         : snapshot?.run?.in_progress ? 'Coleta em andamento; progresso salvo'
         : snapshot?.run?.aborted ? 'Coleta interrompida; resultados parciais preservados' : marketplaces.length
-        ? marketplaces.map((source) => `${source.label}: ${healthMessage(source.state)} (${source.fresh_terms}/${source.total_terms} termos recentes${source.warming_terms ? `; ${source.warming_terms} em implantação` : ''})`).join(' · ')
+        ? marketplaces.map((source) => `${source.label}: ${healthMessage(source.state)} (${source.checked_terms ?? source.fresh_terms}/${source.total_terms} consultas recentes; ${source.fresh_terms}/${source.total_terms} concluídas${source.warming_terms ? `; ${source.warming_terms} em implantação` : ''})`).join(' · ')
         : healthMessage(state)),
     });
   }
@@ -160,6 +160,8 @@ function shoeScheduleHealth(schedule, now) {
     });
     return [{ label, state: worstState(states), total_terms: queries.length,
       fresh_terms: states.filter(state => state === 'healthy').length,
+      checked_terms: queries.filter(query => Number.isFinite(Date.parse(query.last_attempt_at))
+        && now.getTime() - Date.parse(query.last_attempt_at) <= query.max_age_hours * 3600_000).length,
       warming_terms: queries.filter(query => !query.last_success_at).length,
       updated_at: queries.map(query => query.last_success_at).filter(Boolean).sort().at(-1) ?? null }];
   });
@@ -182,6 +184,8 @@ function coverageHealth(configured, coverage, { now, maxAgeMs, id, sourceBlocks,
     });
     const blocked = Date.parse(sourceBlocks[label]?.blocked_until ?? '') > now.getTime();
     return { label, state: blocked ? 'blocked' : worstState(states), total_terms: terms.length, fresh_terms: states.filter((state) => state === 'healthy').length,
+      checked_terms: terms.filter(term => Number.isFinite(Date.parse(term.checked_at))
+        && now.getTime() - Date.parse(term.checked_at) <= term.max_age_ms).length,
       warming_terms:terms.filter(term=>!term.checked_at).length,
       updated_at: terms.map((term) => term.checked_at).filter(Boolean).sort().at(-1) ?? null };
   });
