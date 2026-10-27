@@ -465,7 +465,10 @@ async function drainDescriptionQueue(openDetail) {
       if (cached.validation?.state !== 'pending') await descriptionQueue.useCached(card, cached);
       continue;
     }
-    if (!await descriptionQueue.reserveDetail(card.cpu_term, true, card)) continue;
+    if (!await descriptionQueue.reserveDetail(card.cpu_term, true, card)) {
+      if ((descriptionQueue.summary().traffic_deferred ?? 0) > (metrics.traffic_deferred ?? 0)) break;
+      continue;
+    }
     console.log(`Fila de descrições: ${card.title.slice(0, 80)}`);
     const started = Date.now();
     let item;

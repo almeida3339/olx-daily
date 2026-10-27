@@ -150,6 +150,10 @@ function shoeScheduleHealth(schedule, now) {
     if (!queries.length) return [];
     const states = queries.map(query => {
       if (query.state === 'failed') return ['challenge', 'authentication', 'rate_limited'].includes(classifyMonitorError(query.error).kind) ? 'blocked' : 'partial';
+      // Uma paginação retomada hoje ainda é parcial, mesmo que o último ciclo
+      // completo seja antigo. Não confundir coleta ativa com coletor parado.
+      if (query.pending && Number.isFinite(Date.parse(query.last_attempt_at))
+          && now.getTime() - Date.parse(query.last_attempt_at) <= query.max_age_hours * 3600_000) return 'partial';
       if (!query.last_success_at) return 'partial';
       if (now.getTime() - Date.parse(query.last_success_at) > query.max_age_hours * 3600_000) return 'stale';
       return 'healthy';
