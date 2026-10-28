@@ -1,4 +1,5 @@
 import path from "node:path";
+import { beginMercadoLivreInvocation } from './lib/mercadolivre-invocation.mjs';
 import { fileURLToPath } from "node:url";
 import { DEFAULT_CPU_TERMS, cpuSearchQuery } from "./lib/cpu-terms.mjs";
 import { textContainsCpuTerm } from "./lib/parsers.mjs";
@@ -18,6 +19,7 @@ import {
 } from "./lib/mercadolivre-scheduler.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+beginMercadoLivreInvocation();
 const profileDir = process.env.MERCADOLIVRE_PROFILE_DIR ?? path.join(root, ".chrome-mercadolivre-profile");
 const dataDir = process.env.MERCADOLIVRE_NOTEBOOKS_DATA_DIR ?? path.join(root, "data", "mercadolivre-notebooks");
 const requested = option("--cpu");
@@ -41,7 +43,7 @@ let plan = planMercadoLivreTerms(schedule, {
   watchlistId: "notebooks",
   terms: configuredTasks,
   maxTerms: Math.min(budget, configuredTasks.length),
-  force: force || Boolean(requested),
+  force: force || Boolean(requested) || completeCoverage,
 });
 
 if (!plan.terms.length) {
@@ -81,7 +83,7 @@ if (!plan.terms.length) {
   await writeMercadoLivreSchedule(root, schedule);
   for(const task of plan.terms)attemptedThisInvocation.add(task.matchTerm??task.query??task);
   const unexpectedFailures=(result.snapshot.run?.failed_terms??[]).filter(entry=>
-    !/limite de resultados atingido|ficha(?:s)? pendente(?:s)?/i.test(entry.error??String(entry)));
+    entry.kind !== 'incomplete' && !/limite de resultados atingido|ficha(?:s)? pendente(?:s)?/i.test(entry.error??String(entry)));
   if (result.snapshot.run?.aborted || unexpectedFailures.length) {
     console.error("Mercado Livre Notebooks: coleta incompleta; resultados parciais preservados.");
     process.exitCode = 1;
@@ -92,13 +94,13 @@ if (!plan.terms.length) {
     && (Date.parse(schedule.watchlists.notebooks?.terms[task.matchTerm]?.last_success_at ?? '') < collectionStart
       || !schedule.watchlists.notebooks?.terms[task.matchTerm]?.last_success_at));
   plan = planMercadoLivreTerms(schedule, {
-    watchlistId: 'notebooks', terms: pending, maxTerms: budget, force,
+    watchlistId: 'notebooks', terms: pending, maxTerms: budget, force: force || completeCoverage,
   });
   if (['cooldown', 'login_required'].includes(plan.reason)) { process.exitCode = 1; break; }
   if (plan.terms.length) console.log(`Lote salvo. Prosseguindo com ${plan.terms.length} CPU(s) pendentes.`);
 }
 
-if (lastRunPartial) { console.warn('Notebooks: cobertura limitada ou fichas pendentes; consulte o relatório.'); process.exitCode = 1; }
+if (lastRunPartial && !process.exitCode) { console.warn('Notebooks: cobertura limitada ou fichas pendentes; consulte o relatório.'); process.exitCode = 2; }
 
 function option(name) {
   const index = process.argv.indexOf(name);

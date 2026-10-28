@@ -105,6 +105,13 @@ export function recordMercadoLivreRun(schedule, {
     const task = normalizeTermTask(raw);
     const current = state.terms[task.matchTerm] ?? {};
     const failure = failures.get(task.matchTerm);
+    const failureKind = failure ? classifyMonitorError(typeof failure === 'string' ? failure : failure.error).kind : null;
+    if (failureKind === 'authentication') next.global.requires_login = true;
+    if (['challenge','rate_limited'].includes(failureKind)) {
+      next.global.blocked_at = now.toISOString();
+      next.global.blocked_until = new Date(now.getTime() + (failureKind === 'challenge' ? 24 : 12) * HOUR).toISOString();
+      next.global.block_reason = failureKind;
+    }
     if (pendingTerms.has(task.matchTerm)) {
       state.terms[task.matchTerm] = { ...current, pending_details: true, last_checked_at: now.toISOString() };
       continue;
@@ -121,12 +128,19 @@ export function recordMercadoLivreRun(schedule, {
         empty_runs: accepted === 0 ? Number(current.empty_runs ?? 0) + 1 : 0,
         failures: 0,
         pending_details: false,
+        pending_pages: false,
+        last_incomplete_reason: null,
         last_error: null,
       };
       continue;
     }
     // Terms skipped after an abort were never checked, so retain their state.
     if (!failures.has(task.matchTerm)) continue;
+    if (failure?.kind === 'incomplete' || /limite de (?:resultados|p[aá]ginas)|or[cç]amento|fichas?.*pendentes?/i.test(failure?.error ?? failure ?? '')) {
+      state.terms[task.matchTerm] = { ...current, last_checked_at: now.toISOString(), pending_pages: true,
+        incomplete_runs: Number(current.incomplete_runs ?? 0) + 1, last_incomplete_reason: failure.error ?? String(failure), last_error: null };
+      continue;
+    }
     const classification = classifyMonitorError(typeof failure === "string" ? failure : failure?.error ?? "coleta incompleta");
     state.terms[task.matchTerm] = {
       ...current,

@@ -5,19 +5,17 @@
     {
       "run_id": "e769cd3a-5d6d-47df-9ef0-9235b7477886",
       "completed_at": "2026-10-28T12:43:04.603Z",
-      "outcome": "failed",
+      "outcome": "partial",
       "partial": true,
       "duration_ms": 1107,
       "item_count": 0,
       "quarantined_item_count": 0,
       "metadata": {
         "source": "local",
-        "monitor_errors": 2,
-        "monitor_failures": [
-          "ML Notebooks: 14700hx: Limite de resultados atingido; cobertura incompleta",
-          "ML Notebooks: hx470: Limite de resultados atingido; cobertura incompleta"
-        ],
-        "pending_notifications": 0
+        "monitor_errors": 0,
+        "monitor_failures": [],
+        "pending_notifications": 0,
+        "status_reclassified_at": "2026-10-28T13:57:47.575Z"
       }
     },
     {

@@ -1,4 +1,5 @@
 import { isCompleteOledMonitor, isApprovedOledMonitor, assessOledMonitor, oledPendingReason } from './lib/oled-monitor-scope.mjs';
+import { isApprovedMercadoLivreShoe, assessMercadoLivreShoe } from './lib/mercadolivre-shoes.mjs';
 import { isConfirmedBarefootShoe, barefootPriority, classifyBarefootShoe } from './lib/shoe-search-rules.mjs';
 import { ENJOEI_JAPANESE_JEANS } from './lib/enjoei-japanese-jeans.mjs';
 import { meetsNotebookRamMinimum, isEligibleNotebook, notebookCpuTerms, hasExplicitOtherNotebookCpu } from './lib/notebook-policy.mjs';
@@ -182,6 +183,7 @@ async function buildPriceInsights(descriptors) {
       const notebookSource = ['OLX', 'Enjoei Notebooks', 'Mercado Livre Notebooks'].includes(source);
       if (dir === ENJOEI_DIR && !isConfirmedBarefootShoe(item)) continue;
       if (['OLX', 'Enjoei Notebooks', 'Mercado Livre Notebooks'].includes(source) && !isEligibleNotebook(item)) continue;
+      if (dir === path.join(ROOT, 'data', 'mercadolivre-tenis-42') && !isApprovedMercadoLivreShoe(item)) continue;
       if ([OLED_MONITORES_DIR, path.join(ROOT, 'data', 'mercadolivre-oled-monitores')].includes(dir) && !isApprovedOledMonitor(item)) continue;
       if (source === 'OLX' && !isValidatedOlxItem(item)) continue;
       if (item.status !== "active" || !item.url || !Number.isFinite(Number(item.price_brl))) continue;
@@ -257,6 +259,15 @@ async function gather(dir, prefix, excludePrefix, detailsByUrl = new Map()) {
       p.priceItems = p.priceItems.filter(allowed);
       p.allPriceItems = p.allPriceItems.filter(allowed);
       p.priceCount = p.allPriceItems.length;
+    }
+    if (dir === path.join(ROOT, 'data', 'mercadolivre-tenis-42')) {
+      const approved = parsed => isApprovedMercadoLivreShoe(detailsByUrl.get(parsed.url));
+      for (const field of ['newItems','allNewItems','priceItems','allPriceItems']) p[field] = p[field].filter(approved);
+      p.newCount = p.allNewItems.length; p.priceCount = p.allPriceItems.length;
+      if (file === files[0]) p.allPendingItems = [...detailsByUrl.values()].filter(item => item.status === 'active'
+        && assessMercadoLivreShoe(item).state === 'pending').map(item => ({ title: item.title, fullTitle: item.title,
+          url: item.url, price: formatBrlPrice(item.price_brl), priceBrl: item.price_brl, pending: true,
+          pendingReason: assessMercadoLivreShoe(item).reasons.join('; ') }));
     }
     if ([OLX_DIR, ENJOEI_NOTEBOOKS_DIR, MERCADOLIVRE_NOTEBOOKS_DIR].includes(dir)) {
       const allowedPending = parsed => {
@@ -535,6 +546,7 @@ async function currentSnapshotReport(dir, displayMax = Infinity) {
   const items = (snapshot.items ?? [])
     .filter((item) => item.status === "active" && Number(item.price_brl) <= displayMax
       && (dir !== MERCADOLIVRE_NOTEBOOKS_DIR || isEligibleNotebook(item))
+      && (dir !== path.join(ROOT, 'data', 'mercadolivre-tenis-42') || isApprovedMercadoLivreShoe(item))
       && (![OLED_MONITORES_DIR, path.join(ROOT, "data", "mercadolivre-oled-monitores")].includes(dir) || isApprovedOledMonitor(item)))
     .slice(0, MAX)
     .map((item) => ({
@@ -760,8 +772,9 @@ function buildHtml({ rounds, health, priceInsights, japaneseJeans, zegna, zegnaU
   const healthSummary = `${healthyCount} ${healthyCount === 1 ? "saudável" : "saudáveis"} · ${attentionCount} em atenção`;
   const roundSummaryHtml = rounds.length ? `<details class="health-panel"><summary><span><b>Últimas rodadas</b><small>Execução, cobertura e entrega</small></span></summary><div class="health-grid">${rounds.map(round => {
     const sources = round.sources ?? [];
+    const revisionNotice = round.revised_at ? '<p class="hint">Resumo revisto com os dados salvos; o WhatsApp anterior não foi reenviado.</p>' : '';
     const limited = sources.filter(source => source.summary?.coverage?.status !== 'complete' || source.summary?.execution !== 'success').length;
-    return `<section><h2>${round.environment === 'ci' ? 'Enjoei no GitHub' : 'Coleta local'} · ${e(formatDateTimeBrt(new Date(round.completed_at)))}</h2><p>Execução técnica: ${round.execution === 'success' ? 'concluída' : 'com falhas'} · ${limited} fonte(s) com limitações · WhatsApp: ${round.delivery?.whatsapp === 'sent' ? 'enviado' : 'não confirmado'}</p><ul>${sources.map(source => `<li>${e(collectionSummaryLine(source))}</li>`).join('')}</ul></section>`;
+    return `<section><h2>${round.environment === 'ci' ? 'Enjoei no GitHub' : 'Coleta local'} · ${e(formatDateTimeBrt(new Date(round.completed_at)))}</h2>${revisionNotice}<p>Execução técnica: ${round.execution === 'success' ? 'concluída' : 'com falhas'} · ${limited} fonte(s) com limitações · WhatsApp: ${round.delivery?.whatsapp === 'sent' ? 'enviado' : 'não confirmado'}</p><ul>${sources.map(source => `<li>${e(collectionSummaryLine(source))}</li>`).join('')}</ul></section>`;
   }).join('')}</div></details>` : '';
   const collectionAlerts = collectionHealthAlerts(health);
   const collectionAlertHtml = collectionAlerts.length ? `<section class="collection-alert" role="status"><b>Coletas precisam de atenção</b><ul>${collectionAlerts.map(alert => `<li>${e(alert.message)}</li>`).join('')}</ul><p>A ausência de novidades depende da cobertura de cada fonte.</p></section>` : '';

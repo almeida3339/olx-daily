@@ -1,4 +1,5 @@
 import path from "node:path";
+import { beginMercadoLivreInvocation } from './lib/mercadolivre-invocation.mjs';
 import { fileURLToPath } from "node:url";
 import { runMercadoLivreBatch } from "./lib/mercadolivre-production.mjs";
 import { normalizeOledSearchTerm } from './lib/oled-monitor-scope.mjs';
@@ -16,6 +17,7 @@ import {
 } from "./lib/mercadolivre-scheduler.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+beginMercadoLivreInvocation();
 const profileDir = process.env.MERCADOLIVRE_PROFILE_DIR ?? path.join(root, ".chrome-mercadolivre-profile");
 const selected = option("--watchlist");
 const selectedTerm = option("--term");
@@ -96,10 +98,12 @@ watchlistQueue: for (const watchlist of watchlists) {
   });
   await writeMercadoLivreSchedule(root, schedule);
   for (const term of plan.terms) attempted.add(term);
-  if (result.snapshot.run?.aborted || result.snapshot.run?.failed_terms?.length) {
+  const failures = (result.snapshot.run?.failed_terms ?? []).filter(entry => entry.kind !== 'incomplete' && !/limite de resultados atingido|fichas? pendentes?/i.test(entry.error ?? ''));
+  if (result.snapshot.run?.aborted || failures.length) {
     console.error(`${watchlist.label}: coleta incompleta; resultados parciais preservados.`);
     process.exitCode = 1;
   }
+  else if (result.snapshot.run?.partial && !process.exitCode) process.exitCode = 2;
   if (result.snapshot.run?.aborted || schedule.global.requires_login || Date.parse(schedule.global.blocked_until ?? "") > Date.now()) break watchlistQueue;
   remaining -= plan.terms.length;
   if (remaining <= 0 && !selectedTerm && !fullSweep) {

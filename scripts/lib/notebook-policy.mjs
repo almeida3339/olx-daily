@@ -5,6 +5,7 @@ import { textContainsCpuTerm, normalizeText } from './parsers.mjs';
 
 export const NOTEBOOK_MIN_RAM_GB = 32;
 export const NOTEBOOK_POLICY_VERSION = 2;
+export const NOTEBOOK_RAM_EVIDENCE_VERSION = 2;
 export const NOTEBOOK_PRIORITY_CPUS = ['14700hx', '13980hx', '14900hx', '13900hx'];
 
 export function notebookCpuTerms(text) {
@@ -41,7 +42,8 @@ export function assessNotebook(item, description = item?.description ?? '') {
   const fields = [title, item?.listing_title, item?.detail_title, description, specs].filter(Boolean);
   const cpuGroups = fields.map(notebookCpuTerms).filter(terms => terms.length);
   const cpus = [...new Set(cpuGroups.flat())];
-  if (cpus.length !== 1 || fields.some(field => hasExplicitOtherNotebookCpu(field))) reasons.push(cpus.length > 1 ? 'CPU divergente entre evidências' : 'CPU permitida não confirmada');
+  const otherCpu = fields.some(field => hasExplicitOtherNotebookCpu(field));
+  if (cpus.length !== 1 || otherCpu) reasons.push(cpus.length > 1 || (cpus.length && otherCpu) ? 'CPU divergente entre evidências' : 'CPU permitida não confirmada');
   const ram = notebookRamGb({ ...item, description });
   if (ram == null) reasons.push('RAM instalada não confirmada ou divergente');
   else if (ram < NOTEBOOK_MIN_RAM_GB) reasons.push(`RAM abaixo de ${NOTEBOOK_MIN_RAM_GB} GB`);
@@ -53,11 +55,11 @@ export function assessNotebook(item, description = item?.description ?? '') {
   if (!item?.storage_gb) warnings.push('Armazenamento não informado');
   else if (item.storage_gb > 16384) warnings.push('Capacidade de armazenamento inconsistente; conferir a unidade declarada');
   const rejected = Boolean(excluded || (ram != null && ram < NOTEBOOK_MIN_RAM_GB) || (!cpus.length && hasExplicitOtherNotebookCpu(text)));
-  return { version: NOTEBOOK_POLICY_VERSION, state: rejected ? 'rejected' : reasons.length ? 'pending' : 'validated',
+  return { version: NOTEBOOK_POLICY_VERSION, ram_evidence_version: NOTEBOOK_RAM_EVIDENCE_VERSION, state: rejected ? 'rejected' : reasons.length ? 'pending' : 'validated',
     cpu_terms: cpus, ram_gb: ram, reasons, warnings };
 }
 
-export function isEligibleNotebook(item) {
+export function hasNotebookEvidence(item) {
   // Older OLX snapshots retain the confirmed CPU and description check, not the
   // original description. Reuse that recorded evidence without a new visit.
   const recordedOlxCpu = item?.validation?.version === NOTEBOOK_POLICY_VERSION
@@ -65,13 +67,21 @@ export function isEligibleNotebook(item) {
   const assessment = assessNotebook(item, `${item?.description ?? item?.description_evidence ?? ''}\n${recordedOlxCpu}`);
   if (assessment.state !== 'validated') return false;
   if (item?.notebook_validation && (item.notebook_validation.version !== NOTEBOOK_POLICY_VERSION || item.notebook_validation.state !== 'validated')) return false;
+  return item?.source !== 'Mercado Livre' || (item.notebook_validation?.version === NOTEBOOK_POLICY_VERSION
+    && Number.isFinite(Date.parse(item.details_checked_at)));
+}
+
+export function isEligibleNotebook(item) {
+  if (!hasNotebookEvidence(item)) return false;
   if (item?.source === 'Mercado Livre' && (item.notebook_validation?.version !== NOTEBOOK_POLICY_VERSION
       || !Number.isFinite(Date.parse(item.details_checked_at)) || Date.now() - Date.parse(item.details_checked_at) > 24 * 3600_000)) return false;
   return true;
 }
 
+const videoMemoryPattern = () => /\b(?:placa\s+(?:de\s+)?v[ií]deo|gpu|mem[oó]ria\s+gr[aá]fica|vram|mem[oó]ria\s+(?:de\s+)?v[ií]deo)(?:(?!\b(?:ram|mem[oó]ria\s+(?:ram|do\s+sistema))\b)[^.\n;]){0,70}?\b\d{1,3}\s*gb\b/gi;
 function notebookRamValues(text) {
   let cleaned = String(text ?? '')
+    .replace(videoMemoryPattern(), '')
     // Módulos originais entregues à parte não são a RAM instalada. Só retire
     // esse trecho quando o anúncio disser explicitamente que são originais.
     .replace(/\b(?:acompanha|inclui|vai\s+junto)\s*:?[^.!?\n]*(?:[.!?\n]|$)/gi, segment =>
@@ -103,6 +113,9 @@ export function notebookRamGb(item) {
     ...notebookRamValues(item.description ?? item.description_evidence), ...notebookRamValues(item.title ?? item.fullTitle)]
     .filter(x => Number.isFinite(x) && x > 0);
   if (new Set(values).size > 1) return null;
+  const videoValues = [...`${item.title ?? ''}\n${item.description ?? item.description_evidence ?? ''}`.matchAll(videoMemoryPattern())]
+    .flatMap(match => [...match[0].matchAll(/\b(\d{1,3})\s*gb\b/gi)].map(value => Number(value[1])));
+  if (!values.length && videoValues.includes(stored)) return null;
   // O campo derivado de um snapshot antigo não deve contradizer a evidência
   // original após uma correção do parser. Divergências entre fontes permanecem pendentes.
   return values[0] ?? (Number.isFinite(stored) && stored > 0 ? stored : null);

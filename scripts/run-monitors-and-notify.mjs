@@ -1,4 +1,5 @@
 import { filterNotebookReportRam } from './lib/notebook-policy.mjs';
+import { filterMercadoLivreShoeReport, isApprovedMercadoLivreShoe } from './lib/mercadolivre-shoes.mjs';
 import { staleEnjoeiJobs } from './lib/enjoei-recovery.mjs';
 import { buildCollectionSummary, collectionSummaryLine } from './lib/collection-summary.mjs';
 import { buildMonitorHealth, collectionHealthAlerts } from './lib/monitor-health.mjs';
@@ -331,7 +332,10 @@ export async function main({
     for (let index = 0; index < MERCADOLIVRE_DIRS.length; index += 1) {
       const [label] = MERCADOLIVRE_DIRS[index];
       const report = mlReports[index];
-      mlErrors.push(...mercadoLivreReportErrors(label, report));
+      const summary = sourceSummaries.get(MERCADOLIVRE_DIRS[index][1]);
+      if (summary) {
+        if (['failed','blocked'].includes(summary.execution)) mlErrors.push(`${label}: ${(summary.issues ?? []).join('; ') || 'Falha técnica na coleta'}`);
+      } else mlErrors.push(...mercadoLivreReportErrors(label, report));
       sources.push({
         label,
         report,
@@ -401,6 +405,13 @@ export async function main({
     completed_at: new Date().toISOString(), execution: errors.length ? 'failed' : 'success',
     delivery: { whatsapp: 'pending', email: 'pending' },
     sources: sources.filter(source => source.summary || source.report).map(source => ({ id: source.id, label: source.label, summary: source.summary })) };
+  if (onlyMercadoLivre) for (const source of roundSummary.sources) if (source.summary) {
+    const { execution, coverage } = source.summary;
+    monitorOutcomes.push({ source: source.id, status: execution !== 'success' ? execution
+      : coverage.status === 'complete' ? 'success' : coverage.status === 'deferred' ? 'deferred' : 'partial',
+      completed_terms: coverage.completed, incomplete_terms: coverage.incomplete, deferred_terms: coverage.deferred,
+      reasons: source.summary.issues ?? [] });
+  }
   const totalNew   = sources.reduce((sum, s) => sum + s.newCount, 0);
   const totalPrice = sources.reduce((sum, s) => sum + s.priceCount, 0);
 
@@ -700,9 +711,17 @@ async function readLatestReport(dir, minTime = null) {
   if (fsApi === fs) {
     const committed = await readLatestCommittedReport(dir);
     if (committed) {
-      const timestamp = Date.parse(committed.manifest.committed_at ?? "");
+      const timestamp = Date.parse(committed.manifest.metadata?.policy_reclassification
+        ? committed.snapshot.run?.completed_at ?? committed.snapshot.generated_at : committed.manifest.committed_at ?? '');
       if (minTime != null && Number.isFinite(timestamp) && timestamp < minTime) return null;
-      sourceSummaries.set(dir, committed.manifest.summary ?? buildCollectionSummary(committed.snapshot));
+      const summary = structuredClone(committed.manifest.summary ?? buildCollectionSummary(committed.snapshot));
+      if (dir === localDir('mercadolivre-tenis-42') && summary.findings?.new_items) {
+        const byUrl = new Map(committed.snapshot.items.map(item => [item.url, item]));
+        for (const key of ['new_items','price_changes']) summary.findings[key] = summary.findings[key].filter(item => isApprovedMercadoLivreShoe(byUrl.get(item.url)));
+        summary.findings.new_count = summary.findings.new_items.length;
+        summary.findings.price_count = summary.findings.price_changes.length;
+      }
+      sourceSummaries.set(dir, summary);
       return await applyNotebookRamPreference(dir, committed.report);
     }
   }
@@ -725,6 +744,10 @@ async function readLatestReport(dir, minTime = null) {
 }
 
 async function applyNotebookRamPreference(dir, report) {
+  if (dir === localDir('mercadolivre-tenis-42')) {
+    const { snapshot } = await readLatestValidSnapshot(dir);
+    return filterMercadoLivreShoeReport(report, new Map((snapshot?.items ?? []).map(item => [item.url, item])));
+  }
   if([OLED_MONITORES_DIR,localDir('mercadolivre-oled-monitores')].includes(dir)) {
     const {snapshot}=await readLatestValidSnapshot(dir);
     return filterOledReport(report,new Map([...(snapshot?.items??[]),...(snapshot?.pending_items??[])].map(item=>[item.url,item])));
@@ -844,9 +867,11 @@ function mercadoLivreReportErrors(label, report) {
   const failedCount = extractNewCount(report, /Termos com falha:\s*\*\*(\d+)\*\*/);
   const failures = report.match(/## Falhas parciais\r?\n([\s\S]*?)(?:\r?\n## |$)/)?.[1]
     .split(/\r?\n/).filter((line) => line.startsWith("- ")) ?? [];
+  const technical = failures.filter(line => !/limite de (?:resultados|p[aá]ginas)|or[cç]amento|fichas?.*pendentes?/i.test(line));
+  if (failures.length && !technical.length) return [];
   if (failedCount > 0 || failures.length) {
-    return failures.length
-      ? failures.map((line) => `${label}: ${sanitizeErrorMessage(line.slice(2))}`)
+    return technical.length
+      ? technical.map((line) => `${label}: ${sanitizeErrorMessage(line.slice(2))}`)
       : [`${label}: ${failedCount} termo(s) com falha; coleta incompleta.`];
   }
   if (/Fila interrompida:\s*\*\*sim\*\*/i.test(report)) {

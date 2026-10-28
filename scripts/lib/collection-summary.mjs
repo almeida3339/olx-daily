@@ -16,7 +16,8 @@ export function recordRunFindings(snapshot, { newItems = [], priceChanges = [], 
 }
 
 export function buildCollectionSummary(snapshot, operational = snapshot.run?.operational ?? {}) {
-  const run = snapshot.run ?? {}, findings = run.findings;
+  const batchRun = snapshot.run ?? {}, run = batchRun.invocation ?? batchRun, findings = batchRun.findings;
+  if (!['failed','blocked'].includes(operational.status)) operational = run.operational ?? operational;
   const scheduled = run.scheduled_coverage ?? run.scheduled_terms ?? [];
   const completed = run.successful_coverage ?? run.successful_terms ?? [];
   const incomplete = run.failed_coverage ?? run.failed_terms ?? [];
@@ -28,10 +29,12 @@ export function buildCollectionSummary(snapshot, operational = snapshot.run?.ope
   return {
     schema_version: 1, collected_at: run.completed_at ?? snapshot.generated_at,
     execution: ['failed', 'blocked'].includes(operational.status) ? operational.status : 'success',
+    issues: operational.reasons ?? [],
     coverage: { status: run.in_progress ? 'in_progress' : operational.status === 'deferred' ? 'deferred'
       : run.partial || incomplete.length || queue || pending ? 'partial' : heuristic.length ? 'limited' : 'complete',
       scheduled: scheduled.length, completed: completed.length, incomplete: incomplete.length,
       deferred: deferred.length, pending_descriptions: queue, pending_candidates: pending,
+      pending_details: run.pending_details ?? 0,
       heuristic_stops: heuristic },
     findings: findings ? { ...findings, new_count: findings.new_items.length, price_count: findings.price_changes.length } : null,
   };
@@ -44,6 +47,7 @@ export function collectionSummaryLine(source) {
   const c = s.coverage;
   const parts = [`${c.completed}/${c.scheduled} buscas concluídas`];
   if (c.pending_descriptions) parts.push(`${c.pending_descriptions} descrições pendentes`);
+  if (c.pending_details) parts.push(`${c.pending_details} fichas pendentes`);
   if (c.pending_candidates) parts.push(`${c.pending_candidates} candidatos pendentes`);
   if (c.incomplete) parts.push(`${c.incomplete} buscas incompletas`);
   if (c.deferred) parts.push(`${c.deferred} buscas adiadas`);

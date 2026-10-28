@@ -94,7 +94,7 @@ $mlStartedAt = [DateTime]::UtcNow.ToString("o")
 $mlArgs = @('--complete-coverage'); if ($FullSweep) { $mlArgs += '--full-sweep' }; if ($Visible -or $Recover) { $mlArgs += @("--visible", "--load-assets") }
 node (Join-Path $PSScriptRoot "monitor-mercadolivre-all.mjs") @mlArgs
 $mlExit = $LASTEXITCODE
-if ($mlExit -ne 0) { Write-Host "Aviso: coleta terminou com exit $mlExit - cobertura possivelmente parcial." -ForegroundColor Yellow }
+if ($mlExit -in @(2, 3)) { Write-Host "Coleta com cobertura parcial ou consultas adiadas; os resultados serao publicados." -ForegroundColor Yellow } elseif ($mlExit -ne 0) { Write-Host "Aviso: coleta terminou com falha tecnica (exit $mlExit)." -ForegroundColor Yellow }
 
 Write-Host "[3/4] Regenerando dashboard..."
 node (Join-Path $PSScriptRoot "generate-dashboard.mjs")
@@ -102,7 +102,7 @@ if ($LASTEXITCODE -ne 0) { Fail "Geracao do dashboard falhou exit $LASTEXITCODE.
 
 if ($NoPush) {
   Write-Host "NoPush ativo: dashboard regenerado, nada publicado." -ForegroundColor Yellow
-  if ($mlExit -ne 0) { Fail "Coleta do Mercado Livre terminou com exit $mlExit." }
+  if ($mlExit -notin @(0, 2, 3)) { Fail "Coleta do Mercado Livre terminou com exit $mlExit." }
   Restore-LocalChanges
   exit 0
 }
@@ -136,7 +136,7 @@ if ($mlStagePaths.Count -gt 0) {
 }
 if (-not (Test-GitStagedChanges)) {
   Write-Host "Nada novo do Mercado Livre para publicar." -ForegroundColor Green
-  if ($mlExit -ne 0) { Fail "Coleta do Mercado Livre terminou com exit $mlExit." }
+  if ($mlExit -notin @(0, 2, 3)) { Fail "Coleta do Mercado Livre terminou com exit $mlExit." }
   if ($notifyExit -ne 0) { Fail "Notificacao ou resumo do Mercado Livre terminou com exit $notifyExit." }
   Restore-LocalChanges
   exit 0
@@ -148,7 +148,7 @@ if ($LASTEXITCODE -ne 0) { Fail "git commit falhou exit $LASTEXITCODE." }
 for ($attempt = 1; $attempt -le 4; $attempt++) {
   git push origin main
   if ($LASTEXITCODE -eq 0) {
-    if ($mlExit -ne 0) { Fail "Dados publicados; coleta do Mercado Livre incompleta (exit $mlExit)." }
+    if ($mlExit -notin @(0, 2, 3)) { Fail "Dados publicados; coleta do Mercado Livre incompleta (exit $mlExit)." }
     if ($notifyExit -ne 0) { Fail "Dados publicados; notificacao ou resumo do Mercado Livre terminou com exit $notifyExit." }
     Restore-LocalChanges
     Write-Host "Publicado com sucesso." -ForegroundColor Green

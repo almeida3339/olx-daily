@@ -1,4 +1,7 @@
-import { meetsNotebookRamMinimum, NOTEBOOK_MIN_RAM_GB, NOTEBOOK_POLICY_VERSION, assessNotebook, isEligibleNotebook, notebookRamGb } from './notebook-policy.mjs';
+import { meetsNotebookRamMinimum, NOTEBOOK_MIN_RAM_GB, NOTEBOOK_POLICY_VERSION, NOTEBOOK_RAM_EVIDENCE_VERSION, assessNotebook, isEligibleNotebook, hasNotebookEvidence, notebookRamGb } from './notebook-policy.mjs';
+import { assessMercadoLivreShoe, isApprovedMercadoLivreShoe, hasMercadoLivreShoeEvidence, ML_SHOE_POLICY_VERSION } from './mercadolivre-shoes.mjs';
+import { collectMercadoLivrePages } from './mercadolivre-pagination.mjs';
+import { beginMercadoLivreInvocation, aggregateMercadoLivreInvocation } from './mercadolivre-invocation.mjs';
 import { recordRunFindings } from './collection-summary.mjs';
 import { assessOledMonitor, isApprovedOledMonitor, hasApprovedOledEvidence, classifySavedOledItem, OLED_POLICY_VERSION, OLED_DETAIL_TTL_MS } from './oled-monitor-scope.mjs';
 import fs from "node:fs/promises";
@@ -52,6 +55,10 @@ export async function runMercadoLivreBatch({
   const visible = args.includes("--visible");
   const loadAssets = args.includes("--load-assets"); // não bloqueia imagens/mídia/fontes (diagnóstico)
   const maxItemsPerTerm = positiveNumber(option(args, "--max-items"), 20);
+  const maxPagesPerTerm = positiveNumber(option(args, '--max-pages') ?? process.env.ML_PAGES_PER_TERM, 3);
+  const pageBudget = positiveNumber(option(args, '--page-budget') ?? process.env.ML_PAGE_BUDGET, Math.max(12, terms.length));
+  const deadline = Date.now() + positiveNumber(option(args, '--max-minutes') ?? process.env.ML_BATCH_MAX_MINUTES, 10) * 60_000;
+  const invocation = beginMercadoLivreInvocation();
   const maxDetails = nonNegativeNumber(option(args, "--max-details"), kind === "notebook" ? 8 : 4);
   const delayMinMs = positiveNumber(option(args, "--delay-min-ms"), 12_000);
   const delayMaxMs = Math.max(delayMinMs, positiveNumber(option(args, "--delay-max-ms"), 22_000));
@@ -60,8 +67,8 @@ export async function runMercadoLivreBatch({
   const previousResult = await readLatestValidSnapshot(dataDir);
   const previous = previousResult.snapshot;
   const previousById = new Map((previous?.items ?? []).map((item) => [item.id, item]));
-  const checkedProduct = kind === 'notebook' || kind === 'oled';
-  const queuePath = path.join(dataDir, kind==='oled'?'oled-detail-queue.json':'notebook-detail-queue.json');
+  const checkedProduct = ['notebook','oled','shoe'].includes(kind);
+  const queuePath = path.join(dataDir, `${kind === 'oled' ? 'oled' : kind === 'shoe' ? 'shoe' : 'notebook'}-detail-queue.json`);
   let detailQueue = {};
   if (checkedProduct) {
     try { detailQueue = JSON.parse(await fs.readFile(queuePath, 'utf8')); } catch (error) { if (error.code !== 'ENOENT') throw error; }
@@ -69,6 +76,8 @@ export async function runMercadoLivreBatch({
   }
   const limitedTerms = [];
   const queryYield = {};
+  const pagination = {}, deferredTerms = [];
+  let pageRequests = 0;
   let pendingDetails = 0, detailReads = 0;
   const lock = await acquireMercadoLivreLock(profileDir);
   const startedAt = new Date();
@@ -117,64 +126,84 @@ export async function runMercadoLivreBatch({
 
     for (let index = 0; index < terms.length; index += 1) {
       const task = normalizeTask(terms[index]);
+      if (pageRequests >= pageBudget || Date.now() >= deadline) { deferredTerms.push(task.matchTerm); continue; }
       if (index > 0) await sleep(randomBetween(delayMinMs, delayMaxMs));
       console.log(`[${index + 1}/${terms.length}] ${task.query}`);
       try {
-        const accepted = await retryTransient(async () => {
-          await page.goto(buildSearchUrl(task.query, {
+        const initialUrl = buildSearchUrl(task.query, {
             minPrice,
             maxPrice,
             ...searchOptions,
             ...(task.searchOptions ?? {}),
-          }), { waitUntil: "domcontentloaded", timeout: NAVIGATION_TIMEOUT_MS });
+          });
+        const exclusions = excludeTerms.map(normalizeText);
+        const selection = await collectMercadoLivrePages({ initialUrl,
+          maxPages: Math.min(maxPagesPerTerm, Math.max(1, pageBudget - pageRequests - (terms.length - index - 1))),
+          maxItems: maxItemsPerTerm, deadline,
+          matches: item => termMatcher(item.title, task.matchTerm),
+          inPriceRange: item => item.price_brl >= minPrice && item.price_brl <= maxPrice,
+          accepts: item => item.price_brl >= minPrice && item.price_brl <= maxPrice
+            && !exclusions.some(term => normalizeText(item.title).includes(term)) && (!itemFilter || itemFilter(item)),
+          fetchPage: url => retryTransient(async () => {
+          if (pageRequests >= pageBudget || Date.now() >= deadline) {
+            const error = new Error('Orçamento de páginas ou tempo esgotado; cobertura incompleta'); error.coverageLimit = true; throw error;
+          }
+          pageRequests++;
+          if (url?.click_next) {
+            if (page.url() !== url.from) throw new Error('Página mudou antes de continuar a paginação');
+            const next = page.locator('.andes-pagination__button--next:not(.andes-pagination__button--disabled)').first();
+            if (await next.locator('a,button').count()) await next.locator('a,button').first().click();
+            else await next.click();
+            await page.waitForLoadState('domcontentloaded');
+          } else await page.goto(url, { waitUntil: 'domcontentloaded', timeout: Math.min(NAVIGATION_TIMEOUT_MS, Math.max(1, deadline - Date.now())) });
           await sleep(randomBetween(delayMinMs, delayMaxMs));
           const state = await detectPageState(page);
           // A recognized empty search is a completed term. Missing/unrecognized
           // cards still fail, so layout changes cannot erase previous results.
-          if (state === "empty") { if(kind==='oled')queryYield[task.matchTerm]={raw:0,accepted:0}; return []; }
+          if (state === 'empty') return { empty: true };
           if (state !== "results") {
             const error = new Error(pageStateMessage(state));
             error.pageState = state;
             throw error;
           }
           const raw = await collectSearchResults(page);
-          if (raw.length === 0) throw new Error("Nenhum card reconhecido; possivel mudanca de layout.");
-          const exclusions = excludeTerms.map(normalizeText);
-          if(kind==='oled')queryYield[task.matchTerm]={raw:raw.length,outside_price:raw.filter(i=>i.price_brl<minPrice||i.price_brl>maxPrice).length,
-            scope_rejected:raw.filter(i=>i.price_brl>=minPrice&&i.price_brl<=maxPrice&&!termMatcher(i.title,task.matchTerm)).length};
-          const matching = raw
-            .filter((item) => item.price_brl >= minPrice && item.price_brl <= maxPrice)
-            .filter((item) => termMatcher(item.title, task.matchTerm))
-            .filter((item) => !exclusions.some((term) => normalizeText(item.title).includes(term)))
-            .filter((item) => !itemFilter || itemFilter(item));
-          // Todos os cards desta página já foram lidos. O teto limita os
-          // candidatos elegíveis; anúncios descartados não truncam a coleta.
-          if (checkedProduct && (matching.length > maxItemsPerTerm
-              || await page.locator('.andes-pagination__button--next:not(.andes-pagination__button--disabled)').count() > 0)) limitedTerms.push(task.matchTerm);
-          return matching.slice(0, maxItemsPerTerm)
-            .map((item) => ({
-              ...item,
-              id: extractMercadoLivreId(item.url) ?? item.id ?? item.url,
-              source: "Mercado Livre",
-              terms: [task.matchTerm],
-              status: "active",
-            }));
+          let nextUrl = null, hasNext = false, nextAction = null;
+          for (const selector of ['.andes-pagination__button--next:not(.andes-pagination__button--disabled)', 'a[rel="next"]']) {
+            const next = page.locator(selector).first();
+            if (!await next.isVisible().catch(() => false)) continue;
+            hasNext = true;
+            nextUrl = await next.getAttribute('href');
+            if (!nextUrl && await next.locator('a[href]').count()) nextUrl = await next.locator('a[href]').first().getAttribute('href');
+            if (!nextUrl && await next.locator('a,button').count()) nextAction = { from: page.url() };
+            if (nextUrl) break;
+          }
+          return { items: raw, nextUrl, hasNext, nextAction };
         }, {
           sleep,
           onRetry: ({ attempt, delayMs, classification }) => {
             logger.warn("term_retry", { term: task.matchTerm, attempt, delay_ms: delayMs, kind: classification.kind });
             console.warn(`  Erro transitorio; aguardando ${Math.round(delayMs / 1000)}s para tentar uma vez mais.`);
           },
+        }),
         });
+        pagination[task.matchTerm] = { pages: selection.pages, complete: selection.complete, exhaustive: selection.exhaustive,
+          stop_reason: selection.stop_reason, next_url: selection.next_url, next_action: selection.next_action };
+        queryYield[task.matchTerm] = { raw: selection.raw, outside_price: selection.outside_price, scope_rejected: selection.scope_rejected, pages: selection.pages };
+        if (!selection.complete) limitedTerms.push(task.matchTerm);
+        const accepted = selection.items.map(item => ({ ...item, id: extractMercadoLivreId(item.url) ?? item.id ?? item.url,
+          source: 'Mercado Livre', terms: [task.matchTerm], status: 'active' }));
         collected.push(...accepted);
         successfulTerms.push(task.matchTerm);
         console.log(`  ${accepted.length} item(ns) aceito(s)`);
-        logger.info("term_succeeded", { term: task.matchTerm, accepted: accepted.length });
+        logger.info(selection.complete ? 'term_succeeded' : 'term_partial', { term: task.matchTerm, accepted: accepted.length,
+          pages: selection.pages, exhaustive: selection.exhaustive, stop_reason: selection.stop_reason });
       } catch (error) {
+        for (const item of error.partialItems ?? []) collected.push({ ...item, id: extractMercadoLivreId(item.url) ?? item.id ?? item.url, source: 'Mercado Livre', terms: [task.matchTerm], status: 'active' });
         const classification = classifyMonitorError(error);
-        failedTerms.push({ term: task.matchTerm, error: error.message, kind: classification.kind });
-        console.warn(`  Falhou com seguranca: ${error.message}`);
-        logger.error("term_failed", error, { term: task.matchTerm, kind: classification.kind });
+        failedTerms.push({ term: task.matchTerm, error: error.message, kind: error.coverageLimit ? 'incomplete' : classification.kind });
+        console.warn(`  ${error.coverageLimit ? 'Cobertura parcial' : 'Falhou com segurança'}: ${error.message}`);
+        if (error.coverageLimit) logger.info('term_partial', { term: task.matchTerm, reason: error.message });
+        else logger.error("term_failed", error, { term: task.matchTerm, kind: classification.kind });
         if (["challenge", "limited", "logged_out"].includes(error.pageState)) {
           aborted = true;
           console.warn("Fila interrompida para evitar acessos adicionais.");
@@ -195,6 +224,7 @@ export async function runMercadoLivreBatch({
     const selectedDetails = detailCandidates
       .slice(0, maxDetails);
     for (let index = 0; index < selectedDetails.length; index += 1) {
+      if (aborted || Date.now() >= deadline) break;
       const item = selectedDetails[index];
       if (index > 0) await sleep(randomBetween(detailDelayMinMs, detailDelayMaxMs));
       try {
@@ -205,6 +235,7 @@ export async function runMercadoLivreBatch({
           if (details.detail_price_brl == null) item.price_error = 'Preço integral do detalhe não localizado';
           else if (Math.abs(details.detail_price_brl - item.price_brl) > 1) item.price_error = 'Preço da listagem diverge do detalhe';
           if(kind==='notebook')item.notebook_validation = assessNotebook(item);
+          else if(kind==='shoe')item.shoe_validation = assessMercadoLivreShoe(item);
           else item.oled_validation=assessOledMonitor(item);
           delete detailQueue[item.id];
         }
@@ -227,8 +258,8 @@ export async function runMercadoLivreBatch({
           detail_listing_title: previousById.get(item.id)?.detail_listing_title,
           identity_error: previousById.get(item.id)?.identity_error, price_error: previousById.get(item.id)?.price_error,
         });
-        const field=kind==='oled'?'oled_validation':'notebook_validation';
-        item[field] = kind==='oled'?assessOledMonitor(item):assessNotebook(item);
+        const field=kind==='oled'?'oled_validation':kind==='shoe'?'shoe_validation':'notebook_validation';
+        item[field] = kind==='oled'?assessOledMonitor(item):kind==='shoe'?assessMercadoLivreShoe(item):assessNotebook(item);
         if (detailQueue[item.id]) item[field] = { ...item[field], state: 'pending', reasons: [...item[field].reasons, 'Ficha atualizada pendente'] };
       }
       pendingDetails = Object.keys(detailQueue).length;
@@ -244,7 +275,8 @@ export async function runMercadoLivreBatch({
     && (!itemFilter || itemFilter(item));
   // Keep OLED rejections with their current evidence for the negative cache.
   consolidated = kind==='oled'?consolidated:consolidated.filter(isInScope);
-  const coverageFailures = [...failedTerms, ...[...new Set(limitedTerms)].map(term => ({ term, error: 'Limite de resultados atingido; cobertura incompleta' }))];
+  const coverageFailures = [...failedTerms, ...[...new Set(limitedTerms)].map(term => ({ term, kind: 'incomplete',
+    error: `Limite de páginas/resultados ou paginação sem progresso; cobertura incompleta (${pagination[term]?.stop_reason ?? 'limite'})` }))];
   const completedTerms = successfulTerms.filter(term => !limitedTerms.includes(term));
   const completedAt = new Date();
   const snapshot = mergeMercadoLivreBatch({
@@ -265,14 +297,15 @@ export async function runMercadoLivreBatch({
       kind,
       started_at: startedAt.toISOString(),
       completed_at: completedAt.toISOString(),
-      partial: failedTerms.length > 0 || aborted || limitedTerms.length > 0 || pendingDetails > 0,
+      partial: failedTerms.length > 0 || aborted || limitedTerms.length > 0 || pendingDetails > 0 || deferredTerms.length > 0,
+      deferred_coverage: deferredTerms, pagination, page_requests: pageRequests, page_budget: pageBudget, query_yield: queryYield,
       limited_terms: [...new Set(limitedTerms)], pending_details: pendingDetails, detail_reads: detailReads,
-      ...(kind==='oled'?{oled_policy_version:OLED_POLICY_VERSION,query_yield:queryYield}:{}),
+      ...(kind==='oled'?{oled_policy_version:OLED_POLICY_VERSION}:{}),
       pending_detail_terms: [...new Set(Object.values(detailQueue).flatMap(entry => entry.terms ?? []))],
       aborted,
       blocked_error: blockedError,
       successful_terms: completedTerms,
-      scheduled_terms: terms.map((term) => normalizeTask(term).matchTerm),
+      scheduled_terms: terms.map((term) => normalizeTask(term).matchTerm).filter(term => !deferredTerms.includes(term)),
       configured_terms: allTerms.map((term) => normalizeTask(term).matchTerm),
       failed_terms: coverageFailures,
     },
@@ -291,7 +324,21 @@ export async function runMercadoLivreBatch({
       metrics.exclusive=hits.filter(i=>isApprovedOledMonitor(i)&&i.terms.length===1).length;
     }
   }
-  const changes = buildMercadoLivreChanges(previous, snapshot, { displayMinPrice, displayMaxPrice, kind });
+  if (kind === 'notebook') {
+    snapshot.items = snapshot.items.map(item => ({ ...item, notebook_validation: detailQueue[item.id]
+      ? { ...assessNotebook(item), state: 'pending', reasons: [...assessNotebook(item).reasons, 'Ficha atualizada pendente'] } : assessNotebook(item) }));
+    snapshot.pending_items = snapshot.items.filter(item => item.status === 'active' && item.notebook_validation.state === 'pending'
+      && Number(item.price_brl) >= displayMinPrice && Number(item.price_brl) <= displayMaxPrice);
+  }
+  if (kind === 'shoe') {
+    snapshot.items = snapshot.items.map(item => ({ ...item, shoe_validation: detailQueue[item.id]
+      ? { ...assessMercadoLivreShoe(item), state: 'pending', reasons: [...assessMercadoLivreShoe(item).reasons, 'Ficha atualizada pendente'] } : assessMercadoLivreShoe(item) }));
+    snapshot.pending_items = snapshot.items.filter(item => item.status === 'active' && item.shoe_validation.state === 'pending');
+  }
+  const changes = aggregateMercadoLivreInvocation(previous, snapshot, { invocation, displayMaxPrice,
+    visible: item => mercadoLivreVisible(item, { kind, displayMinPrice, displayMaxPrice }),
+    baselineEligible: item => mercadoLivreHistoricalEvidence(item, kind) });
+  recordRunFindings(snapshot, { ...changes, activeItems: snapshot.items.filter(item => mercadoLivreVisible(item, { kind, displayMinPrice, displayMaxPrice })) });
   const runId = completedAt.toISOString().replace(/[:.]/g, "-");
   const committed = await commitMonitorRun(dataDir, {
     runId,
@@ -362,11 +409,9 @@ export function mergeMercadoLivreBatch({
 }
 
 export function buildMercadoLivreChanges(previous, current, { displayMinPrice, displayMaxPrice, kind = current.run?.kind ?? (current.run?.id === 'notebooks' ? 'notebook' : 'product') }) {
-  const visible = (item) => (kind !== "notebook" || isEligibleNotebook(item)) && (kind!=='oled'||isApprovedOledMonitor(item)) && item.status === "active"
-    && Number(item.price_brl) >= displayMinPrice
-    && Number(item.price_brl) <= displayMaxPrice;
-  const eligiblePrevious = ['notebook','oled'].includes(kind) && previous
-    ? { ...previous, items: (previous.items ?? []).filter(kind==='oled'?hasApprovedOledEvidence:isEligibleNotebook) } : previous;
+  const visible = item => mercadoLivreVisible(item, { kind, displayMinPrice, displayMaxPrice });
+  const eligiblePrevious = ['notebook','oled','shoe'].includes(kind) && previous
+    ? { ...previous, items: (previous.items ?? []).filter(item => mercadoLivreHistoricalEvidence(item, kind)) } : previous;
   const { newItems, priceChanges } = buildMonitorChanges(eligiblePrevious, current, {
     include: visible,
     reactivationIsNew: false,
@@ -374,6 +419,18 @@ export function buildMercadoLivreChanges(previous, current, { displayMinPrice, d
   const enteredDisplayRange = priceChanges.filter((item) => Number(item.previous_price_brl) > displayMaxPrice);
   recordRunFindings(current, { newItems, priceChanges, activeItems: current.items.filter(visible) });
   return { newItems, priceChanges, enteredDisplayRange };
+}
+
+function mercadoLivreEvidence(item, kind) {
+  return kind === 'notebook' ? isEligibleNotebook(item) : kind === 'oled' ? hasApprovedOledEvidence(item)
+    : kind === 'shoe' ? isApprovedMercadoLivreShoe(item) : true;
+}
+function mercadoLivreHistoricalEvidence(item, kind) {
+  return kind === 'notebook' ? hasNotebookEvidence(item) : kind === 'shoe' ? hasMercadoLivreShoeEvidence(item) : mercadoLivreEvidence(item,kind);
+}
+function mercadoLivreVisible(item, { kind, displayMinPrice, displayMaxPrice }) {
+  return (kind === 'oled' ? isApprovedOledMonitor(item) : mercadoLivreEvidence(item, kind)) && item.status === 'active'
+    && Number(item.price_brl) >= displayMinPrice && Number(item.price_brl) <= displayMaxPrice;
 }
 
 export async function acquireMercadoLivreLock(profileDir, { staleMs = LOCK_STALE_MS } = {}) {
@@ -448,10 +505,14 @@ async function detectProductPageState(page) {
 
 export function needsMercadoLivreDetail(item, old, kind, relevantDetails) {
   if (!old?.details_checked_at) return true;
+  if(kind==='shoe')return old.shoe_validation?.version !== ML_SHOE_POLICY_VERSION
+    || !Number.isFinite(Date.parse(old.details_checked_at)) || Date.now()-Date.parse(old.details_checked_at)>=24*3600_000
+    || (old.detail_listing_title??old.title)!==item.title || Number(old.price_brl)!==Number(item.price_brl);
   if(kind==='oled')return old.oled_validation?.version!==OLED_POLICY_VERSION
     || !Number.isFinite(Date.parse(old.details_checked_at)) || Date.now()-Date.parse(old.details_checked_at)>=OLED_DETAIL_TTL_MS
     || (old.detail_listing_title??old.title)!==item.title || Number(old.price_brl)!==Number(item.price_brl);
   if (kind === "notebook") {
+    if (old.notebook_validation?.ram_evidence_version !== NOTEBOOK_RAM_EVIDENCE_VERSION || Number(old.price_brl) !== Number(item.price_brl)) return true;
     if (old.notebook_validation?.version !== NOTEBOOK_POLICY_VERSION || Date.now() - Date.parse(old.details_checked_at) > 24 * 3600_000
         || (old.detail_listing_title ?? old.title) !== item.title) return true;
     const specs = extractMercadoLivreNotebookSpecs(old.specs);
@@ -466,15 +527,20 @@ export function needsMercadoLivreDetail(item, old, kind, relevantDetails) {
 }
 
 export function renderMercadoLivreReport(snapshot, changes) {
-  const { run } = snapshot;
+  const run = { ...snapshot.run, ...snapshot.run.invocation };
+  const limited = run.failed_terms.filter(item => item.kind === 'incomplete' || /limite de (?:resultados|p[aá]ginas)|or[cç]amento|fichas?.*pendentes?/i.test(item.error ?? ''));
+  const technical = run.failed_terms.filter(item => !limited.includes(item));
   const lines = [
     `# Mercado Livre - ${run.label}`,
     "",
     `Data: ${snapshot.generated_at.slice(0, 10)}`,
+    ...(run.batches ? [`Resumo acumulado de **${run.batches.length}** lote(s) do mesmo disparo.`] : []),
     `Cobertura parcial: **${run.partial ? "sim" : "nao"}**`,
     `Fila interrompida: **${run.aborted ? "sim" : "nao"}**`,
     `Termos concluidos: **${run.successful_terms.length}**`,
-    `Termos com falha: **${run.failed_terms.length}**`,
+    `Termos consultados: **${run.scheduled_terms?.length ?? run.successful_terms.length + run.failed_terms.length}**`,
+    `Termos com cobertura limitada: **${limited.length}**`,
+    `Termos com falha: **${technical.length}**`,
     ...(run.kind === "notebook" ? [`RAM mínima instalada: **${NOTEBOOK_MIN_RAM_GB} GB**`] : []),
     ...(run.kind === 'notebook' ? [`Fichas lidas: **${run.detail_reads ?? 0}**; aguardando ficha: **${run.pending_details ?? 0}**; termos limitados: **${run.limited_terms?.length ?? 0}**`] : []),
     ...(run.kind === 'oled' ? [`Fichas lidas: **${run.detail_reads??0}**; pendentes: **${run.pending_details??0}**; termos limitados: **${run.limited_terms?.length??0}**`,
@@ -493,9 +559,13 @@ export function renderMercadoLivreReport(snapshot, changes) {
     "## Entraram na faixa do monitor",
     ...reportItems(changes.enteredDisplayRange, true),
   ];
-  if (run.failed_terms.length) {
-    lines.push("", "## Falhas parciais", ...run.failed_terms.map((item) => `- ${item.term}: ${item.error}`));
+  if (technical.length) {
+    lines.push("", "## Falhas parciais", ...technical.map((item) => `- ${item.term}: ${item.error}`));
   }
+  if (limited.length) lines.push('', '## Cobertura limitada', ...limited.map(item => `- ${item.term}: ${item.error}`));
+  const heuristic = Object.entries(run.pagination ?? {}).filter(([, value]) => value.stop_reason === 'first_page_no_match').map(([term]) => term);
+  if (heuristic.length) lines.push('', `Paginação encerrada por falta de correspondência na primeira página: ${heuristic.join(', ')}. Heurística de relevância, sem comprovar ausência nas demais páginas.`);
+  if (run.kind === 'shoe') lines.push('', '## Candidatos pendentes de conferência', ...(snapshot.pending_items ?? []).map(item => `- R$ ${item.price_brl} — ${item.title} — ${item.url} — Pendente: ${item.shoe_validation.reasons.join('; ')}`));
   if(run.kind==='oled')lines.push('', '## Candidatos pendentes de conferência',...(snapshot.pending_items??[]).map(item=>
     `- R$ ${formatNumber(item.price_brl)} - ${item.title} - ${item.url} — Pendente: ${item.oled_validation.reasons.join('; ')}`));
   return `${lines.join("\n")}\n`;

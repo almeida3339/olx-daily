@@ -1,6 +1,7 @@
 import { isCompleteOledMonitor, OLED_SEARCH_TERMS, OLED_PRICE, oledSearchMatchesTitle } from './oled-monitor-scope.mjs';
 import { normalizeMonitorText } from "./monitor-core.mjs";
 import { textMatchesAnyTermVariant } from "./mercadolivre-monitor.mjs";
+import { classifyBarefootShoe, matchesEnjoeiShoeSearchTerm } from './shoe-search-rules.mjs';
 import {
   ONEPLUS_BUDS_PRO3_BRAND_TERMS,
   ONEPLUS_BUDS_PRO3_EXCLUDE_TERMS,
@@ -145,7 +146,9 @@ export const mercadoLivreWatchlists = [
   {
     id: "tenis-42",
     label: "Tenis 42",
-    terms: ["vivobarefoot", "xero", "vibram fivefingers", "merrell", "lems", "feet of tomorrow"],
+    terms: ["fiber", "feet of tomorrow", "vivobarefoot", "xero", "vibram fivefingers", "vapor glove", "trail glove", "lems"],
+    kind: 'shoe',
+    itemFilter: item => classifyBarefootShoe(item).state !== 'rejected',
     minPrice: 0,
     maxPrice: 500,
     relevantDetails: ["marca", "modelo", "tamanho", "condicao"],
@@ -176,6 +179,7 @@ export function matchesMercadoLivreWatchlist(item, watchlist) {
 
 export function mercadoLivreWatchlistTermMatcher(watchlist) {
   if (watchlist.kind === 'oled') return oledSearchMatchesTitle;
+  if (watchlist.kind === 'shoe') return (title, term) => matchesEnjoeiShoeSearchTerm({ title }, term === 'feet of tomorrow' ? 'fot' : term);
   if (!watchlist.matchVariants?.length) return null;
   return (text) => textMatchesAnyTermVariant(text, watchlist.matchVariants);
 }
