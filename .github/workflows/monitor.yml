@@ -8,8 +8,9 @@ permissions:
   contents: read
 
 jobs:
+  # Playwright 1.59.1 não suporta Ubuntu 26.04; manter o runner em 24.04.
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
@@ -25,7 +26,7 @@ jobs:
 
   monitor:
     needs: test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: write
 
