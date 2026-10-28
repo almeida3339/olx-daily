@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import crypto from "node:crypto";
 import { classifyMonitorOutcome } from './monitor-outcome.mjs';
+import { buildCollectionSummary } from './collection-summary.mjs';
 
 export const MONITOR_RUN_MANIFEST_SCHEMA_VERSION = 1;
 export const DEFAULT_MONITOR_ARTIFACT_RETENTION_RUNS = 120;
@@ -129,7 +130,12 @@ export async function commitMonitorRun(dataDir, { runId, snapshot, report, metad
   if (!hasText(runId)) throw new Error("runId obrigatorio");
   if (typeof report !== "string" || !report.trim()) throw new Error("relatorio vazio");
   const prepared = quarantineInvalidItems(snapshot);
+  if (prepared.snapshot.run.findings) {
+    const valid = new Set(prepared.snapshot.items.map(item => item.id ?? item.url));
+    for (const key of ['new_items', 'price_changes']) prepared.snapshot.run.findings[key] = prepared.snapshot.run.findings[key].filter(item => valid.has(item.id ?? item.url));
+  }
   prepared.snapshot.run.operational = classifyMonitorOutcome(prepared.snapshot.run, { quarantined: prepared.invalid.length });
+  prepared.snapshot.run.collection_summary = buildCollectionSummary(prepared.snapshot, prepared.snapshot.run.operational);
   prepared.snapshot = sanitizeArtifactValue(prepared.snapshot);
   prepared.invalid = sanitizeArtifactValue(prepared.invalid);
   const safeReport = sanitizeArtifactText(report).replace(/\r\n/g, "\n");
@@ -157,6 +163,7 @@ export async function commitMonitorRun(dataDir, { runId, snapshot, report, metad
     snapshot: relativeArtifact(dataDir, snapshotPath),
     report: relativeArtifact(dataDir, reportPath),
     quarantine: prepared.invalid.length ? relativeArtifact(dataDir, quarantinePath) : null,
+    summary: prepared.snapshot.run.collection_summary,
     checksums: {
       snapshot_sha256: sha256(JSON.stringify(prepared.snapshot)),
       report_sha256: sha256(safeReport),
@@ -304,7 +311,7 @@ export async function readLatestValidSnapshot(dir) {
 
 export async function readLatestCommittedReport(dataDir) {
   const committed = await readLatestCommittedRun(dataDir);
-  if (committed?.report != null) return { report: committed.report, file: committed.manifest.report, manifest: committed.manifest };
+  if (committed?.report != null) return { report: committed.report, file: committed.manifest.report, manifest: committed.manifest, snapshot: committed.snapshot };
   return null;
 }
 
@@ -353,6 +360,9 @@ async function validateRunManifest(dataDir, manifest) {
   if (!report.trim()) throw new Error("relatorio do manifesto vazio");
   if (manifest.checksums?.snapshot_sha256 && manifest.checksums.snapshot_sha256 !== sha256(JSON.stringify(snapshot))) {
     throw new Error("checksum do snapshot diverge");
+  }
+  if (manifest.summary && JSON.stringify(manifest.summary) !== JSON.stringify(snapshot.run?.collection_summary)) {
+    throw new Error('resumo do manifesto diverge do snapshot');
   }
   if (manifest.checksums?.report_sha256 && manifest.checksums.report_sha256 !== sha256(report)
       && manifest.checksums.report_sha256 !== sha256(report.replace(/\r\n/g, "\n"))) {

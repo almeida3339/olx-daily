@@ -1,4 +1,5 @@
 import { meetsNotebookRamMinimum, NOTEBOOK_MIN_RAM_GB, NOTEBOOK_POLICY_VERSION, assessNotebook, isEligibleNotebook, notebookRamGb } from './notebook-policy.mjs';
+import { recordRunFindings } from './collection-summary.mjs';
 import { assessOledMonitor, isApprovedOledMonitor, hasApprovedOledEvidence, classifySavedOledItem, OLED_POLICY_VERSION, OLED_DETAIL_TTL_MS } from './oled-monitor-scope.mjs';
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -371,6 +372,7 @@ export function buildMercadoLivreChanges(previous, current, { displayMinPrice, d
     reactivationIsNew: false,
   });
   const enteredDisplayRange = priceChanges.filter((item) => Number(item.previous_price_brl) > displayMaxPrice);
+  recordRunFindings(current, { newItems, priceChanges, activeItems: current.items.filter(visible) });
   return { newItems, priceChanges, enteredDisplayRange };
 }
 

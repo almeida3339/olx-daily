@@ -3,6 +3,7 @@ import path from 'node:path';
 import fs from 'node:fs/promises';
 import { buildMonitorChanges, mergeMonitorSnapshot, normalizeMonitorText } from './monitor-core.mjs';
 import { commitMonitorRun, readLatestValidSnapshot, writeJsonAtomic } from './monitor-runtime.mjs';
+import { recordRunFindings } from './collection-summary.mjs';
 
 export async function runEnjoeiJeansMonitor({ id, label, brandName, term, brandPattern, dataDir, maxPrice = 250, inclusive = false, searchTerms = [term] }) {
   const coverage = searchTerms.map(query => `Enjoei:${query}`);
@@ -158,6 +159,7 @@ export async function runEnjoeiJeansMonitor({ id, label, brandName, term, brandP
     const changes = buildMonitorChanges(previous, snapshot, { reactivationIsNew: false });
     const newIds = new Set(changes.newItems.map(item => item.id));
     const active = snapshot.items.filter(item => item.status === 'active');
+    recordRunFindings(snapshot, { ...changes, activeItems: active });
     const lines = [
       `# Monitor ${label} — ${now.toISOString().slice(0, 10)}`, '',
       '## Resumo executivo', `- Filtro: jeans masculinos ${brandName} · tamanho 40 · ${priceLabel} (sem frete/taxas).`,

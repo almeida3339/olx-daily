@@ -24,6 +24,7 @@ import { classifyMonitorError } from "./lib/monitor-errors.mjs";
 import { sanitizeErrorMessage } from "./lib/notification-status.mjs";
 import { DEFAULT_CPU_TERMS, cpuSearchQuery } from "./lib/cpu-terms.mjs";
 import { commitMonitorRun, readLatestValidSnapshot, readJsonValidated, writeJsonAtomic } from "./lib/monitor-runtime.mjs";
+import { recordRunFindings } from './lib/collection-summary.mjs';
 import { OLX_QUALITY_VERSION, orderOlxCpuTerms, planOlxCpuTerms, olxSpecs, pendingOlxItem, validateOlxNotebook, readOlxNotebookDetail, notebookExclusionReason, assertOlxAccessible, isValidatedOlxItem, revalidateSavedOlxItem } from "./lib/olx-notebook-quality.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -465,7 +466,7 @@ async function drainDescriptionQueue(openDetail) {
       if (cached.validation?.state !== 'pending') await descriptionQueue.useCached(card, cached);
       continue;
     }
-    if (!await descriptionQueue.reserveDetail(card.cpu_term, true, card)) {
+    if (!await descriptionQueue.reserveDetail(card.cpu_term, true, card, { finishRound: true })) {
       if ((descriptionQueue.summary().traffic_deferred ?? 0) > (metrics.traffic_deferred ?? 0)) break;
       continue;
     }
@@ -487,6 +488,7 @@ async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openD
   const familySearch = cpuTerm.startsWith('family:');
   const eligible = [...new Map(cards.filter(card => card.url && card.title && card.price_brl != null
     && isNotebookCategoryUrl(card.url) && !hasExcludedKeyword(`${card.title}\n${card.text ?? ''}`)
+    && !hasExplicitOtherNotebookCpu(`${card.title}\n${card.text ?? ''}`) && !notebookExclusionReason(`${card.title}\n${card.text ?? ''}`)
     && (extractNotebookRamText(`${card.title}\n${card.text ?? ''}`) ?? NOTEBOOK_MIN_RAM_GB) >= NOTEBOOK_MIN_RAM_GB)
     .map(card => [cardKey(card), { ...card, cpu_term: cpuTerm }])).values()];
   const matches = eligible.filter(card => !familySearch && cardCpuState(`${card.title}\n${card.text ?? ''}`, cpuTerm) === 'match')
@@ -1086,6 +1088,7 @@ function buildReport({ runDate, snapshot, previousSnapshot, priceMin, priceMax }
   }
 
   const lines = [];
+  recordRunFindings(snapshot, { newItems, priceChanges, activeItems: inRange, pendingItems: pending });
   lines.push(`# Monitor OLX notebooks por CPU — ${runDate}`);
   lines.push("");
   lines.push("## Resumo executivo");

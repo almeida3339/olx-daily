@@ -6,6 +6,7 @@ import {
   mergeMonitorSnapshot,
 } from "./lib/monitor-core.mjs";
 import { commitMonitorRun, readLatestValidSnapshot } from "./lib/monitor-runtime.mjs";
+import { recordRunFindings } from './lib/collection-summary.mjs';
 import { matchesEnjoeiShoeSearchTerm, classifyBarefootShoe, SHOE_RULES_VERSION, barefootPriority } from "./lib/shoe-search-rules.mjs";
 import { ENJOEI_SHOE_PLAN } from './lib/enjoei-shoe-plan.mjs';
 
@@ -184,10 +185,13 @@ function buildReport({ runDate, snapshot, previousSnapshot }) {
   }));
 
   const lines = [];
+  recordRunFindings(snapshot, { newItems, priceChanges, activeItems: currentItems });
   lines.push(`# Monitor Enjoei tenis ${shoeSize} ate R$ ${formatBrl(maxPriceBrl)} - ${runDate}`);
   lines.push("");
   lines.push("## Resumo executivo");
   lines.push(`- Novos produtos: **${newItems.length}**`);
+  const prunedTerms = Object.entries(snapshot.run.pagination ?? {}).filter(([, value]) => value.stop_reason === 'first_page_no_match').map(([term]) => term);
+  if (prunedTerms.length) lines.push(`- Paginação encerrada por falta de correspondência na primeira página: ${prunedTerms.join(', ')}. Critério de relevância; não comprova ausência nas páginas seguintes.`);
   lines.push(`- Produtos ainda ativos ja vistos: **${stillActive.length}**`);
   lines.push(`- Nao vistos nesta rodada: **${notSeenThisRun.length}**`);
   lines.push(`- Alteracoes de preco: **${priceChanges.length}**`);

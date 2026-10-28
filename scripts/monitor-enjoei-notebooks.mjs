@@ -7,6 +7,7 @@ import { extractCpuLabel, extractGpuLabel, extractRamGb, extractStorageGb, textC
 import { mergeMonitorSnapshot } from "./lib/monitor-core.mjs";
 import { DEFAULT_CPU_TERMS, cpuSearchQuery } from "./lib/cpu-terms.mjs";
 import { commitMonitorRun, readLatestValidSnapshot, writeJsonAtomic } from "./lib/monitor-runtime.mjs";
+import { recordRunFindings } from './lib/collection-summary.mjs';
 import { collectEnjoeiPages } from "./lib/enjoei-pagination.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -560,6 +561,7 @@ function buildReport({ runDate, snapshot, previousSnapshot, failedTerms = [], in
   }
 
   const lines = [];
+  recordRunFindings(snapshot, { newItems, priceChanges, activeItems: currentItems });
   lines.push(`# Monitor Enjoei notebooks por CPU — ${runDate}`);
   lines.push("");
   lines.push("## Resumo executivo");

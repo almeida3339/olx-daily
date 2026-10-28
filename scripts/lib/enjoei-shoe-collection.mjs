@@ -55,16 +55,19 @@ export async function collectEnjoeiShoes({ dataDir, terms, department, shoeSize,
   };
   for (const spec of queue) {
     const term = spec.id;
+    const firstPageGate = /^fot(?:\s+(?:walka|lito|noga|voet|bruk))?$/.test(spec.term);
     const broadSearch = spec.tier === 'discovery';
     const remaining = broadSearch ? discoveryPages - discoveryFetched : maxPages - regularFetched;
     if (remaining <= 0 || Date.now() >= deadline) { deferredTerms.push(term); continue; }
     scheduledTerms.push(term);
     const pagesBefore = pagesFetched;
     let cursor = progress.terms[term];
+    if (firstPageGate && cursor?.first_page_policy !== 1) cursor = null;
     if (!cursor || cursor.complete || Date.now() - Date.parse(cursor.started_at) > 14 * 86400_000) {
       cursor = progress.terms[term] = { completed_at: cursor?.completed_at ?? null, started_at: new Date().toISOString(), after: null, pages: 0, complete: false, items: {}, seen_ids: [] };
     }
     cursor.query_identity = JSON.stringify({ term: spec.term, department: spec.department === null ? null : department });
+    if (firstPageGate) cursor.first_page_policy = 1;
     if (cursor.stalled) { cursor.items = {}; cursor.seen_ids = []; }
     console.log(`Termo: ${term}${cursor.pages ? ` — retomando após ${cursor.pages} página(s)` : ''}`);
     try {
@@ -87,6 +90,17 @@ export async function collectEnjoeiShoes({ dataDir, terms, department, shoeSize,
           if (payload.errors?.length) throw new Error('API retornou erros GraphQL');
           const products = payload?.data?.search?.products;
           if (!Array.isArray(products?.edges)) throw new Error('Resposta sem produtos');
+          if (firstPageGate && after == null) {
+            const matches = products.edges.filter(({ node }) => matchesEnjoeiShoeSearchTerm({ title: node?.title?.name, brand: node?.brand?.displayable_name }, spec.term)).length;
+            cursor.first_page_matches = matches;
+            cursor.stop_reason = products.edges.length > 0 && matches === 0 ? 'first_page_no_match' : null;
+            if (cursor.stop_reason) {
+              // Relevance heuristic requested by the user, not proof of exhaustion.
+              products.pageInfo = { ...products.pageInfo, hasNextPage: false };
+              cursor.items = {}; cursor.seen_ids = [];
+              console.log(`${term}: primeira página sem correspondência exata; paginação encerrada por relevância.`);
+            }
+          }
           // The API often omits pageInfo. Its explicit total can establish the end.
           const seen = new Set([...seenIds, ...products.edges.map(edge => String(edge.node?.id))]);
           if (products.total != null && Number(products.total) > 0 && seen.size >= Number(products.total)) {
@@ -110,6 +124,7 @@ export async function collectEnjoeiShoes({ dataDir, terms, department, shoeSize,
               used: Boolean(node.used), shipping_free: Boolean(node.shipping?.free), store_name: node.store?.displayable?.name ?? null,
               store_path: node.store?.path ? `https://www.enjoei.com.br/${node.store.path}` : null,
               observed_at: new Date().toISOString(), search_terms: [term] };
+            if (firstPageGate && !matchesEnjoeiShoeSearchTerm(item, spec.term)) continue;
             // Fuzzy results are discovery candidates only with some target evidence.
             if (!ENJOEI_SHOE_TERMS.some(search => matchesEnjoeiShoeSearchTerm(item, search))
                 || classifyBarefootShoe(item).state === 'rejected') continue;
@@ -118,16 +133,22 @@ export async function collectEnjoeiShoes({ dataDir, terms, department, shoeSize,
           if (trackCursor) cursor.seen_ids = [...seen];
         };
       // Refresh new priority listings without moving or corrupting the saved deep cursor.
-      const refresh = spec.tier === 'priority' && cursor.after != null && !cursor.stalled;
+      const refresh = (spec.tier === 'priority' || firstPageGate) && cursor.after != null && !cursor.stalled;
       const laterPriority = queue.slice(queue.indexOf(spec) + 1).filter(s => s.tier === 'priority').length;
       let allowance = Math.max(1, Math.min(broadSearch ? 6 : maxPagesPerTerm, remaining - laterPriority));
+      let gatedComplete = false;
       if (refresh) {
         const firstPage = await fetchPage(null, []);
         await onPage(firstPage.edges, false);
+        if (cursor.stop_reason === 'first_page_no_match') {
+          cursor.complete = true; cursor.after = null; cursor.pages = 1;
+          cursor.signatures = []; cursor.stalled = false; cursor.last_error = null;
+          gatedComplete = true;
+        }
         refreshedTerms.push(term);
         allowance--;
       }
-      const result = allowance > 0 ? await collectEnjoeiPages({
+      const result = gatedComplete ? { complete: true } : allowance > 0 ? await collectEnjoeiPages({
         progress: cursor, maxPages: allowance, deadline, checkpoint, fetchPage, onPage,
       }) : { complete: false };
       delete cursor.request_error;
@@ -194,6 +215,8 @@ export async function collectEnjoeiShoes({ dataDir, terms, department, shoeSize,
   }
   return { items, pendingItems, rejectedCachedIds, failedTerms, incompleteTerms, successfulTerms, scheduledTerms, deferredTerms, schedule, errors,
     pagination: Object.fromEntries(scheduledTerms.map(term => [term, { pages: progress.terms[term].pages, complete: progress.terms[term].complete,
+      stop_reason: progress.terms[term].stop_reason ?? null,
+      exhaustive: progress.terms[term].complete && progress.terms[term].stop_reason !== 'first_page_no_match',
       total_reported: progress.terms[term].total_reported ?? null, reason: progress.terms[term].last_error ?? null }])),
     stats: { pages_fetched: pagesFetched, regular_pages: regularFetched, discovery_pages: discoveryFetched,
       page_budget: maxPages, discovery_budget: discoveryPages, refreshed_terms: refreshedTerms,

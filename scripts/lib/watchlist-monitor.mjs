@@ -1,4 +1,5 @@
 import { setMonitorExit } from './monitor-outcome.mjs';
+import { recordRunFindings } from './collection-summary.mjs';
 import { reserveOlxAccess, recordOlxYield, OlxDeferredError } from './olx-traffic.mjs';
 import { captureOlxAccessFailure } from './olx-access-diagnostics.mjs';
 // Monitor genérico de "watchlist": busca termos específicos em OLX (Playwright)
@@ -586,6 +587,7 @@ function buildReport({ label, runDate, snapshot, previousItems, errors, terms, m
     to: item.price_brl,
   }));
 
+  recordRunFindings(snapshot, { newItems, priceChanges, activeItems: currentItems });
   const range = minPrice > 0 ? `R$ ${fmtBrl(minPrice)}–R$ ${fmtBrl(maxPrice)}` : `até R$ ${fmtBrl(maxPrice)}`;
   const lines = [];
   lines.push(`# Monitor ${label} ${range} — ${runDate}`);

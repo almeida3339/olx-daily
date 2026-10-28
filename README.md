@@ -2,7 +2,7 @@
 
 ## Validação e retomada de notebooks OLX
 
-- As seis CPUs com ofertas no orçamento observado são consultadas primeiro: 14700HX, 13980HX, 14900HX, 13900HX, 12900HX e 12800HX. As demais têm intervalo de 24 horas desde o último sucesso (`OLX_LOW_PRIORITY_INTERVAL_HOURS`); falhas ou ausência de cobertura não contam como sucesso.
+- As quatro CPUs prioritárias são consultadas primeiro: 14700HX, 13980HX, 14900HX e 13900HX. As demais seguem rodízio e frequência por rendimento. Intel de 12ª geração está fora da seleção; falhas ou ausência de cobertura não contam como sucesso.
 - `-FullSweep` em `scripts/run-olx-monitor.ps1` consulta todos os termos. O CLI correspondente aceita `--full-sweep`; `--cpu` consulta explicitamente os termos solicitados.
 - Preço é lido do elemento do anúncio ou de sua oferta estruturada, comparado com a listagem. Divergências de preço/especificações, possível parcela/entrada ou falta de evidência deixam o candidato pendente. RAM do sistema é separada da VRAM.
 - Descrição reprovada mantém o anúncio rejeitado e fora das ofertas válidas. Pendentes aparecem em seção própria do relatório/painel e não entram nos alertas de novas ofertas ou alterações de preço válidas. “Validado” é conferência automática dos dados, sem confirmação de estado físico, autenticidade ou entrega.
@@ -652,7 +652,8 @@ Cada coleta nova e promovida por `latest-run.json` apenas depois de snapshot, re
 A busca por CPU também aproveita resultados cujo cartão não identifica o processador. Esses candidatos precisam estar entre R$ 2.000 e R$ 8.000 e passar pelo filtro de categoria, peças e defeitos. Um modelo de CPU explicitamente diferente no cartão é descartado; “i7” ou “Ryzen 9” sem modelo não bastam para descartar.
 
 - No máximo **2 consultas adicionais por termo** e **8 por rodada**, incluindo a retomada. Elas ocupam posições dentro do limite atual `--max-per-cpu`; não há paginação ou buscas adicionais.
-- Os candidatos aguardam em `description-candidates.json`, deduplicados pelo ID/URL e atendidos pela ordem de entrada nos termos consultados. A fila guarda até 500 candidatos; entradas sem observação por sete dias expiram.
+- Os candidatos aguardam em `description-candidates.json`, deduplicados pelo ID/URL. Nunca lidos vêm primeiro; entre eles, mais evidência de CPU/RAM/GPU e menor preço têm prioridade. MacBooks/Apple Silicon, CPUs fora da seleção, peças, defeitos e RAM explicitamente abaixo de 32 GB são descartados antes da leitura. A fila guarda até 500 candidatos; entradas sem observação por sete dias expiram.
+- Até três das 12 leituras ficam reservadas para candidatos novos durante as buscas. Ao final, vagas sem candidatos novos podem atender tentativas antigas. Pendências já lidas esperam 6h, 24h e depois 72h entre tentativas; mudança de título ou preço reinicia essa espera. Reuso de cache pendente preserva a fila.
 - Leituras aprovadas são reutilizadas por até 12 horas, rejeições por até 72 horas e pendências por até 30 minutos quando título e preço permanecem iguais. Alterações exigem nova leitura. A fila prioriza fichas ainda não lidas antes de repetir pendências.
 - O CPU confirmado na descrição define a classificação, desde que pertença à lista existente. CPU não identificado ou descrição com mais de um CPU fica pendente; modelo identificado fora da lista é rejeitado. Os critérios de preço integral e configuração continuam necessários para validar.
 - O console e o relatório registram consultas adicionais, tempo gasto, ofertas válidas recuperadas e tamanho da fila. Termos pesquisados e fila totalmente validada são indicadores separados: concluir as buscas não significa ter aberto todos os candidatos.
@@ -667,7 +668,15 @@ A leitura aceita velocidade entre capacidade e RAM, como `32GB 5600MT/s de RAM`.
 
 ### Atualidade e recuperação das coletas
 
-As tarefas locais usam `--recover-stale-enjoei`: quando um grupo exclusivo do Enjoei fica mais de 36 horas sem atualização, a coleta é recuperada localmente, sem depender do CI. A execução usa trava contra duplicação e respeita os filtros e orçamentos dos coletores. `node scripts/recover-enjoei.mjs --stale-only` faz essa recuperação sem enviar notificações. As rodadas agendadas incorporam seus achados ao resumo normal. Fontes paradas ganham aviso visível no painel; atrasos automáticos persistentes também aparecem na notificação agendada.
+As tarefas locais usam `--recover-stale-enjoei`: grupos exclusivos do Enjoei são recuperados quando passam de 36 horas sem atualização **ou** perderam uma execução confirmadamente falha do workflow Monitor. Dados coletados depois do início da execução falha dispensam nova recuperação. A próxima rodada local confere a API pública do GitHub; se o CI estiver em fila ou executando, a recuperação aguarda. Se a API estiver indisponível, mantém o critério de idade. O workflow também serializa suas execuções.
+
+A recuperação local usa trava de processo, respeita filtros e orçamentos e grava os grupos/motivos em `data/status/enjoei-recovery.json`. `node scripts/recover-enjoei.mjs --stale-only` executa essa seleção sem enviar notificações. As rodadas agendadas incorporam seus achados ao resumo normal.
+
+### Resumo único e paginação por relevância
+
+Novas coletas gravam os achados estruturados em `run.findings` e os fatos de execução/cobertura em `run.collection_summary`, também conferidos no manifesto. Console, WhatsApp e o painel **Últimas rodadas** usam esse mesmo resumo: buscas previstas/concluídas, descrições/candidatos pendentes, itens novos e alterações de preço. Relatórios antigos mantêm compatibilidade; uma fonte executada sem relatório novo legível passa a sinalizar falha, em vez de sucesso vazio. Entrega do WhatsApp é apresentada separadamente da cobertura.
+
+As consultas `fot`, `fot walka/lito/noga/voet/bruk` conferem a correspondência de marca/modelo na primeira página, antes de aplicar tamanho/preço. Sem correspondência, encerram a paginação nessa página e registram `first_page_no_match`, com `exhaustive: false`. É uma heurística de relevância, não prova de que não há anúncios depois. As buscas principais por Fiber e Feet of Tomorrow continuam independentes. Cursores antigos desses aliases reiniciam uma vez para aplicar a política; ciclos profundos retomados também reconferem a primeira página.
 
 No Mercado Livre, `--complete-coverage` percorre os termos configurados em lotes limitados, incluindo OLED em até seis termos por lote. Cada termo é tentado uma vez por execução; resultados parciais são preservados, e um novo bloqueio ou exigência de login interrompe a fila.
 

@@ -15,6 +15,7 @@ export function notebookExclusionReason(text) {
   const t = normalizeText(text)
     .replace(/\bsem\s+(?:nenhum\s+)?(?:defeitos?|problemas?|avarias?|reparos?)\b/g, '')
     .replace(/\b(?:nao|nunca)\s+(?:teve|apresentou|precisou\s+de)\s+(?:defeitos?|problemas?|avarias?|reparos?|conserto)\b/g, '');
+  if (/^(?:notebook\s+)?(?:apple\s+)?macbook\b/.test(t.trim())) return 'MacBook fora da lista de processadores selecionados';
   if (/\b(?:sucata|defeito\w*|avaria\w*|quebrad[oa]\w*|nao\s+(?:liga|ligou|funciona)|queimad[oa]|queimou|surto\s+eletrico|retirada\s+de\s+pecas)\b/.test(t)) return 'Defeito ou avaria declarados no anúncio';
   if (/^(?:mini[ -]?pc|desktop|computador\s+de\s+mesa)\b|\b(?:vendo|venda\s+de)\s+(?:um\s+)?(?:mini[ -]?pc|desktop|computador\s+de\s+mesa)\b/.test(t)) return 'Equipamento fora da categoria notebook';
   if (/^(?:placa[ -]?mae|motherboard|carcaca|pecas)\b/.test(t.trim())
@@ -25,6 +26,7 @@ export function notebookExclusionReason(text) {
 
 export function hasExplicitOtherNotebookCpu(text) {
   const raw = String(text ?? '');
+  if (/\bapple\s+(?:silicon|m[1-9]\d?)\b|\bmacbook[^\n]{0,40}\bm[1-9]\d?\b|\bsnapdragon\s+x\s*(?:elite|plus)\b/i.test(raw)) return true;
   const explicit = [...raw.matchAll(/\b(\d{4,5})[\s-]*(hx3d|hx|hs|hk|h|u)\b|\bultra\s*i?[579]\s*[- ]?(\d{3})[\s-]*(hx|h)\b|\b(\d{3})[\s-]*(hx)\b/gi)]
     .map(match => `${match[1] ?? match[3] ?? match[5]}${match[2] ?? match[4] ?? match[6]}`.toLowerCase());
   return explicit.some(term => !DEFAULT_CPU_TERMS.includes(term))

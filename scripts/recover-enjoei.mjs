@@ -5,6 +5,7 @@ import { spawn } from 'node:child_process';
 import fs from 'node:fs/promises';
 import { ENJOEI_RECOVERY_JOBS, staleEnjoeiJobs } from './lib/enjoei-recovery.mjs';
 import { LOCAL_WATCHLISTS, resolveWatchlistDataDir } from './lib/watchlists-registry.mjs';
+import { writeJsonAtomic } from './lib/monitor-runtime.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const lockFile = path.join(root, 'logs', 'enjoei-recovery.lock');
@@ -26,12 +27,17 @@ const jobs = process.argv.includes('--stale-only') ? await staleEnjoeiJobs(root)
 const env = { ...process.env };
 for (const spec of LOCAL_WATCHLISTS) if (spec.env) env[spec.env] = resolveWatchlistDataDir(root, spec);
 console.log(`Recuperação Enjoei: ${jobs.length} grupo(s); sem envio de notificações.`);
+const recovery = { started_at: new Date().toISOString(), jobs: [] };
 for (const job of jobs) {
+  console.log(`${job.script}: ${job.reason ?? 'Recuperação manual'}.`);
   const exit = await new Promise((resolve, reject) => {
     const child = spawn(process.execPath, [path.join(root, 'scripts', job.script)], { cwd: root, env, stdio: 'inherit' });
     child.once('error', reject);
     child.once('exit', resolve);
   });
   if (![0, 2, 3].includes(exit)) { console.error(`Falha na recuperação: ${job.script} (exit ${exit}).`); process.exitCode = 1; }
+  recovery.jobs.push({ ids: job.ids, exit_code: exit, reason: job.reason ?? 'manual', failed_workflow_id: job.failed_workflow_id ?? null });
 }
+recovery.completed_at = new Date().toISOString();
+await writeJsonAtomic(path.join(root, 'data', 'status', 'enjoei-recovery.json'), recovery, { validate: null });
 } finally { await lock.close(); await fs.unlink(lockFile); }

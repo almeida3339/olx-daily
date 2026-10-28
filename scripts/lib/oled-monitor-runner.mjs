@@ -1,4 +1,5 @@
 import { setMonitorExit } from './monitor-outcome.mjs';
+import { recordRunFindings } from './collection-summary.mjs';
 import { reserveOlxAccess, readOlxTraffic, recordOlxYield } from './olx-traffic.mjs';
 import { captureOlxAccessFailure } from './olx-access-diagnostics.mjs';
 import fs from 'node:fs/promises';
@@ -291,6 +292,7 @@ export function renderOledReport(snapshot,previous) {
     changes.newItems=[];changes.priceChanges=[];
   }
   const active=snapshot.items.filter(i=>i.status==='active'&&isApprovedOledMonitor(i));
+  recordRunFindings(snapshot, { ...changes, activeItems: active });
   const line=item=>`- R$ ${Number(item.price_brl).toLocaleString('pt-BR',{minimumFractionDigits:2})} — ${item.title} — ${item.url}`;
   const lines=[`# Monitor Monitores OLED — ${snapshot.run.date??snapshot.generated_at.slice(0,10)}`,'','## Resumo executivo',
     `- Novos produtos: **${changes.newItems.length}**`,`- Alterações de preço: **${changes.priceChanges.length}**`,

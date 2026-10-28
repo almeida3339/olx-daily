@@ -1,5 +1,6 @@
 import { filterNotebookReportRam } from './lib/notebook-policy.mjs';
 import { staleEnjoeiJobs } from './lib/enjoei-recovery.mjs';
+import { buildCollectionSummary, collectionSummaryLine } from './lib/collection-summary.mjs';
 import { buildMonitorHealth, collectionHealthAlerts } from './lib/monitor-health.mjs';
 import { filterOledReport } from './lib/oled-monitor-scope.mjs';
 import { filterBarefootReport } from './lib/shoe-search-rules.mjs';
@@ -34,6 +35,7 @@ import {
 import { readLatestCommittedReport, readLatestValidSnapshot, writeJsonAtomic } from "./lib/monitor-runtime.mjs";
 import {
   MERCADOLIVRE_WATCHLISTS,
+  ALL_WATCHLISTS,
   getWatchlist,
   resolveAutomationDataDir,
   automationChildEnvironment,
@@ -48,9 +50,13 @@ function getStatusFilePath() {
 }
 
 let fsApi = fs;
+let sourceSummaries = new Map();
+let reportReadErrors = new Map();
 let runCommandFn = (...args) => runCommand(...args);
 
-const localDir = (id) => resolveAutomationDataDir(workspaceRoot, id);
+// ML uses repository data and has no standalone automation fallback directory.
+const localDir = (id) => id.startsWith('mercadolivre-')
+  ? resolveWatchlistDataDir(workspaceRoot, id) : resolveAutomationDataDir(workspaceRoot, id);
 const OLX_DIR              = localDir("olx");
 const ENJOEI_DIR           = localDir("enjoei");
 const ENJOEI_NOTEBOOKS_DIR = localDir("enjoei-notebooks");
@@ -109,6 +115,8 @@ export async function main({
   args = process.argv
 } = {}) {
   const prevFsApi = fsApi;
+  const previousSummaries = sourceSummaries, previousReadErrors = reportReadErrors;
+  sourceSummaries = new Map(); reportReadErrors = new Map();
   const prevRunCommandFn = runCommandFn;
   const priorTrafficRun = process.env.OLX_TRAFFIC_RUN_ID;
   fsApi = fsApiIn;
@@ -356,13 +364,50 @@ export async function main({
       logger.info('collection_health_alert', { group: alert.id, message: alert.message });
     }
   }
+  const jobIds = { olx: ['olx'], 'enjoei-tenis': ['enjoei'], 'enjoei-notebooks': ['enjoei-notebooks'],
+    'enjoei-zegna': ['enjoei-zegna'], 'enjoei-ricardo-almeida': ['enjoei-ricardo-almeida'],
+    'enjoei-jacob-cohen': ['enjoei-jacob-cohen'], 'enjoei-brunello-cucinelli': ['enjoei-brunello-cucinelli'],
+    'enjoei-japanese-jeans': ENJOEI_JAPANESE_JEANS.map(spec => spec.id),
+    dockstations: ['dockstations'], fitbit: ['fitbit'], lifefactory: ['lifefactory'], 'tela-book3': ['tela-galaxybook3'],
+    melanger: ['melanger'], 'buds4-pro': ['galaxy-buds4-pro'], 'oneplus-buds': ['oneplus-buds-pro-3'],
+    'pixel-watch-4': ['google-pixel-watch-4'], 'pixel-watch-5': ['google-pixel-watch-5'], oura: ['oura-ring5'], 'oled-monitores': ['oled-monitores'] };
+  if (recoverEnjoei) {
+    const recovered = await readStatusFile(path.join(workspaceRoot, 'data/status/enjoei-recovery.json'));
+    if (Date.parse(recovered?.started_at ?? '') >= runStart) jobIds['enjoei-recovery'] = (recovered.jobs ?? []).flatMap(job => job.ids);
+  }
+  const expected = new Map(monitorOutcomes.flatMap(outcome => (jobIds[outcome.source] ?? []).map(id => [id, outcome])));
+  for (const source of sources) {
+    const spec = ALL_WATCHLISTS.find(spec => spec.label === source.label || spec.healthLabel === source.label);
+    if (!spec) continue;
+    source.id = spec.id;
+    const dir = spec.id.startsWith('mercadolivre-') ? resolveWatchlistDataDir(workspaceRoot, spec) : localDir(spec.id);
+    source.summary = sourceSummaries.get(dir) ?? null;
+    if (source.summary?.findings) {
+      source.newCount = source.summary.findings.new_count;
+      source.priceCount = source.summary.findings.price_count;
+    } else if (source.summary && source.report) {
+      // Compatibility for artifacts written before structured findings existed.
+      source.summary.findings = { new_count: source.newCount, price_count: source.priceCount, legacy_report: true };
+    }
+    if (fsApi === fs && (expected.has(spec.id) || reportReadErrors.has(dir)) && !source.report) {
+      const reason = reportReadErrors.get(dir) ?? 'nenhum relatório novo e legível nesta rodada';
+      const message = `${source.label}: ${reason}`;
+      if (!errors.includes(message)) errors.push(message);
+      source.summary = { ...(source.summary ?? {}), execution: 'failed', coverage: source.summary?.coverage ?? {}, findings: source.summary?.findings ?? null };
+      logger.info('source_summary_missing', { source: spec.id, reason });
+    }
+  }
+  const roundSummary = { schema_version: 1, run_id: logger.runId, started_at: runNow.toISOString(),
+    completed_at: new Date().toISOString(), execution: errors.length ? 'failed' : 'success',
+    delivery: { whatsapp: 'pending', email: 'pending' },
+    sources: sources.filter(source => source.summary || source.report).map(source => ({ id: source.id, label: source.label, summary: source.summary })) };
   const totalNew   = sources.reduce((sum, s) => sum + s.newCount, 0);
   const totalPrice = sources.reduce((sum, s) => sum + s.priceCount, 0);
 
   console.log("\nResumo desta rodada:");
   for (const s of sources) {
-    if (!s.report) continue;
-    console.log(`  ${s.label}: ${s.newCount} novo(s), ${s.priceCount} preço(s)`);
+    if (!s.report && !s.summary) continue;
+    console.log(`  ${s.summary ? collectionSummaryLine(s) : `${s.label}: ${s.newCount} novo(s), ${s.priceCount} preço(s)`}`);
   }
 
   // Memória entre rodadas: lê status de ambos os ambientes e reconcilia a fila de falhas pendentes.
@@ -377,12 +422,13 @@ export async function main({
   const priorNote    = buildPriorFailureNote(priorPending);
   let notificationOutbox = recoverAbandonedNotifications(reconcileNotificationOutbox(localStatus, ciStatus), runNow);
   const currentStatus = (process.env.GITHUB_ACTIONS === "true" ? ciStatus : localStatus) ?? {};
+  currentStatus.round_summary = roundSummary;
   currentStatus.notification_sent_ids = [...new Set([...(localStatus?.notification_sent_ids ?? []), ...(ciStatus?.notification_sent_ids ?? [])])].slice(-500);
   currentStatus.notification_archive = [...new Map([...(localStatus?.notification_archive ?? []), ...(ciStatus?.notification_archive ?? [])].map((item) => [item.id, item])).values()];
 
   const subject     = buildSubject(sources, errors);
-  const body        = (priorNote ? `> ${priorNote}\n\n` : "") + buildBody(sources, errors);
-  const whatsappMsg = (priorNote ? `${priorNote}\n\n` : "") + buildWhatsAppMessage(sources, errors);
+  const body        = (priorNote ? `> ${priorNote}\n\n` : "") + roundSummary.sources.map(collectionSummaryLine).join('\n') + '\n\n' + buildBody(sources, errors);
+  const whatsappMsg = (priorNote ? `${priorNote}\n\n` : "") + buildWhatsAppMessage(sources, errors, roundSummary);
 
   // WhatsApp sempre (heartbeat de execução).
   // Email quando há novos itens, alterações de preço ou erros (evita caixa cheia com confirmações vazias).
@@ -510,6 +556,8 @@ export async function main({
     errors: errors.map(sanitizeErrorMessage),
   };
   status.notification_sent_ids = currentStatus.notification_sent_ids;
+  roundSummary.delivery = status.delivery;
+  status.round_summary = roundSummary;
   status.notification_archive = currentStatus.notification_archive;
 
   await writeDeliveryStatus(status);
@@ -537,6 +585,7 @@ export async function main({
     process.exitCode = 1;
   }
 } finally {
+  sourceSummaries = previousSummaries; reportReadErrors = previousReadErrors;
   fsApi = prevFsApi;
   runCommandFn = prevRunCommandFn;
   if (priorTrafficRun === undefined) delete process.env.OLX_TRAFFIC_RUN_ID;
@@ -647,12 +696,14 @@ function getArgValue(name, args = process.argv) {
 }
 
 async function readLatestReport(dir, minTime = null) {
+  try {
   if (fsApi === fs) {
     const committed = await readLatestCommittedReport(dir);
     if (committed) {
       const timestamp = Date.parse(committed.manifest.committed_at ?? "");
       if (minTime != null && Number.isFinite(timestamp) && timestamp < minTime) return null;
-      return applyNotebookRamPreference(dir, committed.report);
+      sourceSummaries.set(dir, committed.manifest.summary ?? buildCollectionSummary(committed.snapshot));
+      return await applyNotebookRamPreference(dir, committed.report);
     }
   }
   const entries = await fsApi.readdir(dir).catch(() => []);
@@ -666,7 +717,11 @@ async function readLatestReport(dir, minTime = null) {
     const ts = reportFileTime(reports[0]);
     if (ts != null && ts < minTime) return null;
   }
-  return applyNotebookRamPreference(dir, await fsApi.readFile(path.join(dir, reports[0]), "utf8"));
+  return await applyNotebookRamPreference(dir, await fsApi.readFile(path.join(dir, reports[0]), "utf8"));
+  } catch (error) {
+    reportReadErrors.set(dir, `falha ao ler resultados: ${sanitizeErrorMessage(error.message)}`);
+    return null;
+  }
 }
 
 async function applyNotebookRamPreference(dir, report) {
@@ -734,12 +789,18 @@ function buildBody(sources, errors) {
   return sections.join("\n\n---\n\n");
 }
 
-function buildWhatsAppMessage(sources, errors) {
+function buildWhatsAppMessage(sources, errors, roundSummary) {
   // Fixa o fuso em BRT: o monitor Enjoei roda no GitHub Actions (UTC), entao
   // sem timeZone o horario saia 3h adiantado (ex.: 16:01 BRT aparecia "19:01").
   const date = new Date().toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo", day: "2-digit", month: "2-digit" });
   const time = new Date().toLocaleTimeString("pt-BR", { timeZone: "America/Sao_Paulo", hour: "2-digit", minute: "2-digit" });
   const lines = [`Monitor ${date} ${time}`];
+  let coverageLines = [];
+  if (roundSummary?.sources.length) {
+    const partial = roundSummary.sources.filter(source => source.summary?.coverage?.status !== 'complete' || source.summary?.execution !== 'success');
+    lines.push(`${roundSummary.sources.length} fontes com resultados; ${partial.length} com limitações ou pendências.`);
+    coverageLines = roundSummary.sources.filter(source => source.id === 'olx' || partial.includes(source)).map(collectionSummaryLine);
+  }
 
   if (errors.length) lines.push(`Erros: ${errors.map((error) => {
     const label = String(error).split(':')[0].slice(0, 70);
@@ -752,10 +813,12 @@ function buildWhatsAppMessage(sources, errors) {
   const totalPrice = sources.reduce((sum, s) => sum + s.priceCount, 0);
 
   if (totalNew === 0 && totalPrice === 0) {
+    lines.push(...coverageLines);
     lines.push(errors.length
       ? "Coleta incompleta; nenhum novo item ou alteração de preço confirmado nesta rodada."
-      : "Sem novos itens nem alterações de preço.");
-    return lines.join("\n");
+      : "Nenhum novo item ou alteração de preço confirmado na cobertura desta rodada.");
+    lines.push('Detalhes completos: https://almeida3339.github.io/olx-daily/');
+    return capByWholeLines(lines, 1500);
   }
 
   for (const s of sources) {
@@ -764,10 +827,12 @@ function buildWhatsAppMessage(sources, errors) {
     if (s.newCount > 0)   tags.push(`${s.newCount} novo(s)`);
     if (s.priceCount > 0) tags.push(`${s.priceCount} preço(s)`);
     lines.push(`\n${s.label}: ${tags.join(", ")}`);
-    if (s.newCount > 0)   lines.push(...extractNewItems(s.report, s.newSec).slice(0, 2));
-    if (s.priceCount > 0) lines.push(...extractNewItems(s.report, s.priceSec).slice(0, 2));
+    const itemLines = items => items.slice(0, 2).map(item => `${item.title} — R$ ${Number(item.price_brl).toLocaleString('pt-BR')} — ${item.url}`);
+    if (s.newCount > 0) lines.push(...(s.summary?.findings?.new_items ? itemLines(s.summary.findings.new_items) : extractNewItems(s.report, s.newSec).slice(0, 2)));
+    if (s.priceCount > 0) lines.push(...(s.summary?.findings?.price_changes ? itemLines(s.summary.findings.price_changes) : extractNewItems(s.report, s.priceSec).slice(0, 2)));
   }
 
+  lines.push(...coverageLines);
   lines.push(emailNotificationsDisabled()
     ? "\nDetalhes completos: https://almeida3339.github.io/olx-daily/"
     : "\nDetalhes completos por email.");

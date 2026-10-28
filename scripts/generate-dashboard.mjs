@@ -9,6 +9,7 @@ import { extractGpuLabel, extractRamGb, formatBrlPrice, parseBrlPrice, textConta
 import { extractMercadoLivreNotebookSpecs } from "./lib/mercadolivre-monitor.mjs";
 import { isMercadoLivreNotebookDisplayPrice } from "./lib/mercadolivre-notebook-ranges.mjs";
 import { buildMonitorHealth, collectionHealthAlerts } from "./lib/monitor-health.mjs";
+import { collectionSummaryLine } from './lib/collection-summary.mjs';
 import { readLatestCommittedRun, readLatestValidSnapshot, writeJsonAtomic, writeTextAtomic } from "./lib/monitor-runtime.mjs";
 import { mercadoLivreDashboardCards, resolveWatchlistDataDir } from "./lib/watchlists-registry.mjs";
 import { buildLocalTriggerCommands } from "./lib/dashboard-triggers.mjs";
@@ -75,6 +76,12 @@ async function main() {
   const brunelloCucinelli = await gather(ENJOEI_BRUNELLO_CUCINELLI_DIR, "report-", null);
   const brunelloCucinelliUpdated = await latestRunLabel(ENJOEI_BRUNELLO_CUCINELLI_DIR);
   const health = await buildMonitorHealth(ROOT);
+  const rounds = (await Promise.all(['local','ci'].map(async environment => {
+    try {
+      const status = JSON.parse(await fs.readFile(path.join(ROOT, 'data/status', `latest-${environment}.json`), 'utf8'));
+      return status.round_summary ? { environment, ...status.round_summary, delivery: status.round_summary.delivery ?? status.delivery } : null;
+    } catch { return null; }
+  }))).filter(Boolean).sort((a,b) => Date.parse(b.completed_at) - Date.parse(a.completed_at));
   await writeJsonAtomic(path.join(ROOT, "data", "status", "monitor-health.json"), health, { validate: null });
   const priceInsights = await buildPriceInsights([
     ["OLX", OLX_DIR], ["Enjoei Notebooks", ENJOEI_NOTEBOOKS_DIR], ["Enjoei Tênis", ENJOEI_DIR],
@@ -144,7 +151,7 @@ async function main() {
   ]);
   await writeTextAtomic(
     OUTPUT,
-    buildHtml({ health, priceInsights, japaneseJeans, zegna, zegnaUpdated, ricardoAlmeida, ricardoAlmeidaUpdated, jacobCohen, jacobCohenUpdated, brunelloCucinelli, brunelloCucinelliUpdated, olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, onePlusBuds, pixelWatch4, pixelWatch5, oura, oledMonitores, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, onePlusBudsUpdated, pixelWatch4Updated, pixelWatch5Updated, ouraUpdated, oledMonitoresUpdated }).replace(/[ \t]+$/gm, ""),
+    buildHtml({ rounds, health, priceInsights, japaneseJeans, zegna, zegnaUpdated, ricardoAlmeida, ricardoAlmeidaUpdated, jacobCohen, jacobCohenUpdated, brunelloCucinelli, brunelloCucinelliUpdated, olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, onePlusBuds, pixelWatch4, pixelWatch5, oura, oledMonitores, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, onePlusBudsUpdated, pixelWatch4Updated, pixelWatch5Updated, ouraUpdated, oledMonitoresUpdated }).replace(/[ \t]+$/gm, ""),
   );
   console.log(`Dashboard gerado: ${OUTPUT}`);
 }
@@ -629,7 +636,7 @@ export function groupPendingNotifications(items = []) {
   );
 }
 
-function buildHtml({ health, priceInsights, japaneseJeans, zegna, zegnaUpdated, ricardoAlmeida, ricardoAlmeidaUpdated, jacobCohen, jacobCohenUpdated, brunelloCucinelli, brunelloCucinelliUpdated, olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, onePlusBuds, pixelWatch4, pixelWatch5, oura, oledMonitores, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, onePlusBudsUpdated, pixelWatch4Updated, pixelWatch5Updated, ouraUpdated, oledMonitoresUpdated }) {
+function buildHtml({ rounds, health, priceInsights, japaneseJeans, zegna, zegnaUpdated, ricardoAlmeida, ricardoAlmeidaUpdated, jacobCohen, jacobCohenUpdated, brunelloCucinelli, brunelloCucinelliUpdated, olx, enjoeiNb, mercadoLivre, mercadoLivreWatchlists, enjoei, dock, fitbit, lifefactory, telaBook3, melanger, buds4Pro, onePlusBuds, pixelWatch4, pixelWatch5, oura, oledMonitores, olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, onePlusBudsUpdated, pixelWatch4Updated, pixelWatch5Updated, ouraUpdated, oledMonitoresUpdated }) {
   // Ordenação em dois níveis: primeiro as fontes COM achados recentes (cards com
   // conteúdo), depois as vazias ("Nenhum run com novidades") — sempre no fundo,
   // mesmo que tenham rodado há pouco. Dentro de cada grupo, mais recente primeiro.
@@ -751,6 +758,11 @@ function buildHtml({ health, priceInsights, japaneseJeans, zegna, zegnaUpdated, 
     </ul><p class="hint">Contagem iniciada em ${e(formatDateTimeBrt(new Date(traffic.tracking_started_at)))}. Tentativas também contam. Cache não consome acessos.</p></section>`:'';
   const attentionCount = health.sources.length - healthyCount;
   const healthSummary = `${healthyCount} ${healthyCount === 1 ? "saudável" : "saudáveis"} · ${attentionCount} em atenção`;
+  const roundSummaryHtml = rounds.length ? `<details class="health-panel"><summary><span><b>Últimas rodadas</b><small>Execução, cobertura e entrega</small></span></summary><div class="health-grid">${rounds.map(round => {
+    const sources = round.sources ?? [];
+    const limited = sources.filter(source => source.summary?.coverage?.status !== 'complete' || source.summary?.execution !== 'success').length;
+    return `<section><h2>${round.environment === 'ci' ? 'Enjoei no GitHub' : 'Coleta local'} · ${e(formatDateTimeBrt(new Date(round.completed_at)))}</h2><p>Execução técnica: ${round.execution === 'success' ? 'concluída' : 'com falhas'} · ${limited} fonte(s) com limitações · WhatsApp: ${round.delivery?.whatsapp === 'sent' ? 'enviado' : 'não confirmado'}</p><ul>${sources.map(source => `<li>${e(collectionSummaryLine(source))}</li>`).join('')}</ul></section>`;
+  }).join('')}</div></details>` : '';
   const collectionAlerts = collectionHealthAlerts(health);
   const collectionAlertHtml = collectionAlerts.length ? `<section class="collection-alert" role="status"><b>Coletas precisam de atenção</b><ul>${collectionAlerts.map(alert => `<li>${e(alert.message)}</li>`).join('')}</ul><p>A ausência de novidades depende da cobertura de cada fonte.</p></section>` : '';
   const healthPanelHtml = `${collectionAlertHtml}<details class="health-panel ${attentionCount ? "attention" : "ok"}"${collectionAlerts.some(alert => alert.automatic) ? ' open' : ''}><summary><span><b>Saúde da coleta</b><small>${e(healthSummary)}</small></span><strong>${attentionCount ? "Atenção" : "Operacional"}</strong></summary><div class="health-grid">${healthHtml}</div></details>`;
@@ -882,6 +894,7 @@ ${highlightsHtml}
 <div class="updates">
 ${chipsHtml}
 </div>
+${roundSummaryHtml}
 ${healthPanelHtml}
 <div class="ops">
   ${trafficHtml}

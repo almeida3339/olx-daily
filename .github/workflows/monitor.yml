@@ -7,6 +7,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: monitor-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   # Playwright 1.59.1 não suporta Ubuntu 26.04; manter o runner em 24.04.
   test:
