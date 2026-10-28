@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-10-28T12-30-39-612Z",
+  "committed_at": "2026-10-28T12:30:39.629Z",
+  "snapshot": "runs/2026-10-28T12-30-39-612Z/snapshot.json",
+  "report": "runs/2026-10-28T12-30-39-612Z/report.md",
+  "quarantine": null,
+  "summary": {
+    "schema_version": 1,
+    "collected_at": "2026-10-28T12:30:39.612Z",
+    "execution": "success",
+    "coverage": {
+      "status": "partial",
+      "scheduled": 6,
+      "completed": 5,
+      "incomplete": 1,
+      "deferred": 0,
+      "pending_descriptions": 0,
+      "pending_candidates": 3,
+      "heuristic_stops": []
+    },
+    "findings": {
+      "new_items": [],
+      "price_changes": [],
+      "active_count": 0,
+      "pending_count": 3,
+      "new_count": 0,
+      "price_count": 0
+    }
+  },
+  "checksums": {
+    "snapshot_sha256": "1bc01c6b0288ae7f081dd22b3eb8cfc3d5b476511a85d9f44ac39fb5d6291809",
+    "report_sha256": "d6d7e08668ee88cbc4f7c729460d9cda9677e23419d66b8dbc779fa39903fed5"
+  },
+  "metadata": {
+    "source": "oled-monitores",
+    "label": "Monitores OLED",
+    "collected_count": 0,
+    "failed_term_count": 0,
+    "quarantined_item_count": 0
+  }
+}

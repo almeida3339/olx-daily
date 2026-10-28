@@ -1,13 +1,36 @@
 {
   "schema_version": 1,
-  "run_id": "2026-10-27T19-14-02-002Z",
-  "committed_at": "2026-10-27T19:14:02.047Z",
-  "snapshot": "runs/2026-10-27T19-14-02-002Z/snapshot.json",
-  "report": "runs/2026-10-27T19-14-02-002Z/report.md",
+  "run_id": "2026-10-28T12-25-51-267Z",
+  "committed_at": "2026-10-28T12:25:51.337Z",
+  "snapshot": "runs/2026-10-28T12-25-51-267Z/snapshot.json",
+  "report": "runs/2026-10-28T12-25-51-267Z/report.md",
   "quarantine": null,
+  "summary": {
+    "schema_version": 1,
+    "collected_at": "2026-10-28T12:25:51.267Z",
+    "execution": "success",
+    "coverage": {
+      "status": "partial",
+      "scheduled": 2,
+      "completed": 0,
+      "incomplete": 2,
+      "deferred": 0,
+      "pending_descriptions": 0,
+      "pending_candidates": 0,
+      "heuristic_stops": []
+    },
+    "findings": {
+      "new_items": [],
+      "price_changes": [],
+      "active_count": 0,
+      "pending_count": 0,
+      "new_count": 0,
+      "price_count": 0
+    }
+  },
   "checksums": {
-    "snapshot_sha256": "8aac78105886ea7fe349136021b855ecab579f981408efaef56d818eea0ac1c1",
-    "report_sha256": "01822daa586aa30f15f82da7ef0f2fbafd71a774440233d1c4c3894acb010c3c"
+    "snapshot_sha256": "dbb4e39704e0f403dfe4980bec8d9f535a7a1fa63394516ab9e938304d25230c",
+    "report_sha256": "7843def60ac9f5090075a8b3bbb2dc977947de50f0186f7781c9ea8457ea1961"
   },
   "metadata": {
     "source": "notebooks",

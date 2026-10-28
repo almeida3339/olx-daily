@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-10-28T12-18-05-672Z",
+  "committed_at": "2026-10-28T12:18:05.748Z",
+  "snapshot": "runs/2026-10-28T12-18-05-672Z/snapshot.json",
+  "report": "runs/2026-10-28T12-18-05-672Z/report.md",
+  "quarantine": null,
+  "summary": {
+    "schema_version": 1,
+    "collected_at": "2026-10-28T12:18:05.672Z",
+    "execution": "success",
+    "coverage": {
+      "status": "partial",
+      "scheduled": 6,
+      "completed": 1,
+      "incomplete": 5,
+      "deferred": 0,
+      "pending_descriptions": 0,
+      "pending_candidates": 0,
+      "heuristic_stops": []
+    },
+    "findings": {
+      "new_items": [],
+      "price_changes": [],
+      "active_count": 0,
+      "pending_count": 0,
+      "new_count": 0,
+      "price_count": 0
+    }
+  },
+  "checksums": {
+    "snapshot_sha256": "e8c5cd0556c8b579bfbf9aff3769beb079e4dae17c59879b445ad96440982e35",
+    "report_sha256": "361b73f8996c20f545ddd72b93c3ee1b1ebfa49c196ba03bd1abfb6174f6b2d8"
+  },
+  "metadata": {
+    "source": "notebooks",
+    "label": "Notebooks por CPU",
+    "collected_count": 2,
+    "failed_term_count": 0,
+    "quarantined_item_count": 0
+  }
+}

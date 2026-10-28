@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-28T10:00:11.120Z",
+  "generated_at": "2026-10-28T12:43:03.496Z",
   "source": "local",
   "delivery": {
     "email": "skipped",
@@ -37,136 +37,15 @@
   "email": "skipped",
   "whatsapp": "sent",
   "monitoring": {
-    "scope": "local-watchlists",
+    "scope": "mercadolivre",
     "partial": true,
-    "status": "partial",
-    "outcomes": [
-      {
-        "source": "olx",
-        "status": "partial",
-        "exit_code": 2,
-        "reasons": [],
-        "completed_terms": 9,
-        "incomplete_terms": 0,
-        "deferred_terms": 0
-      },
-      {
-        "source": "lifefactory",
-        "status": "deferred",
-        "exit_code": 3,
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ],
-        "completed_terms": 1,
-        "incomplete_terms": 0,
-        "deferred_terms": 1
-      },
-      {
-        "source": "tela-book3",
-        "status": "deferred",
-        "exit_code": 3,
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ],
-        "completed_terms": 1,
-        "incomplete_terms": 0,
-        "deferred_terms": 1
-      },
-      {
-        "source": "melanger",
-        "status": "deferred",
-        "exit_code": 3,
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ],
-        "completed_terms": 1,
-        "incomplete_terms": 0,
-        "deferred_terms": 1
-      },
-      {
-        "source": "oneplus-buds",
-        "status": "deferred",
-        "exit_code": 3,
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ],
-        "completed_terms": 5,
-        "incomplete_terms": 0,
-        "deferred_terms": 1
-      },
-      {
-        "source": "pixel-watch-5",
-        "status": "deferred",
-        "exit_code": 3,
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ],
-        "completed_terms": 1,
-        "incomplete_terms": 0,
-        "deferred_terms": 1
-      },
-      {
-        "source": "oled-monitores",
-        "status": "deferred",
-        "exit_code": 3,
-        "reasons": [
-          "OLX: consultas adiadas após bloqueio; retomada prevista em 30/10/2026, 16:04:30 BRT."
-        ],
-        "completed_terms": 1,
-        "incomplete_terms": 0,
-        "deferred_terms": 9
-      }
-    ],
-    "warnings": [
-      {
-        "source": "olx",
-        "status": "partial",
-        "reasons": []
-      },
-      {
-        "source": "lifefactory",
-        "status": "deferred",
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ]
-      },
-      {
-        "source": "tela-book3",
-        "status": "deferred",
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ]
-      },
-      {
-        "source": "melanger",
-        "status": "deferred",
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ]
-      },
-      {
-        "source": "oneplus-buds",
-        "status": "deferred",
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ]
-      },
-      {
-        "source": "pixel-watch-5",
-        "status": "deferred",
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ]
-      },
-      {
-        "source": "oled-monitores",
-        "status": "deferred",
-        "reasons": [
-          "OLX: consultas adiadas após bloqueio; retomada prevista em 30/10/2026, 16:04:30 BRT."
-        ]
-      }
-    ],
-    "errors": []
+    "status": "failed",
+    "outcomes": [],
+    "warnings": [],
+    "errors": [
+      "ML Notebooks: 14700hx: Limite de resultados atingido; cobertura incompleta",
+      "ML Notebooks: hx470: Limite de resultados atingido; cobertura incompleta"
+    ]
   },
   "notification_sent_ids": [
     "ba389d82-208c-40a7-ada6-a22a454a4618",
@@ -224,8 +103,239 @@
     "06937e91-9770-45e6-95ca-f9fe477c9265",
     "4fb76733-708c-4a55-868b-063d69f02ace",
     "340b6cb9-2cab-4690-95ea-54b2c2a7b7ca",
-    "b4457991-2dd4-461c-a67e-861827d50dfd"
+    "b4457991-2dd4-461c-a67e-861827d50dfd",
+    "9ddd650c-bc9c-40f8-9b8b-68df35293356",
+    "37291f0f-61b4-49d5-b783-613bf640c1c5"
   ],
+  "round_summary": {
+    "schema_version": 1,
+    "run_id": "e769cd3a-5d6d-47df-9ef0-9235b7477886",
+    "started_at": "2026-10-28T12:43:03.496Z",
+    "completed_at": "2026-10-28T12:43:03.525Z",
+    "execution": "failed",
+    "delivery": {
+      "email": "skipped",
+      "whatsapp": "sent"
+    },
+    "sources": [
+      {
+        "id": "mercadolivre-notebooks",
+        "label": "ML Notebooks",
+        "summary": {
+          "schema_version": 1,
+          "collected_at": "2026-10-28T12:25:51.267Z",
+          "execution": "success",
+          "coverage": {
+            "status": "partial",
+            "scheduled": 2,
+            "completed": 0,
+            "incomplete": 2,
+            "deferred": 0,
+            "pending_descriptions": 0,
+            "pending_candidates": 0,
+            "heuristic_stops": []
+          },
+          "findings": {
+            "new_items": [],
+            "price_changes": [],
+            "active_count": 0,
+            "pending_count": 0,
+            "new_count": 0,
+            "price_count": 0
+          }
+        }
+      },
+      {
+        "id": "mercadolivre-oneplus-buds-pro-3",
+        "label": "ML OnePlus Buds Pro 3",
+        "summary": {
+          "schema_version": 1,
+          "collected_at": "2026-10-28T12:26:37.415Z",
+          "execution": "success",
+          "coverage": {
+            "status": "complete",
+            "scheduled": 1,
+            "completed": 1,
+            "incomplete": 0,
+            "deferred": 0,
+            "pending_descriptions": 0,
+            "pending_candidates": 0,
+            "heuristic_stops": []
+          },
+          "findings": {
+            "new_items": [],
+            "price_changes": [],
+            "active_count": 0,
+            "pending_count": 0,
+            "new_count": 0,
+            "price_count": 0
+          }
+        }
+      },
+      {
+        "id": "mercadolivre-google-pixel-watch-5",
+        "label": "ML Google Pixel Watch 5",
+        "summary": {
+          "schema_version": 1,
+          "collected_at": "2026-10-28T12:26:16.758Z",
+          "execution": "success",
+          "coverage": {
+            "status": "complete",
+            "scheduled": 1,
+            "completed": 1,
+            "incomplete": 0,
+            "deferred": 0,
+            "pending_descriptions": 0,
+            "pending_candidates": 0,
+            "heuristic_stops": []
+          },
+          "findings": {
+            "new_items": [],
+            "price_changes": [],
+            "active_count": 0,
+            "pending_count": 0,
+            "new_count": 0,
+            "price_count": 0
+          }
+        }
+      },
+      {
+        "id": "mercadolivre-lifefactory",
+        "label": "ML Lifefactory",
+        "summary": {
+          "schema_version": 1,
+          "collected_at": "2026-10-28T12:26:58.029Z",
+          "execution": "success",
+          "coverage": {
+            "status": "complete",
+            "scheduled": 1,
+            "completed": 1,
+            "incomplete": 0,
+            "deferred": 0,
+            "pending_descriptions": 0,
+            "pending_candidates": 0,
+            "heuristic_stops": []
+          },
+          "findings": {
+            "new_items": [],
+            "price_changes": [],
+            "active_count": 0,
+            "pending_count": 0,
+            "new_count": 0,
+            "price_count": 0
+          }
+        }
+      },
+      {
+        "id": "mercadolivre-tela-galaxybook3",
+        "label": "ML Tela Book3",
+        "summary": {
+          "schema_version": 1,
+          "collected_at": "2026-10-28T12:27:20.526Z",
+          "execution": "success",
+          "coverage": {
+            "status": "complete",
+            "scheduled": 1,
+            "completed": 1,
+            "incomplete": 0,
+            "deferred": 0,
+            "pending_descriptions": 0,
+            "pending_candidates": 0,
+            "heuristic_stops": []
+          },
+          "findings": {
+            "new_items": [],
+            "price_changes": [],
+            "active_count": 0,
+            "pending_count": 0,
+            "new_count": 0,
+            "price_count": 0
+          }
+        }
+      },
+      {
+        "id": "mercadolivre-melanger",
+        "label": "ML Melanger",
+        "summary": {
+          "schema_version": 1,
+          "collected_at": "2026-10-28T12:27:44.366Z",
+          "execution": "success",
+          "coverage": {
+            "status": "complete",
+            "scheduled": 1,
+            "completed": 1,
+            "incomplete": 0,
+            "deferred": 0,
+            "pending_descriptions": 0,
+            "pending_candidates": 0,
+            "heuristic_stops": []
+          },
+          "findings": {
+            "new_items": [],
+            "price_changes": [],
+            "active_count": 0,
+            "pending_count": 0,
+            "new_count": 0,
+            "price_count": 0
+          }
+        }
+      },
+      {
+        "id": "mercadolivre-tenis-42",
+        "label": "ML Tênis 42",
+        "summary": {
+          "schema_version": 1,
+          "collected_at": "2026-10-28T12:43:01.109Z",
+          "execution": "success",
+          "coverage": {
+            "status": "complete",
+            "scheduled": 6,
+            "completed": 6,
+            "incomplete": 0,
+            "deferred": 0,
+            "pending_descriptions": 0,
+            "pending_candidates": 0,
+            "heuristic_stops": []
+          },
+          "findings": {
+            "new_items": [],
+            "price_changes": [],
+            "active_count": 1,
+            "pending_count": 0,
+            "new_count": 0,
+            "price_count": 0
+          }
+        }
+      },
+      {
+        "id": "mercadolivre-oled-monitores",
+        "label": "ML Monitores OLED",
+        "summary": {
+          "schema_version": 1,
+          "collected_at": "2026-10-28T12:38:52.308Z",
+          "execution": "success",
+          "coverage": {
+            "status": "partial",
+            "scheduled": 3,
+            "completed": 3,
+            "incomplete": 0,
+            "deferred": 0,
+            "pending_descriptions": 0,
+            "pending_candidates": 2,
+            "heuristic_stops": []
+          },
+          "findings": {
+            "new_items": [],
+            "price_changes": [],
+            "active_count": 0,
+            "pending_count": 2,
+            "new_count": 0,
+            "price_count": 0
+          }
+        }
+      }
+    ]
+  },
   "notification_archive": [
     {
       "id": "13310427-7b03-48c4-8f1d-a40c756ef747",

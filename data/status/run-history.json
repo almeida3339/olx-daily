@@ -1,7 +1,25 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-28T11:35:26.893Z",
+  "updated_at": "2026-10-28T12:43:04.606Z",
   "runs": [
+    {
+      "run_id": "e769cd3a-5d6d-47df-9ef0-9235b7477886",
+      "completed_at": "2026-10-28T12:43:04.603Z",
+      "outcome": "failed",
+      "partial": true,
+      "duration_ms": 1107,
+      "item_count": 0,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "local",
+        "monitor_errors": 2,
+        "monitor_failures": [
+          "ML Notebooks: 14700hx: Limite de resultados atingido; cobertura incompleta",
+          "ML Notebooks: hx470: Limite de resultados atingido; cobertura incompleta"
+        ],
+        "pending_notifications": 0
+      }
+    },
     {
       "run_id": "9557fc95-96fd-4ba0-aa1c-bcbecf85475b",
       "completed_at": "2026-10-28T11:35:26.892Z",
@@ -1834,20 +1852,6 @@
       "partial": false,
       "duration_ms": 49895,
       "item_count": 1,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "local",
-        "monitor_errors": 0,
-        "pending_notifications": 1
-      }
-    },
-    {
-      "run_id": "37c0faa8-3bd4-4abd-ad49-aacbc3dc4c09",
-      "completed_at": "2026-09-03T19:01:03.533Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 58821,
-      "item_count": 0,
       "quarantined_item_count": 0,
       "metadata": {
         "source": "local",
