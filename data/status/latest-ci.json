@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-21T19:01:06.474Z",
+  "generated_at": "2026-10-28T11:35:20.386Z",
   "source": "ci",
   "delivery": {
     "email": "skipped",
@@ -39,16 +39,16 @@
   "monitoring": {
     "scope": "local-watchlists",
     "partial": true,
-    "status": "deferred",
+    "status": "partial",
     "outcomes": [
       {
         "source": "enjoei-tenis",
-        "status": "success",
-        "exit_code": 0,
+        "status": "partial",
+        "exit_code": 2,
         "reasons": [],
         "completed_terms": 4,
-        "incomplete_terms": 0,
-        "deferred_terms": 0
+        "incomplete_terms": 2,
+        "deferred_terms": 1
       },
       {
         "source": "enjoei-notebooks",
@@ -141,24 +141,29 @@
         "deferred_terms": 0
       },
       {
-        "source": "oled-monitores",
-        "status": "deferred",
-        "exit_code": 3,
-        "reasons": [
-          "OLX: consultas adiadas após bloqueio; retomada prevista em 22/10/2026, 08:54:39 BRT."
-        ],
-        "completed_terms": 0,
+        "source": "pixel-watch-5",
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 1,
         "incomplete_terms": 0,
-        "deferred_terms": 21
+        "deferred_terms": 0
+      },
+      {
+        "source": "oled-monitores",
+        "status": "success",
+        "exit_code": 0,
+        "reasons": [],
+        "completed_terms": 1,
+        "incomplete_terms": 0,
+        "deferred_terms": 0
       }
     ],
     "warnings": [
       {
-        "source": "oled-monitores",
-        "status": "deferred",
-        "reasons": [
-          "OLX: consultas adiadas após bloqueio; retomada prevista em 22/10/2026, 08:54:39 BRT."
-        ]
+        "source": "enjoei-tenis",
+        "status": "partial",
+        "reasons": []
       }
     ],
     "errors": []
@@ -206,7 +211,21 @@
     "4b1f9ce7-85da-43c3-9c3d-c87215c917ef",
     "56a2b6bc-4159-4f7d-86e0-785b30293fcc",
     "9adcc9af-8059-462d-a001-c2eedc8f9c8c",
-    "4ce940f4-0443-4ace-b3c1-f641d24550e6"
+    "9b312050-1701-4ea5-b309-0ed90b55352d",
+    "4ce940f4-0443-4ace-b3c1-f641d24550e6",
+    "47ab14ef-b42f-49e0-baab-dc376f166c87",
+    "b1952286-269b-485b-bdbf-35fdca35d0de",
+    "e57fc50d-0be0-487b-a25c-825797e8fef7",
+    "492fc30b-ec63-40a5-8fb2-c3f834397803",
+    "b4ccfd76-6943-4c19-b8fd-894a3507862c",
+    "57e22de8-507f-49e2-bac9-b40b3d871aad",
+    "87edbace-c3b5-4ce6-b539-52808b6ebc08",
+    "a277f992-5cfb-4e82-962f-1ac14a90e18a",
+    "06937e91-9770-45e6-95ca-f9fe477c9265",
+    "4fb76733-708c-4a55-868b-063d69f02ace",
+    "340b6cb9-2cab-4690-95ea-54b2c2a7b7ca",
+    "b4457991-2dd4-461c-a67e-861827d50dfd",
+    "9ddd650c-bc9c-40f8-9b8b-68df35293356"
   ],
   "notification_archive": [
     {
