@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-10-28T12:43:03.496Z",
+  "generated_at": "2026-10-29T13:05:20.431Z",
   "source": "local",
   "delivery": {
     "email": "skipped",
-    "whatsapp": "sent"
+    "whatsapp": "skipped"
   },
   "pending_failures": [],
   "acknowledged_failure_ids": [
@@ -35,103 +35,59 @@
   ],
   "notification_outbox": [],
   "email": "skipped",
-  "whatsapp": "sent",
+  "whatsapp": "skipped",
   "monitoring": {
-    "scope": "mercadolivre",
+    "scope": "controlled-validation",
     "partial": true,
     "status": "partial",
     "outcomes": [
       {
-        "source": "mercadolivre-notebooks",
+        "source": "olx",
         "status": "partial",
-        "completed_terms": 2,
-        "incomplete_terms": 18,
+        "completed_terms": 8,
+        "incomplete_terms": 1,
         "deferred_terms": 0,
-        "pending_candidates": 1,
+        "pending_candidates": 4,
         "reasons": [
-          "Limite de resultados atingido; cobertura incompleta"
+          "Listagem incompleta: limite de 12 cards ou próxima página pendente"
         ]
       },
       {
-        "source": "mercadolivre-oneplus-buds-pro-3",
-        "status": "success",
-        "completed_terms": 1,
-        "incomplete_terms": 0,
-        "deferred_terms": 0,
-        "pending_candidates": 0,
-        "reasons": []
-      },
-      {
-        "source": "mercadolivre-google-pixel-watch-5",
-        "status": "success",
-        "completed_terms": 1,
-        "incomplete_terms": 0,
-        "deferred_terms": 0,
-        "pending_candidates": 0,
-        "reasons": []
-      },
-      {
-        "source": "mercadolivre-lifefactory",
-        "status": "success",
-        "completed_terms": 1,
-        "incomplete_terms": 0,
-        "deferred_terms": 0,
-        "pending_candidates": 0,
-        "reasons": []
-      },
-      {
-        "source": "mercadolivre-tela-galaxybook3",
-        "status": "success",
-        "completed_terms": 1,
-        "incomplete_terms": 0,
-        "deferred_terms": 0,
-        "pending_candidates": 0,
-        "reasons": []
-      },
-      {
-        "source": "mercadolivre-melanger",
-        "status": "success",
-        "completed_terms": 1,
-        "incomplete_terms": 0,
-        "deferred_terms": 0,
-        "pending_candidates": 0,
-        "reasons": []
-      },
-      {
-        "source": "mercadolivre-tenis-42",
-        "status": "success",
-        "completed_terms": 6,
-        "incomplete_terms": 0,
-        "deferred_terms": 0,
-        "pending_candidates": 0,
-        "reasons": []
-      },
-      {
-        "source": "mercadolivre-oled-monitores",
+        "source": "enjoei",
         "status": "partial",
-        "completed_terms": 15,
-        "incomplete_terms": 6,
+        "completed_terms": 5,
+        "incomplete_terms": 0,
         "deferred_terms": 0,
         "pending_candidates": 2,
-        "reasons": [
-          "Limite de resultados atingido; cobertura incompleta"
-        ]
+        "reasons": []
+      },
+      {
+        "source": "oled-monitores",
+        "status": "partial",
+        "completed_terms": 1,
+        "incomplete_terms": 0,
+        "deferred_terms": 0,
+        "pending_candidates": 1,
+        "reasons": []
       }
     ],
     "warnings": [
       {
-        "source": "mercadolivre-notebooks",
+        "source": "olx",
         "status": "partial",
         "reasons": [
-          "Limite de resultados atingido; cobertura incompleta"
+          "Listagem incompleta: limite de 12 cards ou próxima página pendente"
         ]
       },
       {
-        "source": "mercadolivre-oled-monitores",
+        "source": "enjoei",
         "status": "partial",
-        "reasons": [
-          "Limite de resultados atingido; cobertura incompleta"
-        ]
+        "reasons": []
+      },
+      {
+        "source": "oled-monitores",
+        "status": "partial",
+        "reasons": []
       }
     ],
     "errors": []
@@ -198,245 +154,138 @@
   ],
   "round_summary": {
     "schema_version": 1,
-    "run_id": "e769cd3a-5d6d-47df-9ef0-9235b7477886",
-    "started_at": "2026-10-28T12:43:03.496Z",
-    "completed_at": "2026-10-28T12:43:03.525Z",
+    "run_id": "59d14ced-ba77-4d7b-aee0-08b638724d0b",
+    "started_at": "2026-10-29T12:54:15.536Z",
+    "completed_at": "2026-10-29T13:02:50.929Z",
     "execution": "success",
     "delivery": {
       "email": "skipped",
-      "whatsapp": "sent"
+      "whatsapp": "skipped"
     },
+    "validation_run": true,
+    "notification_mode": "disabled_for_validation",
     "sources": [
       {
-        "id": "mercadolivre-notebooks",
-        "label": "ML Notebooks",
+        "id": "olx",
+        "label": "OLX Notebooks",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-10-28T12:25:51.267Z",
+          "collected_at": "2026-10-29T13:02:50.929Z",
           "execution": "success",
           "issues": [
-            "Limite de resultados atingido; cobertura incompleta"
+            "Listagem incompleta: limite de 12 cards ou próxima página pendente"
           ],
           "coverage": {
             "status": "partial",
-            "scheduled": 20,
-            "completed": 2,
-            "incomplete": 18,
+            "scheduled": 9,
+            "completed": 8,
+            "incomplete": 1,
             "deferred": 0,
-            "pending_descriptions": 0,
-            "pending_candidates": 1,
-            "heuristic_stops": []
+            "pending_descriptions": 11,
+            "pending_candidates": 4,
+            "pending_details": 0,
+            "heuristic_stops": [],
+            "heuristic_reasons": {}
           },
           "findings": {
-            "new_items": [],
-            "price_changes": [],
-            "active_count": 0,
-            "pending_count": 1,
-            "new_count": 0,
-            "price_count": 0
+            "new_items": [
+              {
+                "id": "1548266943",
+                "title": "Notebook ASUS ROG Strix G16 | i9-13980HX | RTX 4060 | 1TB | 32GB DDR5",
+                "url": "https://sc.olx.com.br/florianopolis-e-regiao/informatica/notebooks/notebook-asus-rog-strix-g16-i9-13980hx-rtx-4060-1tb-32gb-ddr5-1548266943",
+                "price_brl": 7927
+              }
+            ],
+            "price_changes": [
+              {
+                "id": "1545009098",
+                "title": "Notebook ASUS ROG Strix G16 | i9-13980HX | RTX 4060 | 1TB | 32GB DDR5",
+                "url": "https://sc.olx.com.br/florianopolis-e-regiao/informatica/notebooks/notebook-asus-rog-strix-g16-i9-13980hx-rtx-4060-1tb-32gb-ddr5-1545009098",
+                "price_brl": 7927,
+                "previous_price_brl": 8000
+              }
+            ],
+            "active_count": 2,
+            "pending_count": 4,
+            "new_count": 1,
+            "price_count": 1
           }
         }
       },
       {
-        "id": "mercadolivre-oneplus-buds-pro-3",
-        "label": "ML OnePlus Buds Pro 3",
+        "id": "enjoei",
+        "label": "Enjoei Tênis 42",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-10-28T12:26:37.415Z",
+          "collected_at": "2026-10-29T12:54:18.802Z",
           "execution": "success",
           "issues": [],
-          "coverage": {
-            "status": "complete",
-            "scheduled": 1,
-            "completed": 1,
-            "incomplete": 0,
-            "deferred": 0,
-            "pending_descriptions": 0,
-            "pending_candidates": 0,
-            "heuristic_stops": []
-          },
-          "findings": {
-            "new_items": [],
-            "price_changes": [],
-            "active_count": 0,
-            "pending_count": 0,
-            "new_count": 0,
-            "price_count": 0
-          }
-        }
-      },
-      {
-        "id": "mercadolivre-google-pixel-watch-5",
-        "label": "ML Google Pixel Watch 5",
-        "summary": {
-          "schema_version": 1,
-          "collected_at": "2026-10-28T12:26:16.758Z",
-          "execution": "success",
-          "issues": [],
-          "coverage": {
-            "status": "complete",
-            "scheduled": 1,
-            "completed": 1,
-            "incomplete": 0,
-            "deferred": 0,
-            "pending_descriptions": 0,
-            "pending_candidates": 0,
-            "heuristic_stops": []
-          },
-          "findings": {
-            "new_items": [],
-            "price_changes": [],
-            "active_count": 0,
-            "pending_count": 0,
-            "new_count": 0,
-            "price_count": 0
-          }
-        }
-      },
-      {
-        "id": "mercadolivre-lifefactory",
-        "label": "ML Lifefactory",
-        "summary": {
-          "schema_version": 1,
-          "collected_at": "2026-10-28T12:26:58.029Z",
-          "execution": "success",
-          "issues": [],
-          "coverage": {
-            "status": "complete",
-            "scheduled": 1,
-            "completed": 1,
-            "incomplete": 0,
-            "deferred": 0,
-            "pending_descriptions": 0,
-            "pending_candidates": 0,
-            "heuristic_stops": []
-          },
-          "findings": {
-            "new_items": [],
-            "price_changes": [],
-            "active_count": 0,
-            "pending_count": 0,
-            "new_count": 0,
-            "price_count": 0
-          }
-        }
-      },
-      {
-        "id": "mercadolivre-tela-galaxybook3",
-        "label": "ML Tela Book3",
-        "summary": {
-          "schema_version": 1,
-          "collected_at": "2026-10-28T12:27:20.526Z",
-          "execution": "success",
-          "issues": [],
-          "coverage": {
-            "status": "complete",
-            "scheduled": 1,
-            "completed": 1,
-            "incomplete": 0,
-            "deferred": 0,
-            "pending_descriptions": 0,
-            "pending_candidates": 0,
-            "heuristic_stops": []
-          },
-          "findings": {
-            "new_items": [],
-            "price_changes": [],
-            "active_count": 0,
-            "pending_count": 0,
-            "new_count": 0,
-            "price_count": 0
-          }
-        }
-      },
-      {
-        "id": "mercadolivre-melanger",
-        "label": "ML Melanger",
-        "summary": {
-          "schema_version": 1,
-          "collected_at": "2026-10-28T12:27:44.366Z",
-          "execution": "success",
-          "issues": [],
-          "coverage": {
-            "status": "complete",
-            "scheduled": 1,
-            "completed": 1,
-            "incomplete": 0,
-            "deferred": 0,
-            "pending_descriptions": 0,
-            "pending_candidates": 0,
-            "heuristic_stops": []
-          },
-          "findings": {
-            "new_items": [],
-            "price_changes": [],
-            "active_count": 0,
-            "pending_count": 0,
-            "new_count": 0,
-            "price_count": 0
-          }
-        }
-      },
-      {
-        "id": "mercadolivre-tenis-42",
-        "label": "ML Tênis 42",
-        "summary": {
-          "schema_version": 1,
-          "collected_at": "2026-10-28T12:43:01.109Z",
-          "execution": "success",
-          "issues": [],
-          "coverage": {
-            "status": "complete",
-            "scheduled": 6,
-            "completed": 6,
-            "incomplete": 0,
-            "deferred": 0,
-            "pending_descriptions": 0,
-            "pending_candidates": 0,
-            "heuristic_stops": []
-          },
-          "findings": {
-            "new_items": [],
-            "price_changes": [],
-            "active_count": 0,
-            "pending_count": 0,
-            "new_count": 0,
-            "price_count": 0
-          }
-        }
-      },
-      {
-        "id": "mercadolivre-oled-monitores",
-        "label": "ML Monitores OLED",
-        "summary": {
-          "schema_version": 1,
-          "collected_at": "2026-10-28T12:38:52.308Z",
-          "execution": "success",
-          "issues": [
-            "Limite de resultados atingido; cobertura incompleta"
-          ],
           "coverage": {
             "status": "partial",
-            "scheduled": 21,
-            "completed": 15,
-            "incomplete": 6,
+            "scheduled": 5,
+            "completed": 5,
+            "incomplete": 0,
             "deferred": 0,
             "pending_descriptions": 0,
             "pending_candidates": 2,
-            "heuristic_stops": []
+            "pending_details": 0,
+            "heuristic_stops": [
+              "fot walka",
+              "fot"
+            ],
+            "heuristic_reasons": {
+              "fot walka": "first_page_no_match",
+              "fot": "first_page_no_candidate"
+            }
           },
           "findings": {
             "new_items": [],
             "price_changes": [],
-            "active_count": 0,
+            "active_count": 1,
             "pending_count": 2,
             "new_count": 0,
             "price_count": 0
           }
         }
+      },
+      {
+        "id": "oled-monitores",
+        "label": "Monitores OLED",
+        "summary": {
+          "schema_version": 1,
+          "collected_at": "2026-10-29T12:54:23.063Z",
+          "execution": "success",
+          "issues": [],
+          "coverage": {
+            "status": "partial",
+            "scheduled": 1,
+            "completed": 1,
+            "incomplete": 0,
+            "deferred": 0,
+            "pending_descriptions": 0,
+            "pending_candidates": 1,
+            "pending_details": 0,
+            "heuristic_stops": [],
+            "heuristic_reasons": {}
+          },
+          "findings": {
+            "new_items": [
+              {
+                "id": "enjoei-153770613",
+                "title": "monitor gamer aoc agon oled 27 q27g4zdr 240hz",
+                "url": "https://www.enjoei.com.br/p/monitor-gamer-aoc-agon-oled-27-q27g4zdr-240hz-153770613",
+                "price_brl": 2500
+              }
+            ],
+            "price_changes": [],
+            "active_count": 2,
+            "pending_count": 1,
+            "new_count": 1,
+            "price_count": 0
+          }
+        }
       }
-    ],
-    "revised_at": "2026-10-29T12:54:48.523Z"
+    ]
   },
   "notification_archive": [
     {
