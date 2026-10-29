@@ -132,7 +132,7 @@ function mergeWithPreviousSnapshot({ now, collected, collection, previousSnapsho
     run: {
       id: "enjoei-tenis-42",
       label: "Enjoei Tenis 42",
-      partial: collection.failedTerms.length > 0 || [...collection.incompleteTerms, ...collection.deferredTerms].some(term => collection.schedule[term]?.tier === 'priority'),
+      partial: collection.failedTerms.length > 0 || collection.incompleteTerms.length > 0 || collection.deferredTerms.length > 0,
       failed_term_count: collection.failedTerms.length,
       deferred_terms: collection.deferredTerms,
     },
@@ -190,7 +190,7 @@ function buildReport({ runDate, snapshot, previousSnapshot }) {
   lines.push("");
   lines.push("## Resumo executivo");
   lines.push(`- Novos produtos: **${newItems.length}**`);
-  const prunedTerms = Object.entries(snapshot.run.pagination ?? {}).filter(([, value]) => value.stop_reason === 'first_page_no_match').map(([term]) => term);
+  const prunedTerms = Object.entries(snapshot.run.pagination ?? {}).filter(([, value]) => value.complete && !value.exhaustive).map(([term]) => term);
   if (prunedTerms.length) lines.push(`- Paginação encerrada por falta de correspondência na primeira página: ${prunedTerms.join(', ')}. Critério de relevância; não comprova ausência nas páginas seguintes.`);
   lines.push(`- Produtos ainda ativos ja vistos: **${stillActive.length}**`);
   lines.push(`- Nao vistos nesta rodada: **${notSeenThisRun.length}**`);

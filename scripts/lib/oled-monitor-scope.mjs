@@ -1,12 +1,14 @@
 import { normalizeMonitorText } from './monitor-core.mjs';
 import { isOlxRecommendationUrl } from './olx-listing.mjs';
 
-export const OLED_POLICY_VERSION = 2;
+export const OLED_POLICY_VERSION = 3;
 export const OLED_PRICE = { min: 1500, max: 3000 };
 export const OLED_DETAIL_TTL_MS = 24 * 3600_000;
 const codes = ['aw2726dm','aw2725d','aw2725df','aw3225qf','aw3423dw','aw3423dwf','aw3425dw',
   '27gx790a','27gx704a','27gr95qe','27gs95qe','39gs95qe','xg27acdng',
-  'mag271qpx','mag271qpx24','mag274qpx24','mpg491cqp'];
+  'mag271qpx','mag271qpx24','mag274qpx24','mpg491cqp','q27g4zdr'];
+// AOC official specification: QD-OLED, 2560x1440, 240 Hz.
+// https://www.aoc.com/ca-en/gaming/monitors/q27g4zdr
 export const OLED_MODELS = codes.map(id => ({ id, label: id.toUpperCase() }));
 export const OLED_SEARCH_TERMS = ['aw2726dm','aw2725d','aw2725df','aw3225qf','aw3423dw','aw3423dwf','aw3425dw',
   'odyssey oled g6','ls32dg800','odyssey oled g9','monitor cepheus','mag 271qp','mag 274qp','mpg 491cqp',

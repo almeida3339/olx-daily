@@ -1,7 +1,7 @@
 import { filterNotebookReportRam } from './lib/notebook-policy.mjs';
 import { filterMercadoLivreShoeReport, isApprovedMercadoLivreShoe } from './lib/mercadolivre-shoes.mjs';
 import { staleEnjoeiJobs } from './lib/enjoei-recovery.mjs';
-import { buildCollectionSummary, collectionSummaryLine } from './lib/collection-summary.mjs';
+import { buildCollectionSummary, collectionSummaryLine, collectionOutcome, roundSummaryLine } from './lib/collection-summary.mjs';
 import { buildMonitorHealth, collectionHealthAlerts } from './lib/monitor-health.mjs';
 import { filterOledReport } from './lib/oled-monitor-scope.mjs';
 import { filterBarefootReport } from './lib/shoe-search-rules.mjs';
@@ -405,17 +405,18 @@ export async function main({
     completed_at: new Date().toISOString(), execution: errors.length ? 'failed' : 'success',
     delivery: { whatsapp: 'pending', email: 'pending' },
     sources: sources.filter(source => source.summary || source.report).map(source => ({ id: source.id, label: source.label, summary: source.summary })) };
-  if (onlyMercadoLivre) for (const source of roundSummary.sources) if (source.summary) {
-    const { execution, coverage } = source.summary;
-    monitorOutcomes.push({ source: source.id, status: execution !== 'success' ? execution
-      : coverage.status === 'complete' ? 'success' : coverage.status === 'deferred' ? 'deferred' : 'partial',
-      completed_terms: coverage.completed, incomplete_terms: coverage.incomplete, deferred_terms: coverage.deferred,
-      reasons: source.summary.issues ?? [] });
-  }
+  const summarizedIds = new Set(roundSummary.sources.filter(source => source.summary).map(source => source.id));
+  // Replace process-level successes with committed per-source coverage facts.
+  // Keep failures without a usable source artifact, including failed grouped jobs.
+  const retainedOutcomes = monitorOutcomes.filter(outcome => ['failed','blocked'].includes(outcome.status)
+    || !summarizedIds.has(outcome.source) && !(jobIds[outcome.source] ?? []).some(id => summarizedIds.has(id)));
+  monitorOutcomes.splice(0, monitorOutcomes.length, ...retainedOutcomes,
+    ...roundSummary.sources.filter(source => source.summary && !retainedOutcomes.some(outcome => outcome.source === source.id)).map(collectionOutcome));
   const totalNew   = sources.reduce((sum, s) => sum + s.newCount, 0);
   const totalPrice = sources.reduce((sum, s) => sum + s.priceCount, 0);
 
   console.log("\nResumo desta rodada:");
+  console.log(roundSummaryLine(roundSummary));
   for (const s of sources) {
     if (!s.report && !s.summary) continue;
     console.log(`  ${s.summary ? collectionSummaryLine(s) : `${s.label}: ${s.newCount} novo(s), ${s.priceCount} preço(s)`}`);
@@ -438,7 +439,7 @@ export async function main({
   currentStatus.notification_archive = [...new Map([...(localStatus?.notification_archive ?? []), ...(ciStatus?.notification_archive ?? [])].map((item) => [item.id, item])).values()];
 
   const subject     = buildSubject(sources, errors);
-  const body        = (priorNote ? `> ${priorNote}\n\n` : "") + roundSummary.sources.map(collectionSummaryLine).join('\n') + '\n\n' + buildBody(sources, errors);
+  const body        = (priorNote ? `> ${priorNote}\n\n` : "") + roundSummaryLine(roundSummary) + '\n' + roundSummary.sources.map(collectionSummaryLine).join('\n') + '\n\n' + buildBody(sources, errors);
   const whatsappMsg = (priorNote ? `${priorNote}\n\n` : "") + buildWhatsAppMessage(sources, errors, roundSummary);
 
   // WhatsApp sempre (heartbeat de execução).
@@ -820,6 +821,7 @@ function buildWhatsAppMessage(sources, errors, roundSummary) {
   const lines = [`Monitor ${date} ${time}`];
   let coverageLines = [];
   if (roundSummary?.sources.length) {
+    lines.push(roundSummaryLine(roundSummary));
     const partial = roundSummary.sources.filter(source => source.summary?.coverage?.status !== 'complete' || source.summary?.execution !== 'success');
     lines.push(`${roundSummary.sources.length} fontes com resultados; ${partial.length} com limitações ou pendências.`);
     coverageLines = roundSummary.sources.filter(source => source.id === 'olx' || partial.includes(source)).map(collectionSummaryLine);

@@ -61,7 +61,7 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
     else if (snapshot.run?.operational?.status === 'failed') state = 'failed';
     else if (classifications.some((item) => ["challenge", "authentication", "rate_limited"].includes(item.kind))) state = "blocked";
     else if (ageMs != null && ageMs > maxAgeMs) state = "stale";
-    else if (snapshot.run?.partial && outcome?.status!=='deferred') state = "partial";
+    else if (outcome?.status === 'partial') state = "partial";
     else if (historySummary.sample >= 3 && (historySummary.failed + historySummary.blocked) >= Math.ceil(historySummary.sample / 2)) state = "degraded";
     if (marketplaces.length && snapshot) state = worstState([state, ...marketplaces.map((source) => source.state)]);
     if (snapshot?.run?.in_progress && state === 'healthy') state = 'partial';

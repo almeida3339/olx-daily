@@ -10,7 +10,7 @@ import { extractGpuLabel, extractRamGb, formatBrlPrice, parseBrlPrice, textConta
 import { extractMercadoLivreNotebookSpecs } from "./lib/mercadolivre-monitor.mjs";
 import { isMercadoLivreNotebookDisplayPrice } from "./lib/mercadolivre-notebook-ranges.mjs";
 import { buildMonitorHealth, collectionHealthAlerts } from "./lib/monitor-health.mjs";
-import { collectionSummaryLine } from './lib/collection-summary.mjs';
+import { collectionSummaryLine, roundSummaryLine } from './lib/collection-summary.mjs';
 import { readLatestCommittedRun, readLatestValidSnapshot, writeJsonAtomic, writeTextAtomic } from "./lib/monitor-runtime.mjs";
 import { mercadoLivreDashboardCards, resolveWatchlistDataDir } from "./lib/watchlists-registry.mjs";
 import { buildLocalTriggerCommands } from "./lib/dashboard-triggers.mjs";
@@ -774,7 +774,7 @@ function buildHtml({ rounds, health, priceInsights, japaneseJeans, zegna, zegnaU
     const sources = round.sources ?? [];
     const revisionNotice = round.revised_at ? '<p class="hint">Resumo revisto com os dados salvos; o WhatsApp anterior não foi reenviado.</p>' : '';
     const limited = sources.filter(source => source.summary?.coverage?.status !== 'complete' || source.summary?.execution !== 'success').length;
-    return `<section><h2>${round.environment === 'ci' ? 'Enjoei no GitHub' : 'Coleta local'} · ${e(formatDateTimeBrt(new Date(round.completed_at)))}</h2>${revisionNotice}<p>Execução técnica: ${round.execution === 'success' ? 'concluída' : 'com falhas'} · ${limited} fonte(s) com limitações · WhatsApp: ${round.delivery?.whatsapp === 'sent' ? 'enviado' : 'não confirmado'}</p><ul>${sources.map(source => `<li>${e(collectionSummaryLine(source))}</li>`).join('')}</ul></section>`;
+    return `<section><h2>${round.environment === 'ci' ? 'Enjoei no GitHub' : 'Coleta local'} · ${e(formatDateTimeBrt(new Date(round.completed_at)))}</h2>${revisionNotice}<p>${e(roundSummaryLine(round))} · ${limited} fonte(s) com limitações · WhatsApp: ${round.delivery?.whatsapp === 'sent' ? 'enviado' : 'não confirmado'}</p><ul>${sources.map(source => `<li>${e(collectionSummaryLine(source))}</li>`).join('')}</ul></section>`;
   }).join('')}</div></details>` : '';
   const collectionAlerts = collectionHealthAlerts(health);
   const collectionAlertHtml = collectionAlerts.length ? `<section class="collection-alert" role="status"><b>Coletas precisam de atenção</b><ul>${collectionAlerts.map(alert => `<li>${e(alert.message)}</li>`).join('')}</ul><p>A ausência de novidades depende da cobertura de cada fonte.</p></section>` : '';

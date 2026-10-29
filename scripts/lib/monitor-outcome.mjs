@@ -16,7 +16,8 @@ export function classifyMonitorOutcome(run = {}, { quarantined = 0 } = {}) {
   const onlyDeferred=deferred>0&&!incomplete&&!real.length&&scheduled.every(term=>successful.includes(term));
   const status = blocked ? 'blocked' : failed || (run.aborted && !blocked) ? 'failed'
     : onlyDeferred ? 'deferred'
-      : run.partial || deferred || real.length ? 'partial' : 'success';
+      : run.partial || incomplete || deferred || real.length || (run.incomplete_terms?.length ?? 0)
+        || (run.pending_details ?? 0) || (run.description_discovery?.queued_candidates ?? 0) ? 'partial' : 'success';
   return { status, exit_code: MONITOR_EXIT_CODES[status],
     reasons: [...new Set(issues.map(issue => issue.message).filter(Boolean)),...(onlyDeferred&&!issues.length?['Consultas adiadas pela programação; as consultas executadas foram concluídas.']:[])],
     completed_terms: (run.successful_coverage ?? run.successful_terms ?? []).length,

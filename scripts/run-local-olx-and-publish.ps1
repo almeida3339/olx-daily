@@ -4,7 +4,8 @@ param(
   [switch]$NoPush,
   [int]$WaitForInternetSeconds = 300,
   [switch]$Force,
-  [int]$CooldownHours = 3
+  [int]$CooldownHours = 3,
+  [ValidateRange(0, 1800)][int]$PublisherWaitSeconds = 180
 )
 
 $ErrorActionPreference = "Stop"
@@ -13,45 +14,6 @@ $OutputEncoding = [System.Text.UTF8Encoding]::new($false)
 try { [Console]::OutputEncoding = $OutputEncoding } catch { Write-Warning "Nao foi possivel configurar a codificacao UTF-8 do console." }
 
 $root = Resolve-Path (Join-Path $PSScriptRoot "..")
-
-# Serialize publishers in this checkout, including distinct scheduled tasks.
-$otherPublisher = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object {
-  $_.ProcessId -ne $PID -and $_.Name -match 'node' -and
-  $_.CommandLine -like "*$($root.Path)*" -and
-  $_.CommandLine -match 'run-monitors-and-notify|monitor-mercadolivre-all' -and
-  $_.CommandLine -notmatch '--skip-monitors'
-}
-if ($otherPublisher) { Write-Host 'Outra coleta/publicacao esta em andamento; este disparo foi adiado.'; exit 0 }
-$mutexHash = [System.BitConverter]::ToString([System.Security.Cryptography.SHA256]::Create().ComputeHash([System.Text.Encoding]::UTF8.GetBytes($root.Path.ToLowerInvariant()))).Replace('-', '')
-$publisherMutex = [System.Threading.Mutex]::new($false, "Local\OlxDailyPublisher-$mutexHash")
-try { $publisherAcquired = $publisherMutex.WaitOne(0) } catch [System.Threading.AbandonedMutexException] { $publisherAcquired = $true }
-if (-not $publisherAcquired) { $publisherMutex.Dispose(); Write-Host 'Publicador ocupado; este disparo foi adiado.'; exit 0 }
-
-# Trava de repeticao: as tarefas Monitor-OLX-0700/1600 repetem a cada 10 min por
-# 2h (retry de seguranca contra o PC acordar do modo suspenso bem na hora do
-# disparo, ver commit deste comentario). O Agendador nao sabe distinguir "ja deu
-# certo, pode parar" de "ainda nao rodou" - ele so repete cego. Sem esta trava,
-# uma rodada bem-sucedida as 07:00 disparava de novo as 07:10, 07:20... ate 09:00
-# (e o mesmo as 16h), rodando o monitor ~12x por gatilho em vez de 1x (visto em
-# 07/08: 6 rodadas completas no dia por causa disso). O cooldown usa o mesmo
-# marcador de sucesso que ja existia (.monitor-olx-enjoei-last-run) - se uma
-# rodada completa (monitor + publicacao) terminou ha menos de $CooldownHours,
-# esta e um no-op instantaneo. 3h cobre a janela de repeticao (2h) com folga sem
-# bloquear o proximo gatilho legitimo 9h depois. -Force ignora a trava (uso
-# manual deliberado, como preencher uma coleta que faltou).
-$lastRunMarker = Join-Path $env:USERPROFILE ".monitor-olx-enjoei-last-run"
-if (-not $Force -and (Test-Path $lastRunMarker)) {
-  try {
-    $lastRun = Get-Date (Get-Content $lastRunMarker -Raw)
-    $elapsedHours = ((Get-Date) - $lastRun).TotalHours
-    if ($elapsedHours -lt $CooldownHours) {
-      Write-Host "Ultima rodada completa ha $([math]::Round($elapsedHours,1))h (< ${CooldownHours}h) - pulando (provavel disparo repetido do Agendador). Use -Force para rodar mesmo assim."
-      exit 0
-    }
-  } catch {
-    Write-Host "Aviso: nao consegui ler o marcador de ultima rodada ($lastRunMarker); seguindo normalmente."
-  }
-}
 
 # A task agendada roda com -WindowStyle Hidden: sem transcript, toda a saida (e
 # qualquer erro) se perde. Foi por isso que 8 rodadas seguidas morreram no rebase
@@ -67,6 +29,28 @@ try { Start-Transcript -Path $logFile | Out-Null } catch {}
 Get-ChildItem $logDir -Filter "run-local-olx-*.log" -ErrorAction SilentlyContinue |
   Sort-Object LastWriteTime -Descending | Select-Object -Skip 30 |
   Remove-Item -Force -ErrorAction SilentlyContinue
+
+. (Join-Path $PSScriptRoot 'lib\local-publisher.ps1')
+$attemptId = [guid]::NewGuid().ToString('N')
+$attemptFile = Join-Path $logDir "local-attempt-$attemptId.json"
+$attemptState = @{ id = $attemptId; started_at = (Get-Date).ToUniversalTime().ToString('o'); pid = $PID; published = $false }
+$publisherAcquired = $false
+try {
+  Write-LocalAttempt $attemptFile $attemptState 'started' 'Disparo recebido.' 'preparacao'
+  $guard = Enter-LocalPublisher -Root $root.Path -Marker (Join-Path $env:USERPROFILE '.monitor-olx-enjoei-last-run') -CooldownHours $CooldownHours -WaitSeconds $PublisherWaitSeconds -Force:$Force -OnState {
+    param($status, $reason)
+    Write-LocalAttempt $attemptFile $attemptState $status $reason 'concorrencia'
+  }
+  Write-LocalAttempt $attemptFile $attemptState $guard.status $guard.reason 'preparacao'
+  if (-not $guard.acquired) { try { Stop-Transcript | Out-Null } catch {}; exit $guard.exit_code }
+  $publisherAcquired = $true
+  $publisherMutex = $guard.mutex
+} catch {
+  Write-LocalAttempt $attemptFile $attemptState 'failed' $_.Exception.Message 'preparacao'
+  if ($publisherAcquired) { $publisherMutex.ReleaseMutex(); $publisherMutex.Dispose() }
+  try { Stop-Transcript | Out-Null } catch {}
+  throw
+}
 
 # A tarefa das 07:00 costuma rodar logo apos o PC ligar, quando o Wi-Fi/rede
 # ainda nao conectou. Sem isso, o primeiro acesso de rede (git fetch / scraping)
@@ -95,6 +79,8 @@ function Wait-ForInternet {
 }
 
 if (-not (Wait-ForInternet -TimeoutSeconds $WaitForInternetSeconds)) {
+  Write-LocalAttempt $attemptFile $attemptState 'failed' 'Internet indisponivel; nova tentativa necessaria.' 'conectividade'
+  $publisherMutex.ReleaseMutex(); $publisherMutex.Dispose()
   Write-Host "Internet indisponivel apos ${WaitForInternetSeconds}s de espera; abortando rodada (a proxima tentara de novo)."
   try { Stop-Transcript | Out-Null } catch {}
   exit 1
@@ -287,6 +273,7 @@ try {
   $prevEAP = $ErrorActionPreference
   $ErrorActionPreference = 'Continue'
   $phase = 'coleta'
+  Write-LocalAttempt $attemptFile $attemptState 'running' 'Coleta iniciada; pausas e limites permanecem ativos.' $phase
   if ($NoNotify) {
     & (Join-Path $PSScriptRoot "run-olx-monitor.ps1") -MaxPerCpu $MaxPerCpu 2>&1 | ForEach-Object { Write-Host $_ }
   } else {
@@ -306,6 +293,7 @@ try {
     if ($monitorFailed) {
       throw "Monitor OLX local falhou com exit code $monitorExit."
     }
+    Write-LocalAttempt $attemptFile $attemptState 'collected' 'Coleta concluida sem publicacao (NoPush).' 'concluido'
     exit 0
   }
 
@@ -424,6 +412,8 @@ try {
   # com erro (visivel no Agendador) - so nao bloqueia mais o marcador.
   if ($pushed) {
     $fullSuccess = $true
+    $attemptState.published = $true
+    Write-LocalAttempt $attemptFile $attemptState 'completed' "Dados publicados; coleta terminou com exit $monitorExit." 'concluido'
   }
 
   $ErrorActionPreference = $prevEAP
@@ -433,6 +423,7 @@ try {
     throw "Monitor OLX local falhou com exit code $monitorExit."
   }
 } catch {
+  Write-LocalAttempt $attemptFile $attemptState 'failed' $_.Exception.Message $phase
   # Log before stopping the transcript: hidden scheduled tasks otherwise lose
   # the terminating exception when PowerShell renders it after finally.
   Write-Host "FALHA na etapa '$phase': $($_.Exception.Message)"

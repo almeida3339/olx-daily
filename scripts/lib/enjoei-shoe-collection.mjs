@@ -12,7 +12,7 @@ async function readOptional(file) {
 
 export async function collectEnjoeiShoes({ dataDir, terms, department, shoeSize, shippingRange, state, city,
   first = 30, maxPriceBrl = 500, maxPagesPerTerm = 2, maxPages = 12, discoveryPages = 6, maxMinutes = 3, detailMax = 4,
-  explicitTerms = true }) {
+  explicitTerms = true, fetchImpl = globalThis.fetch, delayMs = 350 }) {
   const identity = { department, shoeSize, shippingRange, state, city, first, maxPriceBrl };
   const configuration = JSON.stringify(identity);
   const progressPath = path.join(dataDir, 'collection-progress.json');
@@ -49,6 +49,45 @@ export async function collectEnjoeiShoes({ dataDir, terms, department, shoeSize,
   let pagesFetched = 0, detailsFetched = 0, cacheHits = 0;
   const roundStarted = Date.now();
   let regularFetched = 0, discoveryFetched = 0;
+  const resolvedEvidence = new Map();
+  const evidenceFor = async item => {
+    if (resolvedEvidence.has(item.id)) return resolvedEvidence.get(item.id);
+    const cached = cache[item.id];
+    const sameListing = cached?.title === item.title && cached?.brand === item.brand;
+    const ttl = barefootPriority(item) === 0 ? 24 * 3600_000 : 7 * 86400_000;
+    let evidence = null;
+    if (sameListing && Date.now() - Date.parse(cached.checked_at) < ttl) {
+      evidence = cached; cacheHits++;
+    } else if (detailsFetched < detailMax && Date.now() < deadline) {
+      detailsFetched++;
+      try {
+        const response = await fetchImpl(`https://pages.enjoei.com.br/products/${item.id}/v2.json`, {
+          signal: AbortSignal.timeout(Math.max(1, Math.min(15000, deadline - Date.now()))) });
+        if (!response.ok) throw new Error(`Detalhe HTTP ${response.status}`);
+        const product = await response.json();
+        if (String(product.id ?? item.id) !== item.id) throw new Error('Detalhe de outro produto');
+        evidence = { title: item.title, brand: item.brand, price_brl: item.price_brl,
+          text: `${product.title ?? ''}\n${product.description ?? ''}`.slice(0, 12000), checked_at: new Date().toISOString() };
+        cache[item.id] = evidence;
+        if (delayMs) await new Promise(resolve => setTimeout(resolve, delayMs));
+      } catch (error) { item.detail_error = error.message; }
+    }
+    resolvedEvidence.set(item.id, evidence);
+    return evidence;
+  };
+  const candidateFromNode = (node, term) => {
+    if (!node?.id || !node.path) return null;
+    const options = node.variations?.options ?? [];
+    const available = options.length ? options.some(option => String(option.name) === shoeSize && option.available === true)
+      : String(node.size?.name) === shoeSize;
+    const price = Number(node.price?.current);
+    if (!available || !(price > 0) || !Number.isFinite(price) || price > maxPriceBrl) return null;
+    return { id: String(node.id), url: `https://www.enjoei.com.br/p/${node.path}`, title: node.title?.name ?? '',
+      brand: node.brand?.displayable_name ?? null, price_brl: price, size: shoeSize,
+      used: Boolean(node.used), shipping_free: Boolean(node.shipping?.free), store_name: node.store?.displayable?.name ?? null,
+      store_path: node.store?.path ? `https://www.enjoei.com.br/${node.store.path}` : null,
+      observed_at: new Date().toISOString(), search_terms: [term] };
+  };
   const checkpoint = async () => {
     progress.updated_at = new Date().toISOString();
     await writeJsonAtomic(progressPath, progress, { validate: null });
@@ -62,12 +101,12 @@ export async function collectEnjoeiShoes({ dataDir, terms, department, shoeSize,
     scheduledTerms.push(term);
     const pagesBefore = pagesFetched;
     let cursor = progress.terms[term];
-    if (firstPageGate && cursor?.first_page_policy !== 1) cursor = null;
+    if (firstPageGate && (cursor?.first_page_policy !== 2 || !cursor.complete)) cursor = null;
     if (!cursor || cursor.complete || Date.now() - Date.parse(cursor.started_at) > 14 * 86400_000) {
       cursor = progress.terms[term] = { completed_at: cursor?.completed_at ?? null, started_at: new Date().toISOString(), after: null, pages: 0, complete: false, items: {}, seen_ids: [] };
     }
     cursor.query_identity = JSON.stringify({ term: spec.term, department: spec.department === null ? null : department });
-    if (firstPageGate) cursor.first_page_policy = 1;
+    if (firstPageGate) cursor.first_page_policy = 2;
     if (cursor.stalled) { cursor.items = {}; cursor.seen_ids = []; }
     console.log(`Termo: ${term}${cursor.pages ? ` — retomando após ${cursor.pages} página(s)` : ''}`);
     try {
@@ -83,7 +122,7 @@ export async function collectEnjoeiShoes({ dataDir, terms, department, shoeSize,
           if (after != null) url.searchParams.set('after', after);
           pagesFetched++;
           if (broadSearch) discoveryFetched++; else regularFetched++;
-          const response = await fetch(url, { headers: { accept: 'application/json', origin: 'https://www.enjoei.com.br' },
+          const response = await fetchImpl(url, { headers: { accept: 'application/json', origin: 'https://www.enjoei.com.br' },
             signal: AbortSignal.timeout(Math.max(1, Math.min(20000, deadline - Date.now()))) });
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
           const payload = await response.json();
@@ -93,12 +132,23 @@ export async function collectEnjoeiShoes({ dataDir, terms, department, shoeSize,
           if (firstPageGate && after == null) {
             const matches = products.edges.filter(({ node }) => matchesEnjoeiShoeSearchTerm({ title: node?.title?.name, brand: node?.brand?.displayable_name }, spec.term)).length;
             cursor.first_page_matches = matches;
-            cursor.stop_reason = products.edges.length > 0 && matches === 0 ? 'first_page_no_match' : null;
+            const candidates = products.edges.map(({node}) => candidateFromNode(node, term)).filter(item => item
+              && matchesEnjoeiShoeSearchTerm(item, spec.term) && classifyBarefootShoe(item).state !== 'rejected');
+            let eligible = candidates.some(item => classifyBarefootShoe(item).state === 'confirmed');
+            // At most one uncertain model is inspected before permitting deep discovery.
+            if (!eligible && candidates.length) {
+              const item = candidates[0], evidence = await evidenceFor(item);
+              eligible = classifyBarefootShoe(item, evidence?.text ?? '').state === 'confirmed';
+            }
+            cursor.first_page_candidates = candidates.length;
+            cursor.first_page_eligible = eligible;
+            cursor.stop_reason = matches === 0 && products.edges.length ? 'first_page_no_match'
+              : !eligible && products.edges.length ? candidates.length ? 'first_page_model_pending' : 'first_page_no_candidate' : null;
             if (cursor.stop_reason) {
               // Relevance heuristic requested by the user, not proof of exhaustion.
               products.pageInfo = { ...products.pageInfo, hasNextPage: false };
               cursor.items = {}; cursor.seen_ids = [];
-              console.log(`${term}: primeira página sem correspondência exata; paginação encerrada por relevância.`);
+              console.log(`${term}: primeira página sem candidato elegível confirmado; paginação encerrada por relevância (${cursor.stop_reason}).`);
             }
           }
           // The API often omits pageInfo. Its explicit total can establish the end.
@@ -113,17 +163,8 @@ export async function collectEnjoeiShoes({ dataDir, terms, department, shoeSize,
           for (const { node } of edges) {
             if (!node?.id || !node.path) continue;
             seen.add(String(node.id));
-            const options = node.variations?.options ?? [];
-            const availableSize = options.length
-              ? options.some(option => String(option.name) === shoeSize && option.available === true)
-              : String(node.size?.name) === shoeSize;
-            const price = node.price?.current;
-            if (!availableSize || price == null || !Number.isFinite(Number(price)) || Number(price) <= 0 || Number(price) > maxPriceBrl) continue;
-            const item = { id: String(node.id), url: `https://www.enjoei.com.br/p/${node.path}`, title: node.title?.name ?? '',
-              brand: node.brand?.displayable_name ?? null, price_brl: Number(price), size: shoeSize,
-              used: Boolean(node.used), shipping_free: Boolean(node.shipping?.free), store_name: node.store?.displayable?.name ?? null,
-              store_path: node.store?.path ? `https://www.enjoei.com.br/${node.store.path}` : null,
-              observed_at: new Date().toISOString(), search_terms: [term] };
+            const item = candidateFromNode(node, term);
+            if (!item) continue;
             if (firstPageGate && !matchesEnjoeiShoeSearchTerm(item, spec.term)) continue;
             // Fuzzy results are discovery candidates only with some target evidence.
             if (!ENJOEI_SHOE_TERMS.some(search => matchesEnjoeiShoeSearchTerm(item, search))
@@ -136,11 +177,12 @@ export async function collectEnjoeiShoes({ dataDir, terms, department, shoeSize,
       const refresh = (spec.tier === 'priority' || firstPageGate) && cursor.after != null && !cursor.stalled;
       const laterPriority = queue.slice(queue.indexOf(spec) + 1).filter(s => s.tier === 'priority').length;
       let allowance = Math.max(1, Math.min(broadSearch ? 6 : maxPagesPerTerm, remaining - laterPriority));
+      if (firstPageGate) allowance = Math.min(allowance, Math.max(1, 2 - cursor.pages));
       let gatedComplete = false;
       if (refresh) {
         const firstPage = await fetchPage(null, []);
         await onPage(firstPage.edges, false);
-        if (cursor.stop_reason === 'first_page_no_match') {
+        if (cursor.stop_reason) {
           cursor.complete = true; cursor.after = null; cursor.pages = 1;
           cursor.signatures = []; cursor.stalled = false; cursor.last_error = null;
           gatedComplete = true;
@@ -148,9 +190,13 @@ export async function collectEnjoeiShoes({ dataDir, terms, department, shoeSize,
         refreshedTerms.push(term);
         allowance--;
       }
-      const result = gatedComplete ? { complete: true } : allowance > 0 ? await collectEnjoeiPages({
-        progress: cursor, maxPages: allowance, deadline, checkpoint, fetchPage, onPage,
+      let result = gatedComplete ? { complete: true } : allowance > 0 ? await collectEnjoeiPages({
+        progress: cursor, maxPages: allowance, deadline, checkpoint, fetchPage, onPage, delayMs,
       }) : { complete: false };
+      if (firstPageGate && !result.complete && cursor.pages >= 2 && !cursor.stalled) {
+        cursor.complete = true; cursor.after = null; cursor.stop_reason = 'discovery_page_limit'; cursor.last_error = null;
+        result = { ...result, complete: true };
+      }
       delete cursor.request_error;
       if (result.complete) cursor.completed_at = new Date().toISOString();
       await checkpoint();
@@ -170,31 +216,13 @@ export async function collectEnjoeiShoes({ dataDir, terms, department, shoeSize,
       byId.set(item.id, { ...newer, search_terms: [...new Set([...(previous?.search_terms ?? []), term])] });
     }
     queryYield[term] = { pages_this_run: pagesFetched - pagesBefore, candidates_in_cycle: Object.keys(cursor.items).length };
-    if (Date.now() < deadline) await new Promise(resolve => setTimeout(resolve, 350));
+    if (delayMs && Date.now() < deadline) await new Promise(resolve => setTimeout(resolve, delayMs));
   }
   const items = [], pendingItems = [];
   for (const item of [...byId.values()].sort((a,b) => barefootPriority(a) - barefootPriority(b))) {
     let assessment = classifyBarefootShoe(item);
-    const cached = cache[item.id];
     let evidence = null;
-    const sameListing = cached?.title === item.title && cached?.brand === item.brand;
-    const cacheTtl = barefootPriority(item) === 0 ? 24 * 3600_000 : 7 * 86400_000;
-    if (assessment.state === 'pending' && sameListing && Date.now() - Date.parse(cached.checked_at) < cacheTtl) {
-      evidence = cached; cacheHits++;
-    } else if (assessment.state === 'pending' && detailsFetched < detailMax && Date.now() < deadline) {
-      detailsFetched++;
-      try {
-        const response = await fetch(`https://pages.enjoei.com.br/products/${item.id}/v2.json`, {
-          signal: AbortSignal.timeout(Math.max(1, Math.min(15000, deadline - Date.now()))) });
-        if (!response.ok) throw new Error(`Detalhe HTTP ${response.status}`);
-        const product = await response.json();
-        if (String(product.id ?? item.id) !== item.id) throw new Error('Detalhe de outro produto');
-        evidence = { title: item.title, brand: item.brand, price_brl: item.price_brl,
-          text: `${product.title ?? ''}\n${product.description ?? ''}`.slice(0, 12000), checked_at: new Date().toISOString() };
-        cache[item.id] = evidence;
-        await new Promise(resolve => setTimeout(resolve, 350));
-      } catch (error) { item.detail_error = error.message; }
-    }
+    if (assessment.state === 'pending') evidence = await evidenceFor(item);
     if (evidence) assessment = classifyBarefootShoe(item, evidence.text);
     item.description_evidence = evidence?.text ?? null;
     item.barefoot_validation = { ...assessment, version: SHOE_RULES_VERSION,
@@ -216,7 +244,7 @@ export async function collectEnjoeiShoes({ dataDir, terms, department, shoeSize,
   return { items, pendingItems, rejectedCachedIds, failedTerms, incompleteTerms, successfulTerms, scheduledTerms, deferredTerms, schedule, errors,
     pagination: Object.fromEntries(scheduledTerms.map(term => [term, { pages: progress.terms[term].pages, complete: progress.terms[term].complete,
       stop_reason: progress.terms[term].stop_reason ?? null,
-      exhaustive: progress.terms[term].complete && progress.terms[term].stop_reason !== 'first_page_no_match',
+      exhaustive: progress.terms[term].complete && !progress.terms[term].stop_reason,
       total_reported: progress.terms[term].total_reported ?? null, reason: progress.terms[term].last_error ?? null }])),
     stats: { pages_fetched: pagesFetched, regular_pages: regularFetched, discovery_pages: discoveryFetched,
       page_budget: maxPages, discovery_budget: discoveryPages, refreshed_terms: refreshedTerms,
