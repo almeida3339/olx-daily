@@ -46,59 +46,94 @@
         "status": "partial",
         "completed_terms": 2,
         "incomplete_terms": 18,
-        "deferred_terms": 0
+        "deferred_terms": 0,
+        "pending_candidates": 1,
+        "reasons": [
+          "Limite de resultados atingido; cobertura incompleta"
+        ]
       },
       {
         "source": "mercadolivre-oneplus-buds-pro-3",
         "status": "success",
         "completed_terms": 1,
         "incomplete_terms": 0,
-        "deferred_terms": 0
+        "deferred_terms": 0,
+        "pending_candidates": 0,
+        "reasons": []
       },
       {
         "source": "mercadolivre-google-pixel-watch-5",
         "status": "success",
         "completed_terms": 1,
         "incomplete_terms": 0,
-        "deferred_terms": 0
+        "deferred_terms": 0,
+        "pending_candidates": 0,
+        "reasons": []
       },
       {
         "source": "mercadolivre-lifefactory",
         "status": "success",
         "completed_terms": 1,
         "incomplete_terms": 0,
-        "deferred_terms": 0
+        "deferred_terms": 0,
+        "pending_candidates": 0,
+        "reasons": []
       },
       {
         "source": "mercadolivre-tela-galaxybook3",
         "status": "success",
         "completed_terms": 1,
         "incomplete_terms": 0,
-        "deferred_terms": 0
+        "deferred_terms": 0,
+        "pending_candidates": 0,
+        "reasons": []
       },
       {
         "source": "mercadolivre-melanger",
         "status": "success",
         "completed_terms": 1,
         "incomplete_terms": 0,
-        "deferred_terms": 0
+        "deferred_terms": 0,
+        "pending_candidates": 0,
+        "reasons": []
       },
       {
         "source": "mercadolivre-tenis-42",
         "status": "success",
         "completed_terms": 6,
         "incomplete_terms": 0,
-        "deferred_terms": 0
+        "deferred_terms": 0,
+        "pending_candidates": 0,
+        "reasons": []
       },
       {
         "source": "mercadolivre-oled-monitores",
         "status": "partial",
         "completed_terms": 15,
         "incomplete_terms": 6,
-        "deferred_terms": 0
+        "deferred_terms": 0,
+        "pending_candidates": 2,
+        "reasons": [
+          "Limite de resultados atingido; cobertura incompleta"
+        ]
       }
     ],
-    "warnings": [],
+    "warnings": [
+      {
+        "source": "mercadolivre-notebooks",
+        "status": "partial",
+        "reasons": [
+          "Limite de resultados atingido; cobertura incompleta"
+        ]
+      },
+      {
+        "source": "mercadolivre-oled-monitores",
+        "status": "partial",
+        "reasons": [
+          "Limite de resultados atingido; cobertura incompleta"
+        ]
+      }
+    ],
     "errors": []
   },
   "notification_sent_ids": [
@@ -401,7 +436,7 @@
         }
       }
     ],
-    "revised_at": "2026-10-28T13:57:47.575Z"
+    "revised_at": "2026-10-29T12:54:48.523Z"
   },
   "notification_archive": [
     {

@@ -38,128 +38,189 @@
   "whatsapp": "sent",
   "monitoring": {
     "scope": "local-watchlists",
-    "partial": false,
-    "status": "success",
+    "partial": true,
+    "status": "partial",
     "outcomes": [
-      {
-        "source": "enjoei-tenis",
-        "status": "success",
-        "exit_code": 0,
-        "reasons": [],
-        "completed_terms": 5,
-        "incomplete_terms": 1,
-        "deferred_terms": 0
-      },
       {
         "source": "enjoei-notebooks",
         "status": "success",
-        "exit_code": 0,
-        "reasons": [],
         "completed_terms": 4,
         "incomplete_terms": 0,
-        "deferred_terms": 0
+        "deferred_terms": 0,
+        "pending_candidates": 0,
+        "reasons": []
+      },
+      {
+        "source": "enjoei",
+        "status": "partial",
+        "completed_terms": 5,
+        "incomplete_terms": 1,
+        "deferred_terms": 0,
+        "pending_candidates": 2,
+        "reasons": []
       },
       {
         "source": "enjoei-zegna",
         "status": "success",
-        "exit_code": 0,
-        "reasons": [],
         "completed_terms": 1,
         "incomplete_terms": 0,
-        "deferred_terms": 0
+        "deferred_terms": 0,
+        "pending_candidates": 0,
+        "reasons": []
       },
       {
         "source": "enjoei-ricardo-almeida",
-        "status": "success",
-        "exit_code": 0,
-        "reasons": [],
+        "status": "partial",
         "completed_terms": 1,
         "incomplete_terms": 0,
-        "deferred_terms": 0
+        "deferred_terms": 0,
+        "pending_candidates": 1,
+        "reasons": []
       },
       {
         "source": "enjoei-jacob-cohen",
         "status": "success",
-        "exit_code": 0,
-        "reasons": [],
         "completed_terms": 1,
         "incomplete_terms": 0,
-        "deferred_terms": 0
+        "deferred_terms": 0,
+        "pending_candidates": 0,
+        "reasons": []
       },
       {
         "source": "enjoei-brunello-cucinelli",
         "status": "success",
-        "exit_code": 0,
-        "reasons": [],
         "completed_terms": 1,
         "incomplete_terms": 0,
-        "deferred_terms": 0
+        "deferred_terms": 0,
+        "pending_candidates": 0,
+        "reasons": []
       },
       {
-        "source": "enjoei-japanese-jeans",
+        "source": "enjoei-momotaro",
         "status": "success",
-        "exit_code": 0,
-        "reasons": [],
+        "completed_terms": 1,
+        "incomplete_terms": 0,
+        "deferred_terms": 0,
+        "pending_candidates": 0,
+        "reasons": []
+      },
+      {
+        "source": "enjoei-pure-blue-japan",
+        "status": "success",
         "completed_terms": 2,
         "incomplete_terms": 0,
-        "deferred_terms": 0
+        "deferred_terms": 0,
+        "pending_candidates": 0,
+        "reasons": []
+      },
+      {
+        "source": "enjoei-the-strike-gold",
+        "status": "success",
+        "completed_terms": 1,
+        "incomplete_terms": 0,
+        "deferred_terms": 0,
+        "pending_candidates": 0,
+        "reasons": []
+      },
+      {
+        "source": "enjoei-kapital",
+        "status": "success",
+        "completed_terms": 1,
+        "incomplete_terms": 0,
+        "deferred_terms": 0,
+        "pending_candidates": 0,
+        "reasons": []
+      },
+      {
+        "source": "enjoei-fullcount",
+        "status": "success",
+        "completed_terms": 1,
+        "incomplete_terms": 0,
+        "deferred_terms": 0,
+        "pending_candidates": 0,
+        "reasons": []
+      },
+      {
+        "source": "enjoei-orslow",
+        "status": "success",
+        "completed_terms": 2,
+        "incomplete_terms": 0,
+        "deferred_terms": 0,
+        "pending_candidates": 0,
+        "reasons": []
       },
       {
         "source": "lifefactory",
         "status": "success",
-        "exit_code": 0,
-        "reasons": [],
         "completed_terms": 1,
         "incomplete_terms": 0,
-        "deferred_terms": 0
+        "deferred_terms": 0,
+        "pending_candidates": 0,
+        "reasons": []
       },
       {
-        "source": "tela-book3",
+        "source": "tela-galaxybook3",
         "status": "success",
-        "exit_code": 0,
-        "reasons": [],
         "completed_terms": 1,
         "incomplete_terms": 0,
-        "deferred_terms": 0
+        "deferred_terms": 0,
+        "pending_candidates": 0,
+        "reasons": []
       },
       {
         "source": "melanger",
         "status": "success",
-        "exit_code": 0,
-        "reasons": [],
         "completed_terms": 1,
         "incomplete_terms": 0,
-        "deferred_terms": 0
+        "deferred_terms": 0,
+        "pending_candidates": 0,
+        "reasons": []
       },
       {
-        "source": "oneplus-buds",
+        "source": "oneplus-buds-pro-3",
         "status": "success",
-        "exit_code": 0,
-        "reasons": [],
         "completed_terms": 3,
         "incomplete_terms": 0,
-        "deferred_terms": 0
+        "deferred_terms": 0,
+        "pending_candidates": 0,
+        "reasons": []
       },
       {
-        "source": "pixel-watch-5",
+        "source": "google-pixel-watch-5",
         "status": "success",
-        "exit_code": 0,
-        "reasons": [],
         "completed_terms": 1,
         "incomplete_terms": 0,
-        "deferred_terms": 0
+        "deferred_terms": 0,
+        "pending_candidates": 0,
+        "reasons": []
       },
       {
         "source": "oled-monitores",
-        "status": "success",
-        "exit_code": 0,
-        "reasons": [],
+        "status": "partial",
         "completed_terms": 1,
         "incomplete_terms": 0,
-        "deferred_terms": 0
+        "deferred_terms": 0,
+        "pending_candidates": 2,
+        "reasons": []
       }
     ],
-    "warnings": [],
+    "warnings": [
+      {
+        "source": "enjoei",
+        "status": "partial",
+        "reasons": []
+      },
+      {
+        "source": "enjoei-ricardo-almeida",
+        "status": "partial",
+        "reasons": []
+      },
+      {
+        "source": "oled-monitores",
+        "status": "partial",
+        "reasons": []
+      }
+    ],
     "errors": []
   },
   "notification_sent_ids": [
@@ -757,7 +818,8 @@
           }
         }
       }
-    ]
+    ],
+    "revised_at": "2026-10-29T12:54:48.517Z"
   },
   "notification_archive": [
     {
