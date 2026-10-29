@@ -1,0 +1,89 @@
+{
+  "schema_version": 2,
+  "generated_at": "2026-10-29T11:01:08.668Z",
+  "coverage_status": {
+    "Enjoei:fullcount": {
+      "checked_at": "2026-10-29T11:01:08.668Z",
+      "last_success_at": "2026-10-29T11:01:08.668Z",
+      "state": "success",
+      "error": null
+    }
+  },
+  "run": {
+    "date": "2026-10-29",
+    "timezone": "UTC",
+    "id": "enjoei-fullcount",
+    "label": "Enjoei Jeans Fullcount 40",
+    "started_at": "2026-10-29T11:01:08.626Z",
+    "completed_at": "2026-10-29T11:01:08.668Z",
+    "partial": false,
+    "errors": [],
+    "scanned_count": 0,
+    "pages": 1,
+    "scheduled_coverage": [
+      "Enjoei:fullcount"
+    ],
+    "successful_coverage": [
+      "Enjoei:fullcount"
+    ],
+    "failed_coverage": [],
+    "configured_coverage": [
+      "Enjoei:fullcount"
+    ],
+    "detail_reads": 0,
+    "findings": {
+      "new_items": [],
+      "price_changes": [],
+      "active_count": 0,
+      "pending_count": 0
+    },
+    "quarantined_item_count": 0,
+    "operational": {
+      "status": "success",
+      "exit_code": 0,
+      "reasons": [],
+      "completed_terms": 1,
+      "incomplete_terms": 0,
+      "deferred_terms": 0
+    },
+    "collection_summary": {
+      "schema_version": 1,
+      "collected_at": "2026-10-29T11:01:08.668Z",
+      "execution": "success",
+      "issues": [],
+      "coverage": {
+        "status": "complete",
+        "scheduled": 1,
+        "completed": 1,
+        "incomplete": 0,
+        "deferred": 0,
+        "pending_descriptions": 0,
+        "pending_candidates": 0,
+        "pending_details": 0,
+        "heuristic_stops": []
+      },
+      "findings": {
+        "new_items": [],
+        "price_changes": [],
+        "active_count": 0,
+        "pending_count": 0,
+        "new_count": 0,
+        "price_count": 0
+      }
+    }
+  },
+  "filters": {
+    "brand": "Fullcount",
+    "material": "jeans/denim",
+    "department": "masculino",
+    "category": "calcas",
+    "size": "40",
+    "search_terms": [
+      "fullcount"
+    ],
+    "price_max_inclusive_brl": 350,
+    "search_url": "https://www.enjoei.com.br/fullcount/s?q=fullcount&st%5Bsw%5D=40&dep=masculino&cat=masculino-roupas&sub=masculino-roupas-calcas"
+  },
+  "items": [],
+  "pending_items": []
+}
