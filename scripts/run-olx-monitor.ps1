@@ -83,14 +83,20 @@ if ($ResumeAfterVerification) { $npmArgs += "--resume-after-verification" }
 
 Push-Location $root
 try {
-  & npm @npmArgs
-  if ($LASTEXITCODE -in @(2, 3)) {
+  # Windows PowerShell 5.1 must not turn a collector's stderr warning into a
+  # terminating exception before its expected partial/deferred code is read.
+  $nativeErrorPreference = $ErrorActionPreference
+  try {
+    $ErrorActionPreference = 'Continue'
+    & npm @npmArgs
     $collectionExit = $LASTEXITCODE
+  } finally { $ErrorActionPreference = $nativeErrorPreference }
+  if ($collectionExit -in @(2, 3)) {
     Write-Host "Coleta com cobertura parcial ou consultas adiadas; resultados preservados (codigo $collectionExit)."
     exit $collectionExit
   }
-  if ($LASTEXITCODE -ne 0) {
-    throw "Monitor OLX falhou com exit code $LASTEXITCODE."
+  if ($collectionExit -ne 0) {
+    throw "Monitor OLX falhou com exit code $collectionExit."
   }
 } finally {
   Pop-Location

@@ -137,3 +137,17 @@ test('ML wrapper releases shared mutex after success and failure in a continuing
     assert.match(output,/__ACQUIRED__True/,`Shared mutex leaked after ML exit (failure=${fail})`);
   }
 });
+
+test('OLX PowerShell wrapper preserves partial exit code when collector writes stderr',{skip:process.platform!=='win32'},async t=>{
+  const dir=await fs.mkdtemp(path.join(os.tmpdir(),'olx-partial-stderr-'));
+  t.after(()=>fs.rm(dir,{recursive:true,force:true}));
+  const quote=value=>`'${value.replaceAll("'","''")}'`;
+  await fs.mkdir(path.join(dir,'scripts'));
+  const wrapper=path.join(dir,'scripts','run-olx-monitor.ps1');
+  await fs.copyFile('scripts/run-olx-monitor.ps1',wrapper);
+  await fs.writeFile(path.join(dir,'scripts','start-chrome-debug.ps1'),'param([switch]$OlxProfile,[int]$Port,[string]$Url,[int]$WaitSeconds,[switch]$ForceCloseProfile,[switch]$Background)\n');
+  const host=path.join(dir,'host.ps1');
+  await fs.writeFile(host,`function global:Invoke-RestMethod { @{} }\nfunction global:npm { & ${quote(process.execPath)} -e "process.stderr.write('Coverage partial warning');process.exit(2)" }\n& ${quote(wrapper)} -Foreground\nWrite-Output ('__RESULT__'+$LASTEXITCODE)\nexit 0\n`);
+  const output=execFileSync('powershell.exe',['-NoProfile','-ExecutionPolicy','Bypass','-File',host],{encoding:'utf8',stdio:['pipe','pipe','pipe']});
+  assert.match(output,/__RESULT__2/);
+});

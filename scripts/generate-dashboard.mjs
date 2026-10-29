@@ -774,7 +774,8 @@ function buildHtml({ rounds, health, priceInsights, japaneseJeans, zegna, zegnaU
     const sources = round.sources ?? [];
     const revisionNotice = round.revised_at ? '<p class="hint">Resumo revisto com os dados salvos; o WhatsApp anterior não foi reenviado.</p>' : '';
     const limited = sources.filter(source => source.summary?.coverage?.status !== 'complete' || source.summary?.execution !== 'success').length;
-    return `<section><h2>${round.environment === 'ci' ? 'Enjoei no GitHub' : 'Coleta local'} · ${e(formatDateTimeBrt(new Date(round.completed_at)))}</h2>${revisionNotice}<p>${e(roundSummaryLine(round))} · ${limited} fonte(s) com limitações · WhatsApp: ${round.delivery?.whatsapp === 'sent' ? 'enviado' : 'não confirmado'}</p><ul>${sources.map(source => `<li>${e(collectionSummaryLine(source))}</li>`).join('')}</ul></section>`;
+    const deliveryLabel = { sent: 'enviado', skipped: 'não enviado', pending: 'pendente', failed: 'falhou' }[round.delivery?.whatsapp] ?? 'não confirmado';
+    return `<section><h2>${round.environment === 'ci' ? 'Enjoei no GitHub' : 'Coleta local'} · ${e(formatDateTimeBrt(new Date(round.completed_at)))}</h2>${revisionNotice}<p>${e(roundSummaryLine(round))} · ${limited} fonte(s) com limitações · WhatsApp: ${deliveryLabel}</p><ul>${sources.map(source => `<li>${e(collectionSummaryLine(source))}</li>`).join('')}</ul></section>`;
   }).join('')}</div></details>` : '';
   const collectionAlerts = collectionHealthAlerts(health);
   const collectionAlertHtml = collectionAlerts.length ? `<section class="collection-alert" role="status"><b>Coletas precisam de atenção</b><ul>${collectionAlerts.map(alert => `<li>${e(alert.message)}</li>`).join('')}</ul><p>A ausência de novidades depende da cobertura de cada fonte.</p></section>` : '';
