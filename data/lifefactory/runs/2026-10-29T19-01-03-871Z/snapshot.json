@@ -1,0 +1,177 @@
+{
+  "schema_version": 2,
+  "generated_at": "2026-10-29T19:01:03.871Z",
+  "coverage_status": {
+    "Enjoei:lifefactory": {
+      "checked_at": "2026-10-29T19:01:04.060Z",
+      "last_success_at": "2026-10-29T19:01:04.060Z",
+      "state": "success",
+      "error": null
+    },
+    "OLX:lifefactory": {
+      "checked_at": "2026-10-26T19:04:29.609Z",
+      "last_success_at": "2026-10-26T19:04:29.609Z",
+      "state": "success",
+      "error": null
+    }
+  },
+  "run": {
+    "date": "2026-10-29",
+    "timezone": "UTC",
+    "id": "lifefactory",
+    "label": "Lifefactory",
+    "started_at": "2026-10-29T19:01:03.871Z",
+    "completed_at": "2026-10-29T19:01:04.060Z",
+    "partial": false,
+    "errors": [],
+    "deferred_coverage": [],
+    "unattempted_coverage": [],
+    "scheduled_coverage": [
+      "Enjoei:lifefactory"
+    ],
+    "successful_coverage": [
+      "Enjoei:lifefactory"
+    ],
+    "failed_coverage": [],
+    "configured_coverage": [
+      "Enjoei:lifefactory",
+      "OLX:lifefactory"
+    ],
+    "findings": {
+      "new_items": [],
+      "price_changes": [],
+      "active_count": 1,
+      "pending_count": 0
+    },
+    "quarantined_item_count": 0,
+    "operational": {
+      "status": "success",
+      "exit_code": 0,
+      "reasons": [],
+      "completed_terms": 1,
+      "incomplete_terms": 0,
+      "deferred_terms": 0
+    },
+    "collection_summary": {
+      "schema_version": 1,
+      "collected_at": "2026-10-29T19:01:04.060Z",
+      "execution": "success",
+      "issues": [],
+      "coverage": {
+        "status": "complete",
+        "scheduled": 1,
+        "completed": 1,
+        "incomplete": 0,
+        "deferred": 0,
+        "pending_descriptions": 0,
+        "pending_candidates": 0,
+        "pending_details": 0,
+        "heuristic_stops": [],
+        "heuristic_reasons": {}
+      },
+      "findings": {
+        "new_items": [],
+        "price_changes": [],
+        "active_count": 1,
+        "pending_count": 0,
+        "new_count": 0,
+        "price_count": 0
+      }
+    }
+  },
+  "filters": {
+    "price_brl": {
+      "min": 25,
+      "max": 75
+    },
+    "size_ml": {
+      "min": 500,
+      "max": 1000
+    }
+  },
+  "items": [
+    {
+      "id": "enjoei-150535909",
+      "url": "https://www.enjoei.com.br/p/garrafa-lifefactory-preta-150535909",
+      "title": "garrafa lifefactory preta",
+      "source": "Enjoei",
+      "term": "lifefactory",
+      "price_brl": 49,
+      "store_name": "lauri",
+      "status": "active",
+      "first_seen": "2026-09-10",
+      "last_seen": "2026-10-29",
+      "out_of_scope_at": null,
+      "price_history": [
+        {
+          "at": "2026-09-10T19:00:08.290Z",
+          "price_brl": 70
+        },
+        {
+          "at": "2026-09-15T19:00:20.213Z",
+          "price_brl": 67
+        },
+        {
+          "at": "2026-09-20T19:00:14.485Z",
+          "price_brl": 64
+        },
+        {
+          "at": "2026-09-25T20:24:49.748Z",
+          "price_brl": 62
+        },
+        {
+          "at": "2026-09-30T19:42:44.257Z",
+          "price_brl": 59
+        },
+        {
+          "at": "2026-10-05T19:45:29.088Z",
+          "price_brl": 57
+        },
+        {
+          "at": "2026-10-10T19:01:43.401Z",
+          "price_brl": 54
+        },
+        {
+          "at": "2026-10-15T19:01:42.840Z",
+          "price_brl": 52
+        },
+        {
+          "at": "2026-10-20T19:02:06.017Z",
+          "price_brl": 50
+        },
+        {
+          "at": "2026-10-25T19:02:48.681Z",
+          "price_brl": 49
+        }
+      ]
+    },
+    {
+      "id": "enjoei-143172452",
+      "url": "https://www.enjoei.com.br/p/garrafa-life-factory-pink-500-ml-143172452",
+      "title": "garrafa life factory pink 500 ml",
+      "source": "Enjoei",
+      "term": "lifefactory",
+      "price_brl": 58,
+      "store_name": "Melissa",
+      "status": "not_seen",
+      "first_seen": "2026-06-04",
+      "last_seen": "2026-07-31",
+      "out_of_scope_at": null,
+      "price_history": [
+        {
+          "at": "2026-07-04T10:00:08.441Z",
+          "price_brl": 60
+        },
+        {
+          "at": "2026-07-31T12:34:03.916Z",
+          "price_brl": 58
+        }
+      ]
+    }
+  ],
+  "price_range_brl": {
+    "min": 25,
+    "max": 75
+  },
+  "source_blocks": {}
+}

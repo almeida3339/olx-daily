@@ -1,0 +1,71 @@
+{
+  "schema_version": 2,
+  "generated_at": "2026-10-29T19:01:03.928Z",
+  "coverage_status": {
+    "Enjoei:zegna": {
+      "checked_at": "2026-10-29T19:01:03.928Z",
+      "last_success_at": "2026-10-29T19:01:03.928Z",
+      "state": "success",
+      "error": null
+    }
+  },
+  "run": {
+    "date": "2026-10-29",
+    "timezone": "UTC",
+    "id": "enjoei-zegna",
+    "label": "Enjoei Calças Zegna 40",
+    "started_at": "2026-10-29T19:01:03.536Z",
+    "completed_at": "2026-10-29T19:01:03.928Z",
+    "partial": false,
+    "errors": [],
+    "scanned_count": 7,
+    "pages": 1,
+    "scheduled_coverage": [
+      "Enjoei:zegna"
+    ],
+    "successful_coverage": [
+      "Enjoei:zegna"
+    ],
+    "failed_coverage": [],
+    "configured_coverage": [
+      "Enjoei:zegna"
+    ],
+    "quarantined_item_count": 0,
+    "operational": {
+      "status": "success",
+      "exit_code": 0,
+      "reasons": [],
+      "completed_terms": 1,
+      "incomplete_terms": 0,
+      "deferred_terms": 0
+    },
+    "collection_summary": {
+      "schema_version": 1,
+      "collected_at": "2026-10-29T19:01:03.928Z",
+      "execution": "success",
+      "issues": [],
+      "coverage": {
+        "status": "complete",
+        "scheduled": 1,
+        "completed": 1,
+        "incomplete": 0,
+        "deferred": 0,
+        "pending_descriptions": 0,
+        "pending_candidates": 0,
+        "pending_details": 0,
+        "heuristic_stops": [],
+        "heuristic_reasons": {}
+      },
+      "findings": null
+    }
+  },
+  "filters": {
+    "brand": "Zegna",
+    "department": "masculino",
+    "category": "calcas",
+    "size": "40",
+    "price_max_exclusive_brl": 250,
+    "search_url": "https://www.enjoei.com.br/zegna/s?q=zegna&st%5Bsw%5D=40&dep=masculino&cat=masculino-roupas&sub=masculino-roupas-calcas"
+  },
+  "items": []
+}
