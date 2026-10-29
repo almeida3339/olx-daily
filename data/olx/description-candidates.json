@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "round": "2026-10-29T12:58:34.202Z",
+  "round": "2026-10-29T19:00:30.614Z",
   "queue": [
     {
       "key": "1538622677",
@@ -65,7 +65,17 @@
         "family:helios-neo-16"
       ],
       "first_observed_at": "2026-10-24T10:02:50.169Z",
-      "last_observed_at": "2026-10-27T10:05:40.930Z"
+      "last_observed_at": "2026-10-27T10:05:40.930Z",
+      "last_detail_attempt_at": "2026-10-29T19:02:31.128Z",
+      "detail_attempts": 1,
+      "last_reasons": [
+        "Descrição do anúncio não localizada",
+        "Preço integral do anúncio não localizado",
+        "Especificação não confirmada: RAM",
+        "Especificação não confirmada: GPU",
+        "CPU não confirmada no anúncio"
+      ],
+      "next_retry_at": "2026-10-30T01:02:31.128Z"
     },
     {
       "key": "1546298970",
@@ -84,7 +94,15 @@
         "family:helios-neo-16"
       ],
       "first_observed_at": "2026-10-24T10:02:50.169Z",
-      "last_observed_at": "2026-10-27T10:05:40.933Z"
+      "last_observed_at": "2026-10-27T10:05:40.933Z",
+      "last_detail_attempt_at": "2026-10-29T19:02:43.228Z",
+      "detail_attempts": 1,
+      "last_reasons": [
+        "Especificação não confirmada: RAM",
+        "Especificação não confirmada: GPU",
+        "CPU não confirmada no anúncio"
+      ],
+      "next_retry_at": "2026-10-30T01:02:43.228Z"
     },
     {
       "key": "1547281460",
@@ -140,25 +158,6 @@
       "next_retry_at": "2026-10-29T19:02:02.741Z"
     },
     {
-      "key": "1542919542",
-      "card": {
-        "title": "Notebook Gamer Predator Helios Neo 16",
-        "url": "https://pe.olx.com.br/grande-recife/informatica/notebooks/notebook-gamer-predator-helios-neo-16-1542919542",
-        "price_brl": 6500,
-        "location": "Recife, Pina",
-        "text": "",
-        "ram_gb": null,
-        "storage_gb": null,
-        "cpu_term": "family:helios-neo-16",
-        "description_discovery": true
-      },
-      "terms": [
-        "family:helios-neo-16"
-      ],
-      "first_observed_at": "2026-10-27T10:04:52.418Z",
-      "last_observed_at": "2026-10-27T10:05:40.941Z"
-    },
-    {
       "key": "1547853164",
       "card": {
         "title": "Notebook Gamer Predator Helios Neo 16",
@@ -175,7 +174,13 @@
         "family:helios-neo-16"
       ],
       "first_observed_at": "2026-10-27T10:04:52.418Z",
-      "last_observed_at": "2026-10-27T10:05:40.943Z"
+      "last_observed_at": "2026-10-27T10:05:40.943Z",
+      "last_detail_attempt_at": "2026-10-29T19:03:19.842Z",
+      "detail_attempts": 1,
+      "last_reasons": [
+        "não consegui ler o corpo do anúncio"
+      ],
+      "next_retry_at": "2026-10-30T01:03:19.842Z"
     },
     {
       "key": "1495856782",
@@ -218,12 +223,12 @@
       ],
       "first_observed_at": "2026-10-29T13:00:02.524Z",
       "last_observed_at": "2026-10-29T13:00:02.524Z",
-      "last_detail_attempt_at": "2026-10-29T13:00:04.740Z",
-      "detail_attempts": 1,
+      "last_detail_attempt_at": "2026-10-29T19:03:21.662Z",
+      "detail_attempts": 2,
       "last_reasons": [
         "Especificação divergente: GPU"
       ],
-      "next_retry_at": "2026-10-29T19:00:04.740Z"
+      "next_retry_at": "2026-10-30T19:03:21.662Z"
     },
     {
       "key": "1542003264",
@@ -248,6 +253,83 @@
         "Especificação não confirmada: RAM"
       ],
       "next_retry_at": "2026-10-29T19:00:16.102Z"
+    },
+    {
+      "key": "1531177640",
+      "card": {
+        "title": "Notebook Gamer - Avell A65 ion",
+        "url": "https://rs.olx.com.br/regioes-de-porto-alegre-torres-e-santa-cruz-do-sul/informatica/notebooks/notebook-gamer-avell-a65-ion-1531177640",
+        "price_brl": 7400,
+        "location": "Porto Alegre, Passo da Areia",
+        "text": "Notebook Gamer - Avell A65 ion\nFrete grátis\nAté 10x sem juros\n\nR$ 7.950\n\nR$ 7.400\nem até 10x de R$ 740,00 sem juros\n\nPorto Alegre, Passo da Areia\n\n5 de out, 13:14\n\nSlide 1\nSlide 2\nSlide 3\nSlide 4\nSlide 5\nSlide 6\nAdicionar aos favoritos",
+        "ram_gb": null,
+        "storage_gb": null,
+        "cpu_term": "family:avell-a65",
+        "description_discovery": true
+      },
+      "terms": [
+        "family:avell-a65"
+      ],
+      "first_observed_at": "2026-10-29T19:01:30.408Z",
+      "last_observed_at": "2026-10-29T19:01:30.408Z",
+      "last_detail_attempt_at": "2026-10-29T19:01:55.336Z",
+      "detail_attempts": 1,
+      "last_reasons": [
+        "Especificação não confirmada: GPU",
+        "CPU não confirmada no anúncio"
+      ],
+      "next_retry_at": "2026-10-30T01:01:55.336Z"
+    },
+    {
+      "key": "1545040273",
+      "card": {
+        "title": "Notebook Gamer Avell A65 Ion I9 32gb Rtx 4060",
+        "url": "https://mg.olx.com.br/regiao-de-pocos-de-caldas-e-varginha/informatica/notebooks/notebook-gamer-avell-a65-ion-i9-32gb-rtx-4060-1545040273",
+        "price_brl": 8000,
+        "location": "Varginha, Pinheiros",
+        "text": "Notebook Gamer Avell A65 Ion I9 32gb Rtx 4060\nFrete grátis\nAté 10x sem juros\nR$ 8.000\nem até 10x de R$ 800,00 sem juros\n\nVarginha, Pinheiros\n\n17 de out, 15:17\n\nSlide 1\nSlide 2\nSlide 3\nSlide 4\nAdicionar aos favoritos",
+        "ram_gb": null,
+        "storage_gb": null,
+        "cpu_term": "family:avell-a65",
+        "description_discovery": true
+      },
+      "terms": [
+        "family:avell-a65"
+      ],
+      "first_observed_at": "2026-10-29T19:01:30.408Z",
+      "last_observed_at": "2026-10-29T19:01:30.408Z",
+      "last_detail_attempt_at": "2026-10-29T19:01:43.945Z",
+      "detail_attempts": 1,
+      "last_reasons": [
+        "Especificação não confirmada: RAM",
+        "CPU não confirmada no anúncio"
+      ],
+      "next_retry_at": "2026-10-30T01:01:43.945Z"
+    },
+    {
+      "key": "1548369848",
+      "card": {
+        "title": "Avell I9 notebook",
+        "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/avell-i9-notebook-1548369848",
+        "price_brl": 8000,
+        "location": "São Paulo, Jardim das Vertentes",
+        "text": "",
+        "ram_gb": null,
+        "storage_gb": null,
+        "cpu_term": "family:avell-a65",
+        "description_discovery": true
+      },
+      "terms": [
+        "family:avell-a65"
+      ],
+      "first_observed_at": "2026-10-29T19:01:30.408Z",
+      "last_observed_at": "2026-10-29T19:01:30.408Z",
+      "last_detail_attempt_at": "2026-10-29T19:02:07.410Z",
+      "detail_attempts": 1,
+      "last_reasons": [
+        "CPU não confirmada no anúncio"
+      ],
+      "next_retry_at": "2026-10-30T01:02:07.410Z"
     }
   ],
   "cache": [
@@ -1607,60 +1689,6 @@
       }
     },
     {
-      "key": "1448456884",
-      "title": "Notebook Gamer Avell Storm 470 Black I9-14900HX Rtx 4070  32gb de ram  1,5TB SSD Nvme",
-      "price_brl": 8900,
-      "checked_at": "2026-10-29T13:00:04.740Z",
-      "item": {
-        "id": "1448456884",
-        "url": "https://ce.olx.com.br/fortaleza-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-470-black-i9-14900hx-rtx-4070-32gb-de-ram-1-5tb-ssd-nvme-1448456884",
-        "title": "Notebook Gamer Avell Storm 470 Black I9-14900HX Rtx 4070  32gb de ram  1,5TB SSD Nvme",
-        "cpu_term": "14900hx",
-        "search_terms": [
-          "14900hx"
-        ],
-        "description_discovery": false,
-        "price_brl": 8900,
-        "ram_gb": 32,
-        "storage_gb": 1536,
-        "gpu": "RTX 4060",
-        "location": null,
-        "condition": "Usado - Excelente",
-        "status": "active",
-        "first_seen": null,
-        "last_seen": null,
-        "notes": null,
-        "desc_checked": true,
-        "validation": {
-          "version": 2,
-          "state": "pending",
-          "checked_at": "2026-10-29T13:00:04.738Z",
-          "reasons": [
-            "Especificação divergente: GPU"
-          ],
-          "listing_price_brl": 8900,
-          "detail_price_brl": 8900,
-          "visible_price_brl": null,
-          "structured_price_brl": 8900,
-          "title_specs": {
-            "ram_gb": null,
-            "storage_gb": 1536,
-            "gpu": "RTX 4070"
-          },
-          "description_specs": {
-            "ram_gb": 32,
-            "storage_gb": 1536,
-            "gpu": "RTX 4060"
-          },
-          "cpu_confirmed": true,
-          "description_checked": true
-        },
-        "description_evidence": "GeForce® RTX 4060 (8GB GDDR6)Intel® Core? i9-14900HX (36 MB Intel® Smart Cache, 2.2 GHz, Turbo Max 5.8 GHz)32GB [2x 16GB - Dual Channel] Memória DDR5 (5600 MHZ)SSD M.2 NVME 1,5 TB - Geração 4 - [ 5.000 MB/s ]16\" QHD WVA (2560x1600p) - 240Hz / Matte / Contraste: 1300:1 / Brilho 500 cd/m²Original Windows 11 ProGarantia de 12 meses Loja",
-        "detail_title": "Notebook Gamer Avell Storm 470 Black I9-14900HX Rtx 4070  32gb de ram  1,5TB SSD Nvme",
-        "configuration_warnings": []
-      }
-    },
-    {
       "key": "1542003264",
       "title": "Laptop Predator Helios Neo intel® core i9-14900hx com rtx4070",
       "price_brl": 9400,
@@ -2000,19 +2028,455 @@
           "Armazenamento não informado"
         ]
       }
+    },
+    {
+      "key": "1545040273",
+      "title": "Notebook Gamer Avell A65 Ion I9 32gb Rtx 4060",
+      "price_brl": 8000,
+      "checked_at": "2026-10-29T19:01:43.945Z",
+      "item": {
+        "id": "1545040273",
+        "url": "https://mg.olx.com.br/regiao-de-pocos-de-caldas-e-varginha/informatica/notebooks/notebook-gamer-avell-a65-ion-i9-32gb-rtx-4060-1545040273",
+        "title": "Notebook Gamer Avell A65 Ion I9 32gb Rtx 4060",
+        "cpu_term": "family:avell-a65",
+        "search_terms": [
+          "family:avell-a65"
+        ],
+        "description_discovery": true,
+        "price_brl": 8000,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": "RTX 4060",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "pending",
+          "checked_at": "2026-10-29T19:01:43.940Z",
+          "reasons": [
+            "Especificação não confirmada: RAM",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 8000,
+          "detail_price_brl": 8000,
+          "visible_price_brl": null,
+          "structured_price_brl": 8000,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "description_evidence": "Notebook Avell com menos de 1 ano de usoMotivo da troca: Migrei para MAC",
+        "detail_title": "Notebook Gamer Avell A65 Ion I9 32gb Rtx 4060 ",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ]
+      }
+    },
+    {
+      "key": "1531177640",
+      "title": "Notebook Gamer - Avell A65 ion",
+      "price_brl": 7400,
+      "checked_at": "2026-10-29T19:01:55.336Z",
+      "item": {
+        "id": "1531177640",
+        "url": "https://rs.olx.com.br/regioes-de-porto-alegre-torres-e-santa-cruz-do-sul/informatica/notebooks/notebook-gamer-avell-a65-ion-1531177640",
+        "title": "Notebook Gamer - Avell A65 ion",
+        "cpu_term": "family:avell-a65",
+        "search_terms": [
+          "family:avell-a65"
+        ],
+        "description_discovery": true,
+        "price_brl": 7400,
+        "ram_gb": 32,
+        "storage_gb": null,
+        "gpu": null,
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "pending",
+          "checked_at": "2026-10-29T19:01:55.334Z",
+          "reasons": [
+            "Especificação não confirmada: GPU",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 7400,
+          "detail_price_brl": 7400,
+          "visible_price_brl": null,
+          "structured_price_brl": 7400,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": 32,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "description_evidence": "Notebook Gamer Avell A65 IonPlaca de Vídeo: GeForce RTX 4060Processador: Intel i9 12900HXMemória RAM: 32GB DDR5 (2x16GB)Armazenamento: SSD GEN4 1TBSistema: Windows 11 HSL Tela: 16''Usado por 2 anos e meio e em perfeitas condições.",
+        "detail_title": "Notebook Gamer - Avell A65 ion",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ]
+      }
+    },
+    {
+      "key": "1548369848",
+      "title": "Avell I9 notebook",
+      "price_brl": 8000,
+      "checked_at": "2026-10-29T19:02:07.410Z",
+      "item": {
+        "id": "1548369848",
+        "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/avell-i9-notebook-1548369848",
+        "title": "Avell I9 notebook",
+        "cpu_term": "family:avell-a65",
+        "search_terms": [
+          "family:avell-a65"
+        ],
+        "description_discovery": true,
+        "price_brl": 8000,
+        "ram_gb": 32,
+        "storage_gb": null,
+        "gpu": "RTX 4060",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "pending",
+          "checked_at": "2026-10-29T19:02:07.408Z",
+          "reasons": [
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 8000,
+          "detail_price_brl": 8000,
+          "visible_price_brl": null,
+          "structured_price_brl": 8000,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": 32,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "description_evidence": "Eleve sua experiência com o Avell A65 ION! Equipado com processador Intel Core i9 de última geração e a poderosa placa de vídeo GeForce RTX 4060, este notebook oferece performance excepcional para jogos e trabalho. Desfrute de 32GB de RAM DDR5 e um SSD NVMe de 512GB para agilidade e velocidade. A tela WQXGA de 16 polegadas com alta taxa de atualização proporciona imagens nítidas e fluidas.",
+        "detail_title": "Avell I9 notebook ",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ]
+      }
+    },
+    {
+      "key": "1542919542",
+      "title": "Notebook Gamer Predator Helios Neo 16",
+      "price_brl": 6500,
+      "checked_at": "2026-10-29T19:02:19.145Z",
+      "item": {
+        "id": "1542919542",
+        "url": "https://pe.olx.com.br/grande-recife/informatica/notebooks/notebook-gamer-predator-helios-neo-16-1542919542",
+        "title": "Notebook Gamer Predator Helios Neo 16",
+        "cpu_term": "family:helios-neo-16",
+        "search_terms": [
+          "family:helios-neo-16"
+        ],
+        "description_discovery": true,
+        "price_brl": 6500,
+        "ram_gb": 16,
+        "storage_gb": null,
+        "gpu": "RTX 4060",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-10-29T19:02:19.144Z",
+          "reasons": [
+            "RAM abaixo do mínimo exigido",
+            "RAM abaixo do mínimo de 32 GB",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 6500,
+          "detail_price_brl": 6500,
+          "visible_price_brl": null,
+          "structured_price_brl": 6500,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": 16,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "description_evidence": "APENAS PARA RETIRAR EM MÃOS Processador Intel Core i7-13650HX (13ª geração)Placa de vídeo NVIDIA GeForce RTX 4060 8GB GDDR6Memória RAM: 16GB DDR5 4800MHz m XPGArmazenamento: 520 NVMeTela 16\" 165 mzWindows 11 Home",
+        "detail_title": "Notebook Gamer Predator Helios Neo 16",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ]
+      }
+    },
+    {
+      "key": "1538675750",
+      "title": "ACER PREDATOR HELIOS NEO",
+      "price_brl": 6700,
+      "checked_at": "2026-10-29T19:02:31.128Z",
+      "item": {
+        "id": "1538675750",
+        "url": "https://go.olx.com.br/grande-goiania-e-anapolis/informatica/notebooks/acer-predator-helios-neo-1538675750",
+        "title": "ACER PREDATOR HELIOS NEO",
+        "cpu_term": "family:helios-neo-16",
+        "search_terms": [
+          "family:helios-neo-16"
+        ],
+        "description_discovery": true,
+        "price_brl": 6700,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": null,
+        "location": null,
+        "condition": null,
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": false,
+        "validation": {
+          "version": 2,
+          "state": "pending",
+          "checked_at": "2026-10-29T19:02:31.126Z",
+          "reasons": [
+            "Descrição do anúncio não localizada",
+            "Preço integral do anúncio não localizado",
+            "Especificação não confirmada: RAM",
+            "Especificação não confirmada: GPU",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 6700,
+          "detail_price_brl": null,
+          "visible_price_brl": null,
+          "structured_price_brl": null,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "cpu_confirmed": false,
+          "description_checked": false
+        },
+        "description_evidence": "",
+        "detail_title": "",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ]
+      }
+    },
+    {
+      "key": "1546298970",
+      "title": "Helios neo 16 predator",
+      "price_brl": 7300,
+      "checked_at": "2026-10-29T19:02:43.228Z",
+      "item": {
+        "id": "1546298970",
+        "url": "https://ba.olx.com.br/grande-salvador/informatica/notebooks/helios-neo-16-predator-1546298970",
+        "title": "Helios neo 16 predator",
+        "cpu_term": "family:helios-neo-16",
+        "search_terms": [
+          "family:helios-neo-16"
+        ],
+        "description_discovery": true,
+        "price_brl": 7300,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": null,
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "pending",
+          "checked_at": "2026-10-29T19:02:43.227Z",
+          "reasons": [
+            "Especificação não confirmada: RAM",
+            "Especificação não confirmada: GPU",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 7300,
+          "detail_price_brl": 7300,
+          "visible_price_brl": null,
+          "structured_price_brl": 7300,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "description_evidence": "Eleve sua experiência gamer com o Notebook Helios Neo 16 Predator! Desempenho excepcional para os jogos mais exigentes e multitarefas. Design moderno e alta performance para você dominar em todas as batalhas.",
+        "detail_title": "Helios neo 16 predator ",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ]
+      }
+    },
+    {
+      "key": "1547853164",
+      "title": "Notebook Gamer Predator Helios Neo 16",
+      "price_brl": 7389,
+      "checked_at": "2026-10-29T19:03:19.842Z",
+      "item": {
+        "id": "1547853164",
+        "url": "https://pi.olx.com.br/regiao-de-teresina-e-parnaiba/informatica/notebooks/notebook-gamer-predator-helios-neo-16-1547853164",
+        "title": "Notebook Gamer Predator Helios Neo 16",
+        "cpu_term": "family:helios-neo-16",
+        "search_terms": [
+          "family:helios-neo-16"
+        ],
+        "description_discovery": true,
+        "price_brl": 7389,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": null,
+        "location": "Porto",
+        "condition": null,
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": false,
+        "validation": {
+          "version": 2,
+          "state": "pending",
+          "checked_at": "2026-10-29T19:03:19.842Z",
+          "reasons": [
+            "não consegui ler o corpo do anúncio"
+          ]
+        }
+      }
+    },
+    {
+      "key": "1448456884",
+      "title": "Notebook Gamer Avell Storm 470 Black I9-14900HX Rtx 4070  32gb de ram  1,5TB SSD Nvme",
+      "price_brl": 8900,
+      "checked_at": "2026-10-29T19:03:21.662Z",
+      "item": {
+        "id": "1448456884",
+        "url": "https://ce.olx.com.br/fortaleza-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-470-black-i9-14900hx-rtx-4070-32gb-de-ram-1-5tb-ssd-nvme-1448456884",
+        "title": "Notebook Gamer Avell Storm 470 Black I9-14900HX Rtx 4070  32gb de ram  1,5TB SSD Nvme",
+        "cpu_term": "14900hx",
+        "search_terms": [
+          "14900hx"
+        ],
+        "description_discovery": true,
+        "price_brl": 8900,
+        "ram_gb": 32,
+        "storage_gb": 1536,
+        "gpu": "RTX 4060",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "pending",
+          "checked_at": "2026-10-29T19:03:21.660Z",
+          "reasons": [
+            "Especificação divergente: GPU"
+          ],
+          "listing_price_brl": 8900,
+          "detail_price_brl": 8900,
+          "visible_price_brl": null,
+          "structured_price_brl": 8900,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": 1536,
+            "gpu": "RTX 4070"
+          },
+          "description_specs": {
+            "ram_gb": 32,
+            "storage_gb": 1536,
+            "gpu": "RTX 4060"
+          },
+          "cpu_confirmed": true,
+          "description_checked": true
+        },
+        "description_evidence": "GeForce® RTX 4060 (8GB GDDR6)Intel® Core? i9-14900HX (36 MB Intel® Smart Cache, 2.2 GHz, Turbo Max 5.8 GHz)32GB [2x 16GB - Dual Channel] Memória DDR5 (5600 MHZ)SSD M.2 NVME 1,5 TB - Geração 4 - [ 5.000 MB/s ]16\" QHD WVA (2560x1600p) - 240Hz / Matte / Contraste: 1300:1 / Brilho 500 cd/m²Original Windows 11 ProGarantia de 12 meses Loja",
+        "detail_title": "Notebook Gamer Avell Storm 470 Black I9-14900HX Rtx 4070  32gb de ram  1,5TB SSD Nvme",
+        "configuration_warnings": []
+      }
     }
   ],
   "metrics": {
-    "extra_details": 5,
-    "total_details": 11,
-    "detail_ms": 6615,
+    "extra_details": 8,
+    "total_details": 8,
+    "detail_ms": 36029,
     "recovered_validated": 0,
-    "cache_hits": 4,
+    "cache_hits": 0,
     "by_term": {
+      "family:avell-a65": 3,
       "family:helios-neo-16": 4,
-      "family:avell-storm": 1
+      "14900hx": 1
     },
-    "new_details": 10,
+    "new_details": 7,
     "retry_details": 1
   }
 }

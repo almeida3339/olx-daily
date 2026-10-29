@@ -1,0 +1,106 @@
+{
+  "schema_version": 2,
+  "generated_at": "2026-10-29T19:03:26.561Z",
+  "coverage_status": {
+    "Enjoei:BA96-08462A": {
+      "checked_at": "2026-10-29T19:03:27.804Z",
+      "last_success_at": "2026-10-29T19:03:27.804Z",
+      "state": "success",
+      "error": null
+    },
+    "OLX:BA96-08462A": {
+      "checked_at": "2026-10-26T19:04:41.746Z",
+      "last_success_at": "2026-10-26T19:04:41.746Z",
+      "state": "success",
+      "error": null
+    }
+  },
+  "run": {
+    "date": "2026-10-29",
+    "timezone": "America/Sao_Paulo",
+    "id": "tela-galaxy-book3",
+    "label": "Tela Galaxy Book3",
+    "started_at": "2026-10-29T19:03:26.561Z",
+    "completed_at": "2026-10-29T19:03:27.804Z",
+    "partial": true,
+    "errors": [],
+    "deferred_coverage": [
+      "OLX:BA96-08462A"
+    ],
+    "unattempted_coverage": [
+      "OLX:BA96-08462A"
+    ],
+    "scheduled_coverage": [
+      "Enjoei:BA96-08462A"
+    ],
+    "successful_coverage": [
+      "Enjoei:BA96-08462A"
+    ],
+    "failed_coverage": [],
+    "configured_coverage": [
+      "Enjoei:BA96-08462A",
+      "OLX:BA96-08462A"
+    ],
+    "findings": {
+      "new_items": [],
+      "price_changes": [],
+      "active_count": 0,
+      "pending_count": 0
+    },
+    "quarantined_item_count": 0,
+    "operational": {
+      "status": "deferred",
+      "exit_code": 3,
+      "reasons": [
+        "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+      ],
+      "completed_terms": 1,
+      "incomplete_terms": 0,
+      "deferred_terms": 1
+    },
+    "collection_summary": {
+      "schema_version": 1,
+      "collected_at": "2026-10-29T19:03:27.804Z",
+      "execution": "success",
+      "issues": [
+        "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+      ],
+      "coverage": {
+        "status": "deferred",
+        "scheduled": 1,
+        "completed": 1,
+        "incomplete": 0,
+        "deferred": 1,
+        "pending_descriptions": 0,
+        "pending_candidates": 0,
+        "pending_details": 0,
+        "heuristic_stops": [],
+        "heuristic_reasons": {}
+      },
+      "findings": {
+        "new_items": [],
+        "price_changes": [],
+        "active_count": 0,
+        "pending_count": 0,
+        "new_count": 0,
+        "price_count": 0
+      }
+    }
+  },
+  "filters": {
+    "price_brl": {
+      "min": 0,
+      "max": 1000
+    },
+    "size_ml": {
+      "min": null,
+      "max": null
+    }
+  },
+  "items": [],
+  "price_range_brl": {
+    "min": 0,
+    "max": 1000
+  },
+  "source_blocks": {}
+}
