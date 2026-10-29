@@ -33,7 +33,10 @@ function Enter-LocalPublisher {
     } catch { Write-Host 'Marcador de ultima publicacao invalido; seguindo com o disparo.' }
   }
   $hash = [System.BitConverter]::ToString([System.Security.Cryptography.SHA256]::Create().ComputeHash([System.Text.Encoding]::UTF8.GetBytes($Root.ToLowerInvariant()))).Replace('-', '')
-  $mutex = [System.Threading.Mutex]::new($false, "Local\OlxDailyPublisher-$hash")
+  # v1 could remain owned by an idle interactive ML terminal after its script
+  # finished. Both publishers now use v2 and always release it in finally.
+  # BusyCheck still protects collectors started with the previous protocol.
+  $mutex = [System.Threading.Mutex]::new($false, "Local\OlxDailyPublisher-v2-$hash")
   $deadline = (Get-Date).AddSeconds([math]::Max(0, $WaitSeconds))
   try {
     $waitingRecorded = $false

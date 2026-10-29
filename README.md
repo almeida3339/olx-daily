@@ -693,6 +693,8 @@ Terminal, painel e WhatsApp compartilham os totais da rodada: execução técnic
 
 O disparo local inicia o transcript antes de verificar concorrência ou cooldown. Cada tentativa também grava `logs/local-attempt-<id>.json`, com motivo, etapa e resultado. Um publicador ocupado é aguardado por até 180 segundos (`-PublisherWaitSeconds`); se continuar ocupado, o script sai com código 1 para permitir as tentativas já configuradas no Agendador. Uma publicação recente gera um encerramento registrado por cooldown. O marcador é reconferido depois da espera para evitar repetir uma rodada que acabou de concluir. `-Force` ignora somente o cooldown do publicador, mantendo as pausas e os limites dos coletores.
 
+Os publicadores OLX e ML usam o mesmo mutex v2 e o liberam em `finally`, inclusive nas saídas antecipadas e com erro. O protocolo antigo podia ficar preso numa sessão interativa do PowerShell depois da conclusão do ML. A migração mantém a conferência de coletores ativos; uma janela antiga ociosa não precisa ser fechada.
+
 O catálogo OLED inclui AOC Q27G4ZDR, confirmado na [especificação oficial](https://www.aoc.com/ca-en/gaming/monitors/q27g4zdr). A identificação do modelo não dispensa a conferência de descrição, preço integral, identidade do anúncio e defeitos.
 
 No Mercado Livre, `--complete-coverage` percorre os termos configurados em lotes limitados, incluindo OLED em até seis termos por lote. Cada termo é tentado uma vez por execução; resultados parciais são preservados, e um novo bloqueio ou exigência de login interrompe a fila.

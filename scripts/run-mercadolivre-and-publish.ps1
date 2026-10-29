@@ -54,10 +54,11 @@ if ($otherPublisher) {
   Write-Host 'Outra coleta/publicacao esta em andamento. Aguarde sua conclusao antes de iniciar o ML.' -ForegroundColor Yellow
   exit 2
 }
-$mutexHash = [System.BitConverter]::ToString([System.Security.Cryptography.SHA256]::Create().ComputeHash([System.Text.Encoding]::UTF8.GetBytes($root.ToLowerInvariant()))).Replace('-', '')
-$publisherMutex = [System.Threading.Mutex]::new($false, "Local\OlxDailyPublisher-$mutexHash")
-try { $publisherAcquired = $publisherMutex.WaitOne(0) } catch [System.Threading.AbandonedMutexException] { $publisherAcquired = $true }
-if (-not $publisherAcquired) { $publisherMutex.Dispose(); Write-Host 'Publicador ocupado. Aguarde a conclusao da outra rodada.'; exit 2 }
+. (Join-Path $PSScriptRoot 'lib\local-publisher.ps1')
+$guard = Enter-LocalPublisher -Root $root -Marker (Join-Path $root 'logs\unused-ml-cooldown') -Force -WaitSeconds 0
+if (-not $guard.acquired) { Write-Host $guard.reason; exit 2 }
+$publisherMutex = $guard.mutex
+try {
 Save-LocalChanges
 
 # Guard anti-rebase-preso (uma rodada anterior pode ter morrido no meio de um rebase).
@@ -166,3 +167,9 @@ for ($attempt = 1; $attempt -le 4; $attempt++) {
   if (Test-GitStagedChanges) { git commit --amend --no-edit | Out-Null }
 }
 Fail "git push falhou apos 4 tentativas."
+} finally {
+  try { Restore-LocalChanges } finally {
+    $publisherMutex.ReleaseMutex()
+    $publisherMutex.Dispose()
+  }
+}

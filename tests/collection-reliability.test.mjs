@@ -118,3 +118,22 @@ test('actual local wrapper writes transcript and structured attempt even on cool
   assert.equal(attempt.status,'skipped'); assert.match(attempt.reason,/Cooldown/);
   assert.equal(attempt.published,false);
 });
+
+test('ML wrapper releases shared mutex after success and failure in a continuing PowerShell host',{skip:process.platform!=='win32'},async t=>{
+  const dir=await fs.mkdtemp(path.join(os.tmpdir(),'ml-publisher-release-'));
+  t.after(()=>fs.rm(dir,{recursive:true,force:true}));
+  const quote=value=>`'${value.replaceAll("'","''")}'`;
+  await fs.mkdir(path.join(dir,'scripts','lib'),{recursive:true});
+  await fs.mkdir(path.join(dir,'.git'));
+  const wrapper=path.join(dir,'scripts','run-mercadolivre-and-publish.ps1');
+  await fs.copyFile('scripts/run-mercadolivre-and-publish.ps1',wrapper);
+  for(const name of ['local-publisher.ps1','publication-git.ps1']) await fs.copyFile(`scripts/lib/${name}`,path.join(dir,'scripts','lib',name));
+  const probe=path.join(dir,'probe.ps1');
+  await fs.writeFile(probe,`. ${quote(path.join(dir,'scripts','lib','local-publisher.ps1'))}\n$r=Enter-LocalPublisher -Root ${quote(dir)} -Marker 'unused' -Force -WaitSeconds 0 -BusyCheck {$false}\nWrite-Output ('__ACQUIRED__'+$r.acquired)\nif($r.acquired){$r.mutex.ReleaseMutex();$r.mutex.Dispose()}\n`);
+  const host=path.join(dir,'host.ps1');
+  await fs.writeFile(host,`function global:git { $global:LASTEXITCODE=0; if($args[0] -eq 'rev-parse'){ ${quote(path.join(dir,'.git'))} } }\nfunction global:node { $global:LASTEXITCODE=0; if($env:PROBE_FAIL -eq '1' -and [string]$args[0] -match 'monitor-mercadolivre-all'){ $global:LASTEXITCODE=1 } }\n& ${quote(wrapper)} -NoPush\n& powershell.exe -NoProfile -ExecutionPolicy Bypass -File ${quote(probe)}\n`);
+  for(const fail of ['0','1']) {
+    const output=execFileSync('powershell.exe',['-NoProfile','-ExecutionPolicy','Bypass','-File',host],{encoding:'utf8',env:{...process.env,PROBE_FAIL:fail}});
+    assert.match(output,/__ACQUIRED__True/,`Shared mutex leaked after ML exit (failure=${fail})`);
+  }
+});
