@@ -500,7 +500,7 @@ async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openD
   const waiting = listingOnly ? [] : descriptionQueue.pending(cpuTerm);
   // Reserve at most two of the existing item slots; no additional scrolling.
   const reserveSlots = Math.min(2, waiting.length, maxCards);
-  const toProcess = [...matches.slice(0, maxCards - reserveSlots), ...waiting, ...matches.slice(maxCards - reserveSlots)];
+  const toProcess = descriptionQueue.prioritize([...matches.slice(0, maxCards - reserveSlots), ...waiting, ...matches.slice(maxCards - reserveSlots)]);
   const items = [], seen = new Set();
   items.listing_incomplete = Boolean(cards.listing_incomplete);
   items.listing_limit=maxCards;

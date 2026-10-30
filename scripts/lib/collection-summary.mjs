@@ -86,3 +86,14 @@ export function collectionOutcome(source) {
     completed_terms: coverage.completed ?? 0, incomplete_terms: coverage.incomplete ?? 0,
     deferred_terms: coverage.deferred ?? 0, pending_candidates: coverage.pending_candidates ?? 0, reasons: issues };
 }
+
+export const LEGACY_OLX_HEALTH_ERROR = 'OLX Notebooks: coleta ausente, desatualizada ou com falha; ausência de alertas não significa ausência de ofertas.';
+export function reconcileRecordedHealthErrors(round, errors = []) {
+  const source = round.sources?.find(source => source.id === 'olx')?.summary;
+  const collected = Date.parse(source?.collected_at ?? ''), start = Date.parse(round.started_at ?? ''), end = Date.parse(round.completed_at ?? '');
+  const recentSuccessfulCollection = source?.execution === 'success' && Number.isFinite(start) && Number.isFinite(end)
+    && collected >= start && collected <= end;
+  // Remove only the generic health escalation contradicted by this very round.
+  // Transport, authentication, block and missing-report errors remain intact.
+  return recentSuccessfulCollection ? errors.filter(error => error !== LEGACY_OLX_HEALTH_ERROR) : [...errors];
+}

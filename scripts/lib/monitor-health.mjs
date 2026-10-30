@@ -63,7 +63,15 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
     else if (ageMs != null && ageMs > maxAgeMs) state = "stale";
     else if (outcome?.status === 'partial') state = "partial";
     else if (historySummary.sample >= 3 && (historySummary.failed + historySummary.blocked) >= Math.ceil(historySummary.sample / 2)) state = "degraded";
-    if (marketplaces.length && snapshot) state = worstState([state, ...marketplaces.map((source) => source.state)]);
+    const collectionState = state;
+    const coverageState = marketplaces.length ? worstState(marketplaces.map(source => source.state)) : state;
+    if (marketplaces.length && snapshot) {
+      // A recent collector can have an overdue rotation term without having
+      // stopped. Keep the term-level gap visible; do not turn it into downtime.
+      const coverageForSource = coverageState === 'stale' && !['missing','stale','failed','blocked'].includes(collectionState)
+        ? 'partial' : coverageState;
+      state = worstState([state, coverageForSource]);
+    }
     if (snapshot?.run?.in_progress && state === 'healthy') state = 'partial';
     const profileBlocked = id.startsWith('mercadolivre-') && mlBlocked;
     if (profileBlocked) state = 'blocked';
@@ -77,6 +85,8 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
       id,
       label,
       state,
+      collection_state: profileBlocked ? 'blocked' : collectionState,
+      coverage_state: coverageState,
       operational_status: outcome?.status ?? null,
       updated_at: timestamp == null ? null : new Date(timestamp).toISOString(),
       age_ms: ageMs,
@@ -131,8 +141,10 @@ export function collectionHealthAlerts(health) {
   if (staleEnjoei.length) alerts.push({ id: 'enjoei', automatic: true,
     message: `Enjoei: ${staleEnjoei.length} busca(s) sem coleta recente ou com falha. A publicação de outras fontes não atualiza essas buscas; recuperação local disponível.` });
   const notebooks = sources.find(source => source.id === 'olx');
-  if (notebooks && ['missing', 'stale', 'failed'].includes(notebooks.state)) alerts.push({ id: 'olx', automatic: true,
+  if (notebooks && ['missing', 'stale', 'failed'].includes(notebooks.collection_state ?? notebooks.state)) alerts.push({ id: 'olx', automatic: true,
     message: 'OLX Notebooks: coleta ausente, desatualizada ou com falha; ausência de alertas não significa ausência de ofertas.' });
+  else if (notebooks?.coverage_state === 'stale') alerts.push({ id: 'olx-coverage', automatic: false,
+    message: `OLX Notebooks: coleta recente, com consultas fora da janela de atualização. ${notebooks.message}` });
   const oled = sources.find(source => source.id === 'oled-monitores');
   if (oled?.state === 'blocked') alerts.push({ id: 'oled', automatic: false,
     message: `Monitores OLED: cobertura da OLX bloqueada. ${oled.message}` });
