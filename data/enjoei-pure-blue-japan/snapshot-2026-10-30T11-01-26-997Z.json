@@ -1,0 +1,100 @@
+{
+  "schema_version": 2,
+  "generated_at": "2026-10-30T11:01:26.997Z",
+  "coverage_status": {
+    "Enjoei:pure blue japan": {
+      "checked_at": "2026-10-30T11:01:26.997Z",
+      "last_success_at": "2026-10-30T11:01:26.997Z",
+      "state": "success",
+      "error": null
+    },
+    "Enjoei:pbj": {
+      "checked_at": "2026-10-30T11:01:26.997Z",
+      "last_success_at": "2026-10-30T11:01:26.997Z",
+      "state": "success",
+      "error": null
+    }
+  },
+  "run": {
+    "date": "2026-10-30",
+    "timezone": "UTC",
+    "id": "enjoei-pure-blue-japan",
+    "label": "Enjoei Jeans Pure Blue Japan (PBJ) 40",
+    "started_at": "2026-10-30T11:01:26.371Z",
+    "completed_at": "2026-10-30T11:01:26.997Z",
+    "partial": false,
+    "errors": [],
+    "scanned_count": 5,
+    "pages": 2,
+    "scheduled_coverage": [
+      "Enjoei:pure blue japan",
+      "Enjoei:pbj"
+    ],
+    "successful_coverage": [
+      "Enjoei:pure blue japan",
+      "Enjoei:pbj"
+    ],
+    "failed_coverage": [],
+    "configured_coverage": [
+      "Enjoei:pure blue japan",
+      "Enjoei:pbj"
+    ],
+    "detail_reads": 0,
+    "findings": {
+      "new_items": [],
+      "price_changes": [],
+      "active_count": 0,
+      "pending_count": 0
+    },
+    "quarantined_item_count": 0,
+    "operational": {
+      "status": "success",
+      "exit_code": 0,
+      "reasons": [],
+      "completed_terms": 2,
+      "incomplete_terms": 0,
+      "deferred_terms": 0
+    },
+    "collection_summary": {
+      "schema_version": 1,
+      "collected_at": "2026-10-30T11:01:26.997Z",
+      "execution": "success",
+      "issues": [],
+      "coverage": {
+        "status": "complete",
+        "scheduled": 2,
+        "completed": 2,
+        "incomplete": 0,
+        "deferred": 0,
+        "pending_descriptions": 0,
+        "pending_candidates": 0,
+        "pending_details": 0,
+        "heuristic_stops": [],
+        "heuristic_reasons": {}
+      },
+      "findings": {
+        "new_items": [],
+        "price_changes": [],
+        "active_count": 0,
+        "pending_count": 0,
+        "new_count": 0,
+        "price_count": 0
+      }
+    }
+  },
+  "filters": {
+    "brand": "Pure Blue Japan (PBJ)",
+    "material": "jeans/denim",
+    "department": "masculino",
+    "category": "calcas",
+    "size": "40",
+    "search_terms": [
+      "pure blue japan",
+      "pbj"
+    ],
+    "price_max_inclusive_brl": 350,
+    "search_url": "https://www.enjoei.com.br/pure-blue-japan/s?q=pure%20blue%20japan&st%5Bsw%5D=40&dep=masculino&cat=masculino-roupas&sub=masculino-roupas-calcas"
+  },
+  "items": [],
+  "pending_items": []
+}
