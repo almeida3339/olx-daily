@@ -1,7 +1,24 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-29T19:04:11.360Z",
+  "updated_at": "2026-10-30T10:06:20.610Z",
   "runs": [
+    {
+      "run_id": "02a0af8c-5290-43ca-97f5-9b18d209cbeb",
+      "completed_at": "2026-10-30T10:06:20.598Z",
+      "outcome": "failed",
+      "partial": true,
+      "duration_ms": 370107,
+      "item_count": 1,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "local",
+        "monitor_errors": 1,
+        "monitor_failures": [
+          "OLX Notebooks: coleta ausente, desatualizada ou com falha; ausência de alertas não significa ausência de ofertas."
+        ],
+        "pending_notifications": 0
+      }
+    },
     {
       "run_id": "fd530b93-aef0-4d57-b0d0-87c14f9925c1",
       "completed_at": "2026-10-29T19:04:11.357Z",
@@ -1839,20 +1856,6 @@
       "partial": false,
       "duration_ms": 64305,
       "item_count": 0,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "local",
-        "monitor_errors": 0,
-        "pending_notifications": 1
-      }
-    },
-    {
-      "run_id": "9b71f61f-5c30-4dc6-b1d2-906c890cd531",
-      "completed_at": "2026-09-05T12:03:32.502Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 45228,
-      "item_count": 1,
       "quarantined_item_count": 0,
       "metadata": {
         "source": "local",

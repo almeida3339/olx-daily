@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-10-30T10-06-13-004Z",
+  "committed_at": "2026-10-30T10:06:13.032Z",
+  "snapshot": "runs/2026-10-30T10-06-13-004Z/snapshot.json",
+  "report": "runs/2026-10-30T10-06-13-004Z/report.md",
+  "quarantine": null,
+  "summary": {
+    "schema_version": 1,
+    "collected_at": "2026-10-30T10:06:13.004Z",
+    "execution": "success",
+    "issues": [
+      "OLX: consultas adiadas após bloqueio; retomada prevista em 30/10/2026, 16:04:30 BRT."
+    ],
+    "coverage": {
+      "status": "deferred",
+      "scheduled": 1,
+      "completed": 1,
+      "incomplete": 0,
+      "deferred": 10,
+      "pending_descriptions": 0,
+      "pending_candidates": 1,
+      "pending_details": 0,
+      "heuristic_stops": [],
+      "heuristic_reasons": {}
+    },
+    "findings": {
+      "new_items": [],
+      "price_changes": [],
+      "active_count": 2,
+      "pending_count": 1,
+      "new_count": 0,
+      "price_count": 0
+    }
+  },
+  "checksums": {
+    "snapshot_sha256": "f0b0ef4c41e4fb4d8576e57fcb06e80c26b70ef360a383d1e774c1dffea8e43c",
+    "report_sha256": "fbb6e23d8ed7731747c0bb2ba6db2d75dad4adea164bee97980670ff17138ad2"
+  },
+  "metadata": {
+    "source": "monitores-oled",
+    "collected_count": 3,
+    "quarantined_item_count": 0
+  }
+}
