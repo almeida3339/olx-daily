@@ -1,34 +1,22 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-30T19:01:20.433Z",
+  "updated_at": "2026-10-30T19:04:41.886Z",
   "runs": [
     {
-      "run_id": "9e0dfb45-b272-4cb3-96ee-9a70bc09af60",
-      "completed_at": "2026-10-30T19:01:20.431Z",
-      "outcome": "partial",
+      "run_id": "c2494f18-e58a-4530-9596-bcc3d11246be",
+      "completed_at": "2026-10-30T19:04:41.873Z",
+      "outcome": "blocked",
       "partial": true,
-      "duration_ms": 6633,
+      "duration_ms": 271860,
       "item_count": 0,
       "quarantined_item_count": 0,
       "metadata": {
-        "source": "ci",
-        "monitor_errors": 0,
-        "monitor_failures": [],
-        "pending_notifications": 0
-      }
-    },
-    {
-      "run_id": "56b01360-e40e-4071-bbff-da1de0c1818e",
-      "completed_at": "2026-10-30T11:01:37.764Z",
-      "outcome": "partial",
-      "partial": true,
-      "duration_ms": 12507,
-      "item_count": 0,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "ci",
-        "monitor_errors": 0,
-        "monitor_failures": [],
+        "source": "local",
+        "monitor_errors": 2,
+        "monitor_failures": [
+          "Monitores OLED: Saiu com código 4: {\"event\":\"olx_access_blocked\",\"id\":\"olx-access-2026-10-30T19-04-31-560Z-a6ad6c4d\",\"at\":\"2026-10-30T19:04:31.560Z\",\"stage\":\"listing\",\"query\":\"odyssey oled g6\",\"url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"final_url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"http_status\":403,\"title\":\"Attention Required! | Cloudflare\",\"kind\":\"hard_denial\",\"ray_id\":\"a52cafac187dd838\",\"message\":\"Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a52cafac187dd838).\"}\n  Aviso: termo \"odyssey oled g6\" em https://www.olx.com.br/brasil/informatica/monitores falhou — Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a52cafac187dd838).\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.\nColeta OLED parcial: 1 consulta(s) incompleta(s), 9 adiada(s).\nOLX:odyssey oled g6: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a52cafac187dd838).\nO…",
+          "OLX Notebooks: coleta ausente, desatualizada ou com falha; ausência de alertas não significa ausência de ofertas."
+        ],
         "pending_notifications": 0
       }
     },
@@ -1857,6 +1845,20 @@
       "outcome": "success",
       "partial": false,
       "duration_ms": 52793,
+      "item_count": 0,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "local",
+        "monitor_errors": 0,
+        "pending_notifications": 1
+      }
+    },
+    {
+      "run_id": "320029d4-91f2-467b-adb2-3c3afc4a8d18",
+      "completed_at": "2026-09-05T19:01:49.052Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 104941,
       "item_count": 0,
       "quarantined_item_count": 0,
       "metadata": {

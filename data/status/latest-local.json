@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-30T10:00:10.491Z",
+  "generated_at": "2026-10-30T19:00:10.013Z",
   "source": "local",
   "delivery": {
     "email": "skipped",
@@ -39,53 +39,67 @@
   "monitoring": {
     "scope": "local-watchlists",
     "partial": true,
-    "status": "failed",
+    "status": "blocked",
     "outcomes": [
+      {
+        "source": "oled-monitores",
+        "status": "blocked",
+        "reasons": [
+          "Saiu com código 4: {\"event\":\"olx_access_blocked\",\"id\":\"olx-access-2026-10-30T19-04-31-560Z-a6ad6c4d\",\"at\":\"2026-10-30T19:04:31.560Z\",\"stage\":\"listing\",\"query\":\"odyssey oled g6\",\"url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"final_url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"http_status\":403,\"title\":\"Attention Required! | Cloudflare\",\"kind\":\"hard_denial\",\"ray_id\":\"a52cafac187dd838\",\"message\":\"Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a52cafac187dd838).\"}\n  Aviso: termo \"odyssey oled g6\" em https://www.olx.com.br/brasil/informatica/monitores falhou — Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a52cafac187dd838).\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.\nColeta OLED parcial: 1 consulta(s) incompleta(s), 9 adiada(s).\nOLX:odyssey oled g6: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a52cafac187dd838).\nO…"
+        ]
+      },
       {
         "source": "olx",
         "status": "partial",
-        "completed_terms": 7,
-        "incomplete_terms": 2,
+        "completed_terms": 6,
+        "incomplete_terms": 3,
         "deferred_terms": 0,
-        "pending_candidates": 15,
+        "pending_candidates": 18,
         "reasons": [
-          "1 ficha(s) aguardando leitura dentro dos limites da rodada",
-          "4 ficha(s) aguardando leitura dentro dos limites da rodada"
+          "Listagem incompleta: limite de 12 cards ou próxima página pendente; 1 ficha(s) aguardando leitura dentro dos limites da rodada",
+          "2 ficha(s) aguardando leitura dentro dos limites da rodada",
+          "Listagem incompleta: limite de 90 cards ou próxima página pendente; 8 ficha(s) aguardando leitura dentro dos limites da rodada"
         ]
       },
       {
         "source": "lifefactory",
-        "status": "success",
-        "completed_terms": 2,
+        "status": "deferred",
+        "completed_terms": 1,
         "incomplete_terms": 0,
-        "deferred_terms": 0,
+        "deferred_terms": 1,
         "pending_candidates": 0,
-        "reasons": []
+        "reasons": [
+          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+        ]
       },
       {
         "source": "tela-galaxybook3",
-        "status": "success",
-        "completed_terms": 2,
+        "status": "deferred",
+        "completed_terms": 1,
         "incomplete_terms": 0,
-        "deferred_terms": 0,
+        "deferred_terms": 1,
         "pending_candidates": 0,
-        "reasons": []
+        "reasons": [
+          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+        ]
       },
       {
         "source": "melanger",
-        "status": "success",
-        "completed_terms": 2,
+        "status": "deferred",
+        "completed_terms": 1,
         "incomplete_terms": 0,
-        "deferred_terms": 0,
+        "deferred_terms": 1,
         "pending_candidates": 0,
-        "reasons": []
+        "reasons": [
+          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+        ]
       },
       {
         "source": "oneplus-buds-pro-3",
         "status": "deferred",
-        "completed_terms": 5,
+        "completed_terms": 4,
         "incomplete_terms": 0,
-        "deferred_terms": 1,
+        "deferred_terms": 2,
         "pending_candidates": 0,
         "reasons": [
           "Consultas adiadas pela programação; as consultas executadas foram concluídas."
@@ -100,17 +114,6 @@
         "pending_candidates": 0,
         "reasons": [
           "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ]
-      },
-      {
-        "source": "oled-monitores",
-        "status": "deferred",
-        "completed_terms": 1,
-        "incomplete_terms": 0,
-        "deferred_terms": 10,
-        "pending_candidates": 1,
-        "reasons": [
-          "OLX: consultas adiadas após bloqueio; retomada prevista em 30/10/2026, 16:04:30 BRT."
         ]
       }
     ],
@@ -119,8 +122,30 @@
         "source": "olx",
         "status": "partial",
         "reasons": [
-          "1 ficha(s) aguardando leitura dentro dos limites da rodada",
-          "4 ficha(s) aguardando leitura dentro dos limites da rodada"
+          "Listagem incompleta: limite de 12 cards ou próxima página pendente; 1 ficha(s) aguardando leitura dentro dos limites da rodada",
+          "2 ficha(s) aguardando leitura dentro dos limites da rodada",
+          "Listagem incompleta: limite de 90 cards ou próxima página pendente; 8 ficha(s) aguardando leitura dentro dos limites da rodada"
+        ]
+      },
+      {
+        "source": "lifefactory",
+        "status": "deferred",
+        "reasons": [
+          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+        ]
+      },
+      {
+        "source": "tela-galaxybook3",
+        "status": "deferred",
+        "reasons": [
+          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+        ]
+      },
+      {
+        "source": "melanger",
+        "status": "deferred",
+        "reasons": [
+          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
         ]
       },
       {
@@ -136,16 +161,10 @@
         "reasons": [
           "Consultas adiadas pela programação; as consultas executadas foram concluídas."
         ]
-      },
-      {
-        "source": "oled-monitores",
-        "status": "deferred",
-        "reasons": [
-          "OLX: consultas adiadas após bloqueio; retomada prevista em 30/10/2026, 16:04:30 BRT."
-        ]
       }
     ],
     "errors": [
+      "Monitores OLED: Saiu com código 4: {\"event\":\"olx_access_blocked\",\"id\":\"olx-access-2026-10-30T19-04-31-560Z-a6ad6c4d\",\"at\":\"2026-10-30T19:04:31.560Z\",\"stage\":\"listing\",\"query\":\"odyssey oled g6\",\"url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"final_url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"http_status\":403,\"title\":\"Attention Required! | Cloudflare\",\"kind\":\"hard_denial\",\"ray_id\":\"a52cafac187dd838\",\"message\":\"Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a52cafac187dd838).\"}\n  Aviso: termo \"odyssey oled g6\" em https://www.olx.com.br/brasil/informatica/monitores falhou — Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a52cafac187dd838).\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.\nColeta OLED parcial: 1 consulta(s) incompleta(s), 9 adiada(s).\nOLX:odyssey oled g6: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a52c…",
       "OLX Notebooks: coleta ausente, desatualizada ou com falha; ausência de alertas não significa ausência de ofertas."
     ]
   },
@@ -212,13 +231,14 @@
     "9c7ea413-34eb-4e20-9f66-67363bffea29",
     "830726aa-f94d-454a-accd-041d7752c5e0",
     "3222ea3b-eef4-49f7-924a-bcdcc78c281a",
-    "79121492-0f63-4d54-b0d2-6c3ba747c6fb"
+    "79121492-0f63-4d54-b0d2-6c3ba747c6fb",
+    "30e056b8-a1f4-416e-a66b-cb494ac0266d"
   ],
   "round_summary": {
     "schema_version": 1,
-    "run_id": "02a0af8c-5290-43ca-97f5-9b18d209cbeb",
-    "started_at": "2026-10-30T10:00:10.491Z",
-    "completed_at": "2026-10-30T10:06:19.370Z",
+    "run_id": "c2494f18-e58a-4530-9596-bcc3d11246be",
+    "started_at": "2026-10-30T19:00:10.013Z",
+    "completed_at": "2026-10-30T19:04:40.826Z",
     "execution": "failed",
     "delivery": {
       "email": "skipped",
@@ -230,39 +250,32 @@
         "label": "OLX Notebooks",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-10-30T10:04:54.013Z",
+          "collected_at": "2026-10-30T19:03:58.414Z",
           "execution": "success",
           "issues": [
-            "1 ficha(s) aguardando leitura dentro dos limites da rodada",
-            "4 ficha(s) aguardando leitura dentro dos limites da rodada"
+            "Listagem incompleta: limite de 12 cards ou próxima página pendente; 1 ficha(s) aguardando leitura dentro dos limites da rodada",
+            "2 ficha(s) aguardando leitura dentro dos limites da rodada",
+            "Listagem incompleta: limite de 90 cards ou próxima página pendente; 8 ficha(s) aguardando leitura dentro dos limites da rodada"
           ],
           "coverage": {
             "status": "partial",
             "scheduled": 9,
-            "completed": 7,
-            "incomplete": 2,
+            "completed": 6,
+            "incomplete": 3,
             "deferred": 0,
-            "pending_descriptions": 18,
-            "pending_candidates": 15,
+            "pending_descriptions": 22,
+            "pending_candidates": 18,
             "pending_details": 0,
             "heuristic_stops": [],
             "heuristic_reasons": {}
           },
           "findings": {
             "new_items": [],
-            "price_changes": [
-              {
-                "id": "1548107625",
-                "title": "Notebool Lenovo Legion pro 5i rtx 4070, i7 14700HX",
-                "url": "https://df.olx.com.br/distrito-federal-e-regiao/informatica/notebooks/notebool-lenovo-legion-pro-5i-rtx-4070-i7-14700hx-1548107625",
-                "price_brl": 9500,
-                "previous_price_brl": 9100
-              }
-            ],
+            "price_changes": [],
             "active_count": 2,
-            "pending_count": 15,
+            "pending_count": 18,
             "new_count": 0,
-            "price_count": 1
+            "price_count": 0
           }
         }
       },
@@ -271,15 +284,17 @@
         "label": "Lifefactory",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-10-30T10:05:07.159Z",
+          "collected_at": "2026-10-30T19:04:01.961Z",
           "execution": "success",
-          "issues": [],
+          "issues": [
+            "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+          ],
           "coverage": {
-            "status": "complete",
-            "scheduled": 2,
-            "completed": 2,
+            "status": "deferred",
+            "scheduled": 1,
+            "completed": 1,
             "incomplete": 0,
-            "deferred": 0,
+            "deferred": 1,
             "pending_descriptions": 0,
             "pending_candidates": 0,
             "pending_details": 0,
@@ -301,15 +316,17 @@
         "label": "Tela Book3",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-10-30T10:05:19.309Z",
+          "collected_at": "2026-10-30T19:04:05.027Z",
           "execution": "success",
-          "issues": [],
+          "issues": [
+            "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+          ],
           "coverage": {
-            "status": "complete",
-            "scheduled": 2,
-            "completed": 2,
+            "status": "deferred",
+            "scheduled": 1,
+            "completed": 1,
             "incomplete": 0,
-            "deferred": 0,
+            "deferred": 1,
             "pending_descriptions": 0,
             "pending_candidates": 0,
             "pending_details": 0,
@@ -331,15 +348,17 @@
         "label": "Melanger",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-10-30T10:05:42.649Z",
+          "collected_at": "2026-10-30T19:04:07.440Z",
           "execution": "success",
-          "issues": [],
+          "issues": [
+            "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+          ],
           "coverage": {
-            "status": "complete",
-            "scheduled": 2,
-            "completed": 2,
+            "status": "deferred",
+            "scheduled": 1,
+            "completed": 1,
             "incomplete": 0,
-            "deferred": 0,
+            "deferred": 1,
             "pending_descriptions": 0,
             "pending_candidates": 0,
             "pending_details": 0,
@@ -361,17 +380,17 @@
         "label": "OnePlus Buds Pro 3",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-10-30T10:06:08.895Z",
+          "collected_at": "2026-10-30T19:04:16.857Z",
           "execution": "success",
           "issues": [
             "Consultas adiadas pela programação; as consultas executadas foram concluídas."
           ],
           "coverage": {
             "status": "deferred",
-            "scheduled": 5,
-            "completed": 5,
+            "scheduled": 4,
+            "completed": 4,
             "incomplete": 0,
-            "deferred": 1,
+            "deferred": 2,
             "pending_descriptions": 0,
             "pending_candidates": 0,
             "pending_details": 0,
@@ -393,7 +412,7 @@
         "label": "Google Pixel Watch 5",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-10-30T10:06:11.608Z",
+          "collected_at": "2026-10-30T19:04:19.512Z",
           "execution": "success",
           "issues": [
             "Consultas adiadas pela programação; as consultas executadas foram concluídas."
@@ -425,17 +444,18 @@
         "label": "Monitores OLED",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-10-30T10:06:13.004Z",
-          "execution": "success",
+          "collected_at": "2026-10-30T19:04:32.469Z",
+          "execution": "blocked",
           "issues": [
-            "OLX: consultas adiadas após bloqueio; retomada prevista em 30/10/2026, 16:04:30 BRT."
+            "OLX:odyssey oled g6: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a52cafac187dd838).",
+            "OLX: consultas adiadas após bloqueio; retomada prevista em 02/11/2026, 16:04:32 BRT."
           ],
           "coverage": {
-            "status": "deferred",
-            "scheduled": 1,
-            "completed": 1,
-            "incomplete": 0,
-            "deferred": 10,
+            "status": "partial",
+            "scheduled": 5,
+            "completed": 4,
+            "incomplete": 1,
+            "deferred": 9,
             "pending_descriptions": 0,
             "pending_candidates": 1,
             "pending_details": 0,
