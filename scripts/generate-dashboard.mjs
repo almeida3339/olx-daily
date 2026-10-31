@@ -11,6 +11,7 @@ import { extractMercadoLivreNotebookSpecs } from "./lib/mercadolivre-monitor.mjs
 import { isMercadoLivreNotebookDisplayPrice } from "./lib/mercadolivre-notebook-ranges.mjs";
 import { buildMonitorHealth, collectionHealthAlerts } from "./lib/monitor-health.mjs";
 import { collectionSummaryLine, roundSummaryLine } from './lib/collection-summary.mjs';
+import { buildOlxPriceCoverage, olxPriceCoverageLines } from './lib/olx-price-coverage.mjs';
 import { readLatestCommittedRun, readLatestValidSnapshot, writeJsonAtomic, writeTextAtomic } from "./lib/monitor-runtime.mjs";
 import { mercadoLivreDashboardCards, resolveWatchlistDataDir } from "./lib/watchlists-registry.mjs";
 import { buildLocalTriggerCommands } from "./lib/dashboard-triggers.mjs";
@@ -133,6 +134,8 @@ async function main() {
     gather(OLED_MONITORES_DIR, "report-", null, await latestSnapshotDetails(OLED_MONITORES_DIR)),
   ]);
   const currentOled = await currentSnapshotReport(OLED_MONITORES_DIR, 3000);
+  const {snapshot:olxSnapshot} = await readLatestValidSnapshot(OLX_DIR);
+  if (olxSnapshot?.run?.query_yield) olx.priceCoverage = buildOlxPriceCoverage(olxSnapshot);
   if (currentOled) oledMonitores.currentReport = currentOled;
   const [olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, onePlusBudsUpdated, pixelWatch4Updated, pixelWatch5Updated, ouraUpdated, oledMonitoresUpdated] = await Promise.all([
     latestRunLabel(OLX_DIR),
@@ -974,7 +977,7 @@ function renderSection(title, sub, reports, dpath, stampInfo) {
     : "";
   return `<div class="sec">
   <div class="sh"><div class="shr"><h2>${e(title)}</h2>${stamp}</div><small>${e(sub)}${reports.length ? ` &nbsp;·&nbsp; últimos ${reports.length} com novidades` : ''}</small></div>
-  <div class="sb">${body}${knownHtml}${pendingHtml}${historyHtml}</div>
+  <div class="sb">${reports.priceCoverage ? olxPriceCoverageLines(reports.priceCoverage).map(line => `<p class="hint">${e(line)}</p>`).join('') : ''}${body}${knownHtml}${pendingHtml}${historyHtml}</div>
 </div>`;
 }
 

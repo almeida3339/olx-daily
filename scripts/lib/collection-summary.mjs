@@ -1,3 +1,4 @@
+import { buildOlxPriceCoverage, olxPriceCoverageLines } from './olx-price-coverage.mjs';
 // Shared facts for the terminal, notifications and dashboard. Markdown is a view.
 const projectItem = value => {
   const item = value.item ?? value;
@@ -26,6 +27,7 @@ export function buildCollectionSummary(snapshot, operational = snapshot.run?.ope
   const pending = findings?.pending_count ?? snapshot.pending_items?.length
     ?? snapshot.items.filter(item => item.status === 'active' && item.validation?.state === 'pending').length;
   const heuristic = Object.entries(run.pagination ?? {}).filter(([, value]) => value.complete && value.exhaustive === false).map(([term]) => term);
+  const priceScopes = run.price_coverage ?? (run.description_discovery && run.query_yield ? buildOlxPriceCoverage(snapshot) : null);
   return {
     schema_version: 1, collected_at: run.completed_at ?? snapshot.generated_at,
     execution: ['failed', 'blocked'].includes(operational.status) ? operational.status : 'success',
@@ -36,7 +38,8 @@ export function buildCollectionSummary(snapshot, operational = snapshot.run?.ope
       deferred: deferred.length, pending_descriptions: queue, pending_candidates: pending,
       pending_details: run.pending_details ?? 0,
       heuristic_stops: heuristic,
-      heuristic_reasons: Object.fromEntries(heuristic.map(term => [term, run.pagination[term].stop_reason])) },
+      heuristic_reasons: Object.fromEntries(heuristic.map(term => [term, run.pagination[term].stop_reason])),
+      ...(priceScopes ? {price_scopes:priceScopes} : {}) },
     findings: findings ? { ...findings, new_count: findings.new_items.length, price_count: findings.price_changes.length } : null,
   };
 }
@@ -46,10 +49,13 @@ export function collectionSummaryLine(source) {
   if (!s) return `${source.label}: resumo estruturado indisponível`;
   if (s.execution === 'failed' || s.execution === 'blocked') return `${source.label}: ${s.execution === 'blocked' ? 'acesso bloqueado' : 'falha na coleta'}`;
   const c = s.coverage;
-  const parts = [`${c.completed}/${c.scheduled} buscas concluídas`];
-  if (c.pending_descriptions) parts.push(`${c.pending_descriptions} descrições pendentes`);
-  if (c.pending_details) parts.push(`${c.pending_details} fichas pendentes`);
-  if (c.pending_candidates) parts.push(`${c.pending_candidates} candidatos pendentes`);
+  const parts = [`${c.completed}/${c.scheduled} buscas concluídas${c.price_scopes ? ' no total' : ''}`];
+  if (c.price_scopes) parts.push(...olxPriceCoverageLines(c.price_scopes));
+  else {
+    if (c.pending_descriptions) parts.push(`${c.pending_descriptions} descrições pendentes`);
+    if (c.pending_details) parts.push(`${c.pending_details} fichas pendentes`);
+    if (c.pending_candidates) parts.push(`${c.pending_candidates} candidatos pendentes`);
+  }
   if (c.incomplete) parts.push(`${c.incomplete} buscas incompletas`);
   if (c.deferred) parts.push(`${c.deferred} buscas adiadas`);
   if (c.heuristic_stops?.length) parts.push(`${c.heuristic_stops.length} buscas encerradas por limite de relevância ou descoberta`);
@@ -76,6 +82,8 @@ export function roundSummaryLine(round) {
   if (facts.incomplete) parts.push(`${facts.incomplete} consultas incompletas`);
   if (facts.deferred) parts.push(`${facts.deferred} consultas adiadas`);
   if (facts.pending_descriptions + facts.pending_details) parts.push(`${facts.pending_descriptions + facts.pending_details} fichas pendentes`);
+  const olxOffers = round.sources?.find(source => source.id === 'olx')?.summary?.coverage?.price_scopes?.offers;
+  if (olxOffers) parts.push(`ofertas OLX: ${olxOffers.completed}/${olxOffers.scheduled} consultas completas`);
   return parts.join(' · ');
 }
 

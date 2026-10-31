@@ -25,6 +25,7 @@ import { sanitizeErrorMessage } from "./lib/notification-status.mjs";
 import { DEFAULT_CPU_TERMS, cpuSearchQuery } from "./lib/cpu-terms.mjs";
 import { commitMonitorRun, readLatestValidSnapshot, readJsonValidated, writeJsonAtomic } from "./lib/monitor-runtime.mjs";
 import { recordRunFindings } from './lib/collection-summary.mjs';
+import { buildOlxPriceCoverage, olxPriceCoverageLines } from './lib/olx-price-coverage.mjs';
 import { OLX_QUALITY_VERSION, orderOlxCpuTerms, planOlxCpuTerms, olxSpecs, pendingOlxItem, validateOlxNotebook, readOlxNotebookDetail, notebookExclusionReason, assertOlxAccessible, isValidatedOlxItem, revalidateSavedOlxItem } from "./lib/olx-notebook-quality.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -308,6 +309,10 @@ async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transp
           detail_reads: (descriptionQueue.summary().total_details ?? 0) - detailsBefore,
           limited: Boolean(results.coverage_incomplete), listing_incomplete: Boolean(results.listing_incomplete), listing_limit:results.listing_limit,
           details_pending: results.details_pending ?? 0, total_results: results.total_results ?? null,
+          details_pending_offers: results.details_pending_offers ?? 0,
+          details_pending_tracking: results.details_pending_tracking ?? 0,
+          tracking_candidates: results.tracking_candidates ?? 0,
+          pending_detail_keys: results.pending_detail_keys,
           recommendations_ignored: results.recommendations_ignored ?? 0 };
         await recordOlxYield('notebooks',term,{complete:!results.coverage_incomplete,
           listingLimit:results.listing_limit,listingIncomplete:Boolean(results.listing_incomplete),
@@ -458,16 +463,17 @@ async function notebookListingLimit(term,base,previous){
 
 async function drainDescriptionQueue(openDetail) {
   const items = [];
-  for (const card of descriptionQueue.pending()) {
+  // First exhaust ordinary allocations, then consider one spare family slot.
+  drainPasses: for (const allowReallocation of [false, true]) for (const card of descriptionQueue.pending()) {
     const metrics = descriptionQueue.summary();
-    if (metrics.total_details >= metrics.total_detail_limit || metrics.extra_details >= metrics.per_round_limit) break;
+    if (metrics.total_details >= metrics.total_detail_limit || metrics.extra_details >= metrics.per_round_limit) break drainPasses;
     const cached = descriptionQueue.cached(card);
     if (cached) {
       if (cached.validation?.state !== 'pending') await descriptionQueue.useCached(card, cached);
       continue;
     }
-    if (!await descriptionQueue.reserveDetail(card.cpu_term, true, card, { finishRound: true })) {
-      if ((descriptionQueue.summary().traffic_deferred ?? 0) > (metrics.traffic_deferred ?? 0)) break;
+    if (!await descriptionQueue.reserveDetail(card.cpu_term, true, card, { finishRound: true, allowReallocation })) {
+      if ((descriptionQueue.summary().traffic_deferred ?? 0) > (metrics.traffic_deferred ?? 0)) break drainPasses;
       continue;
     }
     console.log(`Fila de descrições: ${card.title.slice(0, 80)}`);
@@ -507,6 +513,10 @@ async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openD
   items.total_results = cards.total_results ?? null;
   items.recommendations_ignored = cards.recommendations_ignored ?? 0;
   items.details_pending = 0;
+  items.details_pending_offers = 0;
+  items.details_pending_tracking = 0;
+  items.tracking_candidates = matches.filter(card => card.price_brl > PRICE_MAX_BRL).length;
+  items.pending_detail_keys = { offers:[], tracking:[] };
   for (const card of toProcess) {
     const key = cardKey(card);
     if (seen.has(key)) continue;
@@ -529,6 +539,11 @@ async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openD
     if (items.length >= maxCards || !await descriptionQueue.reserveDetail(cpuTerm, Boolean(card.description_discovery), card)) {
       await descriptionQueue.enqueue([{ ...card, description_discovery: Boolean(card.description_discovery) }], cpuTerm);
       items.details_pending++;
+      if (card.price_brl <= PRICE_MAX_BRL) {
+        items.details_pending_offers++; items.pending_detail_keys.offers.push(key);
+      } else {
+        items.details_pending_tracking++; items.pending_detail_keys.tracking.push(key);
+      }
       items.push(pendingOlxItem(listingItem, 'Ficha aguardando leitura dentro dos limites da rodada'));
       continue;
     }
@@ -1089,11 +1104,13 @@ function buildReport({ runDate, snapshot, previousSnapshot, priceMin, priceMax }
 
   const lines = [];
   recordRunFindings(snapshot, { newItems, priceChanges, activeItems: inRange, pendingItems: pending });
+  snapshot.run.price_coverage = buildOlxPriceCoverage(snapshot);
   lines.push(`# Monitor OLX notebooks por CPU — ${runDate}`);
   lines.push("");
   lines.push("## Resumo executivo");
   lines.push(`- RAM mínima instalada: **${NOTEBOOK_MIN_RAM_GB} GB**.`);
   lines.push('- Armazenamento não informado não impede a oferta; CPU permitida, RAM e preço continuam obrigatórios.');
+  lines.push(...olxPriceCoverageLines(snapshot.run.price_coverage).map(line => `- ${line}.`));
   if (snapshot.run?.successful_terms) {
     lines.push(`- Cobertura parcial: **${snapshot.run.partial ? "sim" : "não"}**`);
     lines.push(`- Coleta em andamento: **${snapshot.run.in_progress ? "sim" : "não"}**`);
@@ -1106,6 +1123,7 @@ function buildReport({ runDate, snapshot, previousSnapshot, priceMin, priceMax }
     const d = snapshot.run.description_discovery;
     lines.push(`- Consultas adicionais de descrição: **${d.extra_details}/${d.per_round_limit}**; tempo: **${Math.round(d.detail_ms / 1000)} s**; ofertas válidas recuperadas: **${d.recovered_validated}**.`);
     lines.push(`- Total de detalhes reservados: **${d.total_details ?? 0}/${d.total_detail_limit ?? 12}**.`);
+    if (d.reallocated_details) lines.push(`- Vaga adicional redistribuída entre famílias ao final: **${d.reallocated_details}** (dentro do orçamento existente).`);
     lines.push(`- Candidatos aguardando descrição: **${d.queued_candidates}**. Validação da fila completa: **${d.validation_complete ? 'sim' : 'não'}**.`);
   }
   lines.push(`- Novos anúncios válidos (R$ ${priceMin.toLocaleString("pt-BR")}–R$ ${priceMax.toLocaleString("pt-BR")}): **${newItems.length}**`);

@@ -275,7 +275,58 @@
             "pending_candidates": 13,
             "pending_details": 0,
             "heuristic_stops": [],
-            "heuristic_reasons": {}
+            "heuristic_reasons": {},
+            "price_scopes": {
+              "schema_version": 1,
+              "offers": {
+                "min_price_brl": 2000,
+                "max_price_brl": 8000,
+                "scheduled_terms": [
+                  "14700hx",
+                  "13980hx",
+                  "14900hx",
+                  "13900hx",
+                  "family:rog-strix-g16"
+                ],
+                "completed_terms": [
+                  "14700hx",
+                  "13980hx",
+                  "14900hx",
+                  "13900hx"
+                ],
+                "incomplete_terms": [
+                  "family:rog-strix-g16"
+                ],
+                "pending_details": 0,
+                "queued_candidates": 13,
+                "pending_candidates": 13,
+                "scheduled": 5,
+                "completed": 4,
+                "incomplete": 1,
+                "status": "partial"
+              },
+              "tracking": {
+                "min_price_brl": 8000,
+                "max_price_brl": 10000,
+                "scheduled_terms": [
+                  "14700hx",
+                  "14900hx"
+                ],
+                "completed_terms": [],
+                "incomplete_terms": [
+                  "14700hx",
+                  "14900hx"
+                ],
+                "pending_details": 4,
+                "min_price_exclusive": true,
+                "queued_candidates": 4,
+                "pending_candidates": 6,
+                "scheduled": 2,
+                "completed": 0,
+                "incomplete": 2,
+                "status": "partial"
+              }
+            }
           },
           "findings": {
             "new_items": [],
@@ -479,7 +530,8 @@
           }
         }
       }
-    ]
+    ],
+    "revised_at": "2026-10-31T13:08:27.424Z"
   },
   "notification_archive": [
     {

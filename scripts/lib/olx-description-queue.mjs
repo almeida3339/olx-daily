@@ -123,7 +123,7 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
       const entryFor = card => ({ ...(state.queue.find(entry => entry.key === cardKey(card)) ?? {}), card });
       return [...cards].sort((a,b) => compareDescriptionCandidates(entryFor(a),entryFor(b),displayMaxPrice));
     },
-    async reserveDetail(term, discovery, card, { finishRound = false } = {}) {
+    async reserveDetail(term, discovery, card, { finishRound = false, allowReallocation = finishRound } = {}) {
       if (card && !candidateAllowed(card)) return false;
       let waiting = card && state.queue.find(entry => entry.key === cardKey(card));
       if (waiting && fingerprint(waiting.card) !== fingerprint(card)) {
@@ -136,7 +136,17 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
       if (retry && !finishRound && (state.metrics.retry_details ?? 0) >= totalLimit - newReserved) return false;
       if ((state.metrics.total_details ?? 0) >= totalLimit) return false;
       const termLimit=term.startsWith('family:')?Math.max(perTerm,4):perTerm;
-      if (discovery && ((state.metrics.by_term[term] ?? 0) >= termLimit || state.metrics.extra_details >= perRound)) return false;
+      const termUsed = state.metrics.by_term[term] ?? 0;
+      let reallocated = false;
+      if (discovery && state.metrics.extra_details >= perRound) return false;
+      if (discovery && termUsed >= termLimit) {
+        const alternative = state.queue.some(entry => entry.card.price_brl <= displayMaxPrice && ready(entry)
+          && entry.key !== (card && cardKey(card)) && !results.has(entry.key) && entry.terms.some(other => other !== term
+            && (state.metrics.by_term[other] ?? 0) < (other.startsWith('family:') ? Math.max(perTerm,4) : perTerm)));
+        reallocated = Boolean(finishRound && allowReallocation && term.startsWith('family:') && termUsed === termLimit
+          && card?.price_brl <= displayMaxPrice && (state.metrics.reallocated_details ?? 0) < 1 && !alternative);
+        if (!reallocated) return false;
+      }
       try{await reserveAccess({watchlist:'notebooks',query:term,kind:'detail'});}
       catch(error){if(error.kind!=='deferred')throw error;state.metrics.traffic_deferred=(state.metrics.traffic_deferred??0)+1;state.metrics.traffic_reason=error.message;await save();return false;}
       state.metrics.total_details = (state.metrics.total_details ?? 0) + 1;
@@ -147,6 +157,7 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
       if(waiting){waiting.last_detail_attempt_at=new Date().toISOString();waiting.detail_attempts=(waiting.detail_attempts??0)+1;}
       const counter = retry ? 'retry_details' : 'new_details';
       state.metrics[counter] = (state.metrics[counter] ?? 0) + 1;
+      if (reallocated) state.metrics.reallocated_details = (state.metrics.reallocated_details ?? 0) + 1;
       if (discovery) { state.metrics.extra_details++; state.metrics.by_term[term] = (state.metrics.by_term[term] ?? 0) + 1; }
       await save(); return true;
     },

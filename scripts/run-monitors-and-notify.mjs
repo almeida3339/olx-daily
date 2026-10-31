@@ -716,6 +716,9 @@ async function readLatestReport(dir, minTime = null) {
         ? committed.snapshot.run?.completed_at ?? committed.snapshot.generated_at : committed.manifest.committed_at ?? '');
       if (minTime != null && Number.isFinite(timestamp) && timestamp < minTime) return null;
       const summary = structuredClone(committed.manifest.summary ?? buildCollectionSummary(committed.snapshot));
+      if (dir === localDir('olx') && !summary.coverage.price_scopes) {
+        summary.coverage.price_scopes = buildCollectionSummary(committed.snapshot).coverage.price_scopes;
+      }
       if (dir === localDir('mercadolivre-tenis-42') && summary.findings?.new_items) {
         const byUrl = new Map(committed.snapshot.items.map(item => [item.url, item]));
         for (const key of ['new_items','price_changes']) summary.findings[key] = summary.findings[key].filter(item => isApprovedMercadoLivreShoe(byUrl.get(item.url)));
