@@ -2,19 +2,26 @@
   "schema_version": 1,
   "quality_version": 2,
   "configuration": "9955hx3d,290hx,9955hx,285hx,275hx,aimax395,7945hx,7945hx3d,255hx,13980hx,8940hx,7940hx,13950hx,14900hx,13900hx,7845hx,8840hx,aimax390,14700hx,hx470,family:helios-neo-16,family:rog-strix-g16,family:legion-pro-5,family:dell-g16,family:avell-a65,family:avell-storm",
-  "started_at": "2026-10-31T10:00:18.671Z",
-  "updated_at": "2026-10-31T10:03:19.758Z",
+  "started_at": "2026-10-31T19:00:15.520Z",
+  "updated_at": "2026-10-31T19:03:06.305Z",
   "state": "partial",
   "scheduled_terms": [
     "14700hx",
     "13980hx",
     "14900hx",
     "13900hx",
-    "family:rog-strix-g16"
+    "290hx",
+    "9955hx",
+    "aimax395",
+    "family:legion-pro-5"
   ],
   "successful_terms": [
     "13980hx",
-    "13900hx"
+    "13900hx",
+    "290hx",
+    "9955hx",
+    "aimax395",
+    "family:legion-pro-5"
   ],
   "collected": [
     {
@@ -145,7 +152,7 @@
       "validation": {
         "version": 2,
         "state": "pending",
-        "checked_at": "2026-10-31T10:00:20.080Z",
+        "checked_at": "2026-10-31T19:00:16.998Z",
         "reasons": [
           "Ficha aguardando leitura dentro dos limites da rodada"
         ]
@@ -174,39 +181,60 @@
       "validation": {
         "version": 2,
         "state": "pending",
-        "checked_at": "2026-10-31T10:00:20.078Z",
+        "checked_at": "2026-10-31T19:00:16.995Z",
         "reasons": [
           "Ficha aguardando leitura dentro dos limites da rodada"
         ]
       }
     },
     {
-      "id": "1548728481",
-      "url": "https://al.olx.com.br/alagoas/informatica/notebooks/notebook-gamer-nave-estelar-i7-14700hx-32-gb-ram-512-ssd-rtx-4060-1548728481",
-      "title": "Notebook Gamer Nave estelar i7 14700hx, 32 Gb ram, 512 ssd, RTX 4060",
-      "cpu_term": "14700hx",
+      "id": "1539191902",
+      "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-gamer-rog-strix-g16-rtx-4060-1539191902",
+      "title": "Notebook Gamer ROG STRIX G16 RTX 4060",
+      "cpu_term": "13980hx",
       "search_terms": [
-        "14700hx"
+        "13980hx"
       ],
-      "description_discovery": false,
-      "price_brl": 9800,
-      "ram_gb": 32,
-      "storage_gb": 512,
+      "description_discovery": true,
+      "price_brl": 7500,
+      "ram_gb": null,
+      "storage_gb": 480,
       "gpu": "RTX 4060",
-      "location": "Maceió, Jatiúca",
-      "condition": null,
+      "location": null,
+      "condition": "Usado - Excelente",
       "status": "active",
       "first_seen": null,
       "last_seen": null,
       "notes": null,
-      "desc_checked": false,
+      "desc_checked": true,
       "validation": {
         "version": 2,
         "state": "pending",
+        "checked_at": "2026-10-31T19:00:41.822Z",
         "reasons": [
-          "Descrição e preço integral ainda não conferidos"
-        ]
-      }
+          "Especificação não confirmada: RAM",
+          "CPU não confirmada no anúncio"
+        ],
+        "listing_price_brl": 7500,
+        "detail_price_brl": 7500,
+        "visible_price_brl": null,
+        "structured_price_brl": 7500,
+        "title_specs": {
+          "ram_gb": null,
+          "storage_gb": null,
+          "gpu": "RTX 4060"
+        },
+        "description_specs": {
+          "ram_gb": null,
+          "storage_gb": 480,
+          "gpu": null
+        },
+        "cpu_confirmed": false,
+        "description_checked": true
+      },
+      "description_evidence": "Notebook em excelente estado, apenas trocado o SSDi9-13980HX16GB RAM DDR5RTX 4060 8GB 480GB Armazenamento SSD M.2Tela 165HzEm jogos:Fortnite - Tudo no baixo, resolução 3D em 100%, Full HD - Média de 280 FPSCS 2 - Tudo no baixo, Full HD - Média de 390 FPSRainbow Six - Tudo no baixo, TAA 100, sombras no alto, Full HD - Média de 240 FPSGTA V - Tudo no alto, Full HD - Média de 200 FPSRed Dead Redemption 2 - Tudo no médio, Full HD - Média de 140 FPSSe quiser teste em algum jogo/config específico, favor entrar em contato.Não aceito trocas.",
+      "detail_title": "Notebook Gamer ROG STRIX G16 RTX 4060",
+      "configuration_warnings": []
     },
     {
       "id": "1548266943",
@@ -214,8 +242,7 @@
       "title": "Notebook ASUS ROG Strix G16 | i9-13980HX | RTX 4060 | 1TB | 32GB DDR5",
       "cpu_term": "13980hx",
       "search_terms": [
-        "13980hx",
-        "family:rog-strix-g16"
+        "13980hx"
       ],
       "description_discovery": false,
       "price_brl": 7927,
@@ -261,8 +288,7 @@
       "title": "Notebook ASUS ROG Strix G16 | i9-13980HX | RTX 4060 | 1TB | 32GB DDR5",
       "cpu_term": "13980hx",
       "search_terms": [
-        "13980hx",
-        "family:rog-strix-g16"
+        "13980hx"
       ],
       "description_discovery": false,
       "price_brl": 7927,
@@ -325,7 +351,7 @@
       "validation": {
         "version": 2,
         "state": "pending",
-        "checked_at": "2026-10-31T10:01:22.207Z",
+        "checked_at": "2026-10-31T19:00:53.234Z",
         "reasons": [
           "Ficha aguardando leitura dentro dos limites da rodada"
         ]
@@ -403,284 +429,23 @@
       "validation": {
         "version": 2,
         "state": "pending",
-        "checked_at": "2026-10-31T10:01:22.212Z",
+        "checked_at": "2026-10-31T19:00:53.238Z",
         "reasons": [
           "Ficha aguardando leitura dentro dos limites da rodada"
         ]
       }
     },
     {
-      "id": "1548968561",
-      "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-gamer-asus-rog-strix-g16-i7-16gb-rtx-4050-165hz-1548968561",
-      "title": "Notebook Gamer ASUS ROG Strix G16 i7 16GB RTX 4050 165Hz",
-      "cpu_term": "family:rog-strix-g16",
+      "id": "1545040273",
+      "url": "https://mg.olx.com.br/regiao-de-pocos-de-caldas-e-varginha/informatica/notebooks/notebook-gamer-avell-a65-ion-i9-32gb-rtx-4060-1545040273",
+      "title": "Notebook Gamer Avell A65 Ion I9 32gb Rtx 4060",
+      "cpu_term": "family:avell-a65",
       "search_terms": [
-        "family:rog-strix-g16"
+        "family:avell-a65"
       ],
       "description_discovery": true,
-      "price_brl": 6887,
-      "ram_gb": 16,
-      "storage_gb": null,
-      "gpu": "RTX 4050",
-      "location": null,
-      "condition": "Usado - Bom",
-      "status": "active",
-      "first_seen": null,
-      "last_seen": null,
-      "notes": null,
-      "desc_checked": true,
-      "validation": {
-        "version": 2,
-        "state": "rejected",
-        "checked_at": "2026-10-31T10:02:07.101Z",
-        "reasons": [
-          "RAM abaixo do mínimo exigido",
-          "RAM abaixo do mínimo de 32 GB",
-          "CPU não confirmada no anúncio"
-        ],
-        "listing_price_brl": 6887,
-        "detail_price_brl": 6887,
-        "visible_price_brl": null,
-        "structured_price_brl": 6887,
-        "title_specs": {
-          "ram_gb": null,
-          "storage_gb": null,
-          "gpu": "RTX 4050"
-        },
-        "description_specs": {
-          "ram_gb": 16,
-          "storage_gb": null,
-          "gpu": "RTX 4050"
-        },
-        "cpu_confirmed": false,
-        "description_checked": true
-      },
-      "description_evidence": "Vendo notebook gamer ASUS ROG Strix G16, modelo G614JU-N3367, com upgrade para 128 GB de memória RAM.Funcionando 100%. Possui marcas de uso e alguns arranhões na tampa, apenas estéticos, que não interferem no funcionamento. Veja as fotos reais do equipamento.Configuração:? Intel Core i7-13650HX de 13ª geração, com 14 núcleos e 20 threads? NVIDIA GeForce RTX 4050 com 6 GB de memória dedicada? 16 GB de memória RAM DDR5? Armazenamento SSD NVMe? Tela de 16 polegadas, resolução 1920 × 1200 e taxa de atualização de 165 Hz? Teclado com iluminação RGB? Wi-Fi, Bluetooth, HDMI e conexões USB-CConfiguração versátil para jogos, edição de vídeos, trabalho e multitarefa.Entre em contato pelo chat para mais informações.",
-      "detail_title": "Notebook Gamer ASUS ROG Strix G16 i7 16GB RTX 4050 165Hz",
-      "configuration_warnings": [
-        "Armazenamento não informado"
-      ]
-    },
-    {
-      "id": "1546506873",
-      "url": "https://pa.olx.com.br/regiao-de-maraba/informatica/notebooks/notebook-gamer-avell-storm-bs-350-1546506873",
-      "title": "Notebook Gamer Avell Storm BS 350",
-      "cpu_term": "family:avell-storm",
-      "search_terms": [
-        "family:avell-storm"
-      ],
-      "description_discovery": true,
-      "price_brl": 5300,
+      "price_brl": 8000,
       "ram_gb": null,
-      "storage_gb": null,
-      "gpu": "RTX 3050",
-      "location": "Belo Horizonte, Marabá - PA",
-      "condition": "Usado - Excelente",
-      "status": "active",
-      "first_seen": null,
-      "last_seen": null,
-      "notes": null,
-      "desc_checked": true,
-      "validation": {
-        "version": 2,
-        "state": "rejected",
-        "checked_at": "2026-10-31T10:02:19.084Z",
-        "reasons": [
-          "CPU fora da busca",
-          "Especificação não confirmada: RAM",
-          "CPU não confirmada no anúncio"
-        ],
-        "listing_price_brl": 5300,
-        "detail_price_brl": 5300,
-        "visible_price_brl": null,
-        "structured_price_brl": 5300,
-        "title_specs": {
-          "ram_gb": null,
-          "storage_gb": null,
-          "gpu": null
-        },
-        "description_specs": {
-          "ram_gb": null,
-          "storage_gb": null,
-          "gpu": "RTX 3050"
-        },
-        "cpu_confirmed": false,
-        "description_checked": true
-      },
-      "description_evidence": "Vendo Notebook Gamer Avell em excelente estado de conservação, sem nenhum detalhe, usado poucas vezes. Especificações de hardware:? GeForce® RTX 3050 (4GB GDDR6)? Intel® Core?M i7-12650H Alder Lake (24MB cache, 3.5GHz ~ 4.7GHz Turbo Boost Max 3.0)? Upgrade Grátis - 32GB [2x 16GB - Dual Channel] Memória DDR4 (3200MHZ)? SSD M.2 NVME 512GB - Geração 4 - [3.400 MB/s? 15.6\" FHD WVA (1920x1080p) - 144Hz / Matte / Contraste: 1000:1/ Brilho 250 cd/m²",
-      "detail_title": "Notebook Gamer Avell Storm BS 350",
-      "configuration_warnings": [
-        "Armazenamento não informado"
-      ]
-    },
-    {
-      "id": "1548268436",
-      "url": "https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-two-1548268436",
-      "title": "Notebook Gamer Avell Storm Two",
-      "cpu_term": "family:avell-storm",
-      "search_terms": [
-        "family:avell-storm"
-      ],
-      "description_discovery": true,
-      "price_brl": 7199,
-      "ram_gb": null,
-      "storage_gb": null,
-      "gpu": "RTX 3070 TI",
-      "location": null,
-      "condition": "Usado - Excelente",
-      "status": "active",
-      "first_seen": null,
-      "last_seen": null,
-      "notes": null,
-      "desc_checked": true,
-      "validation": {
-        "version": 2,
-        "state": "rejected",
-        "checked_at": "2026-10-31T10:02:31.512Z",
-        "reasons": [
-          "CPU fora da busca",
-          "Especificação não confirmada: RAM",
-          "CPU não confirmada no anúncio"
-        ],
-        "listing_price_brl": 7199,
-        "detail_price_brl": 7199,
-        "visible_price_brl": null,
-        "structured_price_brl": 7199,
-        "title_specs": {
-          "ram_gb": null,
-          "storage_gb": null,
-          "gpu": null
-        },
-        "description_specs": {
-          "ram_gb": null,
-          "storage_gb": null,
-          "gpu": "RTX 3070 TI"
-        },
-        "cpu_confirmed": false,
-        "description_checked": true
-      },
-      "description_evidence": "Notebook Gamer Avell Storm TwoIntel Core i7 12700H 2.3GHz16gb memória RAMSSD 1tbVídeo NVidia RTX 3070ti 8gbMonitor 15.6 FHD IPSTeclado retroiluminadoFonte/carregador originalCom caixaCom nota fiscal",
-      "detail_title": "Notebook Gamer Avell Storm Two",
-      "configuration_warnings": [
-        "Armazenamento não informado"
-      ]
-    },
-    {
-      "id": "1535352665",
-      "url": "https://to.olx.com.br/tocantins/informatica/notebooks/notebook-helios-neo-16-1535352665",
-      "title": "Notebook helios neo 16",
-      "cpu_term": "family:helios-neo-16",
-      "search_terms": [
-        "family:helios-neo-16"
-      ],
-      "description_discovery": true,
-      "price_brl": 7200,
-      "ram_gb": null,
-      "storage_gb": null,
-      "gpu": null,
-      "location": null,
-      "condition": "Usado - Excelente",
-      "status": "active",
-      "first_seen": null,
-      "last_seen": null,
-      "notes": null,
-      "desc_checked": true,
-      "validation": {
-        "version": 2,
-        "state": "pending",
-        "checked_at": "2026-10-31T10:02:43.485Z",
-        "reasons": [
-          "Especificação não confirmada: RAM",
-          "Especificação não confirmada: GPU",
-          "CPU não confirmada no anúncio"
-        ],
-        "listing_price_brl": 7200,
-        "detail_price_brl": 7200,
-        "visible_price_brl": null,
-        "structured_price_brl": 7200,
-        "title_specs": {
-          "ram_gb": null,
-          "storage_gb": null,
-          "gpu": null
-        },
-        "description_specs": {
-          "ram_gb": null,
-          "storage_gb": null,
-          "gpu": null
-        },
-        "cpu_confirmed": false,
-        "description_checked": true
-      },
-      "description_evidence": "Eleve sua experiência gamer com o Notebook Helios Neo 16. Desempenho excepcional para jogos e multitarefas, com design moderno e recursos avançados. Prepare-se para dominar o campo de batalha!",
-      "detail_title": "Notebook helios neo 16 ",
-      "configuration_warnings": [
-        "Armazenamento não informado"
-      ]
-    },
-    {
-      "id": "1535263118",
-      "url": "https://rj.olx.com.br/rio-de-janeiro-e-regiao/informatica/notebooks/acer-predator-helios-neo-16-1535263118",
-      "title": "Acer Predator Helios Neo 16",
-      "cpu_term": "family:helios-neo-16",
-      "search_terms": [
-        "family:helios-neo-16"
-      ],
-      "description_discovery": true,
-      "price_brl": 7400,
-      "ram_gb": null,
-      "storage_gb": null,
-      "gpu": null,
-      "location": null,
-      "condition": "Usado - Excelente",
-      "status": "active",
-      "first_seen": null,
-      "last_seen": null,
-      "notes": null,
-      "desc_checked": true,
-      "validation": {
-        "version": 2,
-        "state": "rejected",
-        "checked_at": "2026-10-31T10:02:55.523Z",
-        "reasons": [
-          "CPU fora da busca",
-          "Especificação não confirmada: RAM",
-          "Especificação não confirmada: GPU",
-          "CPU não confirmada no anúncio"
-        ],
-        "listing_price_brl": 7400,
-        "detail_price_brl": 7400,
-        "visible_price_brl": null,
-        "structured_price_brl": 7400,
-        "title_specs": {
-          "ram_gb": null,
-          "storage_gb": null,
-          "gpu": null
-        },
-        "description_specs": {
-          "ram_gb": null,
-          "storage_gb": null,
-          "gpu": null
-        },
-        "cpu_confirmed": false,
-        "description_checked": true
-      },
-      "description_evidence": "Potencialize seu desempenho com o Acer Predator Helios Neo 16! Ideal para jogos e multitarefas, este notebook oferece velocidade e gráficos incríveis para uma experiência imersiva. Leve seu setup para o próximo nível!Preferência troca em macbook m4 ou similares",
-      "detail_title": "Acer Predator Helios Neo 16 ",
-      "configuration_warnings": [
-        "Armazenamento não informado"
-      ]
-    },
-    {
-      "id": "1445040401",
-      "url": "https://sc.olx.com.br/norte-de-santa-catarina/informatica/notebooks/predator-helios-neo-16-1445040401",
-      "title": "Predator Helios neo 16",
-      "cpu_term": "family:helios-neo-16",
-      "search_terms": [
-        "family:helios-neo-16"
-      ],
-      "description_discovery": true,
-      "price_brl": 7500,
-      "ram_gb": 16,
       "storage_gb": null,
       "gpu": "RTX 4060",
       "location": null,
@@ -692,17 +457,122 @@
       "desc_checked": true,
       "validation": {
         "version": 2,
+        "state": "pending",
+        "checked_at": "2026-10-31T19:02:06.175Z",
+        "reasons": [
+          "Especificação não confirmada: RAM",
+          "CPU não confirmada no anúncio"
+        ],
+        "listing_price_brl": 8000,
+        "detail_price_brl": 8000,
+        "visible_price_brl": null,
+        "structured_price_brl": 8000,
+        "title_specs": {
+          "ram_gb": null,
+          "storage_gb": null,
+          "gpu": "RTX 4060"
+        },
+        "description_specs": {
+          "ram_gb": null,
+          "storage_gb": null,
+          "gpu": null
+        },
+        "cpu_confirmed": false,
+        "description_checked": true
+      },
+      "description_evidence": "Notebook Avell com menos de 1 ano de usoMotivo da troca: Migrei para MAC",
+      "detail_title": "Notebook Gamer Avell A65 Ion I9 32gb Rtx 4060 ",
+      "configuration_warnings": [
+        "Armazenamento não informado"
+      ]
+    },
+    {
+      "id": "1538675750",
+      "url": "https://go.olx.com.br/grande-goiania-e-anapolis/informatica/notebooks/acer-predator-helios-neo-1538675750",
+      "title": "ACER PREDATOR HELIOS NEO",
+      "cpu_term": "family:helios-neo-16",
+      "search_terms": [
+        "family:helios-neo-16"
+      ],
+      "description_discovery": true,
+      "price_brl": 6700,
+      "ram_gb": null,
+      "storage_gb": null,
+      "gpu": null,
+      "location": null,
+      "condition": null,
+      "status": "active",
+      "first_seen": null,
+      "last_seen": null,
+      "notes": null,
+      "desc_checked": false,
+      "validation": {
+        "version": 2,
+        "state": "pending",
+        "checked_at": "2026-10-31T19:02:20.373Z",
+        "reasons": [
+          "Descrição do anúncio não localizada",
+          "Preço integral do anúncio não localizado",
+          "Especificação não confirmada: RAM",
+          "Especificação não confirmada: GPU",
+          "CPU não confirmada no anúncio"
+        ],
+        "listing_price_brl": 6700,
+        "detail_price_brl": null,
+        "visible_price_brl": null,
+        "structured_price_brl": null,
+        "title_specs": {
+          "ram_gb": null,
+          "storage_gb": null,
+          "gpu": null
+        },
+        "description_specs": {
+          "ram_gb": null,
+          "storage_gb": null,
+          "gpu": null
+        },
+        "cpu_confirmed": false,
+        "description_checked": false
+      },
+      "description_evidence": "",
+      "detail_title": "",
+      "configuration_warnings": [
+        "Armazenamento não informado"
+      ]
+    },
+    {
+      "id": "1547853164",
+      "url": "https://pi.olx.com.br/regiao-de-teresina-e-parnaiba/informatica/notebooks/notebook-gamer-predator-helios-neo-16-1547853164",
+      "title": "Notebook Gamer Predator Helios Neo 16",
+      "cpu_term": "family:helios-neo-16",
+      "search_terms": [
+        "family:helios-neo-16"
+      ],
+      "description_discovery": true,
+      "price_brl": 7389,
+      "ram_gb": 16,
+      "storage_gb": null,
+      "gpu": "RTX 4060",
+      "location": null,
+      "condition": "novo",
+      "status": "active",
+      "first_seen": null,
+      "last_seen": null,
+      "notes": null,
+      "desc_checked": true,
+      "validation": {
+        "version": 2,
         "state": "rejected",
-        "checked_at": "2026-10-31T10:03:07.453Z",
+        "checked_at": "2026-10-31T19:02:30.202Z",
         "reasons": [
           "RAM abaixo do mínimo exigido",
           "RAM abaixo do mínimo de 32 GB",
           "CPU não confirmada no anúncio"
         ],
-        "listing_price_brl": 7500,
-        "detail_price_brl": 7500,
+        "listing_price_brl": 7389,
+        "detail_price_brl": 7389,
         "visible_price_brl": null,
-        "structured_price_brl": 7500,
+        "structured_price_brl": 7389,
         "title_specs": {
           "ram_gb": null,
           "storage_gb": null,
@@ -716,46 +586,47 @@
         "cpu_confirmed": false,
         "description_checked": true
       },
-      "description_evidence": "Notebook gamer Predator Helios i7 13700hx RTX4060 16gb ram com tela de alta resolução quad hd 2560x1600",
-      "detail_title": "Predator Helios neo 16",
+      "description_evidence": "Aparelho muito bem conservado, sem marcas de uso, riscos ou detalhes. (Aparência de novo)? Processador: i7 13650hx (13° geração)(Final hx do processador significa alto desempenho.)? Placa de vídeo: RTX 4060 8gb GDDR6? Memória ram: 16 GB DDR5? Armazenamento: SSD NVMe 512Gb ? Tela: 16 polegadas IPS 16:10 (maior para a parte de cima) 1920x1200 ? Taxa de atualização da tela: 165 hz ? Sistema operacional: Windows 11 home (original vinculado a placa mãe.) ? Conexões: 3 USB-A, 2 USB-C Thunderbolt 4 e HDMI 2.1Notebook gamer de alto desempenho. - no counter strike 2 a média de desempenho é de 400 a 500 fps no modo turbo que o notebook tem. - teclado rgbAcompanha caixa original do aparelho e enviado com a caixa original cheio de isopor pra não ter perigo de quebrar ou algo assim no envio. Domine seus jogos com o Notebook Gamer Predator Helios Neo 16! Desempenho excepcional para uma experiência imersiva. Velocidade, gráficos incríveis e design arrojado para você ir mais longe em suas partidas.",
+      "detail_title": "Notebook Gamer Predator Helios Neo 16",
       "configuration_warnings": [
         "Armazenamento não informado"
       ]
     },
     {
-      "id": "1542844072",
-      "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-gamer-helios-neo-16-1542844072",
-      "title": "Notebook gamer helios neo 16",
+      "id": "1538622677",
+      "url": "https://rj.olx.com.br/rio-de-janeiro-e-regiao/informatica/notebooks/notebook-predator-helios-neo-16-1538622677",
+      "title": "Notebook predator helios neo 16",
       "cpu_term": "family:helios-neo-16",
       "search_terms": [
         "family:helios-neo-16"
       ],
       "description_discovery": true,
-      "price_brl": 7600,
+      "price_brl": 7900,
       "ram_gb": null,
       "storage_gb": null,
       "gpu": null,
       "location": null,
-      "condition": "Usado - Excelente",
+      "condition": "Novo",
       "status": "active",
       "first_seen": null,
       "last_seen": null,
       "notes": null,
-      "desc_checked": true,
+      "desc_checked": false,
       "validation": {
         "version": 2,
-        "state": "rejected",
-        "checked_at": "2026-10-31T10:03:19.055Z",
+        "state": "pending",
+        "checked_at": "2026-10-31T19:02:42.973Z",
         "reasons": [
-          "CPU fora da busca",
+          "Descrição do anúncio não localizada",
+          "Preço integral do anúncio não localizado",
           "Especificação não confirmada: RAM",
           "Especificação não confirmada: GPU",
           "CPU não confirmada no anúncio"
         ],
-        "listing_price_brl": 7600,
-        "detail_price_brl": 7600,
+        "listing_price_brl": 7900,
+        "detail_price_brl": null,
         "visible_price_brl": null,
-        "structured_price_brl": 7600,
+        "structured_price_brl": null,
         "title_specs": {
           "ram_gb": null,
           "storage_gb": null,
@@ -767,10 +638,111 @@
           "gpu": null
         },
         "cpu_confirmed": false,
+        "description_checked": false
+      },
+      "description_evidence": "",
+      "detail_title": "",
+      "configuration_warnings": [
+        "Armazenamento não informado"
+      ]
+    },
+    {
+      "id": "1548369848",
+      "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/avell-i9-notebook-1548369848",
+      "title": "Avell I9 notebook",
+      "cpu_term": "family:avell-a65",
+      "search_terms": [
+        "family:avell-a65"
+      ],
+      "description_discovery": true,
+      "price_brl": 8000,
+      "ram_gb": 32,
+      "storage_gb": null,
+      "gpu": "RTX 4060",
+      "location": null,
+      "condition": "Usado - Excelente",
+      "status": "active",
+      "first_seen": null,
+      "last_seen": null,
+      "notes": null,
+      "desc_checked": true,
+      "validation": {
+        "version": 2,
+        "state": "pending",
+        "checked_at": "2026-10-31T19:02:53.758Z",
+        "reasons": [
+          "CPU não confirmada no anúncio"
+        ],
+        "listing_price_brl": 8000,
+        "detail_price_brl": 8000,
+        "visible_price_brl": null,
+        "structured_price_brl": 8000,
+        "title_specs": {
+          "ram_gb": null,
+          "storage_gb": null,
+          "gpu": null
+        },
+        "description_specs": {
+          "ram_gb": 32,
+          "storage_gb": null,
+          "gpu": "RTX 4060"
+        },
+        "cpu_confirmed": false,
         "description_checked": true
       },
-      "description_evidence": "Configuração: i7-13460hx Nvidea 4060 8gb vram16 ram Com carregador e caixa originais Com nota fiscal Eleve sua experiência de jogo com o Notebook Gamer Helios Neo 16! Desempenho excepcional para rodar seus títulos favoritos com gráficos impressionantes e velocidade de tirar o fôlego. Prepare-se para a vitória!",
-      "detail_title": "Notebook gamer helios neo 16",
+      "description_evidence": "Eleve sua experiência com o Avell A65 ION! Equipado com processador Intel Core i9 de última geração e a poderosa placa de vídeo GeForce RTX 4060, este notebook oferece performance excepcional para jogos e trabalho. Desfrute de 32GB de RAM DDR5 e um SSD NVMe de 512GB para agilidade e velocidade. A tela WQXGA de 16 polegadas com alta taxa de atualização proporciona imagens nítidas e fluidas.",
+      "detail_title": "Avell I9 notebook ",
+      "configuration_warnings": [
+        "Armazenamento não informado"
+      ]
+    },
+    {
+      "id": "1531177640",
+      "url": "https://rs.olx.com.br/regioes-de-porto-alegre-torres-e-santa-cruz-do-sul/informatica/notebooks/notebook-gamer-avell-a65-ion-1531177640",
+      "title": "Notebook Gamer - Avell A65 ion",
+      "cpu_term": "family:avell-a65",
+      "search_terms": [
+        "family:avell-a65"
+      ],
+      "description_discovery": true,
+      "price_brl": 7400,
+      "ram_gb": 32,
+      "storage_gb": null,
+      "gpu": null,
+      "location": null,
+      "condition": "Usado - Excelente",
+      "status": "active",
+      "first_seen": null,
+      "last_seen": null,
+      "notes": null,
+      "desc_checked": true,
+      "validation": {
+        "version": 2,
+        "state": "pending",
+        "checked_at": "2026-10-31T19:03:05.754Z",
+        "reasons": [
+          "Especificação não confirmada: GPU",
+          "CPU não confirmada no anúncio"
+        ],
+        "listing_price_brl": 7400,
+        "detail_price_brl": 7400,
+        "visible_price_brl": null,
+        "structured_price_brl": 7400,
+        "title_specs": {
+          "ram_gb": null,
+          "storage_gb": null,
+          "gpu": null
+        },
+        "description_specs": {
+          "ram_gb": 32,
+          "storage_gb": null,
+          "gpu": null
+        },
+        "cpu_confirmed": false,
+        "description_checked": true
+      },
+      "description_evidence": "Notebook Gamer Avell A65 IonPlaca de Vídeo: GeForce RTX 4060Processador: Intel i9 12900HXMemória RAM: 32GB DDR5 (2x16GB)Armazenamento: SSD GEN4 1TBSistema: Windows 11 HSL Tela: 16''Usado por 2 anos e meio e em perfeitas condições.",
+      "detail_title": "Notebook Gamer - Avell A65 ion",
       "configuration_warnings": [
         "Armazenamento não informado"
       ]
@@ -778,12 +750,11 @@
   ],
   "pending_terms": [
     "14700hx",
-    "14900hx",
-    "family:rog-strix-g16"
+    "14900hx"
   ],
   "baseline_snapshot": {
     "schema_version": 2,
-    "generated_at": "2026-10-30T19:03:58.414Z",
+    "generated_at": "2026-10-31T10:03:19.060Z",
     "coverage_status": {
       "9955hx3d": {
         "checked_at": "2026-10-29T13:02:50.929Z",
@@ -840,8 +811,8 @@
         "error": null
       },
       "13980hx": {
-        "checked_at": "2026-10-30T19:03:58.414Z",
-        "last_success_at": "2026-10-30T19:03:58.414Z",
+        "checked_at": "2026-10-31T10:03:19.060Z",
+        "last_success_at": "2026-10-31T10:03:19.060Z",
         "state": "success",
         "error": null
       },
@@ -864,14 +835,14 @@
         "error": null
       },
       "14900hx": {
-        "checked_at": "2026-10-30T19:03:58.414Z",
+        "checked_at": "2026-10-31T10:03:19.060Z",
         "last_success_at": "2026-10-29T13:02:50.929Z",
         "state": "failed",
         "error": "2 ficha(s) aguardando leitura dentro dos limites da rodada"
       },
       "13900hx": {
-        "checked_at": "2026-10-30T19:03:58.414Z",
-        "last_success_at": "2026-10-30T19:03:58.414Z",
+        "checked_at": "2026-10-31T10:03:19.060Z",
+        "last_success_at": "2026-10-31T10:03:19.060Z",
         "state": "success",
         "error": null
       },
@@ -894,10 +865,10 @@
         "error": null
       },
       "14700hx": {
-        "checked_at": "2026-10-30T19:03:58.414Z",
+        "checked_at": "2026-10-31T10:03:19.060Z",
         "last_success_at": "2026-10-30T10:04:54.013Z",
         "state": "failed",
-        "error": "Listagem incompleta: limite de 12 cards ou próxima página pendente; 1 ficha(s) aguardando leitura dentro dos limites da rodada"
+        "error": "2 ficha(s) aguardando leitura dentro dos limites da rodada"
       },
       "hx470": {
         "checked_at": "2026-10-30T19:03:58.414Z",
@@ -912,10 +883,10 @@
         "error": "Listagem incompleta: limite de 90 cards ou próxima página pendente; 8 ficha(s) aguardando leitura dentro dos limites da rodada"
       },
       "family:rog-strix-g16": {
-        "checked_at": "2026-10-27T19:03:10.425Z",
+        "checked_at": "2026-10-31T10:03:19.060Z",
         "last_success_at": "2026-10-27T19:03:10.425Z",
-        "state": "success",
-        "error": null
+        "state": "failed",
+        "error": "Listagem incompleta: limite de 60 cards ou próxima página pendente"
       },
       "family:legion-pro-5": {
         "checked_at": "2026-10-28T10:04:49.504Z",
@@ -943,25 +914,21 @@
       }
     },
     "run": {
-      "date": "2026-10-30",
+      "date": "2026-10-31",
       "timezone": "America/Sao_Paulo",
-      "started_at": "2026-10-30T19:00:17.975Z",
-      "completed_at": "2026-10-30T19:03:58.414Z",
+      "started_at": "2026-10-31T10:00:18.671Z",
+      "completed_at": "2026-10-31T10:03:19.060Z",
       "in_progress": false,
       "phase": "partial",
       "partial": true,
       "successful_terms": [
         "13980hx",
-        "13900hx",
-        "7845hx",
-        "8840hx",
-        "aimax390",
-        "hx470"
+        "13900hx"
       ],
       "failed_terms": [
         {
           "term": "14700hx",
-          "error": "Listagem incompleta: limite de 12 cards ou próxima página pendente; 1 ficha(s) aguardando leitura dentro dos limites da rodada",
+          "error": "2 ficha(s) aguardando leitura dentro dos limites da rodada",
           "kind": "incomplete"
         },
         {
@@ -970,15 +937,15 @@
           "kind": "incomplete"
         },
         {
-          "term": "family:helios-neo-16",
-          "error": "Listagem incompleta: limite de 90 cards ou próxima página pendente; 8 ficha(s) aguardando leitura dentro dos limites da rodada",
+          "term": "family:rog-strix-g16",
+          "error": "Listagem incompleta: limite de 60 cards ou próxima página pendente",
           "kind": "incomplete"
         }
       ],
       "errors": [
         {
           "term": "14700hx",
-          "error": "Listagem incompleta: limite de 12 cards ou próxima página pendente; 1 ficha(s) aguardando leitura dentro dos limites da rodada",
+          "error": "2 ficha(s) aguardando leitura dentro dos limites da rodada",
           "kind": "incomplete"
         },
         {
@@ -987,43 +954,46 @@
           "kind": "incomplete"
         },
         {
-          "term": "family:helios-neo-16",
-          "error": "Listagem incompleta: limite de 90 cards ou próxima página pendente; 8 ficha(s) aguardando leitura dentro dos limites da rodada",
+          "term": "family:rog-strix-g16",
+          "error": "Listagem incompleta: limite de 60 cards ou próxima página pendente",
           "kind": "incomplete"
         }
       ],
       "deferred_coverage": [],
       "unattempted_terms": [],
       "description_discovery": {
-        "extra_details": 8,
+        "extra_details": 7,
         "total_details": 9,
-        "detail_ms": 18894,
+        "detail_ms": 9807,
         "recovered_validated": 0,
-        "cache_hits": 11,
+        "cache_hits": 5,
         "by_term": {
-          "14700hx": 2,
-          "family:helios-neo-16": 4,
-          "family:avell-storm": 2
+          "family:rog-strix-g16": 1,
+          "family:avell-storm": 2,
+          "family:helios-neo-16": 4
         },
         "new_details": 9,
         "total_detail_limit": 12,
-        "queued_candidates": 22,
-        "retry_waiting": 5,
+        "queued_candidates": 17,
+        "retry_waiting": 13,
         "new_candidate_reserve": 3,
+        "ready_within_price": 3,
+        "waiting_for_configuration": 12,
+        "above_display_price": 4,
         "validation_complete": false,
         "per_term_limit": 2,
         "per_round_limit": 8
       },
       "query_yield": {
         "14700hx": {
-          "returned": 3,
+          "returned": 5,
           "validated": 0,
-          "pending": 1,
-          "detail_reads": 2,
+          "pending": 3,
+          "detail_reads": 0,
           "limited": true,
-          "listing_incomplete": true,
-          "listing_limit": 12,
-          "details_pending": 1,
+          "listing_incomplete": false,
+          "listing_limit": 36,
+          "details_pending": 2,
           "total_results": 20,
           "recommendations_ignored": 0
         },
@@ -1031,7 +1001,7 @@
           "returned": 2,
           "validated": 2,
           "pending": 0,
-          "detail_reads": 0,
+          "detail_reads": 2,
           "limited": false,
           "listing_incomplete": false,
           "listing_limit": 12,
@@ -1043,12 +1013,12 @@
           "returned": 3,
           "validated": 0,
           "pending": 2,
-          "detail_reads": 1,
+          "detail_reads": 0,
           "limited": true,
           "listing_incomplete": false,
           "listing_limit": 60,
           "details_pending": 2,
-          "total_results": 49,
+          "total_results": 46,
           "recommendations_ignored": 0
         },
         "13900hx": {
@@ -1063,64 +1033,16 @@
           "total_results": 12,
           "recommendations_ignored": 0
         },
-        "7845hx": {
-          "returned": 0,
-          "validated": 0,
+        "family:rog-strix-g16": {
+          "returned": 3,
+          "validated": 2,
           "pending": 0,
-          "detail_reads": 0,
-          "limited": false,
-          "listing_incomplete": false,
-          "listing_limit": 12,
-          "details_pending": 0,
-          "total_results": 1,
-          "recommendations_ignored": 0
-        },
-        "8840hx": {
-          "returned": 0,
-          "validated": 0,
-          "pending": 0,
-          "detail_reads": 0,
-          "limited": false,
-          "listing_incomplete": false,
-          "listing_limit": 12,
-          "details_pending": 0,
-          "total_results": 0,
-          "recommendations_ignored": 40
-        },
-        "aimax390": {
-          "returned": 0,
-          "validated": 0,
-          "pending": 0,
-          "detail_reads": 0,
-          "limited": false,
-          "listing_incomplete": false,
-          "listing_limit": 12,
-          "details_pending": 0,
-          "total_results": 1,
-          "recommendations_ignored": 0
-        },
-        "hx470": {
-          "returned": 0,
-          "validated": 0,
-          "pending": 0,
-          "detail_reads": 0,
-          "limited": false,
-          "listing_incomplete": false,
-          "listing_limit": 12,
-          "details_pending": 0,
-          "total_results": 0,
-          "recommendations_ignored": 25
-        },
-        "family:helios-neo-16": {
-          "returned": 22,
-          "validated": 0,
-          "pending": 9,
-          "detail_reads": 4,
+          "detail_reads": 1,
           "limited": true,
           "listing_incomplete": true,
-          "listing_limit": 90,
-          "details_pending": 8,
-          "total_results": 78,
+          "listing_limit": 60,
+          "details_pending": 0,
+          "total_results": 53,
           "recommendations_ignored": 0
         }
       },
@@ -1129,24 +1051,16 @@
         "13980hx",
         "14900hx",
         "13900hx",
-        "7845hx",
-        "8840hx",
-        "aimax390",
-        "hx470",
-        "family:helios-neo-16"
+        "family:rog-strix-g16"
       ],
       "successful_coverage": [
         "13980hx",
-        "13900hx",
-        "7845hx",
-        "8840hx",
-        "aimax390",
-        "hx470"
+        "13900hx"
       ],
       "failed_coverage": [
         "14700hx",
         "14900hx",
-        "family:helios-neo-16"
+        "family:rog-strix-g16"
       ],
       "configured_coverage": [
         "9955hx3d",
@@ -1180,38 +1094,36 @@
         "new_items": [],
         "price_changes": [],
         "active_count": 2,
-        "pending_count": 18
+        "pending_count": 13
       },
       "quarantined_item_count": 0,
       "operational": {
         "status": "partial",
         "exit_code": 2,
         "reasons": [
-          "Listagem incompleta: limite de 12 cards ou próxima página pendente; 1 ficha(s) aguardando leitura dentro dos limites da rodada",
           "2 ficha(s) aguardando leitura dentro dos limites da rodada",
-          "Listagem incompleta: limite de 90 cards ou próxima página pendente; 8 ficha(s) aguardando leitura dentro dos limites da rodada"
+          "Listagem incompleta: limite de 60 cards ou próxima página pendente"
         ],
-        "completed_terms": 6,
+        "completed_terms": 2,
         "incomplete_terms": 3,
         "deferred_terms": 0
       },
       "collection_summary": {
         "schema_version": 1,
-        "collected_at": "2026-10-30T19:03:58.414Z",
+        "collected_at": "2026-10-31T10:03:19.060Z",
         "execution": "success",
         "issues": [
-          "Listagem incompleta: limite de 12 cards ou próxima página pendente; 1 ficha(s) aguardando leitura dentro dos limites da rodada",
           "2 ficha(s) aguardando leitura dentro dos limites da rodada",
-          "Listagem incompleta: limite de 90 cards ou próxima página pendente; 8 ficha(s) aguardando leitura dentro dos limites da rodada"
+          "Listagem incompleta: limite de 60 cards ou próxima página pendente"
         ],
         "coverage": {
           "status": "partial",
-          "scheduled": 9,
-          "completed": 6,
+          "scheduled": 5,
+          "completed": 2,
           "incomplete": 3,
           "deferred": 0,
-          "pending_descriptions": 22,
-          "pending_candidates": 18,
+          "pending_descriptions": 17,
+          "pending_candidates": 13,
           "pending_details": 0,
           "heuristic_stops": [],
           "heuristic_reasons": {}
@@ -1220,7 +1132,7 @@
           "new_items": [],
           "price_changes": [],
           "active_count": 2,
-          "pending_count": 18,
+          "pending_count": 13,
           "new_count": 0,
           "price_count": 0
         }
@@ -1242,8 +1154,7 @@
         "title": "Predator Helios Neo 16",
         "cpu_term": "14700hx",
         "search_terms": [
-          "14700hx",
-          "family:helios-neo-16"
+          "14700hx"
         ],
         "description_discovery": true,
         "price_brl": 7000,
@@ -1254,7 +1165,7 @@
         "condition": "novo",
         "status": "out_of_scope",
         "first_seen": "2026-10-25",
-        "last_seen": "2026-10-30",
+        "last_seen": "2026-10-31",
         "notes": null,
         "desc_checked": true,
         "validation": {
@@ -1289,7 +1200,7 @@
         "configuration_warnings": [
           "Armazenamento não informado"
         ],
-        "out_of_scope_at": "2026-10-30T19:03:58.414Z",
+        "out_of_scope_at": "2026-10-31T10:03:19.060Z",
         "price_history": [
           {
             "at": "2026-10-25T19:02:46.963Z",
@@ -1303,8 +1214,7 @@
         "title": "Notebook Helios Neo 16 RTX 4070",
         "cpu_term": "14700hx",
         "search_terms": [
-          "14700hx",
-          "family:helios-neo-16"
+          "14700hx"
         ],
         "description_discovery": true,
         "price_brl": 8000,
@@ -1315,7 +1225,7 @@
         "condition": "NOVO",
         "status": "out_of_scope",
         "first_seen": "2026-10-26",
-        "last_seen": "2026-10-30",
+        "last_seen": "2026-10-31",
         "notes": null,
         "desc_checked": true,
         "validation": {
@@ -1349,7 +1259,7 @@
         "configuration_warnings": [
           "Armazenamento não informado"
         ],
-        "out_of_scope_at": "2026-10-30T19:03:58.414Z",
+        "out_of_scope_at": "2026-10-31T10:03:19.060Z",
         "price_history": [
           {
             "at": "2026-10-26T19:04:17.307Z",
@@ -1370,7 +1280,7 @@
         "condition": null,
         "status": "active",
         "first_seen": "2026-06-01",
-        "last_seen": "2026-10-30",
+        "last_seen": "2026-10-31",
         "notes": null,
         "desc_checked": false,
         "out_of_scope_at": null,
@@ -1379,7 +1289,7 @@
         "validation": {
           "version": 2,
           "state": "pending",
-          "checked_at": "2026-10-30T19:00:19.806Z",
+          "checked_at": "2026-10-31T10:00:20.080Z",
           "reasons": [
             "Ficha aguardando leitura dentro dos limites da rodada"
           ]
@@ -1394,12 +1304,99 @@
         "detail_title": "Notebook Acer Predator - RTX 4070 / Intel Core i7 14700HX / Tela 240Hz (Aceito Trocas)"
       },
       {
+        "id": "1548107625",
+        "url": "https://df.olx.com.br/distrito-federal-e-regiao/informatica/notebooks/notebool-lenovo-legion-pro-5i-rtx-4070-i7-14700hx-1548107625",
+        "title": "Notebool Lenovo Legion pro 5i rtx 4070, i7 14700HX",
+        "cpu_term": "14700hx",
+        "search_terms": [
+          "14700hx"
+        ],
+        "description_discovery": false,
+        "price_brl": 9500,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": "RTX 4070",
+        "location": "Brasília, Riacho Fundo I",
+        "condition": null,
+        "status": "active",
+        "first_seen": "2026-10-28",
+        "last_seen": "2026-10-31",
+        "notes": null,
+        "desc_checked": false,
+        "validation": {
+          "version": 2,
+          "state": "pending",
+          "checked_at": "2026-10-31T10:00:20.078Z",
+          "reasons": [
+            "Ficha aguardando leitura dentro dos limites da rodada"
+          ]
+        },
+        "description_evidence": "Desempenho imbatível com o Notebook Lenovo Legion Pro 5i! Equipado com processador Intel Core i7 de 14ª geração e placa de vídeo RTX 4070, este notebook é ideal para gamers e profissionais que buscam o máximo em tecnologia e velocidade. Experimente gráficos incríveis e multitarefa sem interrupções.Notebook impecável modelo de portugal com garantia 2 meses restando.32gb de ram ddr51tb de ssdRtx 4070 8gbI7 14700HXQhd 165hz",
+        "detail_title": "Notebool Lenovo Legion pro 5i rtx 4070, i7 14700HX",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ],
+        "out_of_scope_at": null,
+        "price_history": [
+          {
+            "at": "2026-10-28T10:04:49.504Z",
+            "price_brl": 9100
+          },
+          {
+            "at": "2026-10-30T10:04:54.013Z",
+            "price_brl": 9500
+          }
+        ],
+        "opportunity": {
+          "state": "insufficient_comparables",
+          "sample": 0,
+          "reason": "Sem três anúncios independentes recentes com família, CPU, GPU, RAM e condição semelhantes"
+        }
+      },
+      {
+        "id": "1548728481",
+        "url": "https://al.olx.com.br/alagoas/informatica/notebooks/notebook-gamer-nave-estelar-i7-14700hx-32-gb-ram-512-ssd-rtx-4060-1548728481",
+        "title": "Notebook Gamer Nave estelar i7 14700hx, 32 Gb ram, 512 ssd, RTX 4060",
+        "cpu_term": "14700hx",
+        "search_terms": [
+          "14700hx"
+        ],
+        "description_discovery": false,
+        "price_brl": 9800,
+        "ram_gb": 32,
+        "storage_gb": 512,
+        "gpu": "RTX 4060",
+        "location": "Maceió, Jatiúca",
+        "condition": null,
+        "status": "active",
+        "first_seen": "2026-10-30",
+        "last_seen": "2026-10-31",
+        "notes": null,
+        "desc_checked": false,
+        "validation": {
+          "version": 2,
+          "state": "pending",
+          "reasons": [
+            "Descrição e preço integral ainda não conferidos"
+          ]
+        },
+        "out_of_scope_at": null,
+        "price_history": [
+          {
+            "at": "2026-10-30T10:04:54.013Z",
+            "price_brl": 9800
+          }
+        ],
+        "configuration_warnings": []
+      },
+      {
         "id": "1548266943",
         "url": "https://sc.olx.com.br/florianopolis-e-regiao/informatica/notebooks/notebook-asus-rog-strix-g16-i9-13980hx-rtx-4060-1tb-32gb-ddr5-1548266943",
         "title": "Notebook ASUS ROG Strix G16 | i9-13980HX | RTX 4060 | 1TB | 32GB DDR5",
         "cpu_term": "13980hx",
         "search_terms": [
-          "13980hx"
+          "13980hx",
+          "family:rog-strix-g16"
         ],
         "description_discovery": false,
         "price_brl": 7927,
@@ -1410,13 +1407,13 @@
         "condition": "Usado - Excelente",
         "status": "active",
         "first_seen": "2026-10-29",
-        "last_seen": "2026-10-30",
+        "last_seen": "2026-10-31",
         "notes": null,
         "desc_checked": true,
         "validation": {
           "version": 2,
           "state": "validated",
-          "checked_at": "2026-10-30T10:01:22.045Z",
+          "checked_at": "2026-10-31T10:00:48.996Z",
           "reasons": [],
           "listing_price_brl": 7927,
           "detail_price_brl": 7927,
@@ -1457,24 +1454,25 @@
         "title": "Notebook ASUS ROG Strix G16 | i9-13980HX | RTX 4060 | 1TB | 32GB DDR5",
         "cpu_term": "13980hx",
         "search_terms": [
-          "13980hx"
+          "13980hx",
+          "family:rog-strix-g16"
         ],
         "description_discovery": false,
         "price_brl": 7927,
         "ram_gb": 32,
         "storage_gb": 1024,
         "gpu": "RTX 4060",
-        "location": "Itacorubi, Florianópolis - SC",
+        "location": null,
         "condition": "Usado - Excelente",
         "status": "active",
         "first_seen": "2026-10-17",
-        "last_seen": "2026-10-30",
+        "last_seen": "2026-10-31",
         "notes": null,
         "desc_checked": true,
         "validation": {
           "version": 2,
           "state": "validated",
-          "checked_at": "2026-10-30T10:01:33.649Z",
+          "checked_at": "2026-10-31T10:01:01.577Z",
           "reasons": [],
           "listing_price_brl": 7927,
           "detail_price_brl": 7927,
@@ -1526,7 +1524,7 @@
         "condition": null,
         "status": "active",
         "first_seen": "2026-06-01",
-        "last_seen": "2026-10-30",
+        "last_seen": "2026-10-31",
         "notes": null,
         "desc_checked": false,
         "out_of_scope_at": null,
@@ -1538,7 +1536,7 @@
         "validation": {
           "version": 2,
           "state": "pending",
-          "checked_at": "2026-10-30T19:01:18.309Z",
+          "checked_at": "2026-10-31T10:01:22.207Z",
           "reasons": [
             "Ficha aguardando leitura dentro dos limites da rodada"
           ]
@@ -1560,10 +1558,10 @@
         "condition": "novo",
         "status": "out_of_scope",
         "first_seen": "2026-10-02",
-        "last_seen": "2026-10-30",
+        "last_seen": "2026-10-31",
         "notes": null,
         "desc_checked": true,
-        "out_of_scope_at": "2026-10-30T19:03:58.414Z",
+        "out_of_scope_at": "2026-10-31T10:03:19.060Z",
         "price_history": [
           {
             "at": "2026-10-02T10:00:30.855Z",
@@ -1617,13 +1615,13 @@
         "condition": null,
         "status": "active",
         "first_seen": "2026-10-13",
-        "last_seen": "2026-10-30",
+        "last_seen": "2026-10-31",
         "notes": null,
         "desc_checked": false,
         "validation": {
           "version": 2,
           "state": "pending",
-          "checked_at": "2026-10-30T19:01:31.105Z",
+          "checked_at": "2026-10-31T10:01:22.212Z",
           "reasons": [
             "Ficha aguardando leitura dentro dos limites da rodada"
           ]
@@ -1647,6 +1645,421 @@
         ],
         "description_evidence": "Leve o poder do Predator Helios Neo para onde você for! Este notebook gamer combina performance e design para suas batalhas virtuais. E para completar, ganhe uma mochila exclusiva de brinde, perfeita para transportar seu setup com segurança e estilo. intel® core? i9-14900hx - 2,2 ghz / 5,8 ghz32gb ddr5 5600 mhzdiisco: 1 tb windows 11nvidia rtx 4070 graphics 8gb gddr6Possuo caixa original e o laptop esta com pouquíssimo uso.",
         "detail_title": "Laptop Predator Helios Neo intel® core i9-14900hx com rtx4070"
+      },
+      {
+        "id": "1548968561",
+        "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-gamer-asus-rog-strix-g16-i7-16gb-rtx-4050-165hz-1548968561",
+        "title": "Notebook Gamer ASUS ROG Strix G16 i7 16GB RTX 4050 165Hz",
+        "cpu_term": "family:rog-strix-g16",
+        "search_terms": [
+          "family:rog-strix-g16"
+        ],
+        "description_discovery": true,
+        "price_brl": 6887,
+        "ram_gb": 16,
+        "storage_gb": null,
+        "gpu": "RTX 4050",
+        "location": null,
+        "condition": "Usado - Bom",
+        "status": "out_of_scope",
+        "first_seen": "2026-10-31",
+        "last_seen": "2026-10-31",
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-10-31T10:02:07.101Z",
+          "reasons": [
+            "RAM abaixo do mínimo exigido",
+            "RAM abaixo do mínimo de 32 GB",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 6887,
+          "detail_price_brl": 6887,
+          "visible_price_brl": null,
+          "structured_price_brl": 6887,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 4050"
+          },
+          "description_specs": {
+            "ram_gb": 16,
+            "storage_gb": null,
+            "gpu": "RTX 4050"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "description_evidence": "Vendo notebook gamer ASUS ROG Strix G16, modelo G614JU-N3367, com upgrade para 128 GB de memória RAM.Funcionando 100%. Possui marcas de uso e alguns arranhões na tampa, apenas estéticos, que não interferem no funcionamento. Veja as fotos reais do equipamento.Configuração:? Intel Core i7-13650HX de 13ª geração, com 14 núcleos e 20 threads? NVIDIA GeForce RTX 4050 com 6 GB de memória dedicada? 16 GB de memória RAM DDR5? Armazenamento SSD NVMe? Tela de 16 polegadas, resolução 1920 × 1200 e taxa de atualização de 165 Hz? Teclado com iluminação RGB? Wi-Fi, Bluetooth, HDMI e conexões USB-CConfiguração versátil para jogos, edição de vídeos, trabalho e multitarefa.Entre em contato pelo chat para mais informações.",
+        "detail_title": "Notebook Gamer ASUS ROG Strix G16 i7 16GB RTX 4050 165Hz",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ],
+        "out_of_scope_at": "2026-10-31T10:03:19.060Z",
+        "price_history": [
+          {
+            "at": "2026-10-31T10:03:19.060Z",
+            "price_brl": 6887
+          }
+        ]
+      },
+      {
+        "id": "1546506873",
+        "url": "https://pa.olx.com.br/regiao-de-maraba/informatica/notebooks/notebook-gamer-avell-storm-bs-350-1546506873",
+        "title": "Notebook Gamer Avell Storm BS 350",
+        "cpu_term": "family:avell-storm",
+        "search_terms": [
+          "family:avell-storm"
+        ],
+        "description_discovery": true,
+        "price_brl": 5300,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": "RTX 3050",
+        "location": "Belo Horizonte, Marabá - PA",
+        "condition": "Usado - Excelente",
+        "status": "out_of_scope",
+        "first_seen": "2026-10-23",
+        "last_seen": "2026-10-31",
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-10-31T10:02:19.084Z",
+          "reasons": [
+            "CPU fora da busca",
+            "Especificação não confirmada: RAM",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 5300,
+          "detail_price_brl": 5300,
+          "visible_price_brl": null,
+          "structured_price_brl": 5300,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 3050"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "description_evidence": "Vendo Notebook Gamer Avell em excelente estado de conservação, sem nenhum detalhe, usado poucas vezes. Especificações de hardware:? GeForce® RTX 3050 (4GB GDDR6)? Intel® Core?M i7-12650H Alder Lake (24MB cache, 3.5GHz ~ 4.7GHz Turbo Boost Max 3.0)? Upgrade Grátis - 32GB [2x 16GB - Dual Channel] Memória DDR4 (3200MHZ)? SSD M.2 NVME 512GB - Geração 4 - [3.400 MB/s? 15.6\" FHD WVA (1920x1080p) - 144Hz / Matte / Contraste: 1000:1/ Brilho 250 cd/m²",
+        "detail_title": "Notebook Gamer Avell Storm BS 350",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ],
+        "out_of_scope_at": "2026-10-31T10:03:19.060Z",
+        "price_history": [
+          {
+            "at": "2026-10-23T19:03:26.100Z",
+            "price_brl": 5300
+          }
+        ]
+      },
+      {
+        "id": "1548268436",
+        "url": "https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-two-1548268436",
+        "title": "Notebook Gamer Avell Storm Two",
+        "cpu_term": "family:avell-storm",
+        "search_terms": [
+          "family:avell-storm"
+        ],
+        "description_discovery": true,
+        "price_brl": 7199,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": "RTX 3070 TI",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "out_of_scope",
+        "first_seen": "2026-10-30",
+        "last_seen": "2026-10-31",
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-10-31T10:02:31.512Z",
+          "reasons": [
+            "CPU fora da busca",
+            "Especificação não confirmada: RAM",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 7199,
+          "detail_price_brl": 7199,
+          "visible_price_brl": null,
+          "structured_price_brl": 7199,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 3070 TI"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "out_of_scope_at": "2026-10-31T10:03:19.060Z",
+        "price_history": [
+          {
+            "at": "2026-10-30T10:04:54.013Z",
+            "price_brl": 7199
+          }
+        ],
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ],
+        "description_evidence": "Notebook Gamer Avell Storm TwoIntel Core i7 12700H 2.3GHz16gb memória RAMSSD 1tbVídeo NVidia RTX 3070ti 8gbMonitor 15.6 FHD IPSTeclado retroiluminadoFonte/carregador originalCom caixaCom nota fiscal",
+        "detail_title": "Notebook Gamer Avell Storm Two"
+      },
+      {
+        "id": "1535352665",
+        "url": "https://to.olx.com.br/tocantins/informatica/notebooks/notebook-helios-neo-16-1535352665",
+        "title": "Notebook helios neo 16",
+        "cpu_term": "family:helios-neo-16",
+        "search_terms": [
+          "family:helios-neo-16"
+        ],
+        "description_discovery": true,
+        "price_brl": 7200,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": null,
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": "2026-10-30",
+        "last_seen": "2026-10-31",
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "pending",
+          "checked_at": "2026-10-31T10:02:43.485Z",
+          "reasons": [
+            "Especificação não confirmada: RAM",
+            "Especificação não confirmada: GPU",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 7200,
+          "detail_price_brl": 7200,
+          "visible_price_brl": null,
+          "structured_price_brl": 7200,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "out_of_scope_at": null,
+        "price_history": [
+          {
+            "at": "2026-10-30T19:03:58.414Z",
+            "price_brl": 7200
+          }
+        ],
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ],
+        "description_evidence": "Eleve sua experiência gamer com o Notebook Helios Neo 16. Desempenho excepcional para jogos e multitarefas, com design moderno e recursos avançados. Prepare-se para dominar o campo de batalha!",
+        "detail_title": "Notebook helios neo 16 "
+      },
+      {
+        "id": "1535263118",
+        "url": "https://rj.olx.com.br/rio-de-janeiro-e-regiao/informatica/notebooks/acer-predator-helios-neo-16-1535263118",
+        "title": "Acer Predator Helios Neo 16",
+        "cpu_term": "family:helios-neo-16",
+        "search_terms": [
+          "family:helios-neo-16"
+        ],
+        "description_discovery": true,
+        "price_brl": 7400,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": null,
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "out_of_scope",
+        "first_seen": "2026-10-21",
+        "last_seen": "2026-10-31",
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-10-31T10:02:55.523Z",
+          "reasons": [
+            "CPU fora da busca",
+            "Especificação não confirmada: RAM",
+            "Especificação não confirmada: GPU",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 7400,
+          "detail_price_brl": 7400,
+          "visible_price_brl": null,
+          "structured_price_brl": 7400,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "out_of_scope_at": "2026-10-31T10:03:19.060Z",
+        "price_history": [
+          {
+            "at": "2026-10-21T14:45:19.885Z",
+            "price_brl": 7400
+          }
+        ],
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ],
+        "description_evidence": "Potencialize seu desempenho com o Acer Predator Helios Neo 16! Ideal para jogos e multitarefas, este notebook oferece velocidade e gráficos incríveis para uma experiência imersiva. Leve seu setup para o próximo nível!Preferência troca em macbook m4 ou similares",
+        "detail_title": "Acer Predator Helios Neo 16 "
+      },
+      {
+        "id": "1445040401",
+        "url": "https://sc.olx.com.br/norte-de-santa-catarina/informatica/notebooks/predator-helios-neo-16-1445040401",
+        "title": "Predator Helios neo 16",
+        "cpu_term": "family:helios-neo-16",
+        "search_terms": [
+          "family:helios-neo-16"
+        ],
+        "description_discovery": true,
+        "price_brl": 7500,
+        "ram_gb": 16,
+        "storage_gb": null,
+        "gpu": "RTX 4060",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "out_of_scope",
+        "first_seen": "2026-10-21",
+        "last_seen": "2026-10-31",
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-10-31T10:03:07.453Z",
+          "reasons": [
+            "RAM abaixo do mínimo exigido",
+            "RAM abaixo do mínimo de 32 GB",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 7500,
+          "detail_price_brl": 7500,
+          "visible_price_brl": null,
+          "structured_price_brl": 7500,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": 16,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "out_of_scope_at": "2026-10-31T10:03:19.060Z",
+        "price_history": [
+          {
+            "at": "2026-10-21T14:45:19.885Z",
+            "price_brl": 7500
+          }
+        ],
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ],
+        "description_evidence": "Notebook gamer Predator Helios i7 13700hx RTX4060 16gb ram com tela de alta resolução quad hd 2560x1600",
+        "detail_title": "Predator Helios neo 16"
+      },
+      {
+        "id": "1542844072",
+        "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-gamer-helios-neo-16-1542844072",
+        "title": "Notebook gamer helios neo 16",
+        "cpu_term": "family:helios-neo-16",
+        "search_terms": [
+          "family:helios-neo-16"
+        ],
+        "description_discovery": true,
+        "price_brl": 7600,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": null,
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "out_of_scope",
+        "first_seen": "2026-10-21",
+        "last_seen": "2026-10-31",
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-10-31T10:03:19.055Z",
+          "reasons": [
+            "CPU fora da busca",
+            "Especificação não confirmada: RAM",
+            "Especificação não confirmada: GPU",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 7600,
+          "detail_price_brl": 7600,
+          "visible_price_brl": null,
+          "structured_price_brl": 7600,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "out_of_scope_at": "2026-10-31T10:03:19.060Z",
+        "price_history": [
+          {
+            "at": "2026-10-21T14:45:19.885Z",
+            "price_brl": 7600
+          }
+        ],
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ],
+        "description_evidence": "Configuração: i7-13460hx Nvidea 4060 8gb vram16 ram Com carregador e caixa originais Com nota fiscal Eleve sua experiência de jogo com o Notebook Gamer Helios Neo 16! Desempenho excepcional para rodar seus títulos favoritos com gráficos impressionantes e velocidade de tirar o fôlego. Prepare-se para a vitória!",
+        "detail_title": "Notebook gamer helios neo 16"
       },
       {
         "id": "1543818410",
@@ -1927,45 +2340,6 @@
         ]
       },
       {
-        "id": "1535352665",
-        "url": "https://to.olx.com.br/tocantins/informatica/notebooks/notebook-helios-neo-16-1535352665",
-        "title": "Notebook helios neo 16",
-        "cpu_term": "family:helios-neo-16",
-        "search_terms": [
-          "family:helios-neo-16"
-        ],
-        "description_discovery": true,
-        "price_brl": 7200,
-        "ram_gb": null,
-        "storage_gb": null,
-        "gpu": null,
-        "location": "Brejinho de Nazaré",
-        "condition": null,
-        "status": "active",
-        "first_seen": "2026-10-30",
-        "last_seen": "2026-10-30",
-        "notes": null,
-        "desc_checked": false,
-        "validation": {
-          "version": 2,
-          "state": "pending",
-          "checked_at": "2026-10-30T19:03:31.735Z",
-          "reasons": [
-            "Ficha aguardando leitura dentro dos limites da rodada"
-          ]
-        },
-        "out_of_scope_at": null,
-        "price_history": [
-          {
-            "at": "2026-10-30T19:03:58.414Z",
-            "price_brl": 7200
-          }
-        ],
-        "configuration_warnings": [
-          "Armazenamento não informado"
-        ]
-      },
-      {
         "id": "1546298970",
         "url": "https://ba.olx.com.br/grande-salvador/informatica/notebooks/helios-neo-16-predator-1546298970",
         "title": "Helios neo 16 predator",
@@ -2044,47 +2418,6 @@
         "configuration_warnings": [
           "Armazenamento não informado"
         ]
-      },
-      {
-        "id": "1535263118",
-        "url": "https://rj.olx.com.br/rio-de-janeiro-e-regiao/informatica/notebooks/acer-predator-helios-neo-16-1535263118",
-        "title": "Acer Predator Helios Neo 16",
-        "cpu_term": "family:helios-neo-16",
-        "search_terms": [
-          "family:helios-neo-16"
-        ],
-        "description_discovery": true,
-        "price_brl": 7400,
-        "ram_gb": null,
-        "storage_gb": null,
-        "gpu": null,
-        "location": "Magé, Praia do Anil (Guia de Pacobaíba)",
-        "condition": null,
-        "status": "active",
-        "first_seen": "2026-10-21",
-        "last_seen": "2026-10-30",
-        "notes": null,
-        "desc_checked": false,
-        "validation": {
-          "version": 2,
-          "state": "pending",
-          "checked_at": "2026-10-30T19:03:31.737Z",
-          "reasons": [
-            "Ficha aguardando leitura dentro dos limites da rodada"
-          ]
-        },
-        "out_of_scope_at": null,
-        "price_history": [
-          {
-            "at": "2026-10-21T14:45:19.885Z",
-            "price_brl": 7400
-          }
-        ],
-        "configuration_warnings": [
-          "Armazenamento não informado"
-        ],
-        "description_evidence": "Potencialize seu desempenho com o Acer Predator Helios Neo 16! Ideal para jogos e multitarefas, este notebook oferece velocidade e gráficos incríveis para uma experiência imersiva. Leve seu setup para o próximo nível!Preferência troca em macbook m4 ou similares",
-        "detail_title": "Acer Predator Helios Neo 16 "
       },
       {
         "id": "1548496018",
@@ -2201,88 +2534,6 @@
         "configuration_warnings": [],
         "description_evidence": "Modelo:Notebook Predator Helios Neo PHN16-71-74UESistema Operacional -:Windows 11 HomeCPU e Chipset:Intel® Core? i7-13700HX de 13ª geração16 núcleos (8 Performace-cores e 8 Efficient-cores)24 threadsFrequência: até 5.00 GHz30 MB Intel®Smart CacheChipset HM770Memória RAM:16 GB RAM DDR5 de até 4800 MHz (2x módulos SO-DIMM de 8 GB cada)Expansível até 32 GB DDR5 de até 4800 MHz (com 2 slots para memórias em módulo SO-DIMM com capacidade para até 16 GB cada)Tela:16? Painel de LED IPS (in-Plane-Switching)Resolução: WUXGA (Wide Ultra Extended Graphics Array) 1920 x 1200Proporção: 16:10Taxa de atualização: 165 HzBrilho: 400 nitsTempo de resposta: 9 msContraste: 1000Espaço de cor (color gamut): sRGB 100%Tecnologia antirreflexo Acer ComfyView?Placa de Vídeo -:Nvidia® GeForce® RTX 4060 com 8 GB de memória dedicada GDDR6 com eficiência total (TGP) de 150WSuporte as tecnologias: NVIDIA® GeForce®Experience, Ray Tracing Cores, Tensor Cores, Microsoft DirectX®12 Ultimate, OpenGL, NVIDIA®Dynamic Boost, Game Ready Drivers e DLSSUHD para processadores Intel®com memória compartilhada com a memória RAM.Áudio:2x Alto-falantes estéreo de 2 Watts cadaTecnologia AcerTrueHarmonyTecnologia DTS®X: Ultra ÁudioSuportado no Windows Spatial Sound para PC Gaming, com licença DTS IntegradaRenderização de áudio imersiva em fones de ouvido e alto-falantes internos2x MicrofonesTecnologia Acer Purified Voice com redução de ruído de fundo feito por inteligencia artificialCompatível com Cortana com vozCapacidade:1 TB SSD NVMe PCIe 4.0 x4 M.2 2280Expansão:Este modelo possuí capacidade para a instalação (upgrades) de SSDs NVMe:Slot dedicado ocupado M.2 2280, compatível com barramento PCIe 4.0 x4 NVMe de até 2TB. (Não acompanha o produto)Slot dedicado livre M.2 2280, compatível com barramento PCIe 4.0 x4 NVMe de até 2TB. (Não acompanha o produto)Webcam:Webcam com resolução HD de 1280 x 720 gravação de vídeo em 720p á 30 FPS com recurso TNR (redução de ruido temporário)Wireless e Rede:Wi-Fi rede sem cabo:Killer? Wi-Fi 6 AX 1650i802.11 a/b/g/n/ac R2 + ax wirelessDuas bandas com frequências de: 2.4 GHz e 5 GHzSuporte ao Wi-Fi 6Com tecnologia 2x2 MU-MIMOSuporte ao Bluetooth®5.1 ou superiorLAN rede com cabo RJ-45Killer? Ethernet E260010/100/1000 MbpsSuporte ao modo hibernaçãoSuporte ao Wake On LanSuporte ao IPv4 (32 Bits) e IPv6 (128 Bits)Controles de Privacidade:Senha para BIOS e HDTrava KensingtonTPM em Firmware (fTPMDimensões e Peso:Sem embalagem:360.1 (L) x 279.9 (P) x 28.25 (A) mm 2,6 kgCom embalagem (Aproximadamente~):540 (L) x 360 (P) x 85 (A) mm 4,7 kgBateria e Alimentação:Fonte de alimentação:Externa de 330 Watts bivolt 100 a 240 Volts com cabo de 3 pinos padrão do Brasil e certificação do INMETROBateria:5850 mAh com 4 células de Íon de lítio de 90 Watts / horaAutonomia da bateria de até 7 horas (dependendo das condições de uso)Aplicativos Embarcados:PredatorSense (configure como deseja utilizar seu notebook)Teclado e Controles:Teclado:Tipo membrana em português do Brasil padrão ABNT 2Retroiluminado RGB com 4 zonas de iluminaçãoTeclado numérico independenteAtalho multimídia e funções (Tecla FN) + (Play, pause, parar, voltar, avançar, aumentar volume, diminuir volume, mudo e etc)Tecla de atalho Predator SenseTecla Turbo para controle dos modos variados de trabalho da ventoinhaTouchpad:Multi gestual com dois botões suportando rolagem com dois dedos, gestos para abrir Cortana, Action Center, multitarefa e comandos de aplicativosResistente a umidadeCertificação Microsoft Precision TouchpadConteúdo da Embalagem:Notebook Acer Predator Helios NEOFonte de alimentação do notebookManual em português do BrasilTermo de garantiaCor:PretoAcer P/N:NH.QQBAL.002Certificado de Homologação da ANATEL:069701804423",
         "detail_title": "Notebook Predator I7 Rtx 4060"
-      },
-      {
-        "id": "1445040401",
-        "url": "https://sc.olx.com.br/norte-de-santa-catarina/informatica/notebooks/predator-helios-neo-16-1445040401",
-        "title": "Predator Helios neo 16",
-        "cpu_term": "family:helios-neo-16",
-        "search_terms": [
-          "family:helios-neo-16"
-        ],
-        "description_discovery": true,
-        "price_brl": 7500,
-        "ram_gb": null,
-        "storage_gb": null,
-        "gpu": null,
-        "location": "Canoinhas, Centro",
-        "condition": null,
-        "status": "active",
-        "first_seen": "2026-10-21",
-        "last_seen": "2026-10-30",
-        "notes": null,
-        "desc_checked": false,
-        "validation": {
-          "version": 2,
-          "state": "pending",
-          "checked_at": "2026-10-30T19:03:31.740Z",
-          "reasons": [
-            "Ficha aguardando leitura dentro dos limites da rodada"
-          ]
-        },
-        "out_of_scope_at": null,
-        "price_history": [
-          {
-            "at": "2026-10-21T14:45:19.885Z",
-            "price_brl": 7500
-          }
-        ],
-        "configuration_warnings": [
-          "Armazenamento não informado"
-        ],
-        "description_evidence": "Notebook gamer Predator Helios i7 13700hx RTX4060 16gb ram com tela de alta resolução quad hd 2560x1600",
-        "detail_title": "Predator Helios neo 16"
-      },
-      {
-        "id": "1542844072",
-        "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-gamer-helios-neo-16-1542844072",
-        "title": "Notebook gamer helios neo 16",
-        "cpu_term": "family:helios-neo-16",
-        "search_terms": [
-          "family:helios-neo-16"
-        ],
-        "description_discovery": true,
-        "price_brl": 7600,
-        "ram_gb": null,
-        "storage_gb": null,
-        "gpu": null,
-        "location": "São Paulo, Vila Bruna",
-        "condition": null,
-        "status": "active",
-        "first_seen": "2026-10-21",
-        "last_seen": "2026-10-30",
-        "notes": null,
-        "desc_checked": false,
-        "validation": {
-          "version": 2,
-          "state": "pending",
-          "checked_at": "2026-10-30T19:03:31.742Z",
-          "reasons": [
-            "Ficha aguardando leitura dentro dos limites da rodada"
-          ]
-        },
-        "out_of_scope_at": null,
-        "price_history": [
-          {
-            "at": "2026-10-21T14:45:19.885Z",
-            "price_brl": 7600
-          }
-        ],
-        "configuration_warnings": [
-          "Armazenamento não informado"
-        ],
-        "description_evidence": "Configuração: i7-13460hx Nvidea 4060 8gb vram16 ram Com carregador e caixa originais Com nota fiscal Eleve sua experiência de jogo com o Notebook Gamer Helios Neo 16! Desempenho excepcional para rodar seus títulos favoritos com gráficos impressionantes e velocidade de tirar o fôlego. Prepare-se para a vitória!",
-        "detail_title": "Notebook gamer helios neo 16"
       },
       {
         "id": "1545349532",
@@ -2795,106 +3046,6 @@
         "detail_title": "Vendo notebook Avell Storm 350"
       },
       {
-        "id": "1548107625",
-        "url": "https://df.olx.com.br/distrito-federal-e-regiao/informatica/notebooks/notebool-lenovo-legion-pro-5i-rtx-4070-i7-14700hx-1548107625",
-        "title": "Notebool Lenovo Legion pro 5i rtx 4070, i7 14700HX",
-        "cpu_term": "14700hx",
-        "search_terms": [
-          "14700hx"
-        ],
-        "description_discovery": false,
-        "price_brl": 9500,
-        "ram_gb": 32,
-        "storage_gb": null,
-        "gpu": "RTX 4070",
-        "location": null,
-        "condition": "Usado - Excelente",
-        "status": "active",
-        "first_seen": "2026-10-28",
-        "last_seen": "2026-10-30",
-        "notes": null,
-        "desc_checked": true,
-        "validation": {
-          "version": 2,
-          "state": "validated",
-          "checked_at": "2026-10-30T10:00:57.509Z",
-          "reasons": [],
-          "listing_price_brl": 9500,
-          "detail_price_brl": 9500,
-          "visible_price_brl": null,
-          "structured_price_brl": 9500,
-          "title_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": "RTX 4070"
-          },
-          "description_specs": {
-            "ram_gb": 32,
-            "storage_gb": null,
-            "gpu": "RTX 4070"
-          },
-          "cpu_confirmed": true,
-          "description_checked": true
-        },
-        "description_evidence": "Desempenho imbatível com o Notebook Lenovo Legion Pro 5i! Equipado com processador Intel Core i7 de 14ª geração e placa de vídeo RTX 4070, este notebook é ideal para gamers e profissionais que buscam o máximo em tecnologia e velocidade. Experimente gráficos incríveis e multitarefa sem interrupções.Notebook impecável modelo de portugal com garantia 2 meses restando.32gb de ram ddr51tb de ssdRtx 4070 8gbI7 14700HXQhd 165hz",
-        "detail_title": "Notebool Lenovo Legion pro 5i rtx 4070, i7 14700HX",
-        "configuration_warnings": [
-          "Armazenamento não informado"
-        ],
-        "out_of_scope_at": null,
-        "price_history": [
-          {
-            "at": "2026-10-28T10:04:49.504Z",
-            "price_brl": 9100
-          },
-          {
-            "at": "2026-10-30T10:04:54.013Z",
-            "price_brl": 9500
-          }
-        ],
-        "opportunity": {
-          "state": "insufficient_comparables",
-          "sample": 0,
-          "reason": "Sem três anúncios independentes recentes com família, CPU, GPU, RAM e condição semelhantes"
-        }
-      },
-      {
-        "id": "1548728481",
-        "url": "https://al.olx.com.br/alagoas/informatica/notebooks/notebook-gamer-nave-estelar-i7-14700hx-32-gb-ram-512-ssd-rtx-4060-1548728481",
-        "title": "Notebook Gamer Nave estelar i7 14700hx, 32 Gb ram, 512 ssd, RTX 4060",
-        "cpu_term": "14700hx",
-        "search_terms": [
-          "14700hx"
-        ],
-        "description_discovery": false,
-        "price_brl": 9800,
-        "ram_gb": 32,
-        "storage_gb": 512,
-        "gpu": "RTX 4060",
-        "location": "Maceió, Jatiúca",
-        "condition": null,
-        "status": "active",
-        "first_seen": "2026-10-30",
-        "last_seen": "2026-10-30",
-        "notes": null,
-        "desc_checked": false,
-        "validation": {
-          "version": 2,
-          "state": "pending",
-          "reasons": [
-            "Descrição e preço integral ainda não conferidos"
-          ]
-        },
-        "out_of_scope_at": null,
-        "price_history": [
-          {
-            "at": "2026-10-30T10:04:54.013Z",
-            "price_brl": 9800
-          }
-        ],
-        "configuration_warnings": []
-      },
-      {
         "id": "1548761330",
         "url": "https://rs.olx.com.br/regioes-de-pelotas-rio-grande-e-bage/informatica/notebooks/strix-g16-ultra-9-275hx-rtx5060-16gb-512gb-lacrado-nf-garantia-2-anos-1548761330",
         "title": "Strix G16 Ultra 9 275HX RTX5060 16gb 512gb (LACRADO/NF/GARANTIA 2 ANOS)",
@@ -3005,47 +3156,6 @@
           ]
         },
         "configuration_warnings": []
-      },
-      {
-        "id": "1546506873",
-        "url": "https://pa.olx.com.br/regiao-de-maraba/informatica/notebooks/notebook-gamer-avell-storm-bs-350-1546506873",
-        "title": "Notebook Gamer Avell Storm BS 350",
-        "cpu_term": "family:avell-storm",
-        "search_terms": [
-          "family:avell-storm"
-        ],
-        "description_discovery": true,
-        "price_brl": 5300,
-        "ram_gb": null,
-        "storage_gb": null,
-        "gpu": null,
-        "location": "Marabá, Belo Horizonte",
-        "condition": null,
-        "status": "active",
-        "first_seen": "2026-10-23",
-        "last_seen": "2026-10-30",
-        "notes": null,
-        "desc_checked": false,
-        "validation": {
-          "version": 2,
-          "state": "pending",
-          "checked_at": "2026-10-30T10:04:29.519Z",
-          "reasons": [
-            "Ficha aguardando leitura dentro dos limites da rodada"
-          ]
-        },
-        "description_evidence": "Vendo Notebook Gamer Avell em excelente estado de conservação, sem nenhum detalhe, usado poucas vezes. Especificações de hardware:? GeForce® RTX 3050 (4GB GDDR6)? Intel® Core?M i7-12650H Alder Lake (24MB cache, 3.5GHz ~ 4.7GHz Turbo Boost Max 3.0)? Upgrade Grátis - 32GB [2x 16GB - Dual Channel] Memória DDR4 (3200MHZ)? SSD M.2 NVME 512GB - Geração 4 - [3.400 MB/s? 15.6\" FHD WVA (1920x1080p) - 144Hz / Matte / Contraste: 1000:1/ Brilho 250 cd/m²",
-        "detail_title": "Notebook Gamer Avell Storm BS 350",
-        "configuration_warnings": [
-          "Armazenamento não informado"
-        ],
-        "out_of_scope_at": null,
-        "price_history": [
-          {
-            "at": "2026-10-23T19:03:26.100Z",
-            "price_brl": 5300
-          }
-        ]
       },
       {
         "id": "1541340529",
@@ -3281,45 +3391,6 @@
         ],
         "description_evidence": "Notebook Avell Processador Intel Core I7 13620H32gb de Ram500 GB de armazenamento Placa de vídeo Nvidea RTX 4050 6GbCom caixa, nota e carregador",
         "detail_title": "Notebook Gamer Avell Storm 450 Intel I7 32gram 500gb Rtx4050"
-      },
-      {
-        "id": "1548268436",
-        "url": "https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-two-1548268436",
-        "title": "Notebook Gamer Avell Storm Two",
-        "cpu_term": "family:avell-storm",
-        "search_terms": [
-          "family:avell-storm"
-        ],
-        "description_discovery": true,
-        "price_brl": 7199,
-        "ram_gb": null,
-        "storage_gb": null,
-        "gpu": null,
-        "location": "Lagoa Santa, Sítio Bom Recanto",
-        "condition": null,
-        "status": "active",
-        "first_seen": "2026-10-30",
-        "last_seen": "2026-10-30",
-        "notes": null,
-        "desc_checked": false,
-        "validation": {
-          "version": 2,
-          "state": "pending",
-          "checked_at": "2026-10-30T10:04:29.522Z",
-          "reasons": [
-            "Ficha aguardando leitura dentro dos limites da rodada"
-          ]
-        },
-        "out_of_scope_at": null,
-        "price_history": [
-          {
-            "at": "2026-10-30T10:04:54.013Z",
-            "price_brl": 7199
-          }
-        ],
-        "configuration_warnings": [
-          "Armazenamento não informado"
-        ]
       },
       {
         "id": "1547737777",
@@ -12245,21 +12316,22 @@
   "blocked_until": null,
   "description_discovery": {
     "extra_details": 7,
-    "total_details": 9,
-    "detail_ms": 9807,
+    "total_details": 7,
+    "detail_ms": 13954,
     "recovered_validated": 0,
     "cache_hits": 5,
     "by_term": {
-      "family:rog-strix-g16": 1,
-      "family:avell-storm": 2,
-      "family:helios-neo-16": 4
+      "13980hx": 1,
+      "family:avell-a65": 3,
+      "family:helios-neo-16": 3
     },
-    "new_details": 9,
+    "new_details": 1,
+    "retry_details": 6,
     "total_detail_limit": 12,
     "queued_candidates": 17,
-    "retry_waiting": 13,
+    "retry_waiting": 15,
     "new_candidate_reserve": 3,
-    "ready_within_price": 3,
+    "ready_within_price": 1,
     "waiting_for_configuration": 12,
     "above_display_price": 4,
     "validation_complete": false,
@@ -12268,27 +12340,44 @@
   },
   "query_yield": {
     "14700hx": {
-      "returned": 5,
+      "returned": 4,
       "validated": 0,
-      "pending": 3,
+      "pending": 2,
       "detail_reads": 0,
       "limited": true,
-      "listing_incomplete": false,
-      "listing_limit": 36,
+      "listing_incomplete": true,
+      "listing_limit": 12,
       "details_pending": 2,
       "total_results": 20,
+      "details_pending_offers": 0,
+      "details_pending_tracking": 2,
+      "tracking_candidates": 1,
+      "pending_detail_keys": {
+        "offers": [],
+        "tracking": [
+          "1548107625",
+          "1495856782"
+        ]
+      },
       "recommendations_ignored": 0
     },
     "13980hx": {
-      "returned": 2,
+      "returned": 3,
       "validated": 2,
-      "pending": 0,
-      "detail_reads": 2,
+      "pending": 1,
+      "detail_reads": 1,
       "limited": false,
       "listing_incomplete": false,
       "listing_limit": 12,
       "details_pending": 0,
-      "total_results": 7,
+      "total_results": 8,
+      "details_pending_offers": 0,
+      "details_pending_tracking": 0,
+      "tracking_candidates": 0,
+      "pending_detail_keys": {
+        "offers": [],
+        "tracking": []
+      },
       "recommendations_ignored": 0
     },
     "14900hx": {
@@ -12300,7 +12389,17 @@
       "listing_incomplete": false,
       "listing_limit": 60,
       "details_pending": 2,
-      "total_results": 46,
+      "total_results": 45,
+      "details_pending_offers": 0,
+      "details_pending_tracking": 2,
+      "tracking_candidates": 3,
+      "pending_detail_keys": {
+        "offers": [],
+        "tracking": [
+          "1448456884",
+          "1542003264"
+        ]
+      },
       "recommendations_ignored": 0
     },
     "13900hx": {
@@ -12313,18 +12412,89 @@
       "listing_limit": 12,
       "details_pending": 0,
       "total_results": 12,
+      "details_pending_offers": 0,
+      "details_pending_tracking": 0,
+      "tracking_candidates": 0,
+      "pending_detail_keys": {
+        "offers": [],
+        "tracking": []
+      },
       "recommendations_ignored": 0
     },
-    "family:rog-strix-g16": {
-      "returned": 3,
-      "validated": 2,
+    "290hx": {
+      "returned": 0,
+      "validated": 0,
       "pending": 0,
-      "detail_reads": 1,
-      "limited": true,
-      "listing_incomplete": true,
+      "detail_reads": 0,
+      "limited": false,
+      "listing_incomplete": false,
+      "listing_limit": 12,
+      "details_pending": 0,
+      "total_results": 2,
+      "details_pending_offers": 0,
+      "details_pending_tracking": 0,
+      "tracking_candidates": 0,
+      "pending_detail_keys": {
+        "offers": [],
+        "tracking": []
+      },
+      "recommendations_ignored": 0
+    },
+    "9955hx": {
+      "returned": 0,
+      "validated": 0,
+      "pending": 0,
+      "detail_reads": 0,
+      "limited": false,
+      "listing_incomplete": false,
+      "listing_limit": 12,
+      "details_pending": 0,
+      "total_results": 1,
+      "details_pending_offers": 0,
+      "details_pending_tracking": 0,
+      "tracking_candidates": 0,
+      "pending_detail_keys": {
+        "offers": [],
+        "tracking": []
+      },
+      "recommendations_ignored": 0
+    },
+    "aimax395": {
+      "returned": 0,
+      "validated": 0,
+      "pending": 0,
+      "detail_reads": 0,
+      "limited": false,
+      "listing_incomplete": false,
+      "listing_limit": 12,
+      "details_pending": 0,
+      "total_results": 1,
+      "details_pending_offers": 0,
+      "details_pending_tracking": 0,
+      "tracking_candidates": 0,
+      "pending_detail_keys": {
+        "offers": [],
+        "tracking": []
+      },
+      "recommendations_ignored": 0
+    },
+    "family:legion-pro-5": {
+      "returned": 0,
+      "validated": 0,
+      "pending": 0,
+      "detail_reads": 0,
+      "limited": false,
+      "listing_incomplete": false,
       "listing_limit": 60,
       "details_pending": 0,
-      "total_results": 53,
+      "total_results": 4,
+      "details_pending_offers": 0,
+      "details_pending_tracking": 0,
+      "tracking_candidates": 0,
+      "pending_detail_keys": {
+        "offers": [],
+        "tracking": []
+      },
       "recommendations_ignored": 0
     }
   }
