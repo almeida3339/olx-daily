@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-10-31T11-01-05-615Z",
+  "committed_at": "2026-10-31T11:01:05.623Z",
+  "snapshot": "runs/2026-10-31T11-01-05-615Z/snapshot.json",
+  "report": "runs/2026-10-31T11-01-05-615Z/report.md",
+  "quarantine": null,
+  "summary": {
+    "schema_version": 1,
+    "collected_at": "2026-10-31T11:01:05.615Z",
+    "execution": "success",
+    "issues": [],
+    "coverage": {
+      "status": "complete",
+      "scheduled": 1,
+      "completed": 1,
+      "incomplete": 0,
+      "deferred": 0,
+      "pending_descriptions": 0,
+      "pending_candidates": 0,
+      "pending_details": 0,
+      "heuristic_stops": [],
+      "heuristic_reasons": {}
+    },
+    "findings": {
+      "new_items": [],
+      "price_changes": [],
+      "active_count": 0,
+      "pending_count": 0,
+      "new_count": 0,
+      "price_count": 0
+    }
+  },
+  "checksums": {
+    "snapshot_sha256": "d66ce7950903ed7ae735a25160d733d0d0cd0a2c6b1740057448a01407b7d8c9",
+    "report_sha256": "d3243ceb3f195e75e37a06da7461b9124d47f587c2675f22e3bcf6ae191006b8"
+  },
+  "metadata": {
+    "source": "enjoei-brunello-cucinelli",
+    "collected_count": 0,
+    "pending_count": 0,
+    "failed_term_count": 0,
+    "quarantined_item_count": 0
+  }
+}
