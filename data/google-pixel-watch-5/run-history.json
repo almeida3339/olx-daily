@@ -1,7 +1,23 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-30T19:04:20.038Z",
+  "updated_at": "2026-10-31T10:03:33.474Z",
   "runs": [
+    {
+      "run_id": "2026-10-31T10-03-31-666Z",
+      "committed_at": "2026-10-31T10:03:33.064Z",
+      "completed_at": "2026-10-31T10:03:33.052Z",
+      "outcome": "deferred",
+      "partial": true,
+      "duration_ms": 1386,
+      "item_count": 0,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "google-pixel-watch-5",
+        "label": "Google Pixel Watch 5",
+        "collected_count": 0,
+        "quarantined_item_count": 0
+      }
+    },
     {
       "run_id": "2026-10-30T19-04-18-308Z",
       "committed_at": "2026-10-30T19:04:19.528Z",
@@ -10,12 +26,44 @@
       "partial": true,
       "duration_ms": 1204,
       "item_count": 0,
-      "quarantined_item_count": 0,
       "metadata": {
         "source": "google-pixel-watch-5",
         "label": "Google Pixel Watch 5",
         "collected_count": 0,
-        "quarantined_item_count": 0
+        "quarantined_item_count": 0,
+        "in_progress": false
+      }
+    },
+    {
+      "run_id": "2026-10-30T19-01-17-918Z",
+      "committed_at": "2026-10-30T19:01:18.122Z",
+      "completed_at": "2026-10-30T19:01:18.086Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 168,
+      "item_count": 0,
+      "metadata": {
+        "source": "google-pixel-watch-5",
+        "label": "Google Pixel Watch 5",
+        "collected_count": 0,
+        "quarantined_item_count": 0,
+        "in_progress": false
+      }
+    },
+    {
+      "run_id": "2026-10-30T11-01-29-714Z",
+      "committed_at": "2026-10-30T11:01:29.955Z",
+      "completed_at": "2026-10-30T11:01:29.934Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 220,
+      "item_count": 0,
+      "metadata": {
+        "source": "google-pixel-watch-5",
+        "label": "Google Pixel Watch 5",
+        "collected_count": 0,
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     },
     {

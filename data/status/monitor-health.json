@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-10-30T22:20:27.799Z",
+  "generated_at": "2026-10-31T10:04:01.163Z",
   "sources": [
     {
       "id": "enjoei-momotaro",
@@ -10,7 +10,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-30T19:01:14.463Z",
-      "age_ms": 11953336,
+      "age_ms": 54166700,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -43,7 +43,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-30T19:01:15.470Z",
-      "age_ms": 11952329,
+      "age_ms": 54165693,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -76,7 +76,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-30T19:01:15.979Z",
-      "age_ms": 11951820,
+      "age_ms": 54165184,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -109,7 +109,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-30T19:01:16.449Z",
-      "age_ms": 11951350,
+      "age_ms": 54164714,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -142,7 +142,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-30T19:01:16.916Z",
-      "age_ms": 11950883,
+      "age_ms": 54164247,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -175,7 +175,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-30T19:01:17.876Z",
-      "age_ms": 11949923,
+      "age_ms": 54163287,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -208,7 +208,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-30T19:01:14.509Z",
-      "age_ms": 11953290,
+      "age_ms": 54166654,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -241,7 +241,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-30T19:01:14.597Z",
-      "age_ms": 11953202,
+      "age_ms": 54166566,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -274,7 +274,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-30T19:01:14.498Z",
-      "age_ms": 11953301,
+      "age_ms": 54166665,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -307,7 +307,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-30T19:01:14.342Z",
-      "age_ms": 11953457,
+      "age_ms": 54166821,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -337,20 +337,20 @@
       "label": "OLX Notebooks",
       "state": "partial",
       "collection_state": "partial",
-      "coverage_state": "stale",
+      "coverage_state": "partial",
       "operational_status": "partial",
-      "updated_at": "2026-10-30T19:03:58.414Z",
-      "age_ms": 11789385,
+      "updated_at": "2026-10-31T10:03:19.060Z",
+      "age_ms": 42103,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
-        "partial": 9,
+        "partial": 10,
         "failed": 0,
         "blocked": 0,
         "deferred": 0,
-        "complete": 1,
-        "success_rate": 0.1,
-        "median_duration_ms": 231599
+        "complete": 0,
+        "success_rate": 0,
+        "median_duration_ms": 220439
       },
       "marketplaces": [
         {
@@ -360,19 +360,19 @@
           "fresh_terms": 18,
           "checked_terms": 20,
           "warming_terms": 0,
-          "updated_at": "2026-10-30T19:03:58.414Z"
+          "updated_at": "2026-10-31T10:03:19.060Z"
         },
         {
           "label": "OLX modelos",
-          "state": "stale",
+          "state": "partial",
           "total_terms": 6,
           "fresh_terms": 3,
-          "checked_terms": 5,
+          "checked_terms": 6,
           "warming_terms": 0,
-          "updated_at": "2026-10-30T19:03:58.414Z"
+          "updated_at": "2026-10-31T10:03:19.060Z"
         }
       ],
-      "message": "OLX: Cobertura parcial (20/20 consultas recentes; 18/20 concluídas) · OLX modelos: Coleta desatualizada (5/6 consultas recentes; 3/6 concluídas)"
+      "message": "OLX: Cobertura parcial (20/20 consultas recentes; 18/20 concluídas) · OLX modelos: Cobertura parcial (6/6 consultas recentes; 3/6 concluídas)"
     },
     {
       "id": "enjoei-notebooks",
@@ -382,7 +382,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-30T19:01:16.138Z",
-      "age_ms": 11951661,
+      "age_ms": 54165025,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -415,7 +415,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-10-30T19:01:18.046Z",
-      "age_ms": 11949753,
+      "age_ms": 54163117,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -474,8 +474,8 @@
       "collection_state": "healthy",
       "coverage_state": "healthy",
       "operational_status": "deferred",
-      "updated_at": "2026-10-30T19:04:01.961Z",
-      "age_ms": 11785838,
+      "updated_at": "2026-10-31T10:03:22.418Z",
+      "age_ms": 38745,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -495,7 +495,7 @@
           "fresh_terms": 1,
           "checked_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-10-30T19:04:01.961Z"
+          "updated_at": "2026-10-31T10:03:22.418Z"
         },
         {
           "label": "OLX",
@@ -516,8 +516,8 @@
       "collection_state": "healthy",
       "coverage_state": "healthy",
       "operational_status": "deferred",
-      "updated_at": "2026-10-30T19:04:05.027Z",
-      "age_ms": 11782772,
+      "updated_at": "2026-10-31T10:03:24.463Z",
+      "age_ms": 36700,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -537,7 +537,7 @@
           "fresh_terms": 1,
           "checked_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-10-30T19:04:05.027Z"
+          "updated_at": "2026-10-31T10:03:24.463Z"
         },
         {
           "label": "OLX",
@@ -558,8 +558,8 @@
       "collection_state": "healthy",
       "coverage_state": "healthy",
       "operational_status": "deferred",
-      "updated_at": "2026-10-30T19:04:07.440Z",
-      "age_ms": 11780359,
+      "updated_at": "2026-10-31T10:03:26.577Z",
+      "age_ms": 34586,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -579,7 +579,7 @@
           "fresh_terms": 1,
           "checked_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-10-30T19:04:07.440Z"
+          "updated_at": "2026-10-31T10:03:26.577Z"
         },
         {
           "label": "OLX",
@@ -600,9 +600,9 @@
       "collection_state": "healthy",
       "coverage_state": "healthy",
       "operational_status": "deferred",
-      "updated_at": "2026-10-30T19:04:16.857Z",
-      "age_ms": 11770942,
-      "invalid_snapshots": 1,
+      "updated_at": "2026-10-31T10:03:30.366Z",
+      "age_ms": 30797,
+      "invalid_snapshots": 0,
       "history": {
         "sample": 10,
         "partial": 0,
@@ -621,7 +621,7 @@
           "fresh_terms": 3,
           "checked_terms": 3,
           "warming_terms": 0,
-          "updated_at": "2026-10-30T19:04:16.857Z"
+          "updated_at": "2026-10-31T10:03:30.366Z"
         },
         {
           "label": "OLX",
@@ -642,9 +642,9 @@
       "collection_state": "healthy",
       "coverage_state": "healthy",
       "operational_status": "deferred",
-      "updated_at": "2026-10-30T19:04:19.512Z",
-      "age_ms": 11768287,
-      "invalid_snapshots": 1,
+      "updated_at": "2026-10-31T10:03:33.052Z",
+      "age_ms": 28111,
+      "invalid_snapshots": 0,
       "history": {
         "sample": 10,
         "partial": 0,
@@ -663,7 +663,7 @@
           "fresh_terms": 1,
           "checked_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-10-30T19:04:19.512Z"
+          "updated_at": "2026-10-31T10:03:33.052Z"
         },
         {
           "label": "OLX",
@@ -681,21 +681,21 @@
       "id": "oled-monitores",
       "label": "Monitores OLED",
       "state": "blocked",
-      "collection_state": "blocked",
+      "collection_state": "healthy",
       "coverage_state": "blocked",
-      "operational_status": "blocked",
-      "updated_at": "2026-10-30T19:04:32.469Z",
-      "age_ms": 11755330,
+      "operational_status": "deferred",
+      "updated_at": "2026-10-31T10:03:36.885Z",
+      "age_ms": 24278,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
         "partial": 0,
         "failed": 0,
         "blocked": 1,
-        "deferred": 4,
-        "complete": 5,
-        "success_rate": 0.5,
-        "median_duration_ms": 1123
+        "deferred": 5,
+        "complete": 4,
+        "success_rate": 0.4,
+        "median_duration_ms": 1231
       },
       "marketplaces": [
         {
@@ -709,12 +709,12 @@
         },
         {
           "label": "Enjoei",
-          "state": "stale",
+          "state": "healthy",
           "total_terms": 21,
-          "fresh_terms": 18,
-          "checked_terms": 18,
+          "fresh_terms": 21,
+          "checked_terms": 21,
           "warming_terms": 0,
-          "updated_at": "2026-10-30T19:04:32.469Z"
+          "updated_at": "2026-10-31T10:03:36.885Z"
         }
       ],
       "message": "OLX em pausa após bloqueio até 02/11/2026, 16:04:32 BRT; consultas adiadas. OLX recusou o acesso; sem CAPTCHA disponível. Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a52cafac187dd838)."
@@ -727,7 +727,7 @@
       "coverage_state": "stale",
       "operational_status": "partial",
       "updated_at": "2026-10-28T12:25:51.267Z",
-      "age_ms": 208476532,
+      "age_ms": 250689896,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -760,7 +760,7 @@
       "coverage_state": "stale",
       "operational_status": "success",
       "updated_at": "2026-10-28T12:26:37.415Z",
-      "age_ms": 208430384,
+      "age_ms": 250643748,
       "invalid_snapshots": 0,
       "history": {
         "sample": 6,
@@ -793,7 +793,7 @@
       "coverage_state": "stale",
       "operational_status": "success",
       "updated_at": "2026-10-28T12:26:16.758Z",
-      "age_ms": 208451041,
+      "age_ms": 250664405,
       "invalid_snapshots": 0,
       "history": {
         "sample": 5,
@@ -826,7 +826,7 @@
       "coverage_state": "stale",
       "operational_status": "success",
       "updated_at": "2026-10-28T12:26:58.029Z",
-      "age_ms": 208409770,
+      "age_ms": 250623134,
       "invalid_snapshots": 0,
       "history": {
         "sample": 7,
@@ -859,7 +859,7 @@
       "coverage_state": "stale",
       "operational_status": "success",
       "updated_at": "2026-10-28T12:27:20.526Z",
-      "age_ms": 208387273,
+      "age_ms": 250600637,
       "invalid_snapshots": 0,
       "history": {
         "sample": 8,
@@ -892,7 +892,7 @@
       "coverage_state": "stale",
       "operational_status": "success",
       "updated_at": "2026-10-28T12:27:44.366Z",
-      "age_ms": 208363433,
+      "age_ms": 250576797,
       "invalid_snapshots": 0,
       "history": {
         "sample": 7,
@@ -925,7 +925,7 @@
       "coverage_state": "stale",
       "operational_status": "success",
       "updated_at": "2026-10-28T12:43:01.109Z",
-      "age_ms": 207446690,
+      "age_ms": 249660054,
       "invalid_snapshots": 0,
       "history": {
         "sample": 7,
@@ -958,7 +958,7 @@
       "coverage_state": "partial",
       "operational_status": "success",
       "updated_at": "2026-10-28T12:38:52.308Z",
-      "age_ms": 207695491,
+      "age_ms": 249908855,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -998,26 +998,6 @@
     "schema_version": 1,
     "tracking_started_at": "2026-10-17T23:55:24.817Z",
     "days": {
-      "2026-10-17": {
-        "search": 4,
-        "detail": 2,
-        "watchlists": {
-          "notebooks": {
-            "search": 3,
-            "detail": 2
-          },
-          "lifefactory": {
-            "search": 1,
-            "detail": 0
-          }
-        },
-        "rounds": {
-          "operational-recovery-1792281411656": {
-            "search": 4,
-            "detail": 2
-          }
-        }
-      },
       "2026-10-18": {
         "search": 27,
         "detail": 9,
@@ -1465,11 +1445,27 @@
             "detail": 9
           }
         }
+      },
+      "2026-10-31": {
+        "search": 5,
+        "detail": 9,
+        "watchlists": {
+          "notebooks": {
+            "search": 5,
+            "detail": 9
+          }
+        },
+        "rounds": {
+          "9f676f67-595a-4967-a2dc-b18702db54d3": {
+            "search": 5,
+            "detail": 9
+          }
+        }
       }
     },
     "queries": {
       "notebooks:14900hx": {
-        "last_attempt_at": "2026-10-30T19:01:17.001Z",
+        "last_attempt_at": "2026-10-31T10:01:21.462Z",
         "approved": 0,
         "interval_hours": 8,
         "last_success_at": "2026-10-29T13:00:16.107Z",
@@ -1504,19 +1500,19 @@
         "interval_hours": 72
       },
       "notebooks:14700hx": {
-        "last_attempt_at": "2026-10-30T19:00:18.099Z",
+        "last_attempt_at": "2026-10-31T10:00:18.769Z",
         "approved": 0,
         "last_success_at": "2026-10-30T10:00:57.525Z",
         "empty_runs": 15,
         "prices": {},
         "interval_hours": 8,
-        "listing_limit": 12,
-        "listing_incomplete": true
+        "listing_limit": 36,
+        "listing_incomplete": false
       },
       "notebooks:13980hx": {
-        "last_attempt_at": "2026-10-30T19:00:59.402Z",
+        "last_attempt_at": "2026-10-31T10:00:35.522Z",
         "approved": 2,
-        "last_success_at": "2026-10-30T19:00:59.860Z",
+        "last_success_at": "2026-10-31T10:01:01.590Z",
         "empty_runs": 0,
         "prices": {
           "1545009098": 7927,
@@ -1528,10 +1524,10 @@
         "last_change_at": "2026-10-29T12:59:35.694Z"
       },
       "notebooks:13900hx": {
-        "last_attempt_at": "2026-10-30T19:01:36.291Z",
+        "last_attempt_at": "2026-10-31T10:01:28.272Z",
         "approved": 0,
-        "last_success_at": "2026-10-30T19:01:41.484Z",
-        "empty_runs": 15,
+        "last_success_at": "2026-10-31T10:01:33.901Z",
+        "empty_runs": 16,
         "prices": {},
         "interval_hours": 8,
         "last_change_at": "2026-10-19T10:01:18.348Z",
@@ -1679,17 +1675,17 @@
         "listing_incomplete": false
       },
       "notebooks:family:rog-strix-g16": {
-        "last_attempt_at": "2026-10-27T19:02:50.673Z",
-        "approved": 1,
+        "last_attempt_at": "2026-10-31T10:01:53.899Z",
+        "approved": 2,
         "interval_hours": 8,
         "listing_limit": 60,
-        "listing_incomplete": false,
+        "listing_incomplete": true,
         "last_success_at": "2026-10-27T19:03:10.416Z",
         "empty_runs": 0,
         "prices": {
           "1545009098": 8000
         },
-        "last_change_at": "2026-10-27T19:03:10.416Z"
+        "last_change_at": "2026-10-31T10:02:07.112Z"
       },
       "notebooks:7845hx": {
         "last_attempt_at": "2026-10-30T19:01:47.506Z",
@@ -1809,7 +1805,7 @@
         "last_attempt_at": "2026-10-30T19:04:31.292Z"
       }
     },
-    "updated_at": "2026-10-30T19:04:31.310Z",
+    "updated_at": "2026-10-31T10:03:32.859Z",
     "limits": {
       "daily": {
         "search": 40,
@@ -1820,7 +1816,7 @@
         "detail": 14
       }
     },
-    "last_access_slot_at": "2026-10-30T19:04:31.292Z",
+    "last_access_slot_at": "2026-10-31T10:03:17.899Z",
     "access_interval_ms": 12000
   }
 }
