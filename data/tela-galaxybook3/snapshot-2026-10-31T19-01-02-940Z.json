@@ -1,0 +1,98 @@
+{
+  "schema_version": 2,
+  "generated_at": "2026-10-31T19:01:02.940Z",
+  "coverage_status": {
+    "Enjoei:BA96-08462A": {
+      "checked_at": "2026-10-31T19:01:03.093Z",
+      "last_success_at": "2026-10-31T19:01:03.093Z",
+      "state": "success",
+      "error": null
+    },
+    "OLX:BA96-08462A": {
+      "checked_at": "2026-10-30T10:05:19.309Z",
+      "last_success_at": "2026-10-30T10:05:19.309Z",
+      "state": "success",
+      "error": null
+    }
+  },
+  "run": {
+    "date": "2026-10-31",
+    "timezone": "UTC",
+    "id": "tela-galaxy-book3",
+    "label": "Tela Galaxy Book3",
+    "started_at": "2026-10-31T19:01:02.940Z",
+    "completed_at": "2026-10-31T19:01:03.093Z",
+    "partial": false,
+    "errors": [],
+    "deferred_coverage": [],
+    "unattempted_coverage": [],
+    "scheduled_coverage": [
+      "Enjoei:BA96-08462A"
+    ],
+    "successful_coverage": [
+      "Enjoei:BA96-08462A"
+    ],
+    "failed_coverage": [],
+    "configured_coverage": [
+      "Enjoei:BA96-08462A",
+      "OLX:BA96-08462A"
+    ],
+    "findings": {
+      "new_items": [],
+      "price_changes": [],
+      "active_count": 0,
+      "pending_count": 0
+    },
+    "quarantined_item_count": 0,
+    "operational": {
+      "status": "success",
+      "exit_code": 0,
+      "reasons": [],
+      "completed_terms": 1,
+      "incomplete_terms": 0,
+      "deferred_terms": 0
+    },
+    "collection_summary": {
+      "schema_version": 1,
+      "collected_at": "2026-10-31T19:01:03.093Z",
+      "execution": "success",
+      "issues": [],
+      "coverage": {
+        "status": "complete",
+        "scheduled": 1,
+        "completed": 1,
+        "incomplete": 0,
+        "deferred": 0,
+        "pending_descriptions": 0,
+        "pending_candidates": 0,
+        "pending_details": 0,
+        "heuristic_stops": [],
+        "heuristic_reasons": {}
+      },
+      "findings": {
+        "new_items": [],
+        "price_changes": [],
+        "active_count": 0,
+        "pending_count": 0,
+        "new_count": 0,
+        "price_count": 0
+      }
+    }
+  },
+  "filters": {
+    "price_brl": {
+      "min": 0,
+      "max": 1000
+    },
+    "size_ml": {
+      "min": null,
+      "max": null
+    }
+  },
+  "items": [],
+  "price_range_brl": {
+    "min": 0,
+    "max": 1000
+  },
+  "source_blocks": {}
+}
