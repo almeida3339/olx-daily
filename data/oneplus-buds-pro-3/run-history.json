@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-01T19:01:06.187Z",
+  "updated_at": "2026-11-01T19:02:59.998Z",
   "runs": [
     {
-      "run_id": "2026-11-01T19-01-04-856Z",
-      "committed_at": "2026-11-01T19:01:06.156Z",
-      "completed_at": "2026-11-01T19:01:06.142Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 1286,
+      "run_id": "2026-11-01T19-02-56-675Z",
+      "committed_at": "2026-11-01T19:02:59.698Z",
+      "completed_at": "2026-11-01T19:02:59.691Z",
+      "outcome": "deferred",
+      "partial": true,
+      "duration_ms": 3016,
       "item_count": 2,
       "quarantined_item_count": 0,
       "metadata": {
@@ -16,22 +16,6 @@
         "label": "OnePlus Buds Pro 3",
         "collected_count": 0,
         "quarantined_item_count": 0
-      }
-    },
-    {
-      "run_id": "2026-11-01T11-01-18-706Z",
-      "committed_at": "2026-11-01T11:01:23.507Z",
-      "completed_at": "2026-11-01T11:01:23.490Z",
-      "outcome": "failed",
-      "partial": true,
-      "duration_ms": 4784,
-      "item_count": 2,
-      "metadata": {
-        "source": "oneplus-buds-pro-3",
-        "label": "OnePlus Buds Pro 3",
-        "collected_count": 0,
-        "quarantined_item_count": 0,
-        "in_progress": false
       }
     },
     {
@@ -1910,6 +1894,22 @@
       "run_id": "2026-09-21T10-00-43-829Z",
       "committed_at": "2026-09-21T10:01:00.997Z",
       "completed_at": "2026-09-21T10:01:00.997Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": null,
+      "item_count": 0,
+      "metadata": {
+        "source": "oneplus-buds-pro-3",
+        "label": "OnePlus Buds Pro 3",
+        "collected_count": 0,
+        "quarantined_item_count": 0,
+        "in_progress": false
+      }
+    },
+    {
+      "run_id": "2026-09-20T21-29-38-465Z",
+      "committed_at": "2026-09-20T21:29:52.845Z",
+      "completed_at": "2026-09-20T21:29:52.845Z",
       "outcome": "success",
       "partial": false,
       "duration_ms": null,
