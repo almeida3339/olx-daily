@@ -1,7 +1,25 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-01T10:03:21.425Z",
+  "updated_at": "2026-11-01T11:01:27.199Z",
   "runs": [
+    {
+      "run_id": "850aec68-3138-4270-b117-e1da881281f4",
+      "completed_at": "2026-11-01T11:01:27.198Z",
+      "outcome": "failed",
+      "partial": true,
+      "duration_ms": 11738,
+      "item_count": 0,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "ci",
+        "monitor_errors": 2,
+        "monitor_failures": [
+          "Enjoei tênis: Saiu com código 1",
+          "OnePlus Buds Pro 3: Saiu com código 1: Aviso: termo Enjoei \"oneplus buds pro 3\" falhou — HTTP 422"
+        ],
+        "pending_notifications": 0
+      }
+    },
     {
       "run_id": "b7cd227c-f449-458b-b832-cb9af6c85356",
       "completed_at": "2026-11-01T10:03:21.411Z",
@@ -1859,20 +1877,6 @@
       "partial": false,
       "duration_ms": 54830,
       "item_count": 0,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "local",
-        "monitor_errors": 0,
-        "pending_notifications": 1
-      }
-    },
-    {
-      "run_id": "b145db6f-e3fb-45ff-8ad3-8bcf9d5d3ec3",
-      "completed_at": "2026-09-07T10:01:13.506Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 69421,
-      "item_count": 2,
       "quarantined_item_count": 0,
       "metadata": {
         "source": "local",
