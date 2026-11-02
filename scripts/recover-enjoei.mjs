@@ -29,6 +29,15 @@ for (const spec of LOCAL_WATCHLISTS) if (spec.env) env[spec.env] = resolveWatchl
 console.log(`Recuperação Enjoei: ${jobs.length} grupo(s); sem envio de notificações.`);
 const recovery = { started_at: new Date().toISOString(), jobs: [] };
 for (const job of jobs) {
+  if (process.argv.includes('--stale-only')) {
+    // Re-check immediately before each job: CI may have started since planning.
+    const eligible=await staleEnjoeiJobs(root,{refresh:true});
+    if (!eligible.some(candidate=>candidate.script===job.script)) {
+      console.log(`${job.script}: recuperação adiada ou já atendida; nenhuma busca iniciada.`);
+      recovery.jobs.push({ids:job.ids,exit_code:3,reason:'GitHub em execução/janela de disparo ou dados já recuperados',skipped:true});
+      continue;
+    }
+  }
   console.log(`${job.script}: ${job.reason ?? 'Recuperação manual'}.`);
   const exit = await new Promise((resolve, reject) => {
     const child = spawn(process.execPath, [path.join(root, 'scripts', job.script)], { cwd: root, env, stdio: 'inherit' });

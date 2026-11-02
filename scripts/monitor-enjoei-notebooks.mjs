@@ -1,4 +1,5 @@
 import { setMonitorExit } from './lib/monitor-outcome.mjs';
+import { httpResponseError } from './lib/http-diagnostics.mjs';
 import { meetsNotebookRamMinimum, NOTEBOOK_MIN_RAM_GB, NOTEBOOK_POLICY_VERSION, NOTEBOOK_PRIORITY_CPUS, assessNotebook, isEligibleNotebook, extractNotebookRamText, notebookExclusionReason, hasExplicitOtherNotebookCpu } from './lib/notebook-policy.mjs';
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -185,7 +186,7 @@ async function collectProducts(previousSnapshot) {
             beforeAttempt: () => { if (stats.search_requests >= maxPages) throw new Error('Limite global de páginas atingido'); stats.search_requests++; },
             onRetry: () => stats.retries++,
           });
-          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          if (!response.ok) throw await httpResponseError(response);
           const payload = await response.json();
           if (payload.errors?.length) throw new Error('API retornou erros GraphQL');
           const products = payload?.data?.search?.products;
@@ -441,7 +442,7 @@ async function fetchProductDetails(item, { deadline = Infinity, stats = {} } = {
     headers: { accept: 'application/json' },
   });
   if ([404,410].includes(response.status)) return { unavailable: true };
-  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  if (!response.ok) throw await httpResponseError(response);
   const product = await response.json();
   if (String(product.id) !== String(item.id)) throw new Error('Detalhe de outro produto ou identidade ausente');
   const text = `${product.title ?? ''}\n${product.description ?? ''}\n${product.brand?.name ?? ''}`;

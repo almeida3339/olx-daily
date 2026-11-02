@@ -1,4 +1,5 @@
 import { setMonitorExit } from './monitor-outcome.mjs';
+import { httpResponseError } from './http-diagnostics.mjs';
 import path from 'node:path';
 import fs from 'node:fs/promises';
 import { buildMonitorChanges, mergeMonitorSnapshot, normalizeMonitorText } from './monitor-core.mjs';
@@ -59,7 +60,7 @@ export async function runEnjoeiJeansMonitor({ id, label, brandName, term, brandP
           headers: { accept: 'application/json', origin: 'https://www.enjoei.com.br', referer: searchUrl },
           signal: AbortSignal.timeout(20_000),
         });
-        if (!response.ok) throw new Error(`Enjoei HTTP ${response.status}`);
+        if (!response.ok) throw await httpResponseError(response,{label:'Enjoei HTTP'});
         const payload = await response.json();
         const products = payload?.data?.search?.products;
         if (payload.errors?.length || !Array.isArray(products?.edges)) throw new Error('Resposta de busca incompleta');
@@ -95,7 +96,7 @@ export async function runEnjoeiJeansMonitor({ id, label, brandName, term, brandP
               detailReads++;
               try {
                 const response = await fetch(`https://pages.enjoei.com.br/products/${node.id}/v2.json`, { signal: AbortSignal.timeout(15000) });
-                if (!response.ok) throw new Error(`Detalhe HTTP ${response.status}`);
+                if (!response.ok) throw await httpResponseError(response,{label:'Detalhe HTTP'});
                 const product = await response.json();
                 if (String(product.id ?? node.id) !== String(node.id)) throw new Error('Detalhe de outro anúncio');
                 const category = product.category_slug ?? product.categories?.slug ?? '';

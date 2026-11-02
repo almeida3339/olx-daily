@@ -71,13 +71,16 @@ export function readOlxNotebookDetail() {
     ?? (products.length === 1 && !products[0].url && !products[0]['@id'] ? products[0] : null);
   const offer = [].concat(product?.offers ?? []).find(o => !o.priceCurrency || o.priceCurrency === 'BRL');
   const visible = selector => Array.from(document.querySelectorAll(selector)).find(el => el.getClientRects().length)?.innerText?.trim();
-  const description = visible('[data-testid="ad-description"], [data-testid="ad-description-description"], #ad-description')
-    || product?.description || '';
+  const visibleDescription = visible('[data-testid="ad-description"], [data-testid="ad-description-description"], #ad-description');
+  const description = visibleDescription || product?.description || '';
   const priceText = visible('[data-testid="ad-price"], [data-testid="price-value"], [data-testid="ad-price-value"]');
   return {
     url: location.href, title: product?.name || document.querySelector('h1')?.innerText || '',
     description: typeof description === 'string' ? new DOMParser().parseFromString(description, 'text/html').body.textContent.trim() : '', price_text: priceText ?? null,
     structured_price: offer?.price ?? null,
+    document_state: document.readyState, structured_product_found:Boolean(product),
+    description_source:visibleDescription ? 'visible' : product?.description ? 'structured' : null,
+    body_length:document.body?.innerText?.length ?? 0,
     body_text: (document.body?.innerText ?? '').slice(0, 6000),
   };
 }
@@ -97,6 +100,7 @@ export function validateOlxNotebook(card, detail, now = new Date()) {
   assertOlxAccessible(detail.body_text);
   const text = `${card.title}\n${detail.title}\n${detail.description}`;
   const reasons = [];
+  if (detail.diagnostic?.state === 'unavailable') reasons.push('Anúncio indisponível na página de detalhe');
   if (detail.url && new URL(detail.url).pathname.match(/\/(?:login|entrar)(?:\/|$)/i)) {
     const error = new Error('OLX redirecionou para login'); error.pageState = 'logged_out'; throw error;
   }
@@ -138,7 +142,8 @@ export function validateOlxNotebook(card, detail, now = new Date()) {
       checked_at: now.toISOString(), reasons, listing_price_brl: card.price_brl,
       detail_price_brl: price, visible_price_brl: domPrice, structured_price_brl: jsonPrice,
       title_specs: titleSpecs, description_specs: descSpecs,
-      cpu_confirmed: cpuConfirmed, description_checked: Boolean(detail.description.trim()) },
+      cpu_confirmed: cpuConfirmed, description_checked: Boolean(detail.description.trim()),
+      ...(detail.diagnostic ? {detail_diagnostic:detail.diagnostic} : {}) },
     configuration_warnings: specs.storage_gb == null ? ['Armazenamento não informado'] : [],
   };
 }

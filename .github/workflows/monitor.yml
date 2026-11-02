@@ -1,7 +1,7 @@
 name: Monitor
 
 on:
-  workflow_dispatch:        # disparado pelo cron-job.org via API (07:00, 16:00 BRT — Enjoei only; OLX roda local)
+  workflow_dispatch:        # disparado pelo cron-job.org via API (08:00, 16:00 BRT — Enjoei only; OLX roda local)
 
 # Permissão mínima por padrão; só o job monitor recebe contents: write (publica).
 permissions:

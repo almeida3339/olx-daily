@@ -1,4 +1,5 @@
 import { setMonitorExit } from './monitor-outcome.mjs';
+import { httpResponseError } from './http-diagnostics.mjs';
 import { recordRunFindings } from './collection-summary.mjs';
 import { reserveOlxAccess, recordOlxYield, OlxDeferredError } from './olx-traffic.mjs';
 import { captureOlxAccessFailure } from './olx-access-diagnostics.mjs';
@@ -270,7 +271,7 @@ async function collectEnjoei({ terms, slug, inRange, sizeOk, notExcluded, itemFi
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
         },
       });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      if (!response.ok) throw await httpResponseError(response);
       const payload = await response.json();
       const products = payload?.data?.search?.products;
       if (!products) throw new Error("Resposta sem data.search.products");

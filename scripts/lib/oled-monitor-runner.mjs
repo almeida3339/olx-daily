@@ -1,4 +1,5 @@
 import { setMonitorExit } from './monitor-outcome.mjs';
+import { httpResponseError } from './http-diagnostics.mjs';
 import { recordRunFindings } from './collection-summary.mjs';
 import { reserveOlxAccess, readOlxTraffic, recordOlxYield } from './olx-traffic.mjs';
 import { captureOlxAccessFailure } from './olx-access-diagnostics.mjs';
@@ -127,7 +128,7 @@ async function collect({ root,dataDir }) {
               search_context:'products_search',shipping_range:'same_country',experienced_seller:'true',term:spec.query,browser_id:'oled-monitor',search_id:'oled-monitor'}))url.searchParams.set(name,value);
             if(after!=null)url.searchParams.set('after',after);
             const response=await fetch(url,{headers:{accept:'application/json',origin:'https://www.enjoei.com.br'},signal:AbortSignal.timeout(15000)});
-            if(!response.ok)throw Error(`HTTP ${response.status}`);
+            if(!response.ok)throw await httpResponseError(response);
             const payload=await response.json(),p=payload.data?.search?.products;
             if(payload.errors?.length||!Array.isArray(p?.edges))throw Error('Resposta Enjoei sem produtos válidos');
             const ids=new Set([...(cursor.seen_ids??[]),...p.edges.filter(e=>e.node?.id!=null).map(e=>String(e.node.id))]);
@@ -146,7 +147,7 @@ async function collect({ root,dataDir }) {
               if(existing){existing.search_terms=[...new Set([...existing.search_terms,id])];continue;}
               await resolveItem(item,async()=>{
                 const res=await fetch(`https://pages.enjoei.com.br/products/${n.id}/v2.json`,{headers:{accept:'application/json'},signal:AbortSignal.timeout(15000)});
-                if(!res.ok)throw Error(`Detalhe Enjoei HTTP ${res.status}`);
+                if(!res.ok)throw await httpResponseError(res,{label:'Detalhe Enjoei HTTP'});
                 const p=await res.json();
                 return {description_evidence:p.description??'',detail_title:p.title??'',details_checked_at:nowIso(),
                   identity_error:String(p.id)===String(n.id)?null:'Identidade do produto divergente'};

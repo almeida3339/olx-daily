@@ -24,6 +24,9 @@ export function classifyMonitorError(error) {
   if (state === "limited" || /http 429|limitou|rate.?limit|muitas solicita[cç][oõ]es/i.test(message)) {
     return { kind: "rate_limited", retriable: false, message };
   }
+  // HTTP diagnostics can identify a JSON error body without making a server
+  // failure into a schema error. Preserve retry classification for HTTP 5xx.
+  if (/http 5\d\d/i.test(message)) return { kind: "transient", retriable: true, message };
   if (/json|schema|invalido|invalid/i.test(message)) {
     return { kind: "validation", retriable: false, message };
   }

@@ -1,4 +1,5 @@
 import path from 'node:path';
+import { httpResponseError } from './http-diagnostics.mjs';
 import fs from 'node:fs/promises';
 import { collectEnjoeiPages } from './enjoei-pagination.mjs';
 import { writeJsonAtomic } from './monitor-runtime.mjs';
@@ -63,7 +64,7 @@ export async function collectEnjoeiShoes({ dataDir, terms, department, shoeSize,
       try {
         const response = await fetchImpl(`https://pages.enjoei.com.br/products/${item.id}/v2.json`, {
           signal: AbortSignal.timeout(Math.max(1, Math.min(15000, deadline - Date.now()))) });
-        if (!response.ok) throw new Error(`Detalhe HTTP ${response.status}`);
+        if (!response.ok) throw await httpResponseError(response,{label:'Detalhe HTTP'});
         const product = await response.json();
         if (String(product.id ?? item.id) !== item.id) throw new Error('Detalhe de outro produto');
         evidence = { title: item.title, brand: item.brand, price_brl: item.price_brl,
@@ -124,7 +125,7 @@ export async function collectEnjoeiShoes({ dataDir, terms, department, shoeSize,
           if (broadSearch) discoveryFetched++; else regularFetched++;
           const response = await fetchImpl(url, { headers: { accept: 'application/json', origin: 'https://www.enjoei.com.br' },
             signal: AbortSignal.timeout(Math.max(1, Math.min(20000, deadline - Date.now()))) });
-          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          if (!response.ok) throw await httpResponseError(response);
           const payload = await response.json();
           if (payload.errors?.length) throw new Error('API retornou erros GraphQL');
           const products = payload?.data?.search?.products;

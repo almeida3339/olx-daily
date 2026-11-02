@@ -26,6 +26,8 @@ import { DEFAULT_CPU_TERMS, cpuSearchQuery } from "./lib/cpu-terms.mjs";
 import { commitMonitorRun, readLatestValidSnapshot, readJsonValidated, writeJsonAtomic } from "./lib/monitor-runtime.mjs";
 import { recordRunFindings } from './lib/collection-summary.mjs';
 import { buildOlxPriceCoverage, olxPriceCoverageLines } from './lib/olx-price-coverage.mjs';
+import { olxNotebookListingLimit } from './lib/olx-listing-limit.mjs';
+import { readOlxDetailUntilReady } from './lib/olx-detail-diagnostics.mjs';
 import { OLX_QUALITY_VERSION, orderOlxCpuTerms, planOlxCpuTerms, olxSpecs, pendingOlxItem, validateOlxNotebook, readOlxNotebookDetail, notebookExclusionReason, assertOlxAccessible, isValidatedOlxItem, revalidateSavedOlxItem } from "./lib/olx-notebook-quality.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -43,7 +45,6 @@ const PRICE_MAX_BRL = 8000;
 // PRICE_MAX_BRL). Acima disso não interessa acompanhar variação.
 const PRICE_CHANGE_MAX_BRL = 10000;
 const NAVIGATION_TIMEOUT_MS = 30_000;
-const DETAIL_TIMEOUT_MS = 25_000;
 const RAW_SCROLL_DELAY_MS = Number(process.env.OLX_SCROLL_DELAY_MS ?? 350);
 const RAW_STABLE_ROUNDS = Number(process.env.OLX_STABLE_ROUNDS ?? 2);
 
@@ -454,11 +455,10 @@ async function collectForCpuTermRawCdp(tab, cpuTerm, maxCards, previousSnapshot)
 
 async function notebookListingLimit(term,base,previous){
   const traffic=await readOlxTraffic(),saved=traffic?.queries?.[`notebooks:${term}`];
-  const last=previous?.run?.query_yield?.[term]??saved;
-  const truncated=last?.listing_incomplete??/listagem incompleta/i.test(previous?.coverage_status?.[term]?.error??'');
-  const prior=Number(last?.listing_limit??base);
-  if(term.startsWith('family:'))return Math.min(90,Math.max(base,60,truncated?prior+30:prior));
-  return term==='14900hx'||truncated?Math.min(60,Math.max(base,truncated?prior+24:Math.max(prior,36))):base;
+  const last=previous?.run?.query_yield?.[term] ?? {};
+  const listing_incomplete=last.listing_incomplete ?? saved?.listing_incomplete
+    ?? /listagem incompleta/i.test(previous?.coverage_status?.[term]?.error??'');
+  return olxNotebookListingLimit(term,base,{...last,listing_incomplete},saved);
 }
 
 async function drainDescriptionQueue(openDetail) {
@@ -581,9 +581,15 @@ async function connectRawCdpTarget(target, origin) {
   const ws = new WebSocket(target.webSocketDebuggerUrl);
   let id = 0;
   const pending = new Map();
+  const documentStatuses = new Map();
 
   ws.onmessage = (event) => {
     const message = JSON.parse(event.data);
+    if (message.method === 'Network.responseReceived' && message.params?.type === 'Document') {
+      const response=message.params.response;
+      documentStatuses.set(response.url,response.status);
+      if (documentStatuses.size>20) documentStatuses.delete(documentStatuses.keys().next().value);
+    }
     if (!message.id || !pending.has(message.id)) return;
     const { resolve, reject, timer } = pending.get(message.id);
     clearTimeout(timer);
@@ -630,6 +636,7 @@ async function connectRawCdpTarget(target, origin) {
   return {
     target,
     send,
+    documentStatus: url => documentStatuses.get(url) ?? null,
     close: () => {
       ws.close();
     },
@@ -691,12 +698,15 @@ async function enrichAdRawCdp(cdpEndpoint, card) {
   try {
     await tab.send("Page.enable");
     await tab.send("Runtime.enable");
+    await tab.send("Network.enable");
     if (blockAssets) {
       await installRawRequestBlocking(tab);
     }
     await navigateRawCdp(tab, card.url);
-    await waitForRawBody(tab);
-    const detail = await rawEvaluate(tab, `(${readOlxNotebookDetail.toString()})()`);
+    const detail = await readOlxDetailUntilReady(async () => {
+      const value=await rawEvaluate(tab, `(${readOlxNotebookDetail.toString()})()`);
+      return {...value,http_status:tab.documentStatus(value.url)};
+    }, {cardUrl:card.url});
     const bodyText = detail.body_text;
     const title = card.title;
 
@@ -715,17 +725,6 @@ async function enrichAdRawCdp(cdpEndpoint, card) {
   } finally {
     await tab.closeTab();
   }
-}
-
-async function waitForRawBody(tab) {
-  const started = Date.now();
-  while (Date.now() - started < DETAIL_TIMEOUT_MS) {
-    assertOlxAccessible(await rawEvaluate(tab, "document.body?.innerText?.slice(0, 4000) || ''"));
-    const textLength = await rawEvaluate(tab, "document.body?.innerText?.length || 0").catch(() => 0);
-    if (Number(textLength) > 800) return;
-    await delay(800);
-  }
-  throw new Error("não consegui ler o corpo do anúncio");
 }
 
 function listingCardToItem(card) {
@@ -1032,16 +1031,8 @@ async function enrichAd(listingPage, card) {
     page.setDefaultTimeout(10_000);
     page.setDefaultNavigationTimeout(NAVIGATION_TIMEOUT_MS);
 
-    await page.goto(url, { waitUntil: "domcontentloaded", timeout: NAVIGATION_TIMEOUT_MS });
-    const bodyLocator = page.locator("body");
-    await bodyLocator.waitFor({ state: "visible", timeout: 15000 }).catch(() => {});
-    await page
-      .waitForFunction(() => (document.body?.innerText?.length || 0) > 800, null, {
-        timeout: 15000,
-        polling: 150,
-      })
-      .catch(() => {});
-    const detail = await page.evaluate(readOlxNotebookDetail);
+    const response = await page.goto(url, { waitUntil: "domcontentloaded", timeout: NAVIGATION_TIMEOUT_MS });
+    const detail = await readOlxDetailUntilReady(async () => ({...await page.evaluate(readOlxNotebookDetail), http_status:response?.status()}), {cardUrl:card.url});
     return {
       ...validateOlxNotebook(listingCardToItem(card), detail),
       id: extractOlxId(card.url), url: card.url, title: card.title,
