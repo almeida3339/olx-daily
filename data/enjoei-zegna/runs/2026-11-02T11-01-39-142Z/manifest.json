@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-11-02T11-01-39-142Z",
+  "committed_at": "2026-11-02T11:01:39.192Z",
+  "snapshot": "runs/2026-11-02T11-01-39-142Z/snapshot.json",
+  "report": "runs/2026-11-02T11-01-39-142Z/report.md",
+  "quarantine": null,
+  "summary": {
+    "schema_version": 1,
+    "collected_at": "2026-11-02T11:01:39.142Z",
+    "execution": "success",
+    "issues": [],
+    "coverage": {
+      "status": "complete",
+      "scheduled": 1,
+      "completed": 1,
+      "incomplete": 0,
+      "deferred": 0,
+      "pending_descriptions": 0,
+      "pending_candidates": 0,
+      "pending_details": 0,
+      "heuristic_stops": [],
+      "heuristic_reasons": {}
+    },
+    "findings": null
+  },
+  "checksums": {
+    "snapshot_sha256": "b4e13160b9f97d5573cf3253a3053d7bd1135e5102937cfe06cbb5f6f2de001d",
+    "report_sha256": "651525ad010fba67f1e59a17c33e28a7e4c22fe2a07e7c8b128db5e10757465c"
+  },
+  "metadata": {
+    "source": "enjoei-zegna",
+    "collected_count": 0,
+    "failed_term_count": 0,
+    "quarantined_item_count": 0
+  }
+}
