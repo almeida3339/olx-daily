@@ -1,19 +1,21 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-02T19:01:14.874Z",
+  "updated_at": "2026-11-02T19:05:05.126Z",
   "runs": [
     {
-      "run_id": "27b510ea-f3a5-4a98-be8a-5401999ced2f",
-      "completed_at": "2026-11-02T19:01:14.873Z",
-      "outcome": "partial",
+      "run_id": "d7ee83ea-28b1-436b-9b86-12ec5bd782aa",
+      "completed_at": "2026-11-02T19:05:05.121Z",
+      "outcome": "blocked",
       "partial": true,
-      "duration_ms": 6072,
+      "duration_ms": 297372,
       "item_count": 0,
       "quarantined_item_count": 0,
       "metadata": {
-        "source": "ci",
-        "monitor_errors": 0,
-        "monitor_failures": [],
+        "source": "local",
+        "monitor_errors": 1,
+        "monitor_failures": [
+          "Monitores OLED: Saiu com código 4: {\"event\":\"olx_access_blocked\",\"id\":\"olx-access-2026-11-02T19-04-58-394Z-1674f8d6\",\"at\":\"2026-11-02T19:04:58.394Z\",\"stage\":\"listing\",\"query\":\"monitor cepheus\",\"url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"final_url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"http_status\":403,\"title\":\"Attention Required! | Cloudflare\",\"kind\":\"hard_denial\",\"ray_id\":\"a5456873ec67788d\",\"message\":\"Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a5456873ec67788d).\"}\n  Aviso: termo \"monitor cepheus\" em https://www.olx.com.br/brasil/informatica/monitores falhou — Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a5456873ec67788d).\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.\nColeta OLED parcial: 1 consulta(s) incompleta(s), 9 adiada(s).\nOLX:monitor cepheus: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a5456873ec67788d).\nO…"
+        ],
         "pending_notifications": 0
       }
     },

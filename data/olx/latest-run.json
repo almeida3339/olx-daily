@@ -1,26 +1,27 @@
 {
   "schema_version": 1,
-  "run_id": "2026-11-02T10-03-57-107Z",
-  "committed_at": "2026-11-02T10:03:57.200Z",
-  "snapshot": "runs/2026-11-02T10-03-57-107Z/snapshot.json",
-  "report": "runs/2026-11-02T10-03-57-107Z/report.md",
+  "run_id": "2026-11-02T19-03-49-191Z",
+  "committed_at": "2026-11-02T19:03:49.240Z",
+  "snapshot": "runs/2026-11-02T19-03-49-191Z/snapshot.json",
+  "report": "runs/2026-11-02T19-03-49-191Z/report.md",
   "quarantine": null,
   "summary": {
     "schema_version": 1,
-    "collected_at": "2026-11-02T10:03:57.107Z",
+    "collected_at": "2026-11-02T19:03:49.191Z",
     "execution": "success",
     "issues": [
-      "4 ficha(s) aguardando leitura dentro dos limites da rodada",
-      "2 ficha(s) aguardando leitura dentro dos limites da rodada"
+      "1 ficha(s) aguardando leitura dentro dos limites da rodada",
+      "2 ficha(s) aguardando leitura dentro dos limites da rodada",
+      "Listagem incompleta: limite de 90 cards ou próxima página pendente; 5 ficha(s) aguardando leitura dentro dos limites da rodada"
     ],
     "coverage": {
       "status": "partial",
       "scheduled": 8,
-      "completed": 6,
-      "incomplete": 2,
+      "completed": 5,
+      "incomplete": 3,
       "deferred": 0,
-      "pending_descriptions": 17,
-      "pending_candidates": 8,
+      "pending_descriptions": 23,
+      "pending_candidates": 15,
       "pending_details": 0,
       "heuristic_stops": [],
       "heuristic_reasons": {},
@@ -34,28 +35,29 @@
             "13980hx",
             "14900hx",
             "13900hx",
-            "285hx",
-            "7945hx",
-            "7945hx3d",
-            "family:avell-storm"
+            "8940hx",
+            "7940hx",
+            "13950hx",
+            "family:helios-neo-16"
           ],
           "completed_terms": [
             "14700hx",
             "13980hx",
             "14900hx",
             "13900hx",
-            "285hx",
-            "7945hx",
-            "7945hx3d",
-            "family:avell-storm"
+            "8940hx",
+            "7940hx",
+            "13950hx"
           ],
-          "incomplete_terms": [],
-          "pending_details": 0,
-          "queued_candidates": 13,
-          "pending_candidates": 8,
+          "incomplete_terms": [
+            "family:helios-neo-16"
+          ],
+          "pending_details": 5,
+          "queued_candidates": 19,
+          "pending_candidates": 15,
           "scheduled": 8,
-          "completed": 8,
-          "incomplete": 0,
+          "completed": 7,
+          "incomplete": 1,
           "status": "partial"
         },
         "tracking": {
@@ -85,26 +87,26 @@
       "new_items": [],
       "price_changes": [],
       "active_count": 2,
-      "pending_count": 8,
+      "pending_count": 15,
       "new_count": 0,
       "price_count": 0
     }
   },
   "checksums": {
-    "snapshot_sha256": "34cf78e91aa4580ea539015223232b65b887b5057b5e51346e05f9a4580771f6",
-    "report_sha256": "34a25f079f39ba4eab72c7f34bee85ea25f9c19235c0357717a8e71251f07dec"
+    "snapshot_sha256": "498a1e6b089851bd16c8292722de8ef05040e1cafac2c2785a50efc3e0a93428",
+    "report_sha256": "abcd9c1c057b4d79543d3bcf194778af574ed26471b2a56a706aed04c2fe8258"
   },
   "metadata": {
     "source": "olx-notebooks",
     "transport": "cdp",
-    "collection_started_at": "2026-11-02T10:00:16.602Z",
-    "collected_count": 20,
-    "failed_term_count": 2,
-    "successful_term_count": 6,
+    "collection_started_at": "2026-11-02T19:00:14.183Z",
+    "collected_count": 29,
+    "failed_term_count": 3,
+    "successful_term_count": 5,
     "in_progress": false,
     "validated_count": 4,
-    "pending_count": 9,
-    "rejected_count": 7,
+    "pending_count": 12,
+    "rejected_count": 13,
     "quarantined_item_count": 0
   }
 }
