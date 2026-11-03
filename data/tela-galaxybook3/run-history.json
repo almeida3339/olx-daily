@@ -1,7 +1,23 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-02T19:04:13.343Z",
+  "updated_at": "2026-11-03T10:04:19.131Z",
   "runs": [
+    {
+      "run_id": "2026-11-03T10-04-17-581Z",
+      "committed_at": "2026-11-03T10:04:18.849Z",
+      "completed_at": "2026-11-03T10:04:18.842Z",
+      "outcome": "deferred",
+      "partial": true,
+      "duration_ms": 1261,
+      "item_count": 0,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "tela-galaxy-book3",
+        "label": "Tela Galaxy Book3",
+        "collected_count": 0,
+        "quarantined_item_count": 0
+      }
+    },
     {
       "run_id": "2026-11-02T19-04-01-955Z",
       "committed_at": "2026-11-02T19:04:12.940Z",
@@ -10,12 +26,28 @@
       "partial": false,
       "duration_ms": 10979,
       "item_count": 0,
-      "quarantined_item_count": 0,
       "metadata": {
         "source": "tela-galaxy-book3",
         "label": "Tela Galaxy Book3",
         "collected_count": 0,
-        "quarantined_item_count": 0
+        "quarantined_item_count": 0,
+        "in_progress": false
+      }
+    },
+    {
+      "run_id": "2026-11-02T19-01-10-146Z",
+      "committed_at": "2026-11-02T19:01:10.460Z",
+      "completed_at": "2026-11-02T19:01:10.439Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 293,
+      "item_count": 0,
+      "metadata": {
+        "source": "tela-galaxy-book3",
+        "label": "Tela Galaxy Book3",
+        "collected_count": 0,
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     },
     {
@@ -1878,38 +1910,6 @@
       "run_id": "2026-09-23T10-00-27-573Z",
       "committed_at": "2026-09-23T10:00:30.432Z",
       "completed_at": "2026-09-23T10:00:30.432Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": null,
-      "item_count": 0,
-      "metadata": {
-        "source": "tela-galaxy-book3",
-        "label": "Tela Galaxy Book3",
-        "collected_count": 0,
-        "quarantined_item_count": 0,
-        "in_progress": false
-      }
-    },
-    {
-      "run_id": "2026-09-22T19-00-20-010Z",
-      "committed_at": "2026-09-22T19:00:24.905Z",
-      "completed_at": "2026-09-22T19:00:24.905Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": null,
-      "item_count": 0,
-      "metadata": {
-        "source": "tela-galaxy-book3",
-        "label": "Tela Galaxy Book3",
-        "collected_count": 0,
-        "quarantined_item_count": 0,
-        "in_progress": false
-      }
-    },
-    {
-      "run_id": "2026-09-22T13-31-57-640Z",
-      "committed_at": "2026-09-22T13:32:00.548Z",
-      "completed_at": "2026-09-22T13:32:00.548Z",
       "outcome": "success",
       "partial": false,
       "duration_ms": null,

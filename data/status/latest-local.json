@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-02T19:00:07.749Z",
+  "generated_at": "2026-11-03T10:00:08.891Z",
   "source": "local",
   "delivery": {
     "email": "skipped",
@@ -39,54 +39,53 @@
   "monitoring": {
     "scope": "local-watchlists",
     "partial": true,
-    "status": "blocked",
+    "status": "partial",
     "outcomes": [
-      {
-        "source": "oled-monitores",
-        "status": "blocked",
-        "reasons": [
-          "Saiu com código 4: {\"event\":\"olx_access_blocked\",\"id\":\"olx-access-2026-11-02T19-04-58-394Z-1674f8d6\",\"at\":\"2026-11-02T19:04:58.394Z\",\"stage\":\"listing\",\"query\":\"monitor cepheus\",\"url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"final_url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"http_status\":403,\"title\":\"Attention Required! | Cloudflare\",\"kind\":\"hard_denial\",\"ray_id\":\"a5456873ec67788d\",\"message\":\"Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a5456873ec67788d).\"}\n  Aviso: termo \"monitor cepheus\" em https://www.olx.com.br/brasil/informatica/monitores falhou — Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a5456873ec67788d).\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.\nColeta OLED parcial: 1 consulta(s) incompleta(s), 9 adiada(s).\nOLX:monitor cepheus: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a5456873ec67788d).\nO…"
-        ]
-      },
       {
         "source": "olx",
         "status": "partial",
-        "completed_terms": 5,
+        "completed_terms": 6,
         "incomplete_terms": 3,
         "deferred_terms": 0,
-        "pending_candidates": 15,
+        "pending_candidates": 9,
         "reasons": [
-          "1 ficha(s) aguardando leitura dentro dos limites da rodada",
-          "2 ficha(s) aguardando leitura dentro dos limites da rodada",
-          "Listagem incompleta: limite de 90 cards ou próxima página pendente; 5 ficha(s) aguardando leitura dentro dos limites da rodada"
+          "5 ficha(s) aguardando leitura dentro dos limites da rodada",
+          "3 ficha(s) aguardando leitura dentro dos limites da rodada",
+          "Listagem incompleta: limite de 90 cards ou próxima página pendente"
         ]
       },
       {
         "source": "lifefactory",
-        "status": "success",
-        "completed_terms": 2,
+        "status": "deferred",
+        "completed_terms": 1,
         "incomplete_terms": 0,
-        "deferred_terms": 0,
+        "deferred_terms": 1,
         "pending_candidates": 0,
-        "reasons": []
+        "reasons": [
+          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+        ]
       },
       {
         "source": "tela-galaxybook3",
-        "status": "success",
-        "completed_terms": 2,
+        "status": "deferred",
+        "completed_terms": 1,
         "incomplete_terms": 0,
-        "deferred_terms": 0,
+        "deferred_terms": 1,
         "pending_candidates": 0,
-        "reasons": []
+        "reasons": [
+          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+        ]
       },
       {
         "source": "melanger",
-        "status": "success",
-        "completed_terms": 2,
+        "status": "deferred",
+        "completed_terms": 1,
         "incomplete_terms": 0,
-        "deferred_terms": 0,
+        "deferred_terms": 1,
         "pending_candidates": 0,
-        "reasons": []
+        "reasons": [
+          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+        ]
       },
       {
         "source": "oneplus-buds-pro-3",
@@ -109,6 +108,17 @@
         "reasons": [
           "Consultas adiadas pela programação; as consultas executadas foram concluídas."
         ]
+      },
+      {
+        "source": "oled-monitores",
+        "status": "deferred",
+        "completed_terms": 1,
+        "incomplete_terms": 0,
+        "deferred_terms": 9,
+        "pending_candidates": 1,
+        "reasons": [
+          "OLX: consultas adiadas após bloqueio; retomada prevista em 05/11/2026, 16:04:58 BRT."
+        ]
       }
     ],
     "warnings": [
@@ -116,9 +126,30 @@
         "source": "olx",
         "status": "partial",
         "reasons": [
-          "1 ficha(s) aguardando leitura dentro dos limites da rodada",
-          "2 ficha(s) aguardando leitura dentro dos limites da rodada",
-          "Listagem incompleta: limite de 90 cards ou próxima página pendente; 5 ficha(s) aguardando leitura dentro dos limites da rodada"
+          "5 ficha(s) aguardando leitura dentro dos limites da rodada",
+          "3 ficha(s) aguardando leitura dentro dos limites da rodada",
+          "Listagem incompleta: limite de 90 cards ou próxima página pendente"
+        ]
+      },
+      {
+        "source": "lifefactory",
+        "status": "deferred",
+        "reasons": [
+          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+        ]
+      },
+      {
+        "source": "tela-galaxybook3",
+        "status": "deferred",
+        "reasons": [
+          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+        ]
+      },
+      {
+        "source": "melanger",
+        "status": "deferred",
+        "reasons": [
+          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
         ]
       },
       {
@@ -134,11 +165,16 @@
         "reasons": [
           "Consultas adiadas pela programação; as consultas executadas foram concluídas."
         ]
+      },
+      {
+        "source": "oled-monitores",
+        "status": "deferred",
+        "reasons": [
+          "OLX: consultas adiadas após bloqueio; retomada prevista em 05/11/2026, 16:04:58 BRT."
+        ]
       }
     ],
-    "errors": [
-      "Monitores OLED: Saiu com código 4: {\"event\":\"olx_access_blocked\",\"id\":\"olx-access-2026-11-02T19-04-58-394Z-1674f8d6\",\"at\":\"2026-11-02T19:04:58.394Z\",\"stage\":\"listing\",\"query\":\"monitor cepheus\",\"url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"final_url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"http_status\":403,\"title\":\"Attention Required! | Cloudflare\",\"kind\":\"hard_denial\",\"ray_id\":\"a5456873ec67788d\",\"message\":\"Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a5456873ec67788d).\"}\n  Aviso: termo \"monitor cepheus\" em https://www.olx.com.br/brasil/informatica/monitores falhou — Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a5456873ec67788d).\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.\nColeta OLED parcial: 1 consulta(s) incompleta(s), 9 adiada(s).\nOLX:monitor cepheus: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a545…"
-    ]
+    "errors": []
   },
   "notification_sent_ids": [
     "ba389d82-208c-40a7-ada6-a22a454a4618",
@@ -217,14 +253,16 @@
     "354efb45-1ba1-4ee6-bc12-4a1cb6795172",
     "5dab9160-79c3-43a3-b251-e414f6af9ae1",
     "1f1187b1-cf9b-4038-9f07-c7183f563736",
-    "cd5a99b6-ab9d-40fc-bf51-88e96784c11a"
+    "cd5a99b6-ab9d-40fc-bf51-88e96784c11a",
+    "cfdb48dd-92f2-45d3-9c94-4fbeaa8c04ae",
+    "380557fe-de66-4c5c-abaa-55f3af61c844"
   ],
   "round_summary": {
     "schema_version": 1,
-    "run_id": "d7ee83ea-28b1-436b-9b86-12ec5bd782aa",
-    "started_at": "2026-11-02T19:00:07.749Z",
-    "completed_at": "2026-11-02T19:05:04.110Z",
-    "execution": "failed",
+    "run_id": "07f094ed-3c2b-4513-b5dc-656b144b2f33",
+    "started_at": "2026-11-03T10:00:08.891Z",
+    "completed_at": "2026-11-03T10:04:42.111Z",
+    "execution": "success",
     "delivery": {
       "email": "skipped",
       "whatsapp": "sent"
@@ -235,21 +273,21 @@
         "label": "OLX Notebooks",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-02T19:03:49.191Z",
+          "collected_at": "2026-11-03T10:04:13.577Z",
           "execution": "success",
           "issues": [
-            "1 ficha(s) aguardando leitura dentro dos limites da rodada",
-            "2 ficha(s) aguardando leitura dentro dos limites da rodada",
-            "Listagem incompleta: limite de 90 cards ou próxima página pendente; 5 ficha(s) aguardando leitura dentro dos limites da rodada"
+            "5 ficha(s) aguardando leitura dentro dos limites da rodada",
+            "3 ficha(s) aguardando leitura dentro dos limites da rodada",
+            "Listagem incompleta: limite de 90 cards ou próxima página pendente"
           ],
           "coverage": {
             "status": "partial",
-            "scheduled": 8,
-            "completed": 5,
+            "scheduled": 9,
+            "completed": 6,
             "incomplete": 3,
             "deferred": 0,
-            "pending_descriptions": 23,
-            "pending_candidates": 15,
+            "pending_descriptions": 21,
+            "pending_candidates": 9,
             "pending_details": 0,
             "heuristic_stops": [],
             "heuristic_reasons": {},
@@ -263,28 +301,30 @@
                   "13980hx",
                   "14900hx",
                   "13900hx",
-                  "8940hx",
-                  "7940hx",
-                  "13950hx",
-                  "family:helios-neo-16"
+                  "7845hx",
+                  "8840hx",
+                  "aimax390",
+                  "hx470",
+                  "family:rog-strix-g16"
                 ],
                 "completed_terms": [
                   "14700hx",
                   "13980hx",
                   "14900hx",
                   "13900hx",
-                  "8940hx",
-                  "7940hx",
-                  "13950hx"
+                  "7845hx",
+                  "8840hx",
+                  "aimax390",
+                  "hx470"
                 ],
                 "incomplete_terms": [
-                  "family:helios-neo-16"
+                  "family:rog-strix-g16"
                 ],
-                "pending_details": 5,
-                "queued_candidates": 19,
-                "pending_candidates": 15,
-                "scheduled": 8,
-                "completed": 7,
+                "pending_details": 0,
+                "queued_candidates": 13,
+                "pending_candidates": 9,
+                "scheduled": 9,
+                "completed": 8,
                 "incomplete": 1,
                 "status": "partial"
               },
@@ -300,10 +340,10 @@
                   "14700hx",
                   "14900hx"
                 ],
-                "pending_details": 3,
+                "pending_details": 8,
                 "min_price_exclusive": true,
-                "queued_candidates": 4,
-                "pending_candidates": 6,
+                "queued_candidates": 8,
+                "pending_candidates": 10,
                 "scheduled": 2,
                 "completed": 0,
                 "incomplete": 2,
@@ -315,7 +355,7 @@
             "new_items": [],
             "price_changes": [],
             "active_count": 2,
-            "pending_count": 15,
+            "pending_count": 9,
             "new_count": 0,
             "price_count": 0
           }
@@ -326,15 +366,17 @@
         "label": "Lifefactory",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-02T19:04:01.160Z",
+          "collected_at": "2026-11-03T10:04:16.585Z",
           "execution": "success",
-          "issues": [],
+          "issues": [
+            "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+          ],
           "coverage": {
-            "status": "complete",
-            "scheduled": 2,
-            "completed": 2,
+            "status": "deferred",
+            "scheduled": 1,
+            "completed": 1,
             "incomplete": 0,
-            "deferred": 0,
+            "deferred": 1,
             "pending_descriptions": 0,
             "pending_candidates": 0,
             "pending_details": 0,
@@ -356,15 +398,17 @@
         "label": "Tela Book3",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-02T19:04:12.934Z",
+          "collected_at": "2026-11-03T10:04:18.842Z",
           "execution": "success",
-          "issues": [],
+          "issues": [
+            "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+          ],
           "coverage": {
-            "status": "complete",
-            "scheduled": 2,
-            "completed": 2,
+            "status": "deferred",
+            "scheduled": 1,
+            "completed": 1,
             "incomplete": 0,
-            "deferred": 0,
+            "deferred": 1,
             "pending_descriptions": 0,
             "pending_candidates": 0,
             "pending_details": 0,
@@ -386,15 +430,17 @@
         "label": "Melanger",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-02T19:04:36.870Z",
+          "collected_at": "2026-11-03T10:04:21.385Z",
           "execution": "success",
-          "issues": [],
+          "issues": [
+            "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+          ],
           "coverage": {
-            "status": "complete",
-            "scheduled": 2,
-            "completed": 2,
+            "status": "deferred",
+            "scheduled": 1,
+            "completed": 1,
             "incomplete": 0,
-            "deferred": 0,
+            "deferred": 1,
             "pending_descriptions": 0,
             "pending_candidates": 0,
             "pending_details": 0,
@@ -416,7 +462,7 @@
         "label": "OnePlus Buds Pro 3",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-02T19:04:51.326Z",
+          "collected_at": "2026-11-03T10:04:30.660Z",
           "execution": "success",
           "issues": [
             "Consultas adiadas pela programação; as consultas executadas foram concluídas."
@@ -448,7 +494,7 @@
         "label": "Google Pixel Watch 5",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-02T19:04:52.923Z",
+          "collected_at": "2026-11-03T10:04:32.674Z",
           "execution": "success",
           "issues": [
             "Consultas adiadas pela programação; as consultas executadas foram concluídas."
@@ -480,17 +526,16 @@
         "label": "Monitores OLED",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-02T19:04:58.880Z",
-          "execution": "blocked",
+          "collected_at": "2026-11-03T10:04:35.671Z",
+          "execution": "success",
           "issues": [
-            "OLX:monitor cepheus: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a5456873ec67788d).",
             "OLX: consultas adiadas após bloqueio; retomada prevista em 05/11/2026, 16:04:58 BRT."
           ],
           "coverage": {
-            "status": "partial",
+            "status": "deferred",
             "scheduled": 1,
-            "completed": 0,
-            "incomplete": 1,
+            "completed": 1,
+            "incomplete": 0,
             "deferred": 9,
             "pending_descriptions": 0,
             "pending_candidates": 1,

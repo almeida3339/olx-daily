@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-11-03T10-04-19-788Z",
+  "committed_at": "2026-11-03T10:04:21.395Z",
+  "snapshot": "runs/2026-11-03T10-04-19-788Z/snapshot.json",
+  "report": "runs/2026-11-03T10-04-19-788Z/report.md",
+  "quarantine": null,
+  "summary": {
+    "schema_version": 1,
+    "collected_at": "2026-11-03T10:04:21.385Z",
+    "execution": "success",
+    "issues": [
+      "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+    ],
+    "coverage": {
+      "status": "deferred",
+      "scheduled": 1,
+      "completed": 1,
+      "incomplete": 0,
+      "deferred": 1,
+      "pending_descriptions": 0,
+      "pending_candidates": 0,
+      "pending_details": 0,
+      "heuristic_stops": [],
+      "heuristic_reasons": {}
+    },
+    "findings": {
+      "new_items": [],
+      "price_changes": [],
+      "active_count": 0,
+      "pending_count": 0,
+      "new_count": 0,
+      "price_count": 0
+    }
+  },
+  "checksums": {
+    "snapshot_sha256": "d056715d1e29daec698c123448bca5c7993e951c77a44c02e26a8b35c58be8bc",
+    "report_sha256": "0d7f0d6fc79f60384f56565b7a4cd52a69b386e86be091b73daa86d4ca7b2da1"
+  },
+  "metadata": {
+    "source": "melanger",
+    "label": "Melanger",
+    "collected_count": 0,
+    "quarantined_item_count": 0
+  }
+}
