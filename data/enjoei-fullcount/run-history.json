@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-02T19:01:12.497Z",
+  "updated_at": "2026-11-03T11:01:18.566Z",
   "runs": [
     {
-      "run_id": "2026-11-02T19-01-12-482Z",
-      "committed_at": "2026-11-02T19:01:12.484Z",
-      "completed_at": "2026-11-02T19:01:12.482Z",
+      "run_id": "2026-11-03T11-01-18-550Z",
+      "committed_at": "2026-11-03T11:01:18.551Z",
+      "completed_at": "2026-11-03T11:01:18.550Z",
       "outcome": "success",
       "partial": false,
-      "duration_ms": 119,
+      "duration_ms": 94,
       "item_count": 0,
       "quarantined_item_count": 0,
       "metadata": {
@@ -17,6 +17,23 @@
         "pending_count": 0,
         "failed_term_count": 0,
         "quarantined_item_count": 0
+      }
+    },
+    {
+      "run_id": "2026-11-02T19-01-12-482Z",
+      "committed_at": "2026-11-02T19:01:12.484Z",
+      "completed_at": "2026-11-02T19:01:12.482Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 119,
+      "item_count": 0,
+      "metadata": {
+        "source": "enjoei-fullcount",
+        "collected_count": 0,
+        "pending_count": 0,
+        "failed_term_count": 0,
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     },
     {

@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-02T19:01:11.435Z",
+  "updated_at": "2026-11-03T11:01:21.486Z",
   "runs": [
     {
-      "run_id": "2026-11-02T19-01-08-930Z",
-      "committed_at": "2026-11-02T19:01:11.339Z",
-      "completed_at": "2026-11-02T19:01:11.311Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 2381,
+      "run_id": "2026-11-03T11-01-15-052Z",
+      "committed_at": "2026-11-03T11:01:21.416Z",
+      "completed_at": "2026-11-03T11:01:21.389Z",
+      "outcome": "deferred",
+      "partial": true,
+      "duration_ms": 6337,
       "item_count": 5,
       "quarantined_item_count": 0,
       "metadata": {
@@ -18,6 +18,24 @@
         "failed_term_count": 0,
         "incomplete_term_count": 0,
         "quarantined_item_count": 0
+      }
+    },
+    {
+      "run_id": "2026-11-02T19-01-08-930Z",
+      "committed_at": "2026-11-02T19:01:11.339Z",
+      "completed_at": "2026-11-02T19:01:11.311Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 2381,
+      "item_count": 5,
+      "metadata": {
+        "source": "enjoei-tenis",
+        "collected_count": 0,
+        "pending_count": 1,
+        "failed_term_count": 0,
+        "incomplete_term_count": 0,
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     },
     {
@@ -1869,21 +1887,6 @@
       "run_id": "2026-08-07T11-01-03-810Z",
       "committed_at": "2026-08-07T11:01:08.351Z",
       "completed_at": "2026-08-07T11:01:08.351Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": null,
-      "item_count": 6,
-      "metadata": {
-        "source": "enjoei-tenis",
-        "collected_count": 3,
-        "quarantined_item_count": 0,
-        "in_progress": false
-      }
-    },
-    {
-      "run_id": "2026-08-06T19-33-14-959Z",
-      "committed_at": "2026-08-06T19:33:20.113Z",
-      "completed_at": "2026-08-06T19:33:20.113Z",
       "outcome": "success",
       "partial": false,
       "duration_ms": null,
