@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-11-03T19-01-21-431Z",
+  "committed_at": "2026-11-03T19:01:21.435Z",
+  "snapshot": "runs/2026-11-03T19-01-21-431Z/snapshot.json",
+  "report": "runs/2026-11-03T19-01-21-431Z/report.md",
+  "quarantine": null,
+  "summary": {
+    "schema_version": 1,
+    "collected_at": "2026-11-03T19:01:21.431Z",
+    "execution": "success",
+    "issues": [],
+    "coverage": {
+      "status": "complete",
+      "scheduled": 2,
+      "completed": 2,
+      "incomplete": 0,
+      "deferred": 0,
+      "pending_descriptions": 0,
+      "pending_candidates": 0,
+      "pending_details": 0,
+      "heuristic_stops": [],
+      "heuristic_reasons": {}
+    },
+    "findings": {
+      "new_items": [],
+      "price_changes": [],
+      "active_count": 0,
+      "pending_count": 0,
+      "new_count": 0,
+      "price_count": 0
+    }
+  },
+  "checksums": {
+    "snapshot_sha256": "013ecff03f360e9cdf0fca630a025a5e8395245a68534ca3a86be71267886188",
+    "report_sha256": "e229a84b8b784af5f327fe8645a54501215a9d6af84370c6b4fbeeb9090ee1f4"
+  },
+  "metadata": {
+    "source": "enjoei-pure-blue-japan",
+    "collected_count": 0,
+    "pending_count": 0,
+    "failed_term_count": 0,
+    "quarantined_item_count": 0
+  }
+}
