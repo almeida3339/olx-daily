@@ -7,24 +7,48 @@ export const OLX_NOTEBOOK_FAMILIES = [
   ['avell-a65', 'avell a65'], ['avell-storm', 'avell storm'],
 ].map(([id, query]) => ({ id: `family:${id}`, query }));
 
+export const OLX_FAMILY_EXPERIMENT = [
+  ['family:helios-neo-16', '14700hx'],
+  ['family:rog-strix-g16', '13980hx'],
+].map(([family, cpu]) => {
+  const {query} = OLX_NOTEBOOK_FAMILIES.find(spec => spec.id === family);
+  return { id: `${family}:${cpu}`, family, cpu, query: `${query} ${cpu}` };
+});
+
+export const OLX_FAMILY_SEARCHES = [...OLX_NOTEBOOK_FAMILIES, ...OLX_FAMILY_EXPERIMENT];
+
 export function notebookQueryMaxAgeHours(key, source) {
   if (key.startsWith('family:')) return 72;
   return NOTEBOOK_PRIORITY_CPUS.includes(key) ? 24 : source === 'mercadolivre-notebooks' ? 168 : 48;
 }
 
 export function planNotebookFamilies(previous, { now = Date.now(), budget = 1, fullSweep = false, traffic = null } = {}) {
+  const attempts = id => {
+    const record = traffic?.queries?.[`notebooks:${id}`];
+    return {record, at: Date.parse(record?.last_attempt_at ?? previous?.coverage_status?.[id]?.checked_at) || 0};
+  };
+  const lastFamilyAttempt = id => {
+    const broad = attempts(id);
+    const variant = OLX_FAMILY_EXPERIMENT.find(spec => spec.family === id);
+    const specific = variant ? attempts(variant.id) : {at: 0};
+    return specific.at > broad.at ? specific : broad;
+  };
   const due = OLX_NOTEBOOK_FAMILIES.filter(({ id }) => {
     if (fullSweep) return true;
-    const record = traffic?.queries?.[`notebooks:${id}`];
-    if (record?.last_attempt_at) return now - Date.parse(record.last_attempt_at)
-      >= olxIntervalHours('notebooks', id, record) * 3600_000;
+    const {record, at} = lastFamilyAttempt(id);
+    if (record?.last_attempt_at) return now - at >= olxIntervalHours('notebooks', id, record) * 3600_000;
     return !previous?.coverage_status?.[id]?.last_success_at
       || now - Date.parse(previous.coverage_status[id].last_success_at) >= 24 * 3600_000;
   });
   // A partial query still consumed its slot. Rotate by attempt time so an
   // incomplete family cannot starve families that have never been queried.
-  return due.sort((a,b) => (Date.parse(previous?.coverage_status?.[a.id]?.checked_at) || 0)
-    - (Date.parse(previous?.coverage_status?.[b.id]?.checked_at) || 0)).slice(0, fullSweep ? Infinity : budget).map(spec => spec.id);
+  return due.sort((a,b) => lastFamilyAttempt(a.id).at - lastFamilyAttempt(b.id).at)
+    .slice(0, fullSweep ? Infinity : budget).map(({id}) => {
+      const variant = OLX_FAMILY_EXPERIMENT.find(spec => spec.family === id);
+      if (fullSweep || !variant) return id;
+      const broad = attempts(id).at;
+      return broad > attempts(variant.id).at ? variant.id : id;
+    });
 }
 
 export function notebookOpportunity(item, pool = []) {

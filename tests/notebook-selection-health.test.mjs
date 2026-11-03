@@ -7,6 +7,41 @@ import { createDescriptionQueue, descriptionRetryPolicy } from '../scripts/lib/o
 import { buildMonitorHealth, collectionHealthAlerts } from '../scripts/lib/monitor-health.mjs';
 import { LEGACY_OLX_HEALTH_ERROR, reconcileRecordedHealthErrors } from '../scripts/lib/collection-summary.mjs';
 import { writeJsonAtomic } from '../scripts/lib/monitor-runtime.mjs';
+import { planNotebookFamilies, OLX_NOTEBOOK_FAMILIES } from '../scripts/lib/notebook-search-plan.mjs';
+
+test('410 retires the matching ad across resumes and permits a later listing observation', async t => {
+  const {file} = await fixture(t);
+  const product = card('154000020', 'Notebook Avell', 6500);
+  const term = 'family:avell-a65';
+  const first = await createDescriptionQueue(file, 'first');
+  await first.enqueue([product], term);
+  await first.remember(product, {validation:{state:'pending', detail_diagnostic:{http_status:410, same_ad:true}}});
+  const resumed = await createDescriptionQueue(file, 'first');
+  await resumed.enqueue([product], term);
+  assert.equal(resumed.summary().queued_candidates, 0);
+  assert.equal(resumed.unavailable(product), true);
+  const next = await createDescriptionQueue(file, 'next');
+  assert.equal(next.summary().queued_candidates, 0);
+  await next.enqueue([product], term);
+  assert.equal(next.cached(product), null);
+  const resumedNext = await createDescriptionQueue(file, 'next');
+  assert.equal(resumedNext.pending().length, 1);
+});
+
+test('one family slot alternates between broad and specific search with a shared cadence', () => {
+  const now = Date.parse('2026-11-10T19:00:00Z');
+  const family = 'family:helios-neo-16';
+  const specific = `${family}:14700hx`;
+  const queries = Object.fromEntries(OLX_NOTEBOOK_FAMILIES.map(({id}) =>
+    [`notebooks:${id}`, {last_attempt_at: new Date(now - 60_000).toISOString()}]));
+  queries[`notebooks:${family}`].last_attempt_at = new Date(now - 25 * 3600_000).toISOString();
+  const plan = () => planNotebookFamilies(null, {now, traffic:{queries}});
+  assert.deepEqual(plan(), [specific]);
+  queries[`notebooks:${specific}`] = {last_attempt_at:new Date(now - 120_000).toISOString()};
+  assert.deepEqual(plan(), []);
+  queries[`notebooks:${specific}`].last_attempt_at = new Date(now - 24 * 3600_000).toISOString();
+  assert.deepEqual(plan(), [family]);
+});
 
 const card=(id,title,price=6500,text='')=>({url:`https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-${id}`,title,price_brl:price,text,description_discovery:true});
 async function fixture(t) {

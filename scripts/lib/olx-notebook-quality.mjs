@@ -1,7 +1,7 @@
 import { extractNotebookRamText, meetsNotebookRamMinimum, NOTEBOOK_MIN_RAM_GB, NOTEBOOK_PRIORITY_CPUS, notebookExclusionReason, notebookCpuTerms, hasExplicitOtherNotebookCpu, isEligibleNotebook } from './notebook-policy.mjs';
 import { DEFAULT_CPU_TERMS } from "./cpu-terms.mjs";
 import { olxIntervalHours } from './olx-traffic.mjs';
-import { cardCpuState } from "./olx-description-queue.mjs";
+import { cardCpuState, isGoneOlxDetail } from "./olx-description-queue.mjs";
 import { extractStorageGb, extractGpuLabel, normalizeText, parseBrlPrice, textContainsCpuTerm } from './parsers.mjs';
 
 export const OLX_QUALITY_VERSION = 2;
@@ -149,12 +149,14 @@ export function validateOlxNotebook(card, detail, now = new Date()) {
 }
 
 export function isValidatedOlxItem(item) {
+  if (isGoneOlxDetail(item)) return false;
   const current = revalidateSavedOlxItem(item);
   return current?.validation?.version === OLX_QUALITY_VERSION && current.validation.state === 'validated' && isEligibleNotebook(current);
 }
 
 // Reapply preferences to recorded evidence without claiming a new page visit.
 export function revalidateSavedOlxItem(item) {
+  if (isGoneOlxDetail(item)) return item;
   if (!item?.validation || ![1, OLX_QUALITY_VERSION].includes(item.validation.version)) return item;
   const old = item.validation;
   if (old.description_checked && item.description_evidence && item.detail_title

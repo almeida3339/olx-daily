@@ -6,6 +6,9 @@ import { isOlxRecommendationUrl } from './olx-listing.mjs';
 import { reserveOlxAccess } from './olx-traffic.mjs';
 
 export const cardKey = card => extractOlxId(card.url) ?? card.url.split('?')[0];
+const quotaTerm = term => term.startsWith('family:') ? term.split(':').slice(0, 2).join(':') : term;
+export const isGoneOlxDetail = item => item?.validation?.detail_diagnostic?.http_status === 410
+  && item.validation.detail_diagnostic.same_ad === true;
 const fingerprint = card => {
   const text = `${card.title}\n${card.text ?? ''}`;
   return JSON.stringify([card.title, card.price_brl, DEFAULT_CPU_TERMS.filter(cpu => textContainsCpuTerm(text,cpu)),
@@ -22,6 +25,11 @@ const evidenceScore = (card, evidence) => {
   return 4 * Number(Boolean(DEFAULT_CPU_TERMS.some(cpu => textContainsCpuTerm(text, cpu)) || evidence?.cpu_confirmed))
     + 2 * Number((extractNotebookRamText(text) ?? evidence?.ram_gb ?? 0) >= NOTEBOOK_MIN_RAM_GB)
     + Number(Boolean(extractGpuLabel(text) ?? evidence?.gpu));
+};
+const hasStrongListing = card => {
+  const text = `${card.title}\n${card.text ?? ''}`;
+  return (extractNotebookRamText(text) ?? 0) >= NOTEBOOK_MIN_RAM_GB
+    && DEFAULT_CPU_TERMS.some(cpu => textContainsCpuTerm(text, cpu));
 };
 export function descriptionRetryPolicy(entry, item) {
   const reasons = item?.validation?.reasons ?? entry.last_reasons ?? [];
@@ -40,9 +48,11 @@ const clearAttempt = entry => {
 };
 export function compareDescriptionCandidates(a, b, displayMaxPrice = 8000) {
   return Number(a.card.price_brl > displayMaxPrice) - Number(b.card.price_brl > displayMaxPrice)
-    || evidenceScore(b.card,b.last_evidence) - evidenceScore(a.card,a.last_evidence)
+    || Number(hasStrongListing(b.card)) - Number(hasStrongListing(a.card))
+    || evidenceScore(b.card) - evidenceScore(a.card)
     || Number(a.retry_kind === 'missing_configuration') - Number(b.retry_kind === 'missing_configuration')
     || Number(Boolean(a.last_detail_attempt_at)) - Number(Boolean(b.last_detail_attempt_at))
+    || evidenceScore(b.card,b.last_evidence) - evidenceScore(a.card,a.last_evidence)
     || Number(a.card.price_brl) - Number(b.card.price_brl)
     || (Date.parse(a.last_detail_attempt_at ?? a.first_observed_at) || 0) - (Date.parse(b.last_detail_attempt_at ?? b.first_observed_at) || 0);
 }
@@ -57,14 +67,17 @@ export function cardCpuState(text, term) {
 export async function createDescriptionQueue(file, round, { perTerm = 2, perRound = 8, displayMaxPrice = 8000, reserveAccess = reserveOlxAccess } = {}) {
   const old = await readJsonValidated(file).catch(() => null);
   const now = Date.now();
+  const gone = new Set((old?.cache ?? []).filter(entry => isGoneOlxDetail(entry.item)).map(entry => entry.key));
   const state = {
     schema_version: 1, selection_policy_version: 2, round,
-    queue: (old?.queue ?? []).filter(entry => candidateAllowed(entry.card)
+    queue: (old?.queue ?? []).filter(entry => !gone.has(entry.key) && candidateAllowed(entry.card)
       && now - Date.parse(entry.last_observed_at) < 7 * 86400_000),
     cache: (old?.cache ?? []).filter(entry => now - Date.parse(entry.checked_at) < 72 * 3600_000),
     metrics: old?.round === round ? old.metrics : { extra_details: 0, total_details: 0, detail_ms: 0, recovered_validated: 0, cache_hits: 0, by_term: {} },
   };
   const results = new Map();
+  const unavailable = card => state.cache.some(entry => entry.key === cardKey(card)
+    && (entry.unavailable_round ?? old?.round) === round && isGoneOlxDetail(entry.item));
   // Migrate pending retries without renewing observation or attempt timestamps.
   for (const entry of state.queue) {
     if (!entry.last_detail_attempt_at) continue;
@@ -88,10 +101,11 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
     above_display_price: state.queue.filter(entry => entry.card.price_brl > displayMaxPrice).length,
     validation_complete: state.queue.length === 0, per_term_limit: perTerm, per_round_limit: perRound });
   return {
-    summary, save,
+    summary, save, unavailable,
+    needsRecheck: card => gone.has(cardKey(card)),
     cached(card) {
       const key = cardKey(card);
-      const entry = state.cache.find(x => x.key === key && x.title === card.title && x.price_brl === card.price_brl
+      const entry = state.cache.find(x => !isGoneOlxDetail(x.item) && x.key === key && x.title === card.title && x.price_brl === card.price_brl
         && (x.card_fingerprint ?? fingerprint({ ...x.item, title:x.title, price_brl:x.price_brl })) === fingerprint(card)
         && Date.now() - Date.parse(x.checked_at) < (x.item?.validation?.state === 'rejected' ? 72 : x.item?.validation?.state === 'pending' ? 0.5 : 12) * 3600_000);
       return entry?.item ?? null;
@@ -102,8 +116,9 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
     },
     async enqueue(cards, term) {
       for (const card of cards) {
-        if (!candidateAllowed(card)) continue;
+        if (!candidateAllowed(card) || unavailable(card)) continue;
         const key = cardKey(card), existing = state.queue.find(x => x.key === key);
+        if (gone.has(key)) state.cache = state.cache.filter(entry => entry.key !== key || !isGoneOlxDetail(entry.item));
         if (existing) {
           if (fingerprint(existing.card) !== fingerprint(card)) {
             clearAttempt(existing);
@@ -120,11 +135,14 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
       .sort((a,b)=>compareDescriptionCandidates(a,b,displayMaxPrice))
       .map(x => ({ ...x.card, cpu_term: term ?? x.card.cpu_term ?? x.terms[0], description_discovery: x.card.description_discovery ?? true })); },
     prioritize(cards) {
-      const entryFor = card => ({ ...(state.queue.find(entry => entry.key === cardKey(card)) ?? {}), card });
+      const entryFor = card => {
+        const entry = state.queue.find(candidate => candidate.key === cardKey(card));
+        return entry && fingerprint(entry.card) === fingerprint(card) ? { ...entry, card } : { card };
+      };
       return [...cards].sort((a,b) => compareDescriptionCandidates(entryFor(a),entryFor(b),displayMaxPrice));
     },
     async reserveDetail(term, discovery, card, { finishRound = false, allowReallocation = finishRound } = {}) {
-      if (card && !candidateAllowed(card)) return false;
+      if (card && (!candidateAllowed(card) || unavailable(card))) return false;
       let waiting = card && state.queue.find(entry => entry.key === cardKey(card));
       if (waiting && fingerprint(waiting.card) !== fingerprint(card)) {
         waiting.card = card; clearAttempt(waiting);
@@ -136,13 +154,14 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
       if (retry && !finishRound && (state.metrics.retry_details ?? 0) >= totalLimit - newReserved) return false;
       if ((state.metrics.total_details ?? 0) >= totalLimit) return false;
       const termLimit=term.startsWith('family:')?Math.max(perTerm,4):perTerm;
-      const termUsed = state.metrics.by_term[term] ?? 0;
+      const quota = quotaTerm(term);
+      const termUsed = state.metrics.by_term[quota] ?? 0;
       let reallocated = false;
       if (discovery && state.metrics.extra_details >= perRound) return false;
       if (discovery && termUsed >= termLimit) {
         const alternative = state.queue.some(entry => entry.card.price_brl <= displayMaxPrice && ready(entry)
-          && entry.key !== (card && cardKey(card)) && !results.has(entry.key) && entry.terms.some(other => other !== term
-            && (state.metrics.by_term[other] ?? 0) < (other.startsWith('family:') ? Math.max(perTerm,4) : perTerm)));
+          && entry.key !== (card && cardKey(card)) && !results.has(entry.key) && entry.terms.some(other => quotaTerm(other) !== quota
+            && (state.metrics.by_term[quotaTerm(other)] ?? 0) < (other.startsWith('family:') ? Math.max(perTerm,4) : perTerm)));
         reallocated = Boolean(finishRound && allowReallocation && term.startsWith('family:') && termUsed === termLimit
           && card?.price_brl <= displayMaxPrice && (state.metrics.reallocated_details ?? 0) < 1 && !alternative);
         if (!reallocated) return false;
@@ -150,7 +169,11 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
       try{await reserveAccess({watchlist:'notebooks',query:term,kind:'detail'});}
       catch(error){if(error.kind!=='deferred')throw error;state.metrics.traffic_deferred=(state.metrics.traffic_deferred??0)+1;state.metrics.traffic_reason=error.message;await save();return false;}
       state.metrics.total_details = (state.metrics.total_details ?? 0) + 1;
+      const yieldByTerm = state.metrics.detail_yield ??= {};
+      const yieldForTerm = yieldByTerm[term] ??= {reads: 0, validated_offers: 0};
+      yieldForTerm.reads++;
       if (card && !waiting) {
+        if (gone.has(cardKey(card))) state.cache = state.cache.filter(entry => entry.key !== cardKey(card) || !isGoneOlxDetail(entry.item));
         waiting = { key: cardKey(card), card, terms: [term], first_observed_at: new Date().toISOString(), last_observed_at: new Date().toISOString() };
         state.queue.push(waiting);
       }
@@ -158,7 +181,7 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
       const counter = retry ? 'retry_details' : 'new_details';
       state.metrics[counter] = (state.metrics[counter] ?? 0) + 1;
       if (reallocated) state.metrics.reallocated_details = (state.metrics.reallocated_details ?? 0) + 1;
-      if (discovery) { state.metrics.extra_details++; state.metrics.by_term[term] = (state.metrics.by_term[term] ?? 0) + 1; }
+      if (discovery) { state.metrics.extra_details++; state.metrics.by_term[quota] = termUsed + 1; }
       await save(); return true;
     },
     async reserve(term) {
@@ -172,9 +195,15 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
       const key = cardKey(card);
       results.set(key, item);
       state.cache = state.cache.filter(x => x.key !== key);
-      state.cache.push({ key, title: card.title, price_brl: card.price_brl, card_fingerprint:fingerprint(card), checked_at: new Date().toISOString(), item });
+      const gone = isGoneOlxDetail(item);
+      state.cache.push({ key, title: card.title, price_brl: card.price_brl, card_fingerprint:fingerprint(card), checked_at: new Date().toISOString(), item,
+        ...(gone ? { unavailable_round: round } : {}) });
       state.cache = state.cache.slice(-1000);
-      if (item.validation?.state === 'pending') {
+      const detailYield = state.metrics.detail_yield?.[card.cpu_term];
+      if (detailYield && item.validation?.state === 'validated' && item.price_brl >= 2000 && item.price_brl <= displayMaxPrice) {
+        detailYield.validated_offers++;
+      }
+      if (!gone && item.validation?.state === 'pending') {
         const waiting = state.queue.find(x => x.key === key);
         if (waiting) {
           waiting.last_detail_attempt_at = new Date().toISOString();

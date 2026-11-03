@@ -1,9 +1,9 @@
 import { setMonitorExit } from './lib/monitor-outcome.mjs';
 import { reserveOlxAccess, recordOlxYield, readOlxTraffic } from './lib/olx-traffic.mjs';
 import { extractNotebookRamText, meetsNotebookRamMinimum, NOTEBOOK_MIN_RAM_GB, notebookCpuTerms, hasExplicitOtherNotebookCpu } from './lib/notebook-policy.mjs';
-import { OLX_NOTEBOOK_FAMILIES, planNotebookFamilies, notebookOpportunity } from './lib/notebook-search-plan.mjs';
+import { OLX_NOTEBOOK_FAMILIES, OLX_FAMILY_SEARCHES, OLX_FAMILY_EXPERIMENT, planNotebookFamilies, notebookOpportunity } from './lib/notebook-search-plan.mjs';
 import fs from "node:fs/promises";
-import { createDescriptionQueue, cardCpuState, cardKey } from "./lib/olx-description-queue.mjs";
+import { createDescriptionQueue, cardCpuState, cardKey, isGoneOlxDetail } from "./lib/olx-description-queue.mjs";
 import { readOlxListing, finishOlxListing } from './lib/olx-listing.mjs';
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -60,8 +60,8 @@ const descriptionsOnly = args.includes('--descriptions-only');
 const cpuArg = getOptionValue(args, "--cpu");
 const configuredCpuTerms = cpuArg ? cpuArg.split(",").map((s) => s.trim().toLowerCase()).filter(Boolean) : DEFAULT_CPU_TERMS;
 let cpuTerms = orderOlxCpuTerms(configuredCpuTerms);
-const configuredSearches = [...configuredCpuTerms, ...(!cpuArg ? OLX_NOTEBOOK_FAMILIES.map(spec => spec.id) : [])];
-const olxQuery = term => OLX_NOTEBOOK_FAMILIES.find(spec => spec.id === term)?.query ?? cpuSearchQuery(term);
+const configuredSearches = [...configuredCpuTerms, ...(!cpuArg ? OLX_FAMILY_SEARCHES.map(spec => spec.id) : [])];
+const olxQuery = term => OLX_FAMILY_SEARCHES.find(spec => spec.id === term)?.query ?? cpuSearchQuery(term);
 let resumedProgress = null;
 let descriptionQueue;
 const searchedThisProcess = new Set();
@@ -116,7 +116,8 @@ async function main() {
     await saveDeferredNotebookRun(previousSnapshot,now,`OLX em pausa até ${savedProgress.blocked_until}; consultas adiadas.`);
     return;
   }
-  const sameConfiguration = savedProgress?.configuration === configuredSearches.join(',');
+  const sameConfiguration = savedProgress?.configuration === configuredSearches.join(',')
+    || (!cpuArg && savedProgress?.configuration === [...configuredCpuTerms, ...OLX_NOTEBOOK_FAMILIES.map(spec => spec.id)].join(','));
   if (!args.includes('--full-sweep') && sameConfiguration && savedProgress.pending_terms?.length
       && now.getTime() - Date.parse(savedProgress.started_at) < RESUME_MAX_AGE_MS
       && Array.isArray(savedProgress.collected) && Array.isArray(savedProgress.successful_terms)
@@ -241,6 +242,14 @@ async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transp
 
   const saveProgress = async (inProgress) => {
     const savedAt = new Date();
+    const detailYield = descriptionQueue.summary().detail_yield ?? {};
+    for (const [term, row] of Object.entries(queryYield)) {
+      if (row.unique_eligible_candidates == null) continue;
+      const {reads = 0, validated_offers = 0} = detailYield[term] ?? {};
+      row.detail_read_attempts = reads;
+      row.validated_offers_from_reads = validated_offers;
+      row.validated_offers_per_read = reads ? validated_offers / reads : null;
+    }
     const unattemptedTerms = cpuTerms.filter((term) => !successfulTerms.includes(term)
       && !failedTerms.some((failure) => failure.term === term));
     const snapshot = mergeWithPreviousSnapshot({
@@ -306,6 +315,7 @@ async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transp
         if (results.coverage_incomplete) failedTerms.push({ term, error: results.incomplete_reasons.join('; '), kind: 'incomplete' });
         else successfulTerms.push(term);
         queryYield[term] = { returned: results.length, validated: results.filter(isValidatedOlxItem).length,
+          query: olxQuery(term), unique_eligible_candidates: results.unique_eligible_candidates,
           pending: results.filter(item => item.validation?.state === 'pending').length,
           detail_reads: (descriptionQueue.summary().total_details ?? 0) - detailsBefore,
           limited: Boolean(results.coverage_incomplete), listing_incomplete: Boolean(results.listing_incomplete), listing_limit:results.listing_limit,
@@ -492,11 +502,14 @@ async function drainDescriptionQueue(openDetail) {
 
 async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openDetail) {
   const familySearch = cpuTerm.startsWith('family:');
+  const specificCpu = OLX_FAMILY_SEARCHES.find(spec => spec.id === cpuTerm)?.cpu;
   const eligible = [...new Map(cards.filter(card => card.url && card.title && card.price_brl != null
     && isNotebookCategoryUrl(card.url) && !hasExcludedKeyword(`${card.title}\n${card.text ?? ''}`)
     && !hasExplicitOtherNotebookCpu(`${card.title}\n${card.text ?? ''}`) && !notebookExclusionReason(`${card.title}\n${card.text ?? ''}`)
     && (extractNotebookRamText(`${card.title}\n${card.text ?? ''}`) ?? NOTEBOOK_MIN_RAM_GB) >= NOTEBOOK_MIN_RAM_GB)
-    .map(card => [cardKey(card), { ...card, cpu_term: cpuTerm }])).values()];
+    .map(card => [cardKey(card), { ...card, cpu_term: cpuTerm }])).values()]
+    .filter(card => !descriptionQueue.unavailable(card)
+      && (!specificCpu || cardCpuState(`${card.title}\n${card.text ?? ''}`, specificCpu) !== 'other'));
   const matches = eligible.filter(card => !familySearch && cardCpuState(`${card.title}\n${card.text ?? ''}`, cpuTerm) === 'match')
     .filter(card => card.price_brl >= PRICE_MIN_BRL && card.price_brl <= PRICE_CHANGE_MAX_BRL)
     .sort((a, b) => a.price_brl - b.price_brl);
@@ -508,6 +521,8 @@ async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openD
   const reserveSlots = Math.min(2, waiting.length, maxCards);
   const toProcess = descriptionQueue.prioritize([...matches.slice(0, maxCards - reserveSlots), ...waiting, ...matches.slice(maxCards - reserveSlots)]);
   const items = [], seen = new Set();
+  items.unique_eligible_candidates = new Set([...matches, ...unknown]
+    .filter(card => card.price_brl <= PRICE_MAX_BRL).map(cardKey)).size;
   items.listing_incomplete = Boolean(cards.listing_incomplete);
   items.listing_limit=maxCards;
   items.total_results = cards.total_results ?? null;
@@ -525,7 +540,9 @@ async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openD
     if (listingOnly) { items.push(listingItem); continue; }
     const current = descriptionQueue.result(card);
     const cached = descriptionQueue.cached(card);
-    const reusable = current ?? (!forceOpenDetails ? cached ?? getReusablePreviousEnrichedItem(previousSnapshot, card) : null);
+    const reusable = current ?? (!forceOpenDetails
+      ? cached ?? (descriptionQueue.needsRecheck(card) ? null : getReusablePreviousEnrichedItem(previousSnapshot, card))
+      : null);
     if (reusable) {
       // Preserve the CPU confirmed in the description, not the discovery query.
       items.push({ ...revalidateSavedOlxItem(reusable), search_terms: [...new Set([...(reusable.search_terms ?? []), cpuTerm])] });
@@ -1117,6 +1134,13 @@ function buildReport({ runDate, snapshot, previousSnapshot, priceMin, priceMax }
     if (d.reallocated_details) lines.push(`- Vaga adicional redistribuída entre famílias ao final: **${d.reallocated_details}** (dentro do orçamento existente).`);
     lines.push(`- Candidatos aguardando descrição: **${d.queued_candidates}**. Validação da fila completa: **${d.validation_complete ? 'sim' : 'não'}**.`);
   }
+  for (const [term, row] of Object.entries(snapshot.run.query_yield ?? {})) {
+    if (row.unique_eligible_candidates == null
+      || !OLX_FAMILY_EXPERIMENT.some(spec => spec.id === term || spec.family === term)) continue;
+    const reads = row.detail_read_attempts ?? 0;
+    const ratio = reads ? `${row.validated_offers_from_reads}/${reads} fichas` : 'sem fichas lidas';
+    lines.push(`- Teste de busca **${row.query}** · ${row.unique_eligible_candidates} candidatos únicos até R$ 8.000 após a triagem da listagem · ofertas validadas: ${ratio}.`);
+  }
   lines.push(`- Novos anúncios válidos (R$ ${priceMin.toLocaleString("pt-BR")}–R$ ${priceMax.toLocaleString("pt-BR")}): **${newItems.length}**`);
   lines.push(`- Anúncios ainda ativos (já vistos) no range: **${stillActiveSeen.length}**`);
   lines.push(`- Não vistos nesta rodada (sumiram da listagem): **${notSeenThisRun.length}**`);
@@ -1211,7 +1235,7 @@ function mergeWithPreviousSnapshot({ runDate, now, collected, previousSnapshot, 
       scheduledCoverage: scheduledTerms,
       successfulCoverage: successfulTerms,
       failedCoverage: failedTerms.filter(failure=>failure.kind!=='deferred').map((failure) => failure.term),
-      configuredCoverage: [...new Set([...DEFAULT_CPU_TERMS,...OLX_NOTEBOOK_FAMILIES.map(spec=>spec.id),...configuredSearches])],
+      configuredCoverage: [...new Set([...DEFAULT_CPU_TERMS,...OLX_FAMILY_SEARCHES.map(spec=>spec.id),...configuredSearches])],
       itemCoverage: (item) => item.search_terms?.length ? item.search_terms : item.cpu_term ? [item.cpu_term]
         : DEFAULT_CPU_TERMS.filter((term) => textContainsCpuTerm(item.title ?? "", term)),
       filters: { ram_gb: { min: NOTEBOOK_MIN_RAM_GB }, price_brl: { min: PRICE_MIN_BRL, max: PRICE_MAX_BRL } },
@@ -1225,7 +1249,7 @@ function mergeWithPreviousSnapshot({ runDate, now, collected, previousSnapshot, 
       }
       return current;
     });
-    result.items = result.items.map(item => item.validation?.state === 'rejected'
+    result.items = result.items.map(item => isGoneOlxDetail(item) ? { ...item, status: 'not_seen' } : item.validation?.state === 'rejected'
       ? { ...item, status: 'out_of_scope', out_of_scope_at: item.out_of_scope_at ?? now.toISOString() } : item);
     const comparable = result.items.filter(item => item.status === 'active' && isValidatedOlxItem(item));
     result.items = result.items.map(item => isValidatedOlxItem(item) ? { ...item, opportunity: notebookOpportunity(item, comparable) } : item);
