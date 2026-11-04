@@ -268,8 +268,9 @@ async function gather(dir, prefix, excludePrefix, detailsByUrl = new Map()) {
         const detail = detailsByUrl.get(item.url);
         if (detail?.status !== 'active' || !isValidatedOlxItem(detail)) continue;
         const shownPrice = parseBrlPrice(item.priceTo ?? item.price);
-        item.priceLabels = shownPrice === Number(detail.price_brl)
-          ? notebookPriceLabels(detail.opportunity ?? {}) : ['Atende aos filtros'];
+        item.priceLabels = notebookPriceLabels(shownPrice === Number(detail.price_brl)
+          ? detail.opportunity ?? {} : {}, shownPrice);
+        if (shownPrice !== Number(detail.price_brl)) item.priceLabels = item.priceLabels.slice(0, 1);
       }
     }
     if (dir === path.join(ROOT, 'data', 'mercadolivre-tenis-42')) {

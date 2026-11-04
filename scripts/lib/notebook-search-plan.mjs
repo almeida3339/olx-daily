@@ -43,8 +43,8 @@ export function recordFamilyExperiment(history = {}, rows, round, validatedIds, 
   return next;
 }
 
-export function notebookPriceLabels(opportunity) {
-  if (!opportunity) return [];
+export function notebookPriceLabels(opportunity, price = 8000) {
+  if (!opportunity || !(price >= 2000 && price <= 8000)) return [];
   const labels = ['Atende aos filtros'];
   if (opportunity.state === 'indicative' && opportunity.sample >= 3 && Number.isFinite(opportunity.difference_percent)) {
     const difference = opportunity.difference_percent;

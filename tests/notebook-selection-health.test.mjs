@@ -125,6 +125,7 @@ test('price labels distinguish filter approval from above, below and insufficien
     ['Atende aos filtros', 'Comparáveis insuficientes']);
   assert.match(notebookPriceLabels({state:'indicative', sample:3, difference_percent:-5})[1], /acima/);
   assert.match(notebookPriceLabels({state:'indicative', sample:3, difference_percent:5})[1], /abaixo/);
+  assert.deepEqual(notebookPriceLabels({state:'indicative', sample:3, difference_percent:5}, 8500), []);
 });
 
 test('listing configuration changes reset retries and invalidate cached uncertainty',async t=>{
