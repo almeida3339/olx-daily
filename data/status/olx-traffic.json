@@ -2,38 +2,6 @@
   "schema_version": 1,
   "tracking_started_at": "2026-10-17T23:55:24.817Z",
   "days": {
-    "2026-10-21": {
-      "search": 19,
-      "detail": 14,
-      "watchlists": {
-        "notebooks": {
-          "search": 16,
-          "detail": 14
-        },
-        "oneplus-buds-pro-3": {
-          "search": 2,
-          "detail": 0
-        },
-        "oled-monitores": {
-          "search": 1,
-          "detail": 0
-        }
-      },
-      "rounds": {
-        "984b0708-d7b0-42d2-b670-15350ea2b1b0": {
-          "search": 12,
-          "detail": 9
-        },
-        "recovery-notebooks-2026-10-21": {
-          "search": 2,
-          "detail": 4
-        },
-        "2f6cb634-c0b9-4532-862c-19c1bb5ec206": {
-          "search": 5,
-          "detail": 1
-        }
-      }
-    },
     "2026-10-22": {
       "search": 29,
       "detail": 7,
@@ -449,18 +417,39 @@
           "detail": 7
         }
       }
+    },
+    "2026-11-04": {
+      "search": 6,
+      "detail": 8,
+      "watchlists": {
+        "notebooks": {
+          "search": 5,
+          "detail": 8
+        },
+        "google-pixel-watch-5": {
+          "search": 1,
+          "detail": 0
+        }
+      },
+      "rounds": {
+        "3790501a-01f0-4a63-98aa-3acb4d75c754": {
+          "search": 6,
+          "detail": 8
+        }
+      }
     }
   },
   "queries": {
     "notebooks:14900hx": {
-      "last_attempt_at": "2026-11-03T19:16:33.249Z",
-      "approved": 0,
+      "last_attempt_at": "2026-11-04T10:01:51.055Z",
+      "approved": 1,
       "interval_hours": 8,
       "last_success_at": "2026-10-29T13:00:16.107Z",
       "empty_runs": 14,
       "prices": {},
       "listing_limit": 60,
-      "listing_incomplete": false
+      "listing_incomplete": false,
+      "last_change_at": "2026-11-04T10:02:16.226Z"
     },
     "notebooks:family:avell-a65": {
       "last_attempt_at": "2026-11-01T19:01:43.921Z",
@@ -491,7 +480,7 @@
       "interval_hours": 72
     },
     "notebooks:14700hx": {
-      "last_attempt_at": "2026-11-03T19:15:19.698Z",
+      "last_attempt_at": "2026-11-04T10:00:16.037Z",
       "approved": 0,
       "last_success_at": "2026-10-30T10:00:57.525Z",
       "empty_runs": 15,
@@ -501,9 +490,9 @@
       "listing_incomplete": false
     },
     "notebooks:13980hx": {
-      "last_attempt_at": "2026-11-03T19:16:15.865Z",
+      "last_attempt_at": "2026-11-04T10:01:00.516Z",
       "approved": 2,
-      "last_success_at": "2026-11-03T19:16:20.266Z",
+      "last_success_at": "2026-11-04T10:01:37.557Z",
       "empty_runs": 0,
       "prices": {
         "1545009098": 7927,
@@ -515,10 +504,10 @@
       "last_change_at": "2026-10-29T12:59:35.694Z"
     },
     "notebooks:13900hx": {
-      "last_attempt_at": "2026-11-03T19:17:11.384Z",
+      "last_attempt_at": "2026-11-04T10:02:35.840Z",
       "approved": 0,
-      "last_success_at": "2026-11-03T19:17:11.839Z",
-      "empty_runs": 23,
+      "last_success_at": "2026-11-04T10:02:37.009Z",
+      "empty_runs": 24,
       "prices": {},
       "interval_hours": 8,
       "last_change_at": "2026-10-19T10:01:18.348Z",
@@ -772,20 +761,20 @@
       "listing_incomplete": false
     },
     "notebooks:family:dell-g16": {
-      "last_attempt_at": "2026-11-01T10:01:53.676Z",
+      "last_attempt_at": "2026-11-04T10:02:46.758Z",
       "approved": 0,
-      "last_success_at": "2026-11-01T10:01:54.768Z",
-      "empty_runs": 5,
+      "last_success_at": "2026-11-04T10:02:48.954Z",
+      "empty_runs": 6,
       "prices": {},
-      "interval_hours": 48,
+      "interval_hours": 72,
       "listing_limit": 60,
       "listing_incomplete": false
     },
     "google-pixel-watch-5:pixel watch 5": {
-      "last_attempt_at": "2026-11-01T10:03:00.438Z",
+      "last_attempt_at": "2026-11-04T10:03:12.150Z",
       "approved": 0,
-      "last_success_at": "2026-11-01T10:03:07.837Z",
-      "empty_runs": 6,
+      "last_success_at": "2026-11-04T10:03:15.107Z",
+      "empty_runs": 7,
       "prices": {},
       "interval_hours": 72
     },
@@ -799,7 +788,7 @@
       "last_attempt_at": "2026-11-02T19:04:54.608Z"
     }
   },
-  "updated_at": "2026-11-03T19:18:45.875Z",
+  "updated_at": "2026-11-04T10:03:15.107Z",
   "limits": {
     "daily": {
       "search": 40,
@@ -810,6 +799,6 @@
       "detail": 14
     }
   },
-  "last_access_slot_at": "2026-11-03T19:18:29.491Z",
+  "last_access_slot_at": "2026-11-04T10:03:12.150Z",
   "access_interval_ms": 12000
 }
