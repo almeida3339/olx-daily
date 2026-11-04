@@ -17,6 +17,44 @@ export const OLX_FAMILY_EXPERIMENT = [
 
 export const OLX_FAMILY_SEARCHES = [...OLX_NOTEBOOK_FAMILIES, ...OLX_FAMILY_EXPERIMENT];
 
+export function recordFamilyExperiment(history = {}, rows, round, validatedIds, detailYield = {}) {
+  const next = { ...history };
+  const cpuRows = Object.entries(rows).filter(([term, row]) =>
+    !term.startsWith('family:') && Array.isArray(row.eligible_candidate_ids));
+  const cpuIds = new Set(cpuRows.flatMap(([, row]) => row.eligible_candidate_ids));
+  for (const spec of OLX_FAMILY_EXPERIMENT) {
+    for (const term of [spec.family, spec.id]) {
+      const row = rows[term];
+      if (!Array.isArray(row?.eligible_candidate_ids)) continue;
+      const familyIds = new Set(row.eligible_candidate_ids);
+      const additional = [...familyIds].filter(id => !cpuIds.has(id));
+      const sample = {
+        round,
+        candidates: familyIds.size,
+        additional_candidates: cpuRows.length ? additional.length : null,
+        additional_validated: cpuRows.length ? additional.filter(id => validatedIds.has(id)).length : null,
+        reads: (detailYield[term]?.read_keys ?? []).filter(id => familyIds.has(id)).length,
+        cpu_queries: cpuRows.length,
+        partial_listings: row.listing_incomplete || cpuRows.some(([, value]) => value.listing_incomplete),
+      };
+      next[term] = [...(next[term] ?? []).filter(value => value.round !== round), sample].slice(-8);
+    }
+  }
+  return next;
+}
+
+export function notebookPriceLabels(opportunity) {
+  if (!opportunity) return [];
+  const labels = ['Atende aos filtros'];
+  if (opportunity.state === 'indicative' && opportunity.sample >= 3 && Number.isFinite(opportunity.difference_percent)) {
+    const difference = opportunity.difference_percent;
+    labels.push(difference > 0 ? `${difference.toLocaleString('pt-BR')}% abaixo da mediana dos comparáveis`
+      : difference < 0 ? `${Math.abs(difference).toLocaleString('pt-BR')}% acima da mediana dos comparáveis`
+      : 'Na mediana dos comparáveis');
+  } else labels.push('Comparáveis insuficientes');
+  return labels;
+}
+
 export function notebookQueryMaxAgeHours(key, source) {
   if (key.startsWith('family:')) return 72;
   return NOTEBOOK_PRIORITY_CPUS.includes(key) ? 24 : source === 'mercadolivre-notebooks' ? 168 : 48;
@@ -52,7 +90,7 @@ export function planNotebookFamilies(previous, { now = Date.now(), budget = 1, f
 }
 
 export function notebookOpportunity(item, pool = []) {
-  const family = (item.title ?? '').toLowerCase().match(/helios\s+neo\s*16|rog\s+strix\s*g\d+|legion\s+pro\s*\d+|avell\s+a\d+|msi\s+raider\s*\w+/)?.[0]?.replace(/\s+/g,' ');
+  const family = (item.title ?? '').toLowerCase().match(/helios\s+neo\s*16|rog\s+strix\s*g\d+|legion\s+pro\s*\d+|avell\s+a\d+|msi\s+(?:raider\s*\w+|vector\s*16\s*hx)/)?.[0]?.replace(/\s+/g,' ');
   const cpu = item.cpu_term ?? item.cpu_terms?.[0] ?? item.terms?.[0];
   const peers = family && item.gpu && item.ram_gb ? [...new Map(pool.filter(other => other.id !== item.id
     && other.status === 'active' && other.validation?.state === 'validated'

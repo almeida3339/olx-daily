@@ -9,6 +9,7 @@ export const cardKey = card => extractOlxId(card.url) ?? card.url.split('?')[0];
 const quotaTerm = term => term.startsWith('family:') ? term.split(':').slice(0, 2).join(':') : term;
 export const isGoneOlxDetail = item => item?.validation?.detail_diagnostic?.http_status === 410
   && item.validation.detail_diagnostic.same_ad === true;
+const parked = entry => entry.retry_kind === 'missing_configuration';
 const fingerprint = card => {
   const text = `${card.title}\n${card.text ?? ''}`;
   return JSON.stringify([card.title, card.price_brl, DEFAULT_CPU_TERMS.filter(cpu => textContainsCpuTerm(text,cpu)),
@@ -35,12 +36,22 @@ export function descriptionRetryPolicy(entry, item) {
   const reasons = item?.validation?.reasons ?? entry.last_reasons ?? [];
   const attempts = Math.max(1, entry.detail_attempts ?? 1);
   const transient = item?.validation?.description_checked === false
-    || /n[aã]o localiz|n[aã]o consegui|timeout|net::|conex[aã]o|HTTP|aguardando leitura/i.test(reasons.join(' '));
+    || /indispon[ií]vel|n[aã]o localiz|n[aã]o consegui|timeout|net::|conex[aã]o|HTTP|aguardando leitura/i.test(reasons.join(' '));
   const configuration = !transient && /CPU n[aã]o confirmada|Especifica[cç][aã]o n[aã]o confirmada/i.test(reasons.join(' '));
   const conflict = !transient && /diverg|corresponde|entrada|parcela/i.test(reasons.join(' '));
-  return configuration ? { kind: 'missing_configuration', hours: attempts === 1 ? 48 : 168 }
-    : conflict ? { kind: 'conflicting_evidence', hours: attempts === 1 ? 24 : attempts === 2 ? 72 : 168 }
+  return conflict ? { kind: 'conflicting_evidence', hours: attempts === 1 ? 24 : attempts === 2 ? 72 : 168 }
+    : configuration ? { kind: 'missing_configuration', hours: null }
     : { kind: 'retryable_read', hours: attempts >= 3 ? 72 : attempts >= 2 ? 24 : 6 };
+}
+function applyRetryPolicy(entry, item) {
+  const policy = descriptionRetryPolicy(entry, item);
+  entry.retry_kind = policy.kind;
+  if (policy.hours == null) {
+    delete entry.next_retry_at;
+    return;
+  }
+  const planned = Date.parse(entry.last_detail_attempt_at) + policy.hours * 3600_000;
+  if (Number.isFinite(planned)) entry.next_retry_at = new Date(Math.max(planned, Date.parse(entry.next_retry_at ?? '') || 0)).toISOString();
 }
 const clearAttempt = entry => {
   entry.detail_attempts = 0;
@@ -69,9 +80,9 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
   const now = Date.now();
   const gone = new Set((old?.cache ?? []).filter(entry => isGoneOlxDetail(entry.item)).map(entry => entry.key));
   const state = {
-    schema_version: 1, selection_policy_version: 2, round,
+    schema_version: 1, selection_policy_version: 3, round,
     queue: (old?.queue ?? []).filter(entry => !gone.has(entry.key) && candidateAllowed(entry.card)
-      && now - Date.parse(entry.last_observed_at) < 7 * 86400_000),
+      && (parked(entry) || now - Date.parse(entry.last_observed_at) < 7 * 86400_000)),
     cache: (old?.cache ?? []).filter(entry => now - Date.parse(entry.checked_at) < 72 * 3600_000),
     metrics: old?.round === round ? old.metrics : { extra_details: 0, total_details: 0, detail_ms: 0, recovered_validated: 0, cache_hits: 0, by_term: {} },
   };
@@ -84,24 +95,26 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
     const cached = state.cache.find(value => value.key === entry.key && value.title === entry.card.title && value.price_brl === entry.card.price_brl)?.item;
     entry.last_evidence ??= cached ? { cpu_confirmed: Boolean(cached.validation?.cpu_confirmed),
       ram_gb: cached.ram_gb, gpu: cached.gpu } : null;
-    const policy = descriptionRetryPolicy(entry,cached);
-    entry.retry_kind = policy.kind;
-    const planned = Date.parse(entry.last_detail_attempt_at) + policy.hours * 3600_000;
-    if (Number.isFinite(planned)) entry.next_retry_at = new Date(Math.max(planned,Date.parse(entry.next_retry_at ?? '') || 0)).toISOString();
+    applyRetryPolicy(entry, cached);
   }
   state.queue.sort((a,b) => compareDescriptionCandidates(a,b,displayMaxPrice));
   const save = () => writeJsonAtomic(file, state, { validate: null });
   const totalLimit = Number(process.env.OLX_DETAIL_MAX ?? 12);
   const newReserved = Math.min(3, Math.ceil(totalLimit / 4));
-  const ready = entry => !entry.next_retry_at || Date.parse(entry.next_retry_at) <= Date.now();
+  const ready = entry => !parked(entry) && (!entry.next_retry_at || Date.parse(entry.next_retry_at) <= Date.now());
   const summary = () => ({ ...state.metrics, total_detail_limit: totalLimit, queued_candidates: state.queue.length,
-    retry_waiting: state.queue.filter(entry => !ready(entry)).length, new_candidate_reserve: newReserved,
+    retry_waiting: state.queue.filter(entry => !parked(entry) && !ready(entry)).length, new_candidate_reserve: newReserved,
     ready_within_price: state.queue.filter(entry => ready(entry) && entry.card.price_brl <= displayMaxPrice).length,
     waiting_for_configuration: state.queue.filter(entry => !ready(entry) && entry.retry_kind === 'missing_configuration').length,
     above_display_price: state.queue.filter(entry => entry.card.price_brl > displayMaxPrice).length,
     validation_complete: state.queue.length === 0, per_term_limit: perTerm, per_round_limit: perRound });
   return {
     summary, save, unavailable,
+    observation(card) {
+      const entry = state.queue.find(value => value.key === cardKey(card) && parked(value)
+        && fingerprint(value.card) === fingerprint(card));
+      return entry?.last_reasons ?? null;
+    },
     needsRecheck: card => gone.has(cardKey(card)),
     cached(card) {
       const key = cardKey(card);
@@ -127,8 +140,11 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
           if (!existing.terms.includes(term)) existing.terms.push(term);
         } else state.queue.push({ key, card: { ...card, description_discovery: card.description_discovery ?? true }, terms: [term], first_observed_at: new Date().toISOString(), last_observed_at: new Date().toISOString() });
       }
-      // Bound disk use; preserve oldest waiting candidates first.
-      state.queue = state.queue.slice(0, 500);
+      if (state.queue.length > 500) {
+        state.queue.sort((a, b) => Number(parked(a)) - Number(parked(b))
+          || Date.parse(b.last_observed_at) - Date.parse(a.last_observed_at));
+        state.queue = state.queue.slice(0, 500);
+      }
       await save();
     },
     pending(term) { return state.queue.filter(x => ready(x) && (term == null || x.terms.includes(term)))
@@ -172,6 +188,7 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
       const yieldByTerm = state.metrics.detail_yield ??= {};
       const yieldForTerm = yieldByTerm[term] ??= {reads: 0, validated_offers: 0};
       yieldForTerm.reads++;
+      if (card) (yieldForTerm.read_keys ??= []).push(cardKey(card));
       if (card && !waiting) {
         if (gone.has(cardKey(card))) state.cache = state.cache.filter(entry => entry.key !== cardKey(card) || !isGoneOlxDetail(entry.item));
         waiting = { key: cardKey(card), card, terms: [term], first_observed_at: new Date().toISOString(), last_observed_at: new Date().toISOString() };
@@ -209,9 +226,7 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
           waiting.last_detail_attempt_at = new Date().toISOString();
           waiting.last_reasons = item.validation?.reasons ?? [];
           waiting.last_evidence = { cpu_confirmed: Boolean(item.validation?.cpu_confirmed), ram_gb: item.ram_gb, gpu: item.gpu };
-          const policy = descriptionRetryPolicy(waiting,item);
-          waiting.retry_kind = policy.kind;
-          waiting.next_retry_at = new Date(Date.now() + policy.hours * 3600_000).toISOString();
+          applyRetryPolicy(waiting, item);
         }
       } else state.queue = state.queue.filter(x => x.key !== key);
       if (card.description_discovery && elapsed) {

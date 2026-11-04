@@ -1,8 +1,10 @@
 import { buildOlxPriceCoverage, olxPriceCoverageLines } from './olx-price-coverage.mjs';
+import { notebookPriceLabels } from './notebook-search-plan.mjs';
 // Shared facts for the terminal, notifications and dashboard. Markdown is a view.
 const projectItem = value => {
   const item = value.item ?? value;
   return { id: item.id ?? item.url, title: item.title, url: item.url, price_brl: item.price_brl,
+    ...(item.opportunity ? { price_labels: notebookPriceLabels(item.opportunity) } : {}),
     ...(value.from != null || value.previous_price_brl != null
       ? { previous_price_brl: value.from ?? value.previous_price_brl } : {}) };
 };

@@ -1,7 +1,7 @@
 import { setMonitorExit } from './lib/monitor-outcome.mjs';
 import { reserveOlxAccess, recordOlxYield, readOlxTraffic } from './lib/olx-traffic.mjs';
 import { extractNotebookRamText, meetsNotebookRamMinimum, NOTEBOOK_MIN_RAM_GB, notebookCpuTerms, hasExplicitOtherNotebookCpu } from './lib/notebook-policy.mjs';
-import { OLX_NOTEBOOK_FAMILIES, OLX_FAMILY_SEARCHES, OLX_FAMILY_EXPERIMENT, planNotebookFamilies, notebookOpportunity } from './lib/notebook-search-plan.mjs';
+import { OLX_NOTEBOOK_FAMILIES, OLX_FAMILY_SEARCHES, OLX_FAMILY_EXPERIMENT, planNotebookFamilies, notebookOpportunity, notebookPriceLabels, recordFamilyExperiment } from './lib/notebook-search-plan.mjs';
 import fs from "node:fs/promises";
 import { createDescriptionQueue, cardCpuState, cardKey, isGoneOlxDetail } from "./lib/olx-description-queue.mjs";
 import { readOlxListing, finishOlxListing } from './lib/olx-listing.mjs';
@@ -192,7 +192,8 @@ async function saveDeferredNotebookRun(previousSnapshot,now,reason){
   const snapshot=mergeWithPreviousSnapshot({runDate:now.toISOString().slice(0,10),now,collected:[],previousSnapshot,
     successfulTerms:[],failedTerms:[],scheduledTerms:[],run:{started_at:now.toISOString(),completed_at:now.toISOString(),
       partial:true,in_progress:false,phase:'deferred',successful_terms:[],failed_terms:[],errors:[{kind:'deferred',error:reason}],
-      unattempted_terms:[],deferred_coverage:configuredSearches}});
+      unattempted_terms:[],deferred_coverage:configuredSearches,
+      family_experiment:previousSnapshot?.run?.family_experiment}});
   const report=buildReport({runDate:now.toISOString().slice(0,10),snapshot,previousSnapshot,priceMin:PRICE_MIN_BRL,priceMax:PRICE_MAX_BRL});
   const committed=await commitMonitorRun(automationRoot,{runId:now.toISOString().replace(/[:.]/g,'-'),snapshot,report,metadata:{source:'olx-notebooks',deferred:true}});
   console.log(reason);setMonitorExit(committed.snapshot.run);
@@ -268,6 +269,10 @@ async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transp
         unattempted_terms: unattemptedTerms,
         description_discovery: descriptionQueue.summary(),
         query_yield: queryYield,
+        family_experiment: inProgress || listingOnly ? previousSnapshot?.run?.family_experiment
+          : recordFamilyExperiment(previousSnapshot?.run?.family_experiment, queryYield, runTimestamp,
+            new Set(collected.filter(item => isValidatedOlxItem(item) && item.price_brl >= PRICE_MIN_BRL
+              && item.price_brl <= PRICE_MAX_BRL).map(cardKey)), detailYield),
       },
     });
     const report = buildReport({
@@ -315,7 +320,8 @@ async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transp
         if (results.coverage_incomplete) failedTerms.push({ term, error: results.incomplete_reasons.join('; '), kind: 'incomplete' });
         else successfulTerms.push(term);
         queryYield[term] = { returned: results.length, validated: results.filter(isValidatedOlxItem).length,
-          query: olxQuery(term), unique_eligible_candidates: results.unique_eligible_candidates,
+          query: olxQuery(term), unique_eligible_candidates: results.eligible_candidate_ids.length,
+          eligible_candidate_ids: results.eligible_candidate_ids,
           pending: results.filter(item => item.validation?.state === 'pending').length,
           detail_reads: (descriptionQueue.summary().total_details ?? 0) - detailsBefore,
           limited: Boolean(results.coverage_incomplete), listing_incomplete: Boolean(results.listing_incomplete), listing_limit:results.listing_limit,
@@ -519,10 +525,13 @@ async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openD
   const waiting = listingOnly ? [] : descriptionQueue.pending(cpuTerm);
   // Reserve at most two of the existing item slots; no additional scrolling.
   const reserveSlots = Math.min(2, waiting.length, maxCards);
+  const observed = listingOnly ? [] : unknown.filter(card => descriptionQueue.observation(card) !== null);
   const toProcess = descriptionQueue.prioritize([...matches.slice(0, maxCards - reserveSlots), ...waiting, ...matches.slice(maxCards - reserveSlots)]);
+  // Keep observations visible without consuming the detail slots of new candidates.
+  toProcess.push(...observed);
   const items = [], seen = new Set();
-  items.unique_eligible_candidates = new Set([...matches, ...unknown]
-    .filter(card => card.price_brl <= PRICE_MAX_BRL).map(cardKey)).size;
+  items.eligible_candidate_ids = [...new Set([...matches, ...unknown]
+    .filter(card => card.price_brl <= PRICE_MAX_BRL).map(cardKey))];
   items.listing_incomplete = Boolean(cards.listing_incomplete);
   items.listing_limit=maxCards;
   items.total_results = cards.total_results ?? null;
@@ -532,12 +541,22 @@ async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openD
   items.details_pending_tracking = 0;
   items.tracking_candidates = matches.filter(card => card.price_brl > PRICE_MAX_BRL).length;
   items.pending_detail_keys = { offers:[], tracking:[] };
+  let observedCount = 0;
   for (const card of toProcess) {
     const key = cardKey(card);
     if (seen.has(key)) continue;
     seen.add(key);
     const listingItem = listingCardToItem(card);
     if (listingOnly) { items.push(listingItem); continue; }
+    const observation = descriptionQueue.observation(card);
+    if (observation !== null) {
+      const previous = previousSnapshot?.items.find(item => (item.id ?? item.url) === (listingItem.id ?? listingItem.url)
+        && item.validation?.state === 'pending' && item.title === listingItem.title && item.price_brl === listingItem.price_brl);
+      const item = previous ?? pendingOlxItem(listingItem, observation.join(' · '));
+      items.push({ ...item, search_terms: [...new Set([...(item.search_terms ?? []), cpuTerm])] });
+      observedCount++;
+      continue;
+    }
     const current = descriptionQueue.result(card);
     const cached = descriptionQueue.cached(card);
     const reusable = current ?? (!forceOpenDetails
@@ -553,7 +572,7 @@ async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openD
     if (!(card.description_discovery || forceOpenDetails || needsDetailEnrichment(listingItem) || inRange)) {
       items.push(listingItem); continue;
     }
-    if (items.length >= maxCards || !await descriptionQueue.reserveDetail(cpuTerm, Boolean(card.description_discovery), card)) {
+    if (items.length - observedCount >= maxCards || !await descriptionQueue.reserveDetail(cpuTerm, Boolean(card.description_discovery), card)) {
       await descriptionQueue.enqueue([{ ...card, description_discovery: Boolean(card.description_discovery) }], cpuTerm);
       items.details_pending++;
       if (card.price_brl <= PRICE_MAX_BRL) {
@@ -1133,6 +1152,7 @@ function buildReport({ runDate, snapshot, previousSnapshot, priceMin, priceMax }
     lines.push(`- Total de detalhes reservados: **${d.total_details ?? 0}/${d.total_detail_limit ?? 12}**.`);
     if (d.reallocated_details) lines.push(`- Vaga adicional redistribuída entre famílias ao final: **${d.reallocated_details}** (dentro do orçamento existente).`);
     lines.push(`- Candidatos aguardando descrição: **${d.queued_candidates}**. Validação da fila completa: **${d.validation_complete ? 'sim' : 'não'}**.`);
+    if (d.waiting_for_configuration) lines.push(`- Em observação por configuração incompleta: **${d.waiting_for_configuration}**. Nova leitura após mudança na listagem.`);
   }
   for (const [term, row] of Object.entries(snapshot.run.query_yield ?? {})) {
     if (row.unique_eligible_candidates == null
@@ -1151,7 +1171,7 @@ function buildReport({ runDate, snapshot, previousSnapshot, priceMin, priceMax }
   if (snapshot.run?.policy_reclassification) lines.push(`- Reclassificação dos dados salvos; sem nova visita aos anúncios. Coleta original: ${snapshot.run.completed_at}.`);
   const references = inRange.filter(item => item.opportunity?.state === 'indicative');
   if (references.length) {
-    for (const item of references) lines.push(`- Referência indicativa: ${item.title}: ${item.opportunity.difference_percent}% abaixo da mediana de ${item.opportunity.sample} comparáveis; frete, TGP e estado físico exigem conferência.`);
+    for (const item of references) lines.push(`- Referência indicativa: ${item.title} · ${notebookPriceLabels(item.opportunity).at(-1)} · ${item.opportunity.sample} anúncios comparáveis.`);
   } else lines.push('- Comparação de preço: amostra insuficiente de configurações semelhantes para classificar oportunidades.');
   lines.push("");
 

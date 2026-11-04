@@ -855,7 +855,8 @@ function buildWhatsAppMessage(sources, errors, roundSummary) {
     if (s.newCount > 0)   tags.push(`${s.newCount} novo(s)`);
     if (s.priceCount > 0) tags.push(`${s.priceCount} preço(s)`);
     lines.push(`\n${s.label}: ${tags.join(", ")}`);
-    const itemLines = items => items.slice(0, 2).map(item => `${item.title} — R$ ${Number(item.price_brl).toLocaleString('pt-BR')} — ${item.url}`);
+    const itemLines = items => items.slice(0, 2).map(item =>
+      [item.title, `R$ ${Number(item.price_brl).toLocaleString('pt-BR')}`, ...(item.price_labels ?? []), item.url].join(' · '));
     if (s.newCount > 0) lines.push(...(s.summary?.findings?.new_items ? itemLines(s.summary.findings.new_items) : extractNewItems(s.report, s.newSec).slice(0, 2)));
     if (s.priceCount > 0) lines.push(...(s.summary?.findings?.price_changes ? itemLines(s.summary.findings.price_changes) : extractNewItems(s.report, s.priceSec).slice(0, 2)));
   }

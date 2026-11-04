@@ -7,7 +7,7 @@ import { createDescriptionQueue, descriptionRetryPolicy } from '../scripts/lib/o
 import { buildMonitorHealth, collectionHealthAlerts } from '../scripts/lib/monitor-health.mjs';
 import { LEGACY_OLX_HEALTH_ERROR, reconcileRecordedHealthErrors } from '../scripts/lib/collection-summary.mjs';
 import { writeJsonAtomic } from '../scripts/lib/monitor-runtime.mjs';
-import { planNotebookFamilies, OLX_NOTEBOOK_FAMILIES } from '../scripts/lib/notebook-search-plan.mjs';
+import { planNotebookFamilies, OLX_NOTEBOOK_FAMILIES, recordFamilyExperiment, notebookPriceLabels } from '../scripts/lib/notebook-search-plan.mjs';
 
 test('410 retires the matching ad across resumes and permits a later listing observation', async t => {
   const {file} = await fixture(t);
@@ -97,12 +97,34 @@ test('description selection prioritizes affordable configuration evidence before
   assert.equal(q.summary().above_display_price,1);
 });
 
-test('complete but uninformative descriptions wait longer; transient failures remain retryable',()=>{
-  assert.deepEqual(descriptionRetryPolicy({detail_attempts:1},missing),{kind:'missing_configuration',hours:48});
-  assert.equal(descriptionRetryPolicy({detail_attempts:2},missing).hours,168);
+test('complete but uninformative descriptions wait for a listing change; transient failures remain retryable',()=>{
+  assert.deepEqual(descriptionRetryPolicy({detail_attempts:1},missing),{kind:'missing_configuration',hours:null});
+  assert.equal(descriptionRetryPolicy({detail_attempts:2},missing).hours,null);
   const transient={validation:{description_checked:false,reasons:['Descrição do anúncio não localizada','CPU não confirmada no anúncio']}};
   assert.deepEqual(descriptionRetryPolicy({detail_attempts:1},transient),{kind:'retryable_read',hours:6});
   assert.equal(descriptionRetryPolicy({detail_attempts:2},transient).hours,24);
+});
+
+test('family experiment excludes CPU matches and reads from older queued listings', () => {
+  const term = 'family:helios-neo-16:14700hx';
+  const rows = {
+    '14700hx': {eligible_candidate_ids:['shared'], listing_incomplete:true},
+    [term]: {eligible_candidate_ids:['shared','extra','extra'], listing_incomplete:false},
+  };
+  const reads = {[term]: {read_keys:['extra','old-queue-item']}};
+  const first = recordFamilyExperiment({}, rows, 'round', new Set(['extra']), reads);
+  const again = recordFamilyExperiment(first, rows, 'round', new Set(['extra']), reads);
+  assert.deepEqual(again[term], [{round:'round', candidates:2, additional_candidates:1,
+    additional_validated:1, reads:1, cpu_queries:1, partial_listings:true}]);
+  const noCpu = recordFamilyExperiment({}, {[term]:rows[term]}, 'round', new Set(), reads);
+  assert.equal(noCpu[term][0].additional_candidates, null);
+});
+
+test('price labels distinguish filter approval from above, below and insufficient comparables', () => {
+  assert.deepEqual(notebookPriceLabels({state:'insufficient_comparables', sample:2}),
+    ['Atende aos filtros', 'Comparáveis insuficientes']);
+  assert.match(notebookPriceLabels({state:'indicative', sample:3, difference_percent:-5})[1], /acima/);
+  assert.match(notebookPriceLabels({state:'indicative', sample:3, difference_percent:5})[1], /abaixo/);
 });
 
 test('listing configuration changes reset retries and invalidate cached uncertainty',async t=>{
@@ -142,4 +164,6 @@ test('migration preserves observation timestamps and budgets while pacing old co
   assert.equal(saved.queue[0].last_observed_at,observed);assert.equal(saved.queue[0].last_detail_attempt_at,attempt);
   assert.equal(q.summary().total_details,7);assert.equal(q.summary().extra_details,3);
   assert.equal(q.summary().waiting_for_configuration,1);assert.equal(q.pending().length,0);
+  assert.equal(saved.queue[0].next_retry_at,undefined);
+  assert.equal(q.summary().retry_waiting,0);
 });

@@ -17,6 +17,7 @@ import { mercadoLivreDashboardCards, resolveWatchlistDataDir } from "./lib/watch
 import { buildLocalTriggerCommands } from "./lib/dashboard-triggers.mjs";
 import { createDashboardParser, runTimestampFromFile } from "./lib/dashboard-parsing.mjs";
 import { isValidatedOlxItem, revalidateSavedOlxItem } from './lib/olx-notebook-quality.mjs';
+import { OLX_FAMILY_EXPERIMENT, OLX_FAMILY_SEARCHES, notebookPriceLabels } from './lib/notebook-search-plan.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -136,6 +137,7 @@ async function main() {
   const currentOled = await currentSnapshotReport(OLED_MONITORES_DIR, 3000);
   const {snapshot:olxSnapshot} = await readLatestValidSnapshot(OLX_DIR);
   if (olxSnapshot?.run?.query_yield) olx.priceCoverage = buildOlxPriceCoverage(olxSnapshot);
+  olx.familyExperiment = olxSnapshot?.run?.family_experiment ?? {};
   if (currentOled) oledMonitores.currentReport = currentOled;
   const [olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, onePlusBudsUpdated, pixelWatch4Updated, pixelWatch5Updated, ouraUpdated, oledMonitoresUpdated] = await Promise.all([
     latestRunLabel(OLX_DIR),
@@ -262,6 +264,13 @@ async function gather(dir, prefix, excludePrefix, detailsByUrl = new Map()) {
       p.priceItems = p.priceItems.filter(allowed);
       p.allPriceItems = p.allPriceItems.filter(allowed);
       p.priceCount = p.allPriceItems.length;
+      for (const item of [...p.allNewItems, ...p.allPriceItems]) {
+        const detail = detailsByUrl.get(item.url);
+        if (detail?.status !== 'active' || !isValidatedOlxItem(detail)) continue;
+        const shownPrice = parseBrlPrice(item.priceTo ?? item.price);
+        item.priceLabels = shownPrice === Number(detail.price_brl)
+          ? notebookPriceLabels(detail.opportunity ?? {}) : ['Atende aos filtros'];
+      }
     }
     if (dir === path.join(ROOT, 'data', 'mercadolivre-tenis-42')) {
       const approved = parsed => isApprovedMercadoLivreShoe(detailsByUrl.get(parsed.url));
@@ -951,7 +960,27 @@ function renderHighlight(item) {
   const value = item.isPrice && item.priceFrom && item.priceTo
     ? priceChangeHtml(item)
     : item.price ? `<span class="ip">${e(item.price)}</span>` : "";
-  return `<li class="highlight-item"><span class="highlight-kind ${item.isPrice ? "price" : "new"}">${kind}</span><span class="highlight-title">${titleHtml}<small>${e(item.source)} · ${e(item.runLabel ?? "hoje")}</small></span>${value}</li>`;
+  const labels = item.priceLabels?.length ? `<small>${e(item.priceLabels.join(' · '))}</small>` : '';
+  return `<li class="highlight-item"><span class="highlight-kind ${item.isPrice ? "price" : "new"}">${kind}</span><span class="highlight-title">${titleHtml}<small>${e(item.source)} · ${e(item.runLabel ?? "hoje")}</small>${labels}</span>${value}</li>`;
+}
+
+function renderFamilyExperiment(history) {
+  const mean = (samples, key) => samples.length
+    ? (samples.reduce((total, sample) => total + sample[key], 0) / samples.length).toLocaleString('pt-BR', {maximumFractionDigits: 1})
+    : '—';
+  const groups = OLX_FAMILY_EXPERIMENT.map(spec => {
+    const terms = [spec.family, spec.id];
+    const comparable = terms.map(term => (history[term] ?? []).filter(sample => sample.cpu_queries > 0));
+    const ready = comparable.every(samples => samples.length >= 2);
+    const rows = terms.map((term, index) => {
+      const samples = comparable[index];
+      const label = OLX_FAMILY_SEARCHES.find(search => search.id === term).query;
+      const partial = samples.filter(sample => sample.partial_listings).length;
+      return `<p class="hint"><b>${e(label)}</b> · ${samples.length} rodada(s) com busca por CPU · ${partial} com listagem parcial · médias por rodada: ${mean(samples, 'additional_candidates')} candidatos exclusivos, ${mean(samples, 'additional_validated')} validados entre eles, ${mean(samples, 'reads')} fichas lidas dos candidatos da consulta.</p>`;
+    });
+    return rows.join('') + `<p class="hint">${ready ? 'Amostra mínima atingida para esta família.' : 'Comparação preliminar. São necessárias duas rodadas de cada versão.'}</p>`;
+  });
+  return `<details class="history-changes"><summary>Teste de buscas por família</summary><p class="hint">Exclusivos em relação às buscas por CPU observadas na mesma rodada, na faixa até R$ 8.000.</p>${groups.join('')}</details>`;
 }
 
 function renderSection(title, sub, reports, dpath, stampInfo) {
@@ -977,7 +1006,7 @@ function renderSection(title, sub, reports, dpath, stampInfo) {
     : "";
   return `<div class="sec">
   <div class="sh"><div class="shr"><h2>${e(title)}</h2>${stamp}</div><small>${e(sub)}${reports.length ? ` &nbsp;·&nbsp; últimos ${reports.length} com novidades` : ''}</small></div>
-  <div class="sb">${reports.priceCoverage ? olxPriceCoverageLines(reports.priceCoverage).map(line => `<p class="hint">${e(line)}</p>`).join('') : ''}${body}${knownHtml}${pendingHtml}${historyHtml}</div>
+  <div class="sb">${reports.priceCoverage ? olxPriceCoverageLines(reports.priceCoverage).map(line => `<p class="hint">${e(line)}</p>`).join('') : ''}${reports.familyExperiment ? renderFamilyExperiment(reports.familyExperiment) : ''}${body}${knownHtml}${pendingHtml}${historyHtml}</div>
 </div>`;
 }
 
@@ -1026,7 +1055,7 @@ function priceChangeHtml(item) {
 }
 
 function renderRow(item, isPrice, showSpecs) {
-  const note = `${item.validationReason ? `<p class="empty">${e(item.validationReason)}</p>` : ''}${item.observationLabel ? `<p class="empty">${e(item.observationLabel)}</p>` : ''}`;
+  const note = `${item.validationReason ? `<p class="empty">${e(item.validationReason)}</p>` : ''}${item.observationLabel ? `<p class="empty">${e(item.observationLabel)}</p>` : ''}${item.priceLabels?.length ? `<p class="hint">${e(item.priceLabels.join(' · '))}</p>` : ''}`;
   if (showSpecs && item.machine) return renderMachineRow(item, isPrice) + note;
   const titleHtml = item.url
     ? `<a href="${e(item.url)}" target="_blank" rel="noopener noreferrer">${e(item.title)}</a>`
