@@ -1,34 +1,21 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-05T19:01:24.348Z",
+  "updated_at": "2026-11-05T19:05:10.086Z",
   "runs": [
     {
-      "run_id": "5a5367c5-30a4-4a6d-a9d1-5261ae8f6bec",
-      "completed_at": "2026-11-05T19:01:24.347Z",
-      "outcome": "partial",
+      "run_id": "59bb99c7-4999-4dbb-a5cf-75c89d386ded",
+      "completed_at": "2026-11-05T19:05:10.073Z",
+      "outcome": "blocked",
       "partial": true,
-      "duration_ms": 7392,
+      "duration_ms": 299485,
       "item_count": 0,
       "quarantined_item_count": 0,
       "metadata": {
-        "source": "ci",
-        "monitor_errors": 0,
-        "monitor_failures": [],
-        "pending_notifications": 0
-      }
-    },
-    {
-      "run_id": "8f47de7f-cfde-485e-a12c-b58e2688dce9",
-      "completed_at": "2026-11-05T11:01:23.499Z",
-      "outcome": "partial",
-      "partial": true,
-      "duration_ms": 10534,
-      "item_count": 0,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "ci",
-        "monitor_errors": 0,
-        "monitor_failures": [],
+        "source": "local",
+        "monitor_errors": 1,
+        "monitor_failures": [
+          "Monitores OLED: Saiu com código 4: {\"event\":\"olx_access_blocked\",\"id\":\"olx-access-2026-11-05T19-04-59-743Z-47de8969\",\"at\":\"2026-11-05T19:04:59.743Z\",\"stage\":\"listing\",\"query\":\"27gr95qe\",\"url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"final_url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"http_status\":403,\"title\":\"Attention Required! | Cloudflare\",\"kind\":\"hard_denial\",\"ray_id\":\"a55e209c0fee1dd0\",\"message\":\"Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a55e209c0fee1dd0).\"}\n  Aviso: termo \"27gr95qe\" em https://www.olx.com.br/brasil/informatica/monitores falhou — Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a55e209c0fee1dd0).\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.\nColeta OLED parcial: 1 consulta(s) incompleta(s), 9 adiada(s).\nOLX:27gr95qe: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a55e209c0fee1dd0).\nOLX: consultas adiadas…"
+        ],
         "pending_notifications": 0
       }
     },
@@ -1887,6 +1874,20 @@
       "outcome": "success",
       "partial": false,
       "duration_ms": 61141,
+      "item_count": 2,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "local",
+        "monitor_errors": 0,
+        "pending_notifications": 1
+      }
+    },
+    {
+      "run_id": "11956011-f27e-4c94-a463-f06226547ce4",
+      "completed_at": "2026-09-13T10:00:56.700Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 51318,
       "item_count": 2,
       "quarantined_item_count": 0,
       "metadata": {

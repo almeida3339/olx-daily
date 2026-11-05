@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "selection_policy_version": 3,
-  "round": "2026-11-05T10:00:17.664Z",
+  "round": "2026-11-05T19:00:19.035Z",
   "queue": [
     {
       "key": "1548198514",
@@ -90,6 +90,37 @@
         "cpu_confirmed": false,
         "ram_gb": null,
         "gpu": "RTX 4050"
+      },
+      "retry_kind": "missing_configuration"
+    },
+    {
+      "key": "1550339131",
+      "card": {
+        "title": "Notebook gamer RTX 4070",
+        "url": "https://pr.olx.com.br/regiao-de-foz-do-iguacu-e-cascavel/informatica/notebooks/notebook-gamer-rtx-4070-1550339131",
+        "price_brl": 6500,
+        "location": "Foz do Iguaçu, Maracanã",
+        "text": "Notebook gamer RTX 4070\nFrete grátis\nAté 10x sem juros\nR$ 6.500\nem até 10x de R$ 650,00 sem juros\n\nFoz do Iguaçu, Maracanã\n\nOntem, 20:52\n\nSlide 1\nSlide 2\nSlide 3\nSlide 4\nAdicionar aos favoritos",
+        "ram_gb": null,
+        "storage_gb": null,
+        "cpu_term": "14700hx",
+        "description_discovery": true
+      },
+      "terms": [
+        "14700hx"
+      ],
+      "first_observed_at": "2026-11-05T10:00:18.898Z",
+      "last_observed_at": "2026-11-05T10:00:18.898Z",
+      "last_detail_attempt_at": "2026-11-05T10:00:30.715Z",
+      "detail_attempts": 1,
+      "last_reasons": [
+        "Especificação não confirmada: RAM",
+        "CPU não confirmada no anúncio"
+      ],
+      "last_evidence": {
+        "cpu_confirmed": false,
+        "ram_gb": null,
+        "gpu": "RTX 4070"
       },
       "retry_kind": "missing_configuration"
     },
@@ -214,6 +245,38 @@
       "retry_kind": "missing_configuration"
     },
     {
+      "key": "1550295521",
+      "card": {
+        "title": "Notebook Avell Storm 450 Pro",
+        "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-avell-storm-450-pro-1550295521",
+        "price_brl": 5000,
+        "location": "São Paulo, Jardim Miriam",
+        "text": "Notebook Avell Storm 450 Pro\nEntrega Fácil\nParcele sem juros\nR$ 5.000\nem até 3x de R$ 1.666,67 sem juros\n\nSão Paulo, Jardim Miriam\n\nOntem, 17:02\n\nSlide 1\nSlide 2\nAdicionar aos favoritos",
+        "ram_gb": null,
+        "storage_gb": null,
+        "cpu_term": "family:avell-storm",
+        "description_discovery": true
+      },
+      "terms": [
+        "family:avell-storm"
+      ],
+      "first_observed_at": "2026-11-05T10:02:29.509Z",
+      "last_observed_at": "2026-11-05T10:02:29.509Z",
+      "last_detail_attempt_at": "2026-11-05T10:03:17.677Z",
+      "detail_attempts": 1,
+      "last_reasons": [
+        "Especificação não confirmada: RAM",
+        "Especificação não confirmada: GPU",
+        "CPU não confirmada no anúncio"
+      ],
+      "last_evidence": {
+        "cpu_confirmed": false,
+        "ram_gb": null,
+        "gpu": null
+      },
+      "retry_kind": "missing_configuration"
+    },
+    {
       "key": "1535352665",
       "card": {
         "title": "Notebook helios neo 16",
@@ -292,7 +355,7 @@
         "14900hx"
       ],
       "first_observed_at": "2026-10-29T13:00:02.524Z",
-      "last_observed_at": "2026-11-05T10:01:58.132Z",
+      "last_observed_at": "2026-11-05T19:00:53.877Z",
       "last_detail_attempt_at": "2026-11-02T10:03:32.322Z",
       "detail_attempts": 3,
       "last_reasons": [
@@ -424,261 +487,9 @@
         "gpu": "RTX 4070"
       },
       "retry_kind": "missing_configuration"
-    },
-    {
-      "key": "1550339131",
-      "card": {
-        "title": "Notebook gamer RTX 4070",
-        "url": "https://pr.olx.com.br/regiao-de-foz-do-iguacu-e-cascavel/informatica/notebooks/notebook-gamer-rtx-4070-1550339131",
-        "price_brl": 6500,
-        "location": "Foz do Iguaçu, Maracanã",
-        "text": "Notebook gamer RTX 4070\nFrete grátis\nAté 10x sem juros\nR$ 6.500\nem até 10x de R$ 650,00 sem juros\n\nFoz do Iguaçu, Maracanã\n\nOntem, 20:52\n\nSlide 1\nSlide 2\nSlide 3\nSlide 4\nAdicionar aos favoritos",
-        "ram_gb": null,
-        "storage_gb": null,
-        "cpu_term": "14700hx",
-        "description_discovery": true
-      },
-      "terms": [
-        "14700hx"
-      ],
-      "first_observed_at": "2026-11-05T10:00:18.898Z",
-      "last_observed_at": "2026-11-05T10:00:18.898Z",
-      "last_detail_attempt_at": "2026-11-05T10:00:30.715Z",
-      "detail_attempts": 1,
-      "last_reasons": [
-        "Especificação não confirmada: RAM",
-        "CPU não confirmada no anúncio"
-      ],
-      "last_evidence": {
-        "cpu_confirmed": false,
-        "ram_gb": null,
-        "gpu": "RTX 4070"
-      },
-      "retry_kind": "missing_configuration"
-    },
-    {
-      "key": "1550295521",
-      "card": {
-        "title": "Notebook Avell Storm 450 Pro",
-        "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-avell-storm-450-pro-1550295521",
-        "price_brl": 5000,
-        "location": "São Paulo, Jardim Miriam",
-        "text": "Notebook Avell Storm 450 Pro\nEntrega Fácil\nParcele sem juros\nR$ 5.000\nem até 3x de R$ 1.666,67 sem juros\n\nSão Paulo, Jardim Miriam\n\nOntem, 17:02\n\nSlide 1\nSlide 2\nAdicionar aos favoritos",
-        "ram_gb": null,
-        "storage_gb": null,
-        "cpu_term": "family:avell-storm",
-        "description_discovery": true
-      },
-      "terms": [
-        "family:avell-storm"
-      ],
-      "first_observed_at": "2026-11-05T10:02:29.509Z",
-      "last_observed_at": "2026-11-05T10:02:29.509Z",
-      "last_detail_attempt_at": "2026-11-05T10:03:17.677Z",
-      "detail_attempts": 1,
-      "last_reasons": [
-        "Especificação não confirmada: RAM",
-        "Especificação não confirmada: GPU",
-        "CPU não confirmada no anúncio"
-      ],
-      "last_evidence": {
-        "cpu_confirmed": false,
-        "ram_gb": null,
-        "gpu": null
-      },
-      "retry_kind": "missing_configuration"
-    },
-    {
-      "key": "1548268436",
-      "card": {
-        "title": "Notebook Gamer Avell Storm Two",
-        "url": "https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-two-1548268436",
-        "price_brl": 7199,
-        "location": "Lagoa Santa, Sítio Bom Recanto",
-        "text": "",
-        "ram_gb": null,
-        "storage_gb": null,
-        "cpu_term": "family:avell-storm",
-        "description_discovery": true
-      },
-      "terms": [
-        "family:avell-storm"
-      ],
-      "first_observed_at": "2026-11-05T10:02:29.509Z",
-      "last_observed_at": "2026-11-05T10:03:17.683Z"
     }
   ],
   "cache": [
-    {
-      "key": "1548198514",
-      "title": "Notebook Gamer Acer Predator Helios Neo 16. I7 13th, RTX 4060 8gb, SSD 1Tb,",
-      "price_brl": 6000,
-      "card_fingerprint": "[\"Notebook Gamer Acer Predator Helios Neo 16. I7 13th, RTX 4060 8gb, SSD 1Tb,\",6000,[],null,\"RTX 4060\"]",
-      "checked_at": "2026-11-02T10:02:56.401Z",
-      "item": {
-        "id": "1548198514",
-        "url": "https://pe.olx.com.br/grande-recife/informatica/notebooks/notebook-gamer-acer-predator-helios-neo-16-i7-13th-rtx-4060-8gb-ssd-1tb-1548198514",
-        "title": "Notebook Gamer Acer Predator Helios Neo 16. I7 13th, RTX 4060 8gb, SSD 1Tb,",
-        "cpu_term": "family:helios-neo-16",
-        "search_terms": [
-          "family:helios-neo-16"
-        ],
-        "description_discovery": true,
-        "price_brl": 6000,
-        "ram_gb": null,
-        "storage_gb": 1024,
-        "gpu": "RTX 4060",
-        "location": "Tamarineira, Recife - PE",
-        "condition": "Usado - Excelente",
-        "status": "active",
-        "first_seen": null,
-        "last_seen": null,
-        "notes": null,
-        "desc_checked": true,
-        "validation": {
-          "version": 2,
-          "state": "pending",
-          "checked_at": "2026-11-02T10:02:56.398Z",
-          "reasons": [
-            "Especificação não confirmada: RAM",
-            "CPU não confirmada no anúncio"
-          ],
-          "listing_price_brl": 6000,
-          "detail_price_brl": 6000,
-          "visible_price_brl": null,
-          "structured_price_brl": 6000,
-          "title_specs": {
-            "ram_gb": null,
-            "storage_gb": 1024,
-            "gpu": "RTX 4060"
-          },
-          "description_specs": {
-            "ram_gb": null,
-            "storage_gb": 1024,
-            "gpu": "RTX 4060"
-          },
-          "cpu_confirmed": false,
-          "description_checked": true
-        },
-        "description_evidence": "Domine seus jogos com o Notebook Gamer Acer Predator Helios Neo 16! Equipado com processador Intel Core i7 de 13ª geração e placa de vídeo NVIDIA GeForce RTX 4060 de 8GB, ele oferece desempenho excepcional para rodar os títulos mais exigentes com gráficos incríveis. O SSD de 1TB garante carregamentos ultrarrápidos, e a tela de 16 polegadas proporciona uma experiência imersiva. Prepare-se para a vitória!Cerca de 1 ano e meio de uso, apenas para jogos, esporadicamente. Sem marcas de uso. Acomoanha caixa, muito bem preservada tambémAceito propostas com troca em computadores gabinete.",
-        "detail_title": "Notebook Gamer Acer Predator Helios Neo 16. I7 13th, RTX 4060 8gb, SSD 1Tb, ",
-        "configuration_warnings": []
-      }
-    },
-    {
-      "key": "1535352665",
-      "title": "Notebook helios neo 16",
-      "price_brl": 7200,
-      "card_fingerprint": "[\"Notebook helios neo 16\",7200,[],null,null]",
-      "checked_at": "2026-11-02T10:03:20.732Z",
-      "item": {
-        "id": "1535352665",
-        "url": "https://to.olx.com.br/tocantins/informatica/notebooks/notebook-helios-neo-16-1535352665",
-        "title": "Notebook helios neo 16",
-        "cpu_term": "family:helios-neo-16",
-        "search_terms": [
-          "family:helios-neo-16"
-        ],
-        "description_discovery": true,
-        "price_brl": 7200,
-        "ram_gb": null,
-        "storage_gb": null,
-        "gpu": null,
-        "location": null,
-        "condition": "Usado - Excelente",
-        "status": "active",
-        "first_seen": null,
-        "last_seen": null,
-        "notes": null,
-        "desc_checked": true,
-        "validation": {
-          "version": 2,
-          "state": "pending",
-          "checked_at": "2026-11-02T10:03:20.730Z",
-          "reasons": [
-            "Especificação não confirmada: RAM",
-            "Especificação não confirmada: GPU",
-            "CPU não confirmada no anúncio"
-          ],
-          "listing_price_brl": 7200,
-          "detail_price_brl": 7200,
-          "visible_price_brl": null,
-          "structured_price_brl": 7200,
-          "title_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": null
-          },
-          "description_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": null
-          },
-          "cpu_confirmed": false,
-          "description_checked": true
-        },
-        "description_evidence": "Eleve sua experiência gamer com o Notebook Helios Neo 16. Desempenho excepcional para jogos e multitarefas, com design moderno e recursos avançados. Prepare-se para dominar o campo de batalha!",
-        "detail_title": "Notebook helios neo 16 ",
-        "configuration_warnings": [
-          "Armazenamento não informado"
-        ]
-      }
-    },
-    {
-      "key": "1448456884",
-      "title": "Notebook Gamer Avell Storm 470 Black I9-14900HX Rtx 4070  32gb de ram  1,5TB SSD Nvme",
-      "price_brl": 8900,
-      "card_fingerprint": "[\"Notebook Gamer Avell Storm 470 Black I9-14900HX Rtx 4070  32gb de ram  1,5TB SSD Nvme\",8900,[\"14900hx\"],null,\"RTX 4070\"]",
-      "checked_at": "2026-11-02T10:03:32.322Z",
-      "item": {
-        "id": "1448456884",
-        "url": "https://ce.olx.com.br/fortaleza-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-470-black-i9-14900hx-rtx-4070-32gb-de-ram-1-5tb-ssd-nvme-1448456884",
-        "title": "Notebook Gamer Avell Storm 470 Black I9-14900HX Rtx 4070  32gb de ram  1,5TB SSD Nvme",
-        "cpu_term": "14900hx",
-        "search_terms": [
-          "14900hx"
-        ],
-        "description_discovery": false,
-        "price_brl": 8900,
-        "ram_gb": 32,
-        "storage_gb": 1536,
-        "gpu": "RTX 4060",
-        "location": null,
-        "condition": "Usado - Excelente",
-        "status": "active",
-        "first_seen": null,
-        "last_seen": null,
-        "notes": null,
-        "desc_checked": true,
-        "validation": {
-          "version": 2,
-          "state": "pending",
-          "checked_at": "2026-11-02T10:03:32.319Z",
-          "reasons": [
-            "Especificação divergente: GPU"
-          ],
-          "listing_price_brl": 8900,
-          "detail_price_brl": 8900,
-          "visible_price_brl": null,
-          "structured_price_brl": 8900,
-          "title_specs": {
-            "ram_gb": null,
-            "storage_gb": 1536,
-            "gpu": "RTX 4070"
-          },
-          "description_specs": {
-            "ram_gb": 32,
-            "storage_gb": 1536,
-            "gpu": "RTX 4060"
-          },
-          "cpu_confirmed": true,
-          "description_checked": true
-        },
-        "description_evidence": "GeForce® RTX 4060 (8GB GDDR6)Intel® Core? i9-14900HX (36 MB Intel® Smart Cache, 2.2 GHz, Turbo Max 5.8 GHz)32GB [2x 16GB - Dual Channel] Memória DDR5 (5600 MHZ)SSD M.2 NVME 1,5 TB - Geração 4 - [ 5.000 MB/s ]16\" QHD WVA (2560x1600p) - 240Hz / Matte / Contraste: 1300:1 / Brilho 500 cd/m²Original Windows 11 ProGarantia de 12 meses Loja",
-        "detail_title": "Notebook Gamer Avell Storm 470 Black I9-14900HX Rtx 4070  32gb de ram  1,5TB SSD Nvme",
-        "configuration_warnings": []
-      }
-    },
     {
       "key": "1467638741",
       "title": "Notebook Gamer Predator Helios Neo / Phn16-72-74vx /  Intel® Core I7-14700hx De 14ªgeração",
@@ -3285,66 +3096,98 @@
           "Armazenamento não informado"
         ]
       }
+    },
+    {
+      "key": "1548268436",
+      "title": "Notebook Gamer Avell Storm Two",
+      "price_brl": 7199,
+      "card_fingerprint": "[\"Notebook Gamer Avell Storm Two\",7199,[],null,null]",
+      "checked_at": "2026-11-05T19:02:17.805Z",
+      "item": {
+        "id": "1548268436",
+        "url": "https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-two-1548268436",
+        "title": "Notebook Gamer Avell Storm Two",
+        "cpu_term": "family:avell-storm",
+        "search_terms": [
+          "family:avell-storm"
+        ],
+        "description_discovery": true,
+        "price_brl": 7199,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": "RTX 3070 TI",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-11-05T19:02:17.801Z",
+          "reasons": [
+            "CPU fora da busca",
+            "Especificação não confirmada: RAM",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 7199,
+          "detail_price_brl": 7199,
+          "visible_price_brl": null,
+          "structured_price_brl": 7199,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 3070 TI"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true,
+          "detail_diagnostic": {
+            "state": "ready",
+            "http_status": 200,
+            "document_state": "interactive",
+            "description_found": true,
+            "price_found": true,
+            "structured_product_found": true,
+            "description_source": "structured",
+            "same_ad": true,
+            "body_length": 1741,
+            "wait_ms": 865,
+            "samples": 2
+          }
+        },
+        "description_evidence": "Notebook Gamer Avell Storm TwoIntel Core i7 12700H 2.3GHz16gb memória RAMSSD 1tbVídeo NVidia RTX 3070ti 8gbMonitor 15.6 FHD IPSTeclado retroiluminadoFonte/carregador originalCom caixaCom nota fiscal",
+        "detail_title": "Notebook Gamer Avell Storm Two",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ]
+      }
     }
   ],
   "metrics": {
-    "extra_details": 8,
-    "total_details": 12,
-    "detail_ms": 7053,
-    "recovered_validated": 1,
-    "cache_hits": 4,
+    "extra_details": 1,
+    "total_details": 1,
+    "detail_ms": 1274,
+    "recovered_validated": 0,
+    "cache_hits": 11,
     "by_term": {
-      "14700hx": 1,
-      "14900hx": 1,
-      "family:avell-storm": 5,
-      "family:helios-neo-16": 1
+      "family:avell-storm": 1
     },
     "detail_yield": {
-      "14700hx": {
-        "reads": 3,
-        "validated_offers": 0,
-        "read_keys": [
-          "1550339131",
-          "1522141686",
-          "1548107625"
-        ]
-      },
-      "13980hx": {
-        "reads": 2,
-        "validated_offers": 2,
-        "read_keys": [
-          "1548266943",
-          "1545009098"
-        ]
-      },
-      "14900hx": {
-        "reads": 1,
-        "validated_offers": 1,
-        "read_keys": [
-          "1548163140"
-        ]
-      },
       "family:avell-storm": {
-        "reads": 5,
-        "validated_offers": 0,
-        "read_keys": [
-          "1541030102",
-          "1548592870",
-          "1545937266",
-          "1550295521",
-          "1546506873"
-        ]
-      },
-      "family:helios-neo-16": {
         "reads": 1,
         "validated_offers": 0,
         "read_keys": [
-          "1538622677"
+          "1548268436"
         ]
       }
     },
-    "new_details": 11,
-    "retry_details": 1,
-    "reallocated_details": 1
+    "new_details": 1
   }
 }

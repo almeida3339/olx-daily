@@ -1,37 +1,21 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-05T19:01:20.806Z",
+  "updated_at": "2026-11-05T19:02:47.545Z",
   "runs": [
     {
-      "run_id": "2026-11-05T19-01-19-356Z",
-      "committed_at": "2026-11-05T19:01:20.756Z",
-      "completed_at": "2026-11-05T19:01:20.735Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 1379,
+      "run_id": "2026-11-05T19-02-28-507Z",
+      "committed_at": "2026-11-05T19:02:47.098Z",
+      "completed_at": "2026-11-05T19:02:47.086Z",
+      "outcome": "deferred",
+      "partial": true,
+      "duration_ms": 18579,
       "item_count": 2,
       "quarantined_item_count": 0,
       "metadata": {
         "source": "oneplus-buds-pro-3",
         "label": "OnePlus Buds Pro 3",
-        "collected_count": 0,
+        "collected_count": 1,
         "quarantined_item_count": 0
-      }
-    },
-    {
-      "run_id": "2026-11-05T11-01-14-779Z",
-      "committed_at": "2026-11-05T11:01:16.017Z",
-      "completed_at": "2026-11-05T11:01:16.001Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 1222,
-      "item_count": 2,
-      "metadata": {
-        "source": "oneplus-buds-pro-3",
-        "label": "OnePlus Buds Pro 3",
-        "collected_count": 0,
-        "quarantined_item_count": 0,
-        "in_progress": false
       }
     },
     {
@@ -1912,6 +1896,22 @@
       "completed_at": "2026-09-29T10:48:54.558Z",
       "outcome": "success",
       "partial": false,
+      "duration_ms": null,
+      "item_count": 0,
+      "metadata": {
+        "source": "oneplus-buds-pro-3",
+        "label": "OnePlus Buds Pro 3",
+        "collected_count": 0,
+        "quarantined_item_count": 0,
+        "in_progress": false
+      }
+    },
+    {
+      "run_id": "2026-09-28T19-48-41-190Z",
+      "committed_at": "2026-09-28T19:48:49.591Z",
+      "completed_at": "2026-09-28T19:48:49.591Z",
+      "outcome": "partial",
+      "partial": true,
       "duration_ms": null,
       "item_count": 0,
       "metadata": {

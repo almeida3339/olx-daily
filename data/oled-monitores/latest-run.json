@@ -1,21 +1,24 @@
 {
   "schema_version": 1,
-  "run_id": "2026-11-05T19-01-23-144Z",
-  "committed_at": "2026-11-05T19:01:23.175Z",
-  "snapshot": "runs/2026-11-05T19-01-23-144Z/snapshot.json",
-  "report": "runs/2026-11-05T19-01-23-144Z/report.md",
+  "run_id": "2026-11-05T19-05-00-209Z",
+  "committed_at": "2026-11-05T19:05:00.232Z",
+  "snapshot": "runs/2026-11-05T19-05-00-209Z/snapshot.json",
+  "report": "runs/2026-11-05T19-05-00-209Z/report.md",
   "quarantine": null,
   "summary": {
     "schema_version": 1,
-    "collected_at": "2026-11-05T19:01:23.144Z",
-    "execution": "success",
-    "issues": [],
+    "collected_at": "2026-11-05T19:05:00.209Z",
+    "execution": "blocked",
+    "issues": [
+      "OLX:27gr95qe: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a55e209c0fee1dd0).",
+      "OLX: consultas adiadas após bloqueio; retomada prevista em 08/11/2026, 16:05:00 BRT."
+    ],
     "coverage": {
       "status": "partial",
-      "scheduled": 1,
+      "scheduled": 2,
       "completed": 1,
-      "incomplete": 0,
-      "deferred": 0,
+      "incomplete": 1,
+      "deferred": 9,
       "pending_descriptions": 0,
       "pending_candidates": 1,
       "pending_details": 0,
@@ -32,8 +35,8 @@
     }
   },
   "checksums": {
-    "snapshot_sha256": "2a0720c605a2a3a4ecbd848c96f0a98d8351c056810bf3d7eb7b5e067166af75",
-    "report_sha256": "c01e2d66597450eba8890ebb305eca6043a404eabfb03027f3ddf5497b9edf6b"
+    "snapshot_sha256": "b0e3c6a0ca7472e9a1b3e3014da716bcd7bc5f1f4ce7b2bf50afd57c6183c071",
+    "report_sha256": "75eddad89225726a38a15341c0752d6afb7c2152414a722773220b2046eda64d"
   },
   "metadata": {
     "source": "monitores-oled",
