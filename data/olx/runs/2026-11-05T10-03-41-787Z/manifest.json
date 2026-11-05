@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-11-05T10-03-41-787Z",
+  "committed_at": "2026-11-05T10:03:41.893Z",
+  "snapshot": "runs/2026-11-05T10-03-41-787Z/snapshot.json",
+  "report": "runs/2026-11-05T10-03-41-787Z/report.md",
+  "quarantine": null,
+  "summary": {
+    "schema_version": 1,
+    "collected_at": "2026-11-05T10:03:41.787Z",
+    "execution": "success",
+    "issues": [
+      "1 ficha(s) aguardando leitura dentro dos limites da rodada",
+      "2 ficha(s) aguardando leitura dentro dos limites da rodada"
+    ],
+    "coverage": {
+      "status": "partial",
+      "scheduled": 5,
+      "completed": 3,
+      "incomplete": 2,
+      "deferred": 0,
+      "pending_descriptions": 17,
+      "pending_candidates": 12,
+      "pending_details": 0,
+      "heuristic_stops": [],
+      "heuristic_reasons": {},
+      "price_scopes": {
+        "schema_version": 1,
+        "offers": {
+          "min_price_brl": 2000,
+          "max_price_brl": 8000,
+          "scheduled_terms": [
+            "14700hx",
+            "13980hx",
+            "14900hx",
+            "13900hx",
+            "family:avell-storm"
+          ],
+          "completed_terms": [
+            "14700hx",
+            "13980hx",
+            "14900hx",
+            "13900hx"
+          ],
+          "incomplete_terms": [
+            "family:avell-storm"
+          ],
+          "pending_details": 1,
+          "queued_candidates": 12,
+          "pending_candidates": 12,
+          "scheduled": 5,
+          "completed": 4,
+          "incomplete": 1,
+          "status": "partial"
+        },
+        "tracking": {
+          "min_price_brl": 8000,
+          "max_price_brl": 10000,
+          "scheduled_terms": [
+            "14700hx",
+            "14900hx"
+          ],
+          "completed_terms": [
+            "14700hx"
+          ],
+          "incomplete_terms": [
+            "14900hx"
+          ],
+          "pending_details": 1,
+          "min_price_exclusive": true,
+          "queued_candidates": 5,
+          "pending_candidates": 8,
+          "scheduled": 2,
+          "completed": 1,
+          "incomplete": 1,
+          "status": "partial"
+        }
+      }
+    },
+    "findings": {
+      "new_items": [],
+      "price_changes": [],
+      "active_count": 3,
+      "pending_count": 12,
+      "new_count": 0,
+      "price_count": 0
+    }
+  },
+  "checksums": {
+    "snapshot_sha256": "71db15df33e9a407b59ab8b7ff837534c73b98e36ad220c00c4cd2b52c5a03aa",
+    "report_sha256": "1b564c249952ebc6ea51bc606651ea9bfa64593f6f987200e709d9efb777753f"
+  },
+  "metadata": {
+    "source": "olx-notebooks",
+    "transport": "cdp",
+    "collection_started_at": "2026-11-05T10:00:17.664Z",
+    "collected_count": 24,
+    "failed_term_count": 2,
+    "successful_term_count": 3,
+    "in_progress": false,
+    "validated_count": 5,
+    "pending_count": 11,
+    "rejected_count": 8,
+    "quarantined_item_count": 0
+  }
+}

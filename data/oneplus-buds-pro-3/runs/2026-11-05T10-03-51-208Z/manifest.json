@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-11-05T10-03-51-208Z",
+  "committed_at": "2026-11-05T10:03:54.531Z",
+  "snapshot": "runs/2026-11-05T10-03-51-208Z/snapshot.json",
+  "report": "runs/2026-11-05T10-03-51-208Z/report.md",
+  "quarantine": null,
+  "summary": {
+    "schema_version": 1,
+    "collected_at": "2026-11-05T10:03:54.517Z",
+    "execution": "success",
+    "issues": [
+      "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+    ],
+    "coverage": {
+      "status": "deferred",
+      "scheduled": 4,
+      "completed": 4,
+      "incomplete": 0,
+      "deferred": 2,
+      "pending_descriptions": 0,
+      "pending_candidates": 0,
+      "pending_details": 0,
+      "heuristic_stops": [],
+      "heuristic_reasons": {}
+    },
+    "findings": {
+      "new_items": [],
+      "price_changes": [],
+      "active_count": 1,
+      "pending_count": 0,
+      "new_count": 0,
+      "price_count": 0
+    }
+  },
+  "checksums": {
+    "snapshot_sha256": "4b27d98f8ae16008bfa7fd6e0905e41a2dcbad2dec1669231814b06b02908a6f",
+    "report_sha256": "dda024f8b2041fd4ae2e0f0825799fa5ca022704be175317d25c047d7f429d6f"
+  },
+  "metadata": {
+    "source": "oneplus-buds-pro-3",
+    "label": "OnePlus Buds Pro 3",
+    "collected_count": 1,
+    "quarantined_item_count": 0
+  }
+}
