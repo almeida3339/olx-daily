@@ -2,27 +2,29 @@
   "schema_version": 1,
   "quality_version": 2,
   "configuration": "9955hx3d,290hx,9955hx,285hx,275hx,aimax395,7945hx,7945hx3d,255hx,13980hx,8940hx,7940hx,13950hx,14900hx,13900hx,7845hx,8840hx,aimax390,14700hx,hx470,family:helios-neo-16,family:rog-strix-g16,family:legion-pro-5,family:dell-g16,family:avell-a65,family:avell-storm,family:helios-neo-16:14700hx,family:rog-strix-g16:13980hx",
-  "started_at": "2026-11-05T19:00:19.035Z",
-  "updated_at": "2026-11-05T19:02:18.823Z",
+  "started_at": "2026-11-06T10:00:22.042Z",
+  "updated_at": "2026-11-06T10:03:43.131Z",
   "state": "partial",
   "scheduled_terms": [
     "14700hx",
     "13980hx",
     "14900hx",
     "13900hx",
-    "285hx",
-    "7945hx",
-    "7945hx3d",
-    "family:helios-neo-16:14700hx"
+    "8940hx",
+    "7940hx",
+    "13950hx",
+    "275hx",
+    "family:rog-strix-g16:13980hx"
   ],
   "successful_terms": [
     "14700hx",
     "13980hx",
     "13900hx",
-    "285hx",
-    "7945hx",
-    "7945hx3d",
-    "family:helios-neo-16:14700hx"
+    "8940hx",
+    "7940hx",
+    "13950hx",
+    "275hx",
+    "family:rog-strix-g16:13980hx"
   ],
   "collected": [
     {
@@ -39,7 +41,7 @@
       "storage_gb": null,
       "gpu": null,
       "location": null,
-      "condition": "novo",
+      "condition": null,
       "status": "active",
       "first_seen": null,
       "last_seen": null,
@@ -48,7 +50,7 @@
       "validation": {
         "version": 2,
         "state": "rejected",
-        "checked_at": "2026-11-03T10:00:29.395Z",
+        "checked_at": "2026-11-06T10:00:47.211Z",
         "reasons": [
           "Defeito ou avaria declarados no anúncio",
           "Especificação não confirmada: RAM",
@@ -70,7 +72,20 @@
           "gpu": null
         },
         "cpu_confirmed": false,
-        "description_checked": true
+        "description_checked": true,
+        "detail_diagnostic": {
+          "state": "ready",
+          "http_status": 200,
+          "document_state": "loading",
+          "description_found": true,
+          "price_found": true,
+          "structured_product_found": true,
+          "description_source": "structured",
+          "same_ad": true,
+          "body_length": 0,
+          "wait_ms": 532,
+          "samples": 2
+        }
       },
       "description_evidence": "Notebook semi novo sou o único dono nunca teve nenhum defeito nem avarias seja em qualquer componente.Processador i7 14700hxMemória 40gbSsd nvme 500gbSsd nvme 1tbPlaca de vídeo nvidia rtx 4070Em perfeito estado!!!!",
       "detail_title": "Predator Helios Neo 16",
@@ -84,8 +99,7 @@
       "title": "Notebook gamer acer predator helios neo i7 rtx 4070 16ram ddr5",
       "cpu_term": "14700hx",
       "search_terms": [
-        "14700hx",
-        "family:helios-neo-16:14700hx"
+        "14700hx"
       ],
       "description_discovery": true,
       "price_brl": 7500,
@@ -134,10 +148,9 @@
       "id": "1545266033",
       "url": "https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/notebooks/notebook-helios-neo-16-rtx-4070-1545266033",
       "title": "Notebook Helios Neo 16 RTX 4070",
-      "cpu_term": "family:helios-neo-16",
+      "cpu_term": "14700hx",
       "search_terms": [
-        "family:helios-neo-16",
-        "family:helios-neo-16:14700hx"
+        "14700hx"
       ],
       "description_discovery": true,
       "price_brl": 8000,
@@ -154,7 +167,7 @@
       "validation": {
         "version": 2,
         "state": "rejected",
-        "checked_at": "2026-11-02T19:03:49.187Z",
+        "checked_at": "2026-11-06T10:00:35.144Z",
         "reasons": [
           "RAM abaixo do mínimo exigido",
           "RAM abaixo do mínimo de 32 GB",
@@ -175,7 +188,20 @@
           "gpu": "RTX 4070"
         },
         "cpu_confirmed": false,
-        "description_checked": true
+        "description_checked": true,
+        "detail_diagnostic": {
+          "state": "ready",
+          "http_status": 200,
+          "document_state": "interactive",
+          "description_found": true,
+          "price_found": true,
+          "structured_product_found": true,
+          "description_source": "structured",
+          "same_ad": true,
+          "body_length": 1502,
+          "wait_ms": 548,
+          "samples": 2
+        }
       },
       "description_evidence": "Notebook Helios Neo 16Intel Core I7-14700HXNVIDIA RTX 4070 8GB 16 GB RAM DDR5512 GB PCIe NVMe SSDTela 16? 240Hz WQXGANOTEBOOK EM ESTADO DE NOVO",
       "detail_title": "Notebook Helios Neo 16 RTX 4070 ",
@@ -197,7 +223,7 @@
       "storage_gb": 1536,
       "gpu": "RTX 4060",
       "location": null,
-      "condition": "novo",
+      "condition": null,
       "status": "active",
       "first_seen": null,
       "last_seen": null,
@@ -206,7 +232,7 @@
       "validation": {
         "version": 2,
         "state": "validated",
-        "checked_at": "2026-11-05T10:00:42.625Z",
+        "checked_at": "2026-11-06T10:00:59.237Z",
         "reasons": [],
         "listing_price_brl": 8399,
         "detail_price_brl": 8399,
@@ -223,7 +249,20 @@
           "gpu": "RTX 4060"
         },
         "cpu_confirmed": true,
-        "description_checked": true
+        "description_checked": true,
+        "detail_diagnostic": {
+          "state": "ready",
+          "http_status": 200,
+          "document_state": "loading",
+          "description_found": true,
+          "price_found": true,
+          "structured_product_found": true,
+          "description_source": "structured",
+          "same_ad": true,
+          "body_length": 0,
+          "wait_ms": 526,
+          "samples": 2
+        }
       },
       "description_evidence": "Vendo Notebook Gamer NAVE Estelar, uma verdadeira máquina de altíssimo desempenho, ideal para rodar todos os jogos atuais no Ultra, trabalhar com edição de vídeo pesada, modelagem 3D e renderização. Equipamento robusto e com configurações de última geração.Processador: Intel Core i7-14700HX (14ª Geração) - 20 Núcleos (8 P-cores + 12 E-cores) / 28 Threads - Desempenho absurdo para qualquer tarefa.Placa de Vídeo: NVIDIA GeForce RTX 4060 Laptop (8GB GDDR6) - Roda tudo com Ray Tracing e DLSS 3.Memória RAM: 32GB DDR5 (2x 16GB a 5600 MHz) - Velocidade extrema para multitarefas.Armazenamento Duplo (1.5TB total):- SSD 1: 1TB NVMe (Kingston)- SSD 2: 512GB NVMe (Micron)Equipamento em perfeito estado de funcionamento, conforme mostram os testes de hardware nas fotos. Possui excelente sistema de refrigeração (grandes saídas de ar na parte inferior). Detalhes estéticos normais de uso na tampa (acabamento fosco padrão da marca), mas sem trincos ou quebras estruturais. Realmente 100%, adquirido em novembro de 2024. Ele está impecável! Um novo nessa configuração está R$11k à vista. Então o valor atual já está bem condizente com as configurações. Acompanha caixa original.",
       "detail_title": "Notebook Gamer NAVE Estelar (i7-14700HX  / 32GB / RTX 4060 8GB)",
@@ -315,6 +354,68 @@
       "detail_title": "Notebook Acer Predator - RTX 4070 / Intel Core i7 14700HX / Tela 240Hz (Aceito Trocas)"
     },
     {
+      "id": "1550643017",
+      "url": "https://pe.olx.com.br/grande-recife/informatica/notebooks/notebook-gamer-predator-helios-neo-core-i7-14700hx-rtx-4070-1550643017",
+      "title": "NOTEBOOK GAMER PREDATOR HELIOS NEO CORE I7-14700HX  RTX 4070",
+      "cpu_term": "14700hx",
+      "search_terms": [
+        "14700hx"
+      ],
+      "description_discovery": false,
+      "price_brl": 9000,
+      "ram_gb": 16,
+      "storage_gb": 512,
+      "gpu": "RTX 4070",
+      "location": null,
+      "condition": null,
+      "status": "active",
+      "first_seen": null,
+      "last_seen": null,
+      "notes": null,
+      "desc_checked": true,
+      "validation": {
+        "version": 2,
+        "state": "rejected",
+        "checked_at": "2026-11-06T10:01:11.823Z",
+        "reasons": [
+          "RAM abaixo do mínimo exigido",
+          "RAM abaixo do mínimo de 32 GB"
+        ],
+        "listing_price_brl": 9000,
+        "detail_price_brl": 9000,
+        "visible_price_brl": null,
+        "structured_price_brl": 9000,
+        "title_specs": {
+          "ram_gb": null,
+          "storage_gb": null,
+          "gpu": "RTX 4070"
+        },
+        "description_specs": {
+          "ram_gb": 16,
+          "storage_gb": 512,
+          "gpu": "RTX 4070"
+        },
+        "cpu_confirmed": true,
+        "description_checked": true,
+        "detail_diagnostic": {
+          "state": "ready",
+          "http_status": 200,
+          "document_state": "loading",
+          "description_found": true,
+          "price_found": true,
+          "structured_product_found": true,
+          "description_source": "structured",
+          "same_ad": true,
+          "body_length": 0,
+          "wait_ms": 540,
+          "samples": 2
+        }
+      },
+      "description_evidence": "Eleve sua experiência gamer com o Notebook Gamer Predator Helios Neo! Equipado com o poderoso Intel® Core i7-14700HX e a incrível Nvidia Geforce RTX 4070, este notebook oferece desempenho de ponta para os jogos mais exigentes. Com 16GB de RAM e 512GB de SSD, desfrute de velocidade e fluidez em todas as suas jogadas. O design moderno e a tela de 16 polegadas proporcionam imersão total. Prepare-se para dominar o campo de batalha!",
+      "detail_title": "NOTEBOOK GAMER PREDATOR HELIOS NEO CORE I7-14700HX  RTX 4070",
+      "configuration_warnings": []
+    },
+    {
       "id": "1548728481",
       "url": "https://al.olx.com.br/alagoas/informatica/notebooks/notebook-gamer-nave-estelar-i7-14700hx-32-gb-ram-512-ssd-rtx-4060-1548728481",
       "title": "Notebook Gamer Nave estelar i7 14700hx, 32 Gb ram, 512 ssd, RTX 4060",
@@ -365,7 +466,7 @@
       "validation": {
         "version": 2,
         "state": "validated",
-        "checked_at": "2026-11-05T10:00:54.923Z",
+        "checked_at": "2026-11-06T10:01:23.270Z",
         "reasons": [],
         "listing_price_brl": 9500,
         "detail_price_brl": 9500,
@@ -382,7 +483,20 @@
           "gpu": "RTX 4070"
         },
         "cpu_confirmed": true,
-        "description_checked": true
+        "description_checked": true,
+        "detail_diagnostic": {
+          "state": "ready",
+          "http_status": 200,
+          "document_state": "interactive",
+          "description_found": true,
+          "price_found": true,
+          "structured_product_found": true,
+          "description_source": "structured",
+          "same_ad": true,
+          "body_length": 1866,
+          "wait_ms": 791,
+          "samples": 2
+        }
       },
       "description_evidence": "Desempenho imbatível com o Notebook Lenovo Legion Pro 5i! Equipado com processador Intel Core i7 de 14ª geração e placa de vídeo RTX 4070, este notebook é ideal para gamers e profissionais que buscam o máximo em tecnologia e velocidade. Experimente gráficos incríveis e multitarefa sem interrupções.Notebook impecável modelo de portugal com garantia 2 meses restando.32gb de ram ddr51tb de ssdRtx 4070 8gbI7 14700HXQhd 165hz",
       "detail_title": "Notebool Lenovo Legion pro 5i rtx 4070, i7 14700HX",
@@ -445,7 +559,8 @@
       "title": "Notebook ASUS ROG Strix G16 | i9-13980HX | RTX 4060 | 1TB | 32GB DDR5",
       "cpu_term": "13980hx",
       "search_terms": [
-        "13980hx"
+        "13980hx",
+        "family:rog-strix-g16:13980hx"
       ],
       "description_discovery": false,
       "price_brl": 7927,
@@ -462,7 +577,7 @@
       "validation": {
         "version": 2,
         "state": "validated",
-        "checked_at": "2026-11-05T10:01:18.966Z",
+        "checked_at": "2026-11-06T10:01:50.062Z",
         "reasons": [],
         "listing_price_brl": 7927,
         "detail_price_brl": 7927,
@@ -491,7 +606,8 @@
       "title": "Notebook ASUS ROG Strix G16 | i9-13980HX | RTX 4060 | 1TB | 32GB DDR5",
       "cpu_term": "13980hx",
       "search_terms": [
-        "13980hx"
+        "13980hx",
+        "family:rog-strix-g16:13980hx"
       ],
       "description_discovery": false,
       "price_brl": 7927,
@@ -508,7 +624,7 @@
       "validation": {
         "version": 2,
         "state": "validated",
-        "checked_at": "2026-11-05T10:01:30.688Z",
+        "checked_at": "2026-11-06T10:02:02.042Z",
         "reasons": [],
         "listing_price_brl": 7927,
         "detail_price_brl": 7927,
@@ -554,7 +670,7 @@
       "validation": {
         "version": 2,
         "state": "validated",
-        "checked_at": "2026-11-05T10:01:58.127Z",
+        "checked_at": "2026-11-06T10:02:26.357Z",
         "reasons": [],
         "listing_price_brl": 7800,
         "detail_price_brl": 7800,
@@ -571,7 +687,20 @@
           "gpu": "RTX 4060"
         },
         "cpu_confirmed": true,
-        "description_checked": true
+        "description_checked": true,
+        "detail_diagnostic": {
+          "state": "ready",
+          "http_status": 200,
+          "document_state": "interactive",
+          "description_found": true,
+          "price_found": true,
+          "structured_product_found": true,
+          "description_source": "structured",
+          "same_ad": true,
+          "body_length": 2405,
+          "wait_ms": 551,
+          "samples": 2
+        }
       },
       "description_evidence": "Notebook Gamer MSI Vector 16 HX A14VFG - Potência de sobra para jogos e trabalho pesado!Configuração completa:? Processador: Intel Core i9-14900HX (24 núcleos / 32 threads - até 5.8 GHz)? Placa de vídeo: NVIDIA GeForce RTX 4060 8GB GDDR6? Memória: 32GB DDR5 (2x16GB)? Armazenamento: 1TB SSD NVMe? Tela: 16? QHD+ (2560x1600) IPS 240Hz anti-reflexo - excelente para jogos competitivos e conteúdo? Sistema: Windows 11 Home original? Teclado RGB por tecla (SteelSeries)? Bateria 90Wh? Cor: Cosmos GrayEstado: Seminovo, em excelente estado de conservação.Vem com caixa original.Pouquíssimo uso, sem marcas relevantes, tela impecável e funcionamento 100%.Ideal para quem quer rodar jogos atuais em alto desempenho, edição de vídeo, modelagem 3D ou multitarefa pesada.",
       "detail_title": "Notebook Gamer MSI Vector 16 HX A14VFG - Potência de sobra para jogos e trabalho pesado!",
@@ -600,7 +729,7 @@
       "validation": {
         "version": 2,
         "state": "pending",
-        "checked_at": "2026-11-05T19:00:53.879Z",
+        "checked_at": "2026-11-06T10:02:26.366Z",
         "reasons": [
           "Ficha aguardando leitura dentro dos limites da rodada"
         ]
@@ -713,69 +842,32 @@
       "detail_title": "Laptop Predator Helios Neo intel® core i9-14900hx com rtx4070"
     },
     {
-      "id": "1548268436",
-      "url": "https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-two-1548268436",
-      "title": "Notebook Gamer Avell Storm Two",
-      "cpu_term": "family:avell-storm",
+      "id": "1540167012",
+      "url": "https://go.olx.com.br/grande-goiania-e-anapolis/informatica/notebooks/alienware-16x-aurora-ultra-9-275hx-rtx-5060-8gb-32gb-ram-1tb-seminovo-1540167012",
+      "title": "Alienware 16X Aurora Ultra 9 275HX + RTX 5060 8GB + 32GB RAM + 1TB - Seminovo",
+      "cpu_term": "275hx",
       "search_terms": [
-        "family:avell-storm"
+        "275hx"
       ],
-      "description_discovery": true,
-      "price_brl": 7199,
-      "ram_gb": null,
-      "storage_gb": null,
-      "gpu": "RTX 3070 TI",
-      "location": null,
-      "condition": "Usado - Excelente",
+      "description_discovery": false,
+      "price_brl": 10000,
+      "ram_gb": 32,
+      "storage_gb": 1024,
+      "gpu": "RTX 5060",
+      "location": "Aparecida de Goiânia, Mansões Paraíso",
+      "condition": null,
       "status": "active",
       "first_seen": null,
       "last_seen": null,
       "notes": null,
-      "desc_checked": true,
+      "desc_checked": false,
       "validation": {
         "version": 2,
-        "state": "rejected",
-        "checked_at": "2026-11-05T19:02:17.801Z",
+        "state": "pending",
         "reasons": [
-          "CPU fora da busca",
-          "Especificação não confirmada: RAM",
-          "CPU não confirmada no anúncio"
-        ],
-        "listing_price_brl": 7199,
-        "detail_price_brl": 7199,
-        "visible_price_brl": null,
-        "structured_price_brl": 7199,
-        "title_specs": {
-          "ram_gb": null,
-          "storage_gb": null,
-          "gpu": null
-        },
-        "description_specs": {
-          "ram_gb": null,
-          "storage_gb": null,
-          "gpu": "RTX 3070 TI"
-        },
-        "cpu_confirmed": false,
-        "description_checked": true,
-        "detail_diagnostic": {
-          "state": "ready",
-          "http_status": 200,
-          "document_state": "interactive",
-          "description_found": true,
-          "price_found": true,
-          "structured_product_found": true,
-          "description_source": "structured",
-          "same_ad": true,
-          "body_length": 1741,
-          "wait_ms": 865,
-          "samples": 2
-        }
-      },
-      "description_evidence": "Notebook Gamer Avell Storm TwoIntel Core i7 12700H 2.3GHz16gb memória RAMSSD 1tbVídeo NVidia RTX 3070ti 8gbMonitor 15.6 FHD IPSTeclado retroiluminadoFonte/carregador originalCom caixaCom nota fiscal",
-      "detail_title": "Notebook Gamer Avell Storm Two",
-      "configuration_warnings": [
-        "Armazenamento não informado"
-      ]
+          "Descrição e preço integral ainda não conferidos"
+        ]
+      }
     }
   ],
   "pending_terms": [
@@ -783,7 +875,7 @@
   ],
   "baseline_snapshot": {
     "schema_version": 2,
-    "generated_at": "2026-11-05T10:03:41.787Z",
+    "generated_at": "2026-11-05T19:02:17.807Z",
     "coverage_status": {
       "9955hx3d": {
         "checked_at": "2026-11-04T19:10:55.600Z",
@@ -804,8 +896,8 @@
         "error": null
       },
       "285hx": {
-        "checked_at": "2026-11-02T10:03:57.107Z",
-        "last_success_at": "2026-11-02T10:03:57.107Z",
+        "checked_at": "2026-11-05T19:02:17.807Z",
+        "last_success_at": "2026-11-05T19:02:17.807Z",
         "state": "success",
         "error": null
       },
@@ -822,14 +914,14 @@
         "error": null
       },
       "7945hx": {
-        "checked_at": "2026-11-02T10:03:57.107Z",
-        "last_success_at": "2026-11-02T10:03:57.107Z",
+        "checked_at": "2026-11-05T19:02:17.807Z",
+        "last_success_at": "2026-11-05T19:02:17.807Z",
         "state": "success",
         "error": null
       },
       "7945hx3d": {
-        "checked_at": "2026-11-02T10:03:57.107Z",
-        "last_success_at": "2026-11-02T10:03:57.107Z",
+        "checked_at": "2026-11-05T19:02:17.807Z",
+        "last_success_at": "2026-11-05T19:02:17.807Z",
         "state": "success",
         "error": null
       },
@@ -840,8 +932,8 @@
         "error": "Listagem incompleta: limite de 12 cards ou próxima página pendente"
       },
       "13980hx": {
-        "checked_at": "2026-11-05T10:03:41.787Z",
-        "last_success_at": "2026-11-05T10:03:41.787Z",
+        "checked_at": "2026-11-05T19:02:17.807Z",
+        "last_success_at": "2026-11-05T19:02:17.807Z",
         "state": "success",
         "error": null
       },
@@ -864,14 +956,14 @@
         "error": null
       },
       "14900hx": {
-        "checked_at": "2026-11-05T10:03:41.787Z",
+        "checked_at": "2026-11-05T19:02:17.807Z",
         "last_success_at": "2026-10-29T13:02:50.929Z",
         "state": "failed",
         "error": "1 ficha(s) aguardando leitura dentro dos limites da rodada"
       },
       "13900hx": {
-        "checked_at": "2026-11-05T10:03:41.787Z",
-        "last_success_at": "2026-11-05T10:03:41.787Z",
+        "checked_at": "2026-11-05T19:02:17.807Z",
+        "last_success_at": "2026-11-05T19:02:17.807Z",
         "state": "success",
         "error": null
       },
@@ -894,8 +986,8 @@
         "error": null
       },
       "14700hx": {
-        "checked_at": "2026-11-05T10:03:41.787Z",
-        "last_success_at": "2026-11-05T10:03:41.787Z",
+        "checked_at": "2026-11-05T19:02:17.807Z",
+        "last_success_at": "2026-11-05T19:02:17.807Z",
         "state": "success",
         "error": null
       },
@@ -940,30 +1032,35 @@
         "last_success_at": "2026-11-02T10:03:57.107Z",
         "state": "failed",
         "error": "2 ficha(s) aguardando leitura dentro dos limites da rodada"
+      },
+      "family:helios-neo-16:14700hx": {
+        "checked_at": "2026-11-05T19:02:17.807Z",
+        "last_success_at": "2026-11-05T19:02:17.807Z",
+        "state": "success",
+        "error": null
       }
     },
     "run": {
       "date": "2026-11-05",
       "timezone": "America/Sao_Paulo",
-      "started_at": "2026-11-05T10:00:17.664Z",
-      "completed_at": "2026-11-05T10:03:41.787Z",
+      "started_at": "2026-11-05T19:00:19.035Z",
+      "completed_at": "2026-11-05T19:02:17.807Z",
       "in_progress": false,
       "phase": "partial",
       "partial": true,
       "successful_terms": [
         "14700hx",
         "13980hx",
-        "13900hx"
+        "13900hx",
+        "285hx",
+        "7945hx",
+        "7945hx3d",
+        "family:helios-neo-16:14700hx"
       ],
       "failed_terms": [
         {
           "term": "14900hx",
           "error": "1 ficha(s) aguardando leitura dentro dos limites da rodada",
-          "kind": "incomplete"
-        },
-        {
-          "term": "family:avell-storm",
-          "error": "2 ficha(s) aguardando leitura dentro dos limites da rodada",
           "kind": "incomplete"
         }
       ],
@@ -972,79 +1069,34 @@
           "term": "14900hx",
           "error": "1 ficha(s) aguardando leitura dentro dos limites da rodada",
           "kind": "incomplete"
-        },
-        {
-          "term": "family:avell-storm",
-          "error": "2 ficha(s) aguardando leitura dentro dos limites da rodada",
-          "kind": "incomplete"
         }
       ],
       "deferred_coverage": [],
       "unattempted_terms": [],
       "description_discovery": {
-        "extra_details": 8,
-        "total_details": 12,
-        "detail_ms": 7053,
-        "recovered_validated": 1,
-        "cache_hits": 4,
+        "extra_details": 1,
+        "total_details": 1,
+        "detail_ms": 1274,
+        "recovered_validated": 0,
+        "cache_hits": 11,
         "by_term": {
-          "14700hx": 1,
-          "14900hx": 1,
-          "family:avell-storm": 5,
-          "family:helios-neo-16": 1
+          "family:avell-storm": 1
         },
         "detail_yield": {
-          "14700hx": {
-            "reads": 3,
-            "validated_offers": 0,
-            "read_keys": [
-              "1550339131",
-              "1522141686",
-              "1548107625"
-            ]
-          },
-          "13980hx": {
-            "reads": 2,
-            "validated_offers": 2,
-            "read_keys": [
-              "1548266943",
-              "1545009098"
-            ]
-          },
-          "14900hx": {
-            "reads": 1,
-            "validated_offers": 1,
-            "read_keys": [
-              "1548163140"
-            ]
-          },
           "family:avell-storm": {
-            "reads": 5,
-            "validated_offers": 0,
-            "read_keys": [
-              "1541030102",
-              "1548592870",
-              "1545937266",
-              "1550295521",
-              "1546506873"
-            ]
-          },
-          "family:helios-neo-16": {
             "reads": 1,
             "validated_offers": 0,
             "read_keys": [
-              "1538622677"
+              "1548268436"
             ]
           }
         },
-        "new_details": 11,
-        "retry_details": 1,
-        "reallocated_details": 1,
+        "new_details": 1,
         "total_detail_limit": 12,
-        "queued_candidates": 17,
+        "queued_candidates": 16,
         "retry_waiting": 1,
         "new_candidate_reserve": 3,
-        "ready_within_price": 1,
+        "ready_within_price": 0,
         "waiting_for_configuration": 15,
         "above_display_price": 5,
         "validation_complete": false,
@@ -1053,23 +1105,22 @@
       },
       "query_yield": {
         "14700hx": {
-          "returned": 10,
+          "returned": 9,
           "validated": 2,
           "query": "14700hx",
-          "unique_eligible_candidates": 4,
+          "unique_eligible_candidates": 3,
           "eligible_candidate_ids": [
-            "1550339131",
             "1547313199",
             "1549921750",
             "1545266033"
           ],
-          "pending": 4,
-          "detail_reads": 3,
+          "pending": 3,
+          "detail_reads": 0,
           "limited": false,
           "listing_incomplete": false,
           "listing_limit": 36,
           "details_pending": 0,
-          "total_results": 25,
+          "total_results": 24,
           "details_pending_offers": 0,
           "details_pending_tracking": 0,
           "tracking_candidates": 6,
@@ -1078,27 +1129,26 @@
             "tracking": []
           },
           "recommendations_ignored": 0,
-          "detail_read_attempts": 3,
+          "detail_read_attempts": 0,
           "validated_offers_from_reads": 0,
-          "validated_offers_per_read": 0
+          "validated_offers_per_read": null
         },
         "13980hx": {
-          "returned": 3,
+          "returned": 2,
           "validated": 2,
           "query": "13980hx",
-          "unique_eligible_candidates": 3,
+          "unique_eligible_candidates": 2,
           "eligible_candidate_ids": [
             "1548266943",
-            "1545009098",
-            "1539191902"
+            "1545009098"
           ],
-          "pending": 1,
-          "detail_reads": 2,
+          "pending": 0,
+          "detail_reads": 0,
           "limited": false,
           "listing_incomplete": false,
           "listing_limit": 12,
           "details_pending": 0,
-          "total_results": 7,
+          "total_results": 5,
           "details_pending_offers": 0,
           "details_pending_tracking": 0,
           "tracking_candidates": 0,
@@ -1107,9 +1157,9 @@
             "tracking": []
           },
           "recommendations_ignored": 0,
-          "detail_read_attempts": 2,
-          "validated_offers_from_reads": 2,
-          "validated_offers_per_read": 1
+          "detail_read_attempts": 0,
+          "validated_offers_from_reads": 0,
+          "validated_offers_per_read": null
         },
         "14900hx": {
           "returned": 4,
@@ -1120,12 +1170,12 @@
             "1548163140"
           ],
           "pending": 3,
-          "detail_reads": 1,
+          "detail_reads": 0,
           "limited": true,
           "listing_incomplete": false,
           "listing_limit": 60,
           "details_pending": 1,
-          "total_results": 38,
+          "total_results": 39,
           "details_pending_offers": 0,
           "details_pending_tracking": 1,
           "tracking_candidates": 3,
@@ -1136,9 +1186,9 @@
             ]
           },
           "recommendations_ignored": 0,
-          "detail_read_attempts": 1,
-          "validated_offers_from_reads": 1,
-          "validated_offers_per_read": 1
+          "detail_read_attempts": 0,
+          "validated_offers_from_reads": 0,
+          "validated_offers_per_read": null
         },
         "13900hx": {
           "returned": 0,
@@ -1165,58 +1215,144 @@
           "validated_offers_from_reads": 0,
           "validated_offers_per_read": null
         },
-        "family:avell-storm": {
-          "returned": 6,
+        "285hx": {
+          "returned": 0,
           "validated": 0,
-          "query": "avell storm",
-          "unique_eligible_candidates": 6,
-          "eligible_candidate_ids": [
-            "1550295521",
-            "1546506873",
-            "1541030102",
-            "1548592870",
-            "1548268436",
-            "1545937266"
-          ],
-          "pending": 3,
-          "detail_reads": 4,
-          "limited": true,
+          "query": "285hx",
+          "unique_eligible_candidates": 0,
+          "eligible_candidate_ids": [],
+          "pending": 0,
+          "detail_reads": 0,
+          "limited": false,
           "listing_incomplete": false,
-          "listing_limit": 60,
-          "details_pending": 2,
-          "total_results": 20,
-          "details_pending_offers": 2,
+          "listing_limit": 12,
+          "details_pending": 0,
+          "total_results": 1,
+          "details_pending_offers": 0,
           "details_pending_tracking": 0,
           "tracking_candidates": 0,
           "pending_detail_keys": {
-            "offers": [
-              "1546506873",
-              "1548268436"
-            ],
+            "offers": [],
             "tracking": []
           },
           "recommendations_ignored": 0,
-          "detail_read_attempts": 5,
+          "detail_read_attempts": 0,
           "validated_offers_from_reads": 0,
-          "validated_offers_per_read": 0
+          "validated_offers_per_read": null
+        },
+        "7945hx": {
+          "returned": 0,
+          "validated": 0,
+          "query": "7945hx",
+          "unique_eligible_candidates": 0,
+          "eligible_candidate_ids": [],
+          "pending": 0,
+          "detail_reads": 0,
+          "limited": false,
+          "listing_incomplete": false,
+          "listing_limit": 12,
+          "details_pending": 0,
+          "total_results": 1,
+          "details_pending_offers": 0,
+          "details_pending_tracking": 0,
+          "tracking_candidates": 0,
+          "pending_detail_keys": {
+            "offers": [],
+            "tracking": []
+          },
+          "recommendations_ignored": 0,
+          "detail_read_attempts": 0,
+          "validated_offers_from_reads": 0,
+          "validated_offers_per_read": null
+        },
+        "7945hx3d": {
+          "returned": 0,
+          "validated": 0,
+          "query": "7945hx3d",
+          "unique_eligible_candidates": 0,
+          "eligible_candidate_ids": [],
+          "pending": 0,
+          "detail_reads": 0,
+          "limited": false,
+          "listing_incomplete": false,
+          "listing_limit": 12,
+          "details_pending": 0,
+          "total_results": 0,
+          "details_pending_offers": 0,
+          "details_pending_tracking": 0,
+          "tracking_candidates": 0,
+          "pending_detail_keys": {
+            "offers": [],
+            "tracking": []
+          },
+          "recommendations_ignored": 38,
+          "detail_read_attempts": 0,
+          "validated_offers_from_reads": 0,
+          "validated_offers_per_read": null
+        },
+        "family:helios-neo-16:14700hx": {
+          "returned": 2,
+          "validated": 0,
+          "query": "helios neo 16 14700hx",
+          "unique_eligible_candidates": 2,
+          "eligible_candidate_ids": [
+            "1549921750",
+            "1545266033"
+          ],
+          "pending": 0,
+          "detail_reads": 0,
+          "limited": false,
+          "listing_incomplete": false,
+          "listing_limit": 60,
+          "details_pending": 0,
+          "total_results": 11,
+          "details_pending_offers": 0,
+          "details_pending_tracking": 0,
+          "tracking_candidates": 0,
+          "pending_detail_keys": {
+            "offers": [],
+            "tracking": []
+          },
+          "recommendations_ignored": 0,
+          "detail_read_attempts": 0,
+          "validated_offers_from_reads": 0,
+          "validated_offers_per_read": null
         }
       },
-      "family_experiment": {},
+      "family_experiment": {
+        "family:helios-neo-16:14700hx": [
+          {
+            "round": "2026-11-05T19:00:19.035Z",
+            "candidates": 2,
+            "additional_candidates": 0,
+            "additional_validated": 0,
+            "reads": 0,
+            "cpu_queries": 7,
+            "partial_listings": false
+          }
+        ]
+      },
       "scheduled_coverage": [
         "14700hx",
         "13980hx",
         "14900hx",
         "13900hx",
-        "family:avell-storm"
+        "285hx",
+        "7945hx",
+        "7945hx3d",
+        "family:helios-neo-16:14700hx"
       ],
       "successful_coverage": [
         "14700hx",
         "13980hx",
-        "13900hx"
+        "13900hx",
+        "285hx",
+        "7945hx",
+        "7945hx3d",
+        "family:helios-neo-16:14700hx"
       ],
       "failed_coverage": [
-        "14900hx",
-        "family:avell-storm"
+        "14900hx"
       ],
       "configured_coverage": [
         "9955hx3d",
@@ -1252,7 +1388,7 @@
         "new_items": [],
         "price_changes": [],
         "active_count": 3,
-        "pending_count": 12
+        "pending_count": 9
       },
       "price_coverage": {
         "schema_version": 1,
@@ -1264,23 +1400,28 @@
             "13980hx",
             "14900hx",
             "13900hx",
-            "family:avell-storm"
+            "285hx",
+            "7945hx",
+            "7945hx3d",
+            "family:helios-neo-16:14700hx"
           ],
           "completed_terms": [
             "14700hx",
             "13980hx",
             "14900hx",
-            "13900hx"
+            "13900hx",
+            "285hx",
+            "7945hx",
+            "7945hx3d",
+            "family:helios-neo-16:14700hx"
           ],
-          "incomplete_terms": [
-            "family:avell-storm"
-          ],
-          "pending_details": 1,
-          "queued_candidates": 12,
-          "pending_candidates": 12,
-          "scheduled": 5,
-          "completed": 4,
-          "incomplete": 1,
+          "incomplete_terms": [],
+          "pending_details": 0,
+          "queued_candidates": 11,
+          "pending_candidates": 9,
+          "scheduled": 8,
+          "completed": 8,
+          "incomplete": 0,
           "status": "partial"
         },
         "tracking": {
@@ -1311,29 +1452,27 @@
         "status": "partial",
         "exit_code": 2,
         "reasons": [
-          "1 ficha(s) aguardando leitura dentro dos limites da rodada",
-          "2 ficha(s) aguardando leitura dentro dos limites da rodada"
+          "1 ficha(s) aguardando leitura dentro dos limites da rodada"
         ],
-        "completed_terms": 3,
-        "incomplete_terms": 2,
+        "completed_terms": 7,
+        "incomplete_terms": 1,
         "deferred_terms": 0
       },
       "collection_summary": {
         "schema_version": 1,
-        "collected_at": "2026-11-05T10:03:41.787Z",
+        "collected_at": "2026-11-05T19:02:17.807Z",
         "execution": "success",
         "issues": [
-          "1 ficha(s) aguardando leitura dentro dos limites da rodada",
-          "2 ficha(s) aguardando leitura dentro dos limites da rodada"
+          "1 ficha(s) aguardando leitura dentro dos limites da rodada"
         ],
         "coverage": {
           "status": "partial",
-          "scheduled": 5,
-          "completed": 3,
-          "incomplete": 2,
+          "scheduled": 8,
+          "completed": 7,
+          "incomplete": 1,
           "deferred": 0,
-          "pending_descriptions": 17,
-          "pending_candidates": 12,
+          "pending_descriptions": 16,
+          "pending_candidates": 9,
           "pending_details": 0,
           "heuristic_stops": [],
           "heuristic_reasons": {},
@@ -1347,23 +1486,28 @@
                 "13980hx",
                 "14900hx",
                 "13900hx",
-                "family:avell-storm"
+                "285hx",
+                "7945hx",
+                "7945hx3d",
+                "family:helios-neo-16:14700hx"
               ],
               "completed_terms": [
                 "14700hx",
                 "13980hx",
                 "14900hx",
-                "13900hx"
+                "13900hx",
+                "285hx",
+                "7945hx",
+                "7945hx3d",
+                "family:helios-neo-16:14700hx"
               ],
-              "incomplete_terms": [
-                "family:avell-storm"
-              ],
-              "pending_details": 1,
-              "queued_candidates": 12,
-              "pending_candidates": 12,
-              "scheduled": 5,
-              "completed": 4,
-              "incomplete": 1,
+              "incomplete_terms": [],
+              "pending_details": 0,
+              "queued_candidates": 11,
+              "pending_candidates": 9,
+              "scheduled": 8,
+              "completed": 8,
+              "incomplete": 0,
               "status": "partial"
             },
             "tracking": {
@@ -1394,7 +1538,7 @@
           "new_items": [],
           "price_changes": [],
           "active_count": 3,
-          "pending_count": 12,
+          "pending_count": 9,
           "new_count": 0,
           "price_count": 0
         }
@@ -1410,64 +1554,6 @@
       }
     },
     "items": [
-      {
-        "id": "1550339131",
-        "url": "https://pr.olx.com.br/regiao-de-foz-do-iguacu-e-cascavel/informatica/notebooks/notebook-gamer-rtx-4070-1550339131",
-        "title": "Notebook gamer RTX 4070",
-        "cpu_term": "14700hx",
-        "search_terms": [
-          "14700hx"
-        ],
-        "description_discovery": true,
-        "price_brl": 6500,
-        "ram_gb": null,
-        "storage_gb": null,
-        "gpu": "RTX 4070",
-        "location": null,
-        "condition": "Usado - Excelente",
-        "status": "active",
-        "first_seen": "2026-11-05",
-        "last_seen": "2026-11-05",
-        "notes": null,
-        "desc_checked": true,
-        "validation": {
-          "version": 2,
-          "state": "pending",
-          "checked_at": "2026-11-05T10:00:30.708Z",
-          "reasons": [
-            "Especificação não confirmada: RAM",
-            "CPU não confirmada no anúncio"
-          ],
-          "listing_price_brl": 6500,
-          "detail_price_brl": 6500,
-          "visible_price_brl": null,
-          "structured_price_brl": 6500,
-          "title_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": "RTX 4070"
-          },
-          "description_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": "RTX 4070"
-          },
-          "cpu_confirmed": false,
-          "description_checked": true
-        },
-        "description_evidence": "Potencialize sua jogatina com este notebook gamer equipado com RTX 4070! Desfrute de gráficos incríveis e desempenho de ponta para todos os seus jogos favoritos. Prepare-se para uma experiência imersiva e vitoriosa!I7-14700HXRTX-4070512GB SSD16GB DDR5240HZTela com 2k de resolução",
-        "detail_title": "Notebook gamer RTX 4070",
-        "configuration_warnings": [
-          "Armazenamento não informado"
-        ],
-        "out_of_scope_at": null,
-        "price_history": [
-          {
-            "at": "2026-11-05T10:03:41.787Z",
-            "price_brl": 6500
-          }
-        ]
-      },
       {
         "id": "1547313199",
         "url": "https://se.olx.com.br/sergipe/informatica/notebooks/predator-helios-neo-16-1547313199",
@@ -1520,7 +1606,7 @@
         "configuration_warnings": [
           "Armazenamento não informado"
         ],
-        "out_of_scope_at": "2026-11-05T10:03:41.787Z",
+        "out_of_scope_at": "2026-11-05T19:02:17.807Z",
         "price_history": [
           {
             "at": "2026-10-25T19:02:46.963Z",
@@ -1534,7 +1620,8 @@
         "title": "Notebook gamer acer predator helios neo i7 rtx 4070 16ram ddr5",
         "cpu_term": "14700hx",
         "search_terms": [
-          "14700hx"
+          "14700hx",
+          "family:helios-neo-16:14700hx"
         ],
         "description_discovery": true,
         "price_brl": 7500,
@@ -1578,7 +1665,7 @@
         "configuration_warnings": [
           "Armazenamento não informado"
         ],
-        "out_of_scope_at": "2026-11-05T10:03:41.787Z",
+        "out_of_scope_at": "2026-11-05T19:02:17.807Z",
         "price_history": [
           {
             "at": "2026-11-03T19:18:31.145Z",
@@ -1593,7 +1680,7 @@
         "cpu_term": "family:helios-neo-16",
         "search_terms": [
           "family:helios-neo-16",
-          "14700hx"
+          "family:helios-neo-16:14700hx"
         ],
         "description_discovery": true,
         "price_brl": 8000,
@@ -1638,7 +1725,7 @@
         "configuration_warnings": [
           "Armazenamento não informado"
         ],
-        "out_of_scope_at": "2026-11-05T10:03:41.787Z",
+        "out_of_scope_at": "2026-11-05T19:02:17.807Z",
         "price_history": [
           {
             "at": "2026-10-26T19:04:17.307Z",
@@ -1769,7 +1856,7 @@
           "cpu_confirmed": true,
           "description_checked": true
         },
-        "out_of_scope_at": "2026-11-05T10:03:41.787Z",
+        "out_of_scope_at": "2026-11-05T19:02:17.807Z",
         "price_history": [
           {
             "at": "2026-11-03T10:04:13.577Z",
@@ -1968,70 +2055,6 @@
         ],
         "description_evidence": "Domine seus jogos com o Notebook Gamer Predator Helios Neo! Equipado com processador Intel Core i7 de 14ª geração, tela imersiva e design arrojado. Desempenho e estilo que elevam sua experiência gamer a outro nível! configuração:Notebook Gamer Predator Helios NeoPhn16-72-74vxIntel® Core I7-14700hx De 14ªgeração16gb512ssdWindows 11 HomeNvidia Geforce Rtx 4070 Gddr6Tela 16",
         "detail_title": "Notebook Gamer Predator Helios Neo / Phn16-72-74vx /  Intel® Core I7-14700hx De 14ªgeração"
-      },
-      {
-        "id": "1539191902",
-        "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-gamer-rog-strix-g16-rtx-4060-1539191902",
-        "title": "Notebook Gamer ROG STRIX G16 RTX 4060",
-        "cpu_term": "13980hx",
-        "search_terms": [
-          "13980hx"
-        ],
-        "description_discovery": true,
-        "price_brl": 7000,
-        "ram_gb": null,
-        "storage_gb": 480,
-        "gpu": "RTX 4060",
-        "location": null,
-        "condition": "Usado - Excelente",
-        "status": "active",
-        "first_seen": "2026-10-25",
-        "last_seen": "2026-11-05",
-        "notes": null,
-        "desc_checked": true,
-        "validation": {
-          "version": 2,
-          "state": "pending",
-          "checked_at": "2026-11-04T19:09:06.215Z",
-          "reasons": [
-            "Especificação não confirmada: RAM",
-            "CPU não confirmada no anúncio"
-          ],
-          "listing_price_brl": 7000,
-          "detail_price_brl": 7000,
-          "visible_price_brl": null,
-          "structured_price_brl": 7000,
-          "title_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": "RTX 4060"
-          },
-          "description_specs": {
-            "ram_gb": null,
-            "storage_gb": 480,
-            "gpu": null
-          },
-          "cpu_confirmed": false,
-          "description_checked": true
-        },
-        "description_evidence": "Notebook em excelente estado, apenas trocado o SSDi9-13980HX16GB RAM DDR5RTX 4060 8GB 480GB Armazenamento SSD M.2Tela 165HzEm jogos:Fortnite - Tudo no baixo, resolução 3D em 100%, Full HD - Média de 280 FPSCS 2 - Tudo no baixo, Full HD - Média de 390 FPSRainbow Six - Tudo no baixo, TAA 100, sombras no alto, Full HD - Média de 240 FPSGTA V - Tudo no alto, Full HD - Média de 200 FPSRed Dead Redemption 2 - Tudo no médio, Full HD - Média de 140 FPSSe quiser teste em algum jogo/config específico, favor entrar em contato.Não aceito trocas.",
-        "detail_title": "Notebook Gamer ROG STRIX G16 RTX 4060",
-        "configuration_warnings": [],
-        "out_of_scope_at": null,
-        "price_history": [
-          {
-            "at": "2026-10-25T10:03:47.960Z",
-            "price_brl": 7500
-          },
-          {
-            "at": "2026-11-04T10:03:00.122Z",
-            "price_brl": 7200
-          },
-          {
-            "at": "2026-11-04T19:10:55.600Z",
-            "price_brl": 7000
-          }
-        ]
       },
       {
         "id": "1548266943",
@@ -2240,7 +2263,7 @@
         "validation": {
           "version": 2,
           "state": "pending",
-          "checked_at": "2026-11-05T10:01:58.134Z",
+          "checked_at": "2026-11-05T19:00:53.879Z",
           "reasons": [
             "Ficha aguardando leitura dentro dos limites da rodada"
           ]
@@ -2354,6 +2377,187 @@
         ],
         "description_evidence": "Leve o poder do Predator Helios Neo para onde você for! Este notebook gamer combina performance e design para suas batalhas virtuais. E para completar, ganhe uma mochila exclusiva de brinde, perfeita para transportar seu setup com segurança e estilo. intel® core? i9-14900hx - 2,2 ghz / 5,8 ghz32gb ddr5 5600 mhzdiisco: 1 tb windows 11nvidia rtx 4070 graphics 8gb gddr6Possuo caixa original e o laptop esta com pouquíssimo uso.",
         "detail_title": "Laptop Predator Helios Neo intel® core i9-14900hx com rtx4070"
+      },
+      {
+        "id": "1548268436",
+        "url": "https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-two-1548268436",
+        "title": "Notebook Gamer Avell Storm Two",
+        "cpu_term": "family:avell-storm",
+        "search_terms": [
+          "family:avell-storm"
+        ],
+        "description_discovery": true,
+        "price_brl": 7199,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": "RTX 3070 TI",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "out_of_scope",
+        "first_seen": "2026-10-30",
+        "last_seen": "2026-11-05",
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-11-05T19:02:17.801Z",
+          "reasons": [
+            "CPU fora da busca",
+            "Especificação não confirmada: RAM",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 7199,
+          "detail_price_brl": 7199,
+          "visible_price_brl": null,
+          "structured_price_brl": 7199,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 3070 TI"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "out_of_scope_at": "2026-11-05T19:02:17.807Z",
+        "price_history": [
+          {
+            "at": "2026-10-30T10:04:54.013Z",
+            "price_brl": 7199
+          }
+        ],
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ],
+        "description_evidence": "Notebook Gamer Avell Storm TwoIntel Core i7 12700H 2.3GHz16gb memória RAMSSD 1tbVídeo NVidia RTX 3070ti 8gbMonitor 15.6 FHD IPSTeclado retroiluminadoFonte/carregador originalCom caixaCom nota fiscal",
+        "detail_title": "Notebook Gamer Avell Storm Two"
+      },
+      {
+        "id": "1550339131",
+        "url": "https://pr.olx.com.br/regiao-de-foz-do-iguacu-e-cascavel/informatica/notebooks/notebook-gamer-rtx-4070-1550339131",
+        "title": "Notebook gamer RTX 4070",
+        "cpu_term": "14700hx",
+        "search_terms": [
+          "14700hx"
+        ],
+        "description_discovery": true,
+        "price_brl": 6500,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": "RTX 4070",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "not_seen",
+        "first_seen": "2026-11-05",
+        "last_seen": "2026-11-05",
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "pending",
+          "checked_at": "2026-11-05T10:00:30.708Z",
+          "reasons": [
+            "Especificação não confirmada: RAM",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 6500,
+          "detail_price_brl": 6500,
+          "visible_price_brl": null,
+          "structured_price_brl": 6500,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 4070"
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 4070"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "description_evidence": "Potencialize sua jogatina com este notebook gamer equipado com RTX 4070! Desfrute de gráficos incríveis e desempenho de ponta para todos os seus jogos favoritos. Prepare-se para uma experiência imersiva e vitoriosa!I7-14700HXRTX-4070512GB SSD16GB DDR5240HZTela com 2k de resolução",
+        "detail_title": "Notebook gamer RTX 4070",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ],
+        "out_of_scope_at": null,
+        "price_history": [
+          {
+            "at": "2026-11-05T10:03:41.787Z",
+            "price_brl": 6500
+          }
+        ]
+      },
+      {
+        "id": "1539191902",
+        "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-gamer-rog-strix-g16-rtx-4060-1539191902",
+        "title": "Notebook Gamer ROG STRIX G16 RTX 4060",
+        "cpu_term": "13980hx",
+        "search_terms": [
+          "13980hx"
+        ],
+        "description_discovery": true,
+        "price_brl": 7000,
+        "ram_gb": null,
+        "storage_gb": 480,
+        "gpu": "RTX 4060",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "not_seen",
+        "first_seen": "2026-10-25",
+        "last_seen": "2026-11-05",
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "pending",
+          "checked_at": "2026-11-04T19:09:06.215Z",
+          "reasons": [
+            "Especificação não confirmada: RAM",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 7000,
+          "detail_price_brl": 7000,
+          "visible_price_brl": null,
+          "structured_price_brl": 7000,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": 480,
+            "gpu": null
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "description_evidence": "Notebook em excelente estado, apenas trocado o SSDi9-13980HX16GB RAM DDR5RTX 4060 8GB 480GB Armazenamento SSD M.2Tela 165HzEm jogos:Fortnite - Tudo no baixo, resolução 3D em 100%, Full HD - Média de 280 FPSCS 2 - Tudo no baixo, Full HD - Média de 390 FPSRainbow Six - Tudo no baixo, TAA 100, sombras no alto, Full HD - Média de 240 FPSGTA V - Tudo no alto, Full HD - Média de 200 FPSRed Dead Redemption 2 - Tudo no médio, Full HD - Média de 140 FPSSe quiser teste em algum jogo/config específico, favor entrar em contato.Não aceito trocas.",
+        "detail_title": "Notebook Gamer ROG STRIX G16 RTX 4060",
+        "configuration_warnings": [],
+        "out_of_scope_at": null,
+        "price_history": [
+          {
+            "at": "2026-10-25T10:03:47.960Z",
+            "price_brl": 7500
+          },
+          {
+            "at": "2026-11-04T10:03:00.122Z",
+            "price_brl": 7200
+          },
+          {
+            "at": "2026-11-04T19:10:55.600Z",
+            "price_brl": 7000
+          }
+        ]
       },
       {
         "id": "1550295521",
@@ -2585,47 +2789,6 @@
             "price_brl": 6000
           }
         ]
-      },
-      {
-        "id": "1548268436",
-        "url": "https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-two-1548268436",
-        "title": "Notebook Gamer Avell Storm Two",
-        "cpu_term": "family:avell-storm",
-        "search_terms": [
-          "family:avell-storm"
-        ],
-        "description_discovery": true,
-        "price_brl": 7199,
-        "ram_gb": null,
-        "storage_gb": null,
-        "gpu": null,
-        "location": "Lagoa Santa, Sítio Bom Recanto",
-        "condition": null,
-        "status": "active",
-        "first_seen": "2026-10-30",
-        "last_seen": "2026-11-05",
-        "notes": null,
-        "desc_checked": false,
-        "validation": {
-          "version": 2,
-          "state": "pending",
-          "checked_at": "2026-11-05T10:03:17.686Z",
-          "reasons": [
-            "Ficha aguardando leitura dentro dos limites da rodada"
-          ]
-        },
-        "out_of_scope_at": null,
-        "price_history": [
-          {
-            "at": "2026-10-30T10:04:54.013Z",
-            "price_brl": 7199
-          }
-        ],
-        "configuration_warnings": [
-          "Armazenamento não informado"
-        ],
-        "description_evidence": "Notebook Gamer Avell Storm TwoIntel Core i7 12700H 2.3GHz16gb memória RAMSSD 1tbVídeo NVidia RTX 3070ti 8gbMonitor 15.6 FHD IPSTeclado retroiluminadoFonte/carregador originalCom caixaCom nota fiscal",
-        "detail_title": "Notebook Gamer Avell Storm Two"
       },
       {
         "id": "1545937266",
@@ -13416,24 +13579,44 @@
   },
   "blocked_until": null,
   "description_discovery": {
-    "extra_details": 1,
-    "total_details": 1,
-    "detail_ms": 1274,
-    "recovered_validated": 0,
-    "cache_hits": 11,
+    "extra_details": 3,
+    "total_details": 8,
+    "detail_ms": 3166,
+    "recovered_validated": 1,
+    "cache_hits": 4,
     "by_term": {
-      "family:avell-storm": 1
+      "14700hx": 2,
+      "14900hx": 1
     },
     "detail_yield": {
-      "family:avell-storm": {
-        "reads": 1,
+      "14700hx": {
+        "reads": 5,
         "validated_offers": 0,
         "read_keys": [
-          "1548268436"
+          "1545266033",
+          "1547313199",
+          "1522141686",
+          "1550643017",
+          "1548107625"
+        ]
+      },
+      "13980hx": {
+        "reads": 2,
+        "validated_offers": 2,
+        "read_keys": [
+          "1548266943",
+          "1545009098"
+        ]
+      },
+      "14900hx": {
+        "reads": 1,
+        "validated_offers": 1,
+        "read_keys": [
+          "1548163140"
         ]
       }
     },
-    "new_details": 1,
+    "new_details": 8,
     "total_detail_limit": 12,
     "queued_candidates": 16,
     "retry_waiting": 1,
@@ -13447,7 +13630,7 @@
   },
   "query_yield": {
     "14700hx": {
-      "returned": 9,
+      "returned": 10,
       "validated": 2,
       "query": "14700hx",
       "unique_eligible_candidates": 3,
@@ -13457,7 +13640,7 @@
         "1545266033"
       ],
       "pending": 3,
-      "detail_reads": 0,
+      "detail_reads": 5,
       "limited": false,
       "listing_incomplete": false,
       "listing_limit": 36,
@@ -13465,15 +13648,15 @@
       "total_results": 24,
       "details_pending_offers": 0,
       "details_pending_tracking": 0,
-      "tracking_candidates": 6,
+      "tracking_candidates": 7,
       "pending_detail_keys": {
         "offers": [],
         "tracking": []
       },
       "recommendations_ignored": 0,
-      "detail_read_attempts": 0,
+      "detail_read_attempts": 5,
       "validated_offers_from_reads": 0,
-      "validated_offers_per_read": null
+      "validated_offers_per_read": 0
     },
     "13980hx": {
       "returned": 2,
@@ -13485,7 +13668,7 @@
         "1545009098"
       ],
       "pending": 0,
-      "detail_reads": 0,
+      "detail_reads": 2,
       "limited": false,
       "listing_incomplete": false,
       "listing_limit": 12,
@@ -13499,9 +13682,9 @@
         "tracking": []
       },
       "recommendations_ignored": 0,
-      "detail_read_attempts": 0,
-      "validated_offers_from_reads": 0,
-      "validated_offers_per_read": null
+      "detail_read_attempts": 2,
+      "validated_offers_from_reads": 2,
+      "validated_offers_per_read": 1
     },
     "14900hx": {
       "returned": 4,
@@ -13512,12 +13695,12 @@
         "1548163140"
       ],
       "pending": 3,
-      "detail_reads": 0,
+      "detail_reads": 1,
       "limited": true,
       "listing_incomplete": false,
       "listing_limit": 60,
       "details_pending": 1,
-      "total_results": 39,
+      "total_results": 38,
       "details_pending_offers": 0,
       "details_pending_tracking": 1,
       "tracking_candidates": 3,
@@ -13528,9 +13711,9 @@
         ]
       },
       "recommendations_ignored": 0,
-      "detail_read_attempts": 0,
-      "validated_offers_from_reads": 0,
-      "validated_offers_per_read": null
+      "detail_read_attempts": 1,
+      "validated_offers_from_reads": 1,
+      "validated_offers_per_read": 1
     },
     "13900hx": {
       "returned": 0,
@@ -13544,7 +13727,7 @@
       "listing_incomplete": false,
       "listing_limit": 12,
       "details_pending": 0,
-      "total_results": 11,
+      "total_results": 9,
       "details_pending_offers": 0,
       "details_pending_tracking": 0,
       "tracking_candidates": 0,
@@ -13557,10 +13740,10 @@
       "validated_offers_from_reads": 0,
       "validated_offers_per_read": null
     },
-    "285hx": {
+    "8940hx": {
       "returned": 0,
       "validated": 0,
-      "query": "285hx",
+      "query": "8940hx",
       "unique_eligible_candidates": 0,
       "eligible_candidate_ids": [],
       "pending": 0,
@@ -13569,7 +13752,7 @@
       "listing_incomplete": false,
       "listing_limit": 12,
       "details_pending": 0,
-      "total_results": 1,
+      "total_results": 9,
       "details_pending_offers": 0,
       "details_pending_tracking": 0,
       "tracking_candidates": 0,
@@ -13582,35 +13765,10 @@
       "validated_offers_from_reads": 0,
       "validated_offers_per_read": null
     },
-    "7945hx": {
+    "7940hx": {
       "returned": 0,
       "validated": 0,
-      "query": "7945hx",
-      "unique_eligible_candidates": 0,
-      "eligible_candidate_ids": [],
-      "pending": 0,
-      "detail_reads": 0,
-      "limited": false,
-      "listing_incomplete": false,
-      "listing_limit": 12,
-      "details_pending": 0,
-      "total_results": 1,
-      "details_pending_offers": 0,
-      "details_pending_tracking": 0,
-      "tracking_candidates": 0,
-      "pending_detail_keys": {
-        "offers": [],
-        "tracking": []
-      },
-      "recommendations_ignored": 0,
-      "detail_read_attempts": 0,
-      "validated_offers_from_reads": 0,
-      "validated_offers_per_read": null
-    },
-    "7945hx3d": {
-      "returned": 0,
-      "validated": 0,
-      "query": "7945hx3d",
+      "query": "7940hx",
       "unique_eligible_candidates": 0,
       "eligible_candidate_ids": [],
       "pending": 0,
@@ -13627,19 +13785,69 @@
         "offers": [],
         "tracking": []
       },
-      "recommendations_ignored": 38,
+      "recommendations_ignored": 40,
       "detail_read_attempts": 0,
       "validated_offers_from_reads": 0,
       "validated_offers_per_read": null
     },
-    "family:helios-neo-16:14700hx": {
-      "returned": 2,
+    "13950hx": {
+      "returned": 0,
       "validated": 0,
-      "query": "helios neo 16 14700hx",
+      "query": "13950hx",
+      "unique_eligible_candidates": 0,
+      "eligible_candidate_ids": [],
+      "pending": 0,
+      "detail_reads": 0,
+      "limited": false,
+      "listing_incomplete": false,
+      "listing_limit": 12,
+      "details_pending": 0,
+      "total_results": 1,
+      "details_pending_offers": 0,
+      "details_pending_tracking": 0,
+      "tracking_candidates": 0,
+      "pending_detail_keys": {
+        "offers": [],
+        "tracking": []
+      },
+      "recommendations_ignored": 0,
+      "detail_read_attempts": 0,
+      "validated_offers_from_reads": 0,
+      "validated_offers_per_read": null
+    },
+    "275hx": {
+      "returned": 1,
+      "validated": 0,
+      "query": "275hx",
+      "unique_eligible_candidates": 0,
+      "eligible_candidate_ids": [],
+      "pending": 1,
+      "detail_reads": 0,
+      "limited": false,
+      "listing_incomplete": false,
+      "listing_limit": 36,
+      "details_pending": 0,
+      "total_results": 23,
+      "details_pending_offers": 0,
+      "details_pending_tracking": 0,
+      "tracking_candidates": 1,
+      "pending_detail_keys": {
+        "offers": [],
+        "tracking": []
+      },
+      "recommendations_ignored": 0,
+      "detail_read_attempts": 0,
+      "validated_offers_from_reads": 0,
+      "validated_offers_per_read": null
+    },
+    "family:rog-strix-g16:13980hx": {
+      "returned": 2,
+      "validated": 2,
+      "query": "rog strix g16 13980hx",
       "unique_eligible_candidates": 2,
       "eligible_candidate_ids": [
-        "1549921750",
-        "1545266033"
+        "1548266943",
+        "1545009098"
       ],
       "pending": 0,
       "detail_reads": 0,
@@ -13647,7 +13855,7 @@
       "listing_incomplete": false,
       "listing_limit": 60,
       "details_pending": 0,
-      "total_results": 11,
+      "total_results": 3,
       "details_pending_offers": 0,
       "details_pending_tracking": 0,
       "tracking_candidates": 0,

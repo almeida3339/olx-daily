@@ -1,19 +1,19 @@
 {
   "schema_version": 1,
-  "run_id": "2026-11-05T19-02-26-254Z",
-  "committed_at": "2026-11-05T19:02:27.321Z",
-  "snapshot": "runs/2026-11-05T19-02-26-254Z/snapshot.json",
-  "report": "runs/2026-11-05T19-02-26-254Z/report.md",
+  "run_id": "2026-11-06T10-04-10-767Z",
+  "committed_at": "2026-11-06T10:04:32.811Z",
+  "snapshot": "runs/2026-11-06T10-04-10-767Z/snapshot.json",
+  "report": "runs/2026-11-06T10-04-10-767Z/report.md",
   "quarantine": null,
   "summary": {
     "schema_version": 1,
-    "collected_at": "2026-11-05T19:02:27.310Z",
+    "collected_at": "2026-11-06T10:04:32.802Z",
     "execution": "success",
     "issues": [],
     "coverage": {
       "status": "complete",
-      "scheduled": 1,
-      "completed": 1,
+      "scheduled": 2,
+      "completed": 2,
       "incomplete": 0,
       "deferred": 0,
       "pending_descriptions": 0,
@@ -23,22 +23,29 @@
       "heuristic_reasons": {}
     },
     "findings": {
-      "new_items": [],
+      "new_items": [
+        {
+          "id": "1549846664",
+          "title": "Melanger Amirthaa 5kg por lote",
+          "url": "https://pr.olx.com.br/regiao-de-londrina/eletro/eletroportateis-para-cozinha-e-limpeza/melanger-amirthaa-5kg-por-lote-1549846664",
+          "price_brl": 3899
+        }
+      ],
       "price_changes": [],
-      "active_count": 0,
+      "active_count": 1,
       "pending_count": 0,
-      "new_count": 0,
+      "new_count": 1,
       "price_count": 0
     }
   },
   "checksums": {
-    "snapshot_sha256": "1f518b10f71054262a723534189208612718eb7df6598a03fb94052dd0944e00",
-    "report_sha256": "579b050d71561a7aeff587da46c32920f984273d6d320859c77197972bbe56a9"
+    "snapshot_sha256": "b87fd0175a7f0a780216467f075ef4a0047b26ee5056312216518c1ed85ba3f0",
+    "report_sha256": "829c7b8fa58586b6734ddb34ead2e9fa047f12210ea5a20ec83be0e152c2c2bf"
   },
   "metadata": {
     "source": "melanger",
     "label": "Melanger",
-    "collected_count": 0,
+    "collected_count": 1,
     "quarantined_item_count": 0
   }
 }
