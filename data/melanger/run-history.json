@@ -1,7 +1,23 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-06T10:04:33.295Z",
+  "updated_at": "2026-11-06T11:01:27.016Z",
   "runs": [
+    {
+      "run_id": "2026-11-06T11-01-26-724Z",
+      "committed_at": "2026-11-06T11:01:26.971Z",
+      "completed_at": "2026-11-06T11:01:26.954Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 230,
+      "item_count": 6,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "melanger",
+        "label": "Melanger",
+        "collected_count": 0,
+        "quarantined_item_count": 0
+      }
+    },
     {
       "run_id": "2026-11-06T10-04-10-767Z",
       "committed_at": "2026-11-06T10:04:32.811Z",
@@ -10,12 +26,12 @@
       "partial": false,
       "duration_ms": 22035,
       "item_count": 6,
-      "quarantined_item_count": 0,
       "metadata": {
         "source": "melanger",
         "label": "Melanger",
         "collected_count": 1,
-        "quarantined_item_count": 0
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     },
     {
@@ -1902,22 +1918,6 @@
         "source": "melanger",
         "label": "Melanger",
         "collected_count": 0,
-        "quarantined_item_count": 0,
-        "in_progress": false
-      }
-    },
-    {
-      "run_id": "2026-09-30T19-42-49-105Z",
-      "committed_at": "2026-09-30T19:42:55.660Z",
-      "completed_at": "2026-09-30T19:42:55.660Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": null,
-      "item_count": 5,
-      "metadata": {
-        "source": "melanger",
-        "label": "Melanger",
-        "collected_count": 1,
         "quarantined_item_count": 0,
         "in_progress": false
       }
