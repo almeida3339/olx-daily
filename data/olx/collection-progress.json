@@ -2,29 +2,27 @@
   "schema_version": 1,
   "quality_version": 2,
   "configuration": "9955hx3d,290hx,9955hx,285hx,275hx,aimax395,7945hx,7945hx3d,255hx,13980hx,8940hx,7940hx,13950hx,14900hx,13900hx,7845hx,8840hx,aimax390,14700hx,hx470,family:helios-neo-16,family:rog-strix-g16,family:legion-pro-5,family:dell-g16,family:avell-a65,family:avell-storm,family:helios-neo-16:14700hx,family:rog-strix-g16:13980hx",
-  "started_at": "2026-11-06T19:00:22.004Z",
-  "updated_at": "2026-11-06T19:02:20.292Z",
+  "started_at": "2026-11-07T10:00:22.526Z",
+  "updated_at": "2026-11-07T10:03:13.092Z",
   "state": "partial",
   "scheduled_terms": [
     "14700hx",
     "13980hx",
     "14900hx",
     "13900hx",
-    "7845hx",
-    "8840hx",
-    "aimax390",
-    "hx470",
-    "family:avell-storm"
+    "290hx",
+    "9955hx",
+    "aimax395",
+    "family:legion-pro-5"
   ],
   "successful_terms": [
     "14700hx",
     "13980hx",
     "13900hx",
-    "7845hx",
-    "8840hx",
-    "aimax390",
-    "hx470",
-    "family:avell-storm"
+    "290hx",
+    "9955hx",
+    "aimax395",
+    "family:legion-pro-5"
   ],
   "collected": [
     {
@@ -103,7 +101,7 @@
       "validation": {
         "version": 2,
         "state": "rejected",
-        "checked_at": "2026-11-03T19:15:32.874Z",
+        "checked_at": "2026-11-07T10:00:47.815Z",
         "reasons": [
           "RAM abaixo do mínimo exigido",
           "RAM abaixo do mínimo de 32 GB"
@@ -123,13 +121,88 @@
           "gpu": "RTX 4070"
         },
         "cpu_confirmed": true,
-        "description_checked": true
+        "description_checked": true,
+        "detail_diagnostic": {
+          "state": "ready",
+          "http_status": 200,
+          "document_state": "interactive",
+          "description_found": true,
+          "price_found": true,
+          "structured_product_found": true,
+          "description_source": "structured",
+          "same_ad": true,
+          "body_length": 1974,
+          "wait_ms": 550,
+          "samples": 2
+        }
       },
       "description_evidence": "Notebook Gamer Acer prepadator helios neo - RTX 4070 Intel core i7 HX -, apenas 1 ano e meio de usoProcessador: Intel i7 14700HX (20n/28t)(desbloqueado para overclock)Placa de vídeo: RTX 4070 8gb GDDR7Tela: 16 pol 2K(2560 x 1600) 244hz, Ips Memória: 16gb DDR5Bateria 90WhFonte: 330 W, externa (Bivolt)Acompanha controle 8BitDo Ultimate 3Teclado retroiluminado em cor branca Peso reduzido, extremamente portátil",
       "detail_title": "Notebook gamer acer predator helios neo i7 rtx 4070 16ram ddr5",
       "configuration_warnings": [
         "Armazenamento não informado"
       ]
+    },
+    {
+      "id": "1550643017",
+      "url": "https://pe.olx.com.br/grande-recife/informatica/notebooks/notebook-gamer-predator-helios-neo-core-i7-14700hx-rtx-4070-1550643017",
+      "title": "NOTEBOOK GAMER PREDATOR HELIOS NEO CORE I7-14700HX  RTX 4070",
+      "cpu_term": "14700hx",
+      "search_terms": [
+        "14700hx"
+      ],
+      "description_discovery": false,
+      "price_brl": 8000,
+      "ram_gb": 16,
+      "storage_gb": 512,
+      "gpu": "RTX 4070",
+      "location": null,
+      "condition": "Novo",
+      "status": "active",
+      "first_seen": null,
+      "last_seen": null,
+      "notes": null,
+      "desc_checked": true,
+      "validation": {
+        "version": 2,
+        "state": "rejected",
+        "checked_at": "2026-11-07T10:00:35.968Z",
+        "reasons": [
+          "RAM abaixo do mínimo exigido",
+          "RAM abaixo do mínimo de 32 GB"
+        ],
+        "listing_price_brl": 8000,
+        "detail_price_brl": 8000,
+        "visible_price_brl": null,
+        "structured_price_brl": 8000,
+        "title_specs": {
+          "ram_gb": null,
+          "storage_gb": null,
+          "gpu": "RTX 4070"
+        },
+        "description_specs": {
+          "ram_gb": 16,
+          "storage_gb": 512,
+          "gpu": "RTX 4070"
+        },
+        "cpu_confirmed": true,
+        "description_checked": true,
+        "detail_diagnostic": {
+          "state": "ready",
+          "http_status": 200,
+          "document_state": "loading",
+          "description_found": true,
+          "price_found": true,
+          "structured_product_found": true,
+          "description_source": "structured",
+          "same_ad": true,
+          "body_length": 1807,
+          "wait_ms": 669,
+          "samples": 2
+        }
+      },
+      "description_evidence": "Eleve sua experiência gamer com o Notebook Gamer Predator Helios Neo! Equipado com o poderoso Intel® Core i7-14700HX e a incrível Nvidia Geforce RTX 4070, este notebook oferece desempenho de ponta para os jogos mais exigentes. Com 16GB de RAM e 512GB de SSD, desfrute de velocidade e fluidez em todas as suas jogadas. O design moderno e a tela de 16 polegadas proporcionam imersão total. Prepare-se para dominar o campo de batalha!",
+      "detail_title": "NOTEBOOK GAMER PREDATOR HELIOS NEO CORE I7-14700HX  RTX 4070",
+      "configuration_warnings": []
     },
     {
       "id": "1545266033",
@@ -197,7 +270,7 @@
       "storage_gb": 1536,
       "gpu": "RTX 4060",
       "location": null,
-      "condition": null,
+      "condition": "novo",
       "status": "active",
       "first_seen": null,
       "last_seen": null,
@@ -206,7 +279,7 @@
       "validation": {
         "version": 2,
         "state": "validated",
-        "checked_at": "2026-11-06T10:00:59.237Z",
+        "checked_at": "2026-11-07T10:00:59.804Z",
         "reasons": [],
         "listing_price_brl": 8399,
         "detail_price_brl": 8399,
@@ -223,7 +296,20 @@
           "gpu": "RTX 4060"
         },
         "cpu_confirmed": true,
-        "description_checked": true
+        "description_checked": true,
+        "detail_diagnostic": {
+          "state": "ready",
+          "http_status": 200,
+          "document_state": "interactive",
+          "description_found": true,
+          "price_found": true,
+          "structured_product_found": true,
+          "description_source": "structured",
+          "same_ad": true,
+          "body_length": 2655,
+          "wait_ms": 561,
+          "samples": 2
+        }
       },
       "description_evidence": "Vendo Notebook Gamer NAVE Estelar, uma verdadeira máquina de altíssimo desempenho, ideal para rodar todos os jogos atuais no Ultra, trabalhar com edição de vídeo pesada, modelagem 3D e renderização. Equipamento robusto e com configurações de última geração.Processador: Intel Core i7-14700HX (14ª Geração) - 20 Núcleos (8 P-cores + 12 E-cores) / 28 Threads - Desempenho absurdo para qualquer tarefa.Placa de Vídeo: NVIDIA GeForce RTX 4060 Laptop (8GB GDDR6) - Roda tudo com Ray Tracing e DLSS 3.Memória RAM: 32GB DDR5 (2x 16GB a 5600 MHz) - Velocidade extrema para multitarefas.Armazenamento Duplo (1.5TB total):- SSD 1: 1TB NVMe (Kingston)- SSD 2: 512GB NVMe (Micron)Equipamento em perfeito estado de funcionamento, conforme mostram os testes de hardware nas fotos. Possui excelente sistema de refrigeração (grandes saídas de ar na parte inferior). Detalhes estéticos normais de uso na tampa (acabamento fosco padrão da marca), mas sem trincos ou quebras estruturais. Realmente 100%, adquirido em novembro de 2024. Ele está impecável! Um novo nessa configuração está R$11k à vista. Então o valor atual já está bem condizente com as configurações. Acompanha caixa original.",
       "detail_title": "Notebook Gamer NAVE Estelar (i7-14700HX  / 32GB / RTX 4060 8GB)",
@@ -243,7 +329,7 @@
       "storage_gb": 1024,
       "gpu": "RTX 4070",
       "location": null,
-      "condition": "novo",
+      "condition": null,
       "status": "active",
       "first_seen": null,
       "last_seen": null,
@@ -252,7 +338,7 @@
       "validation": {
         "version": 2,
         "state": "rejected",
-        "checked_at": "2026-11-03T19:15:56.899Z",
+        "checked_at": "2026-11-07T10:01:11.698Z",
         "reasons": [
           "RAM abaixo do mínimo exigido",
           "RAM abaixo do mínimo de 32 GB"
@@ -272,7 +358,20 @@
           "gpu": "RTX 4070"
         },
         "cpu_confirmed": true,
-        "description_checked": true
+        "description_checked": true,
+        "detail_diagnostic": {
+          "state": "ready",
+          "http_status": 200,
+          "document_state": "loading",
+          "description_found": true,
+          "price_found": true,
+          "structured_product_found": true,
+          "description_source": "structured",
+          "same_ad": true,
+          "body_length": 0,
+          "wait_ms": 530,
+          "samples": 2
+        }
       },
       "description_evidence": "Comprado em dezembro de 2025 na loja oficial da Acer, com nota fiscal. Muito bem conservado, como novo.- Intel Core i7-14700HX- NVIDIA RTX 4070 8 GB- 16 GB de RAM DDR5-5600- SSD NVMe de 512 GB- Tela de 16\" 2560x1600, 240 HzOpcional: troco por um SSD de 1 TB, por R$ 500 a mais.Vai formatado, com carregador. Entrega a partir de 20/11. Envio pela OLX ou retirada em João Pessoa.Foto ilustrativa do modelo. Mando fotos reais pelo chat.",
       "detail_title": "Notebook Acer Predator Helios Neo 16 i7-14700HX RTX 4070 8GB 240Hz com nota fiscal",
@@ -313,55 +412,6 @@
       ],
       "description_evidence": "Notebook Acer Predator Helios Neo, alta performance para jogos e softwares pesados. (Acompanha Caixa)Configurações:Intel core i7 14700HX (14ª Geração)RTX 4070 8GB16GB Ram DDR5 (5600MHz)SSD 512GB Nvme M.2Teclado RetroiluminadoTela 16 pol WQXGA, 240Hz (2560 x 1600)Parcelamos em até 12x no cartão de crédito, consulte as taxas.Garantia de 3 Meses.Aceito produtos como parte de pagamento: PlayStation, Xbox, iPhone, Notebook, PC Gamer, MacBook, Apple Watch.Instagram: @kr_eletronicoscwb",
       "detail_title": "Notebook Acer Predator - RTX 4070 / Intel Core i7 14700HX / Tela 240Hz (Aceito Trocas)"
-    },
-    {
-      "id": "1550643017",
-      "url": "https://pe.olx.com.br/grande-recife/informatica/notebooks/notebook-gamer-predator-helios-neo-core-i7-14700hx-rtx-4070-1550643017",
-      "title": "NOTEBOOK GAMER PREDATOR HELIOS NEO CORE I7-14700HX  RTX 4070",
-      "cpu_term": "14700hx",
-      "search_terms": [
-        "14700hx"
-      ],
-      "description_discovery": false,
-      "price_brl": 9000,
-      "ram_gb": 16,
-      "storage_gb": 512,
-      "gpu": "RTX 4070",
-      "location": null,
-      "condition": null,
-      "status": "active",
-      "first_seen": null,
-      "last_seen": null,
-      "notes": null,
-      "desc_checked": true,
-      "validation": {
-        "version": 2,
-        "state": "rejected",
-        "checked_at": "2026-11-06T10:01:11.823Z",
-        "reasons": [
-          "RAM abaixo do mínimo exigido",
-          "RAM abaixo do mínimo de 32 GB"
-        ],
-        "listing_price_brl": 9000,
-        "detail_price_brl": 9000,
-        "visible_price_brl": null,
-        "structured_price_brl": 9000,
-        "title_specs": {
-          "ram_gb": null,
-          "storage_gb": null,
-          "gpu": "RTX 4070"
-        },
-        "description_specs": {
-          "ram_gb": 16,
-          "storage_gb": 512,
-          "gpu": "RTX 4070"
-        },
-        "cpu_confirmed": true,
-        "description_checked": true
-      },
-      "description_evidence": "Eleve sua experiência gamer com o Notebook Gamer Predator Helios Neo! Equipado com o poderoso Intel® Core i7-14700HX e a incrível Nvidia Geforce RTX 4070, este notebook oferece desempenho de ponta para os jogos mais exigentes. Com 16GB de RAM e 512GB de SSD, desfrute de velocidade e fluidez em todas as suas jogadas. O design moderno e a tela de 16 polegadas proporcionam imersão total. Prepare-se para dominar o campo de batalha!",
-      "detail_title": "NOTEBOOK GAMER PREDATOR HELIOS NEO CORE I7-14700HX  RTX 4070",
-      "configuration_warnings": []
     },
     {
       "id": "1548728481",
@@ -414,7 +464,7 @@
       "validation": {
         "version": 2,
         "state": "validated",
-        "checked_at": "2026-11-06T10:01:23.270Z",
+        "checked_at": "2026-11-07T10:01:23.617Z",
         "reasons": [],
         "listing_price_brl": 9500,
         "detail_price_brl": 9500,
@@ -431,7 +481,20 @@
           "gpu": "RTX 4070"
         },
         "cpu_confirmed": true,
-        "description_checked": true
+        "description_checked": true,
+        "detail_diagnostic": {
+          "state": "ready",
+          "http_status": 200,
+          "document_state": "interactive",
+          "description_found": true,
+          "price_found": true,
+          "structured_product_found": true,
+          "description_source": "structured",
+          "same_ad": true,
+          "body_length": 1865,
+          "wait_ms": 610,
+          "samples": 2
+        }
       },
       "description_evidence": "Desempenho imbatível com o Notebook Lenovo Legion Pro 5i! Equipado com processador Intel Core i7 de 14ª geração e placa de vídeo RTX 4070, este notebook é ideal para gamers e profissionais que buscam o máximo em tecnologia e velocidade. Experimente gráficos incríveis e multitarefa sem interrupções.Notebook impecável modelo de portugal com garantia 2 meses restando.32gb de ram ddr51tb de ssdRtx 4070 8gbI7 14700HXQhd 165hz",
       "detail_title": "Notebool Lenovo Legion pro 5i rtx 4070, i7 14700HX",
@@ -489,52 +552,6 @@
       "detail_title": "Notebook Gamer Predator Helios Neo / Phn16-72-74vx /  Intel® Core I7-14700hx De 14ªgeração"
     },
     {
-      "id": "1545009098",
-      "url": "https://sc.olx.com.br/florianopolis-e-regiao/informatica/notebooks/notebook-asus-rog-strix-g16-i9-13980hx-rtx-4060-1tb-32gb-ddr5-1545009098",
-      "title": "Notebook ASUS ROG Strix G16 | i9-13980HX | RTX 4060 | 1TB | 32GB DDR5",
-      "cpu_term": "13980hx",
-      "search_terms": [
-        "13980hx"
-      ],
-      "description_discovery": false,
-      "price_brl": 7927,
-      "ram_gb": 32,
-      "storage_gb": 1024,
-      "gpu": "RTX 4060",
-      "location": null,
-      "condition": "Usado - Excelente",
-      "status": "active",
-      "first_seen": null,
-      "last_seen": null,
-      "notes": null,
-      "desc_checked": true,
-      "validation": {
-        "version": 2,
-        "state": "validated",
-        "checked_at": "2026-11-06T10:02:02.042Z",
-        "reasons": [],
-        "listing_price_brl": 7927,
-        "detail_price_brl": 7927,
-        "visible_price_brl": null,
-        "structured_price_brl": 7927,
-        "title_specs": {
-          "ram_gb": 32,
-          "storage_gb": 1024,
-          "gpu": "RTX 4060"
-        },
-        "description_specs": {
-          "ram_gb": 32,
-          "storage_gb": 1024,
-          "gpu": "RTX 4060"
-        },
-        "cpu_confirmed": true,
-        "description_checked": true
-      },
-      "description_evidence": "Eleve sua experiência gamer com o Notebook ASUS ROG Strix G16! Equipado com processador i9-13980HX e placa de vídeo RTX 4060, este notebook oferece desempenho excepcional para os jogos mais exigentes. Com 1TB de armazenamento WD BLACK e 32GB 5600MT/s de RAM DDR5 Kingston FURY Impact, você terá velocidade e espaço de sobra para todos os seus jogos e arquivos. Design moderno e refrigeração avançada para sessões de jogo intensas.Notebook em excelente estado, muito bem cuidado e super conservado. Eu utilizava um teclado externo, evitando o desgaste do teclado original.Acompanha: 16 GB de memória RAM que vieram originalmente com o notebook.Cabo HDMI.Motivo da venda: Migrei para um MacBook e, por isso, não estou mais utilizando este notebook.Importante: Não aceito propostas de negociação nem trocas. Apenas venda pelo valor anunciado.Notebook muito bem cuidado, pronto para o próximo dono!",
-      "detail_title": "Notebook ASUS ROG Strix G16 | i9-13980HX | RTX 4060 | 1TB | 32GB DDR5",
-      "configuration_warnings": []
-    },
-    {
       "id": "1548163140",
       "url": "https://go.olx.com.br/grande-goiania-e-anapolis/informatica/notebooks/notebook-gamer-msi-vector-16-hx-a14vfg-potencia-de-sobra-para-jogos-e-trabalho-pesado-1548163140",
       "title": "Notebook Gamer MSI Vector 16 HX A14VFG - Potência de sobra para jogos e trabalho pesado!",
@@ -557,7 +574,7 @@
       "validation": {
         "version": 2,
         "state": "validated",
-        "checked_at": "2026-11-06T10:02:26.357Z",
+        "checked_at": "2026-11-07T10:02:03.905Z",
         "reasons": [],
         "listing_price_brl": 7800,
         "detail_price_brl": 7800,
@@ -574,7 +591,20 @@
           "gpu": "RTX 4060"
         },
         "cpu_confirmed": true,
-        "description_checked": true
+        "description_checked": true,
+        "detail_diagnostic": {
+          "state": "ready",
+          "http_status": 200,
+          "document_state": "interactive",
+          "description_found": true,
+          "price_found": true,
+          "structured_product_found": true,
+          "description_source": "structured",
+          "same_ad": true,
+          "body_length": 2404,
+          "wait_ms": 634,
+          "samples": 2
+        }
       },
       "description_evidence": "Notebook Gamer MSI Vector 16 HX A14VFG - Potência de sobra para jogos e trabalho pesado!Configuração completa:? Processador: Intel Core i9-14900HX (24 núcleos / 32 threads - até 5.8 GHz)? Placa de vídeo: NVIDIA GeForce RTX 4060 8GB GDDR6? Memória: 32GB DDR5 (2x16GB)? Armazenamento: 1TB SSD NVMe? Tela: 16? QHD+ (2560x1600) IPS 240Hz anti-reflexo - excelente para jogos competitivos e conteúdo? Sistema: Windows 11 Home original? Teclado RGB por tecla (SteelSeries)? Bateria 90Wh? Cor: Cosmos GrayEstado: Seminovo, em excelente estado de conservação.Vem com caixa original.Pouquíssimo uso, sem marcas relevantes, tela impecável e funcionamento 100%.Ideal para quem quer rodar jogos atuais em alto desempenho, edição de vídeo, modelagem 3D ou multitarefa pesada.",
       "detail_title": "Notebook Gamer MSI Vector 16 HX A14VFG - Potência de sobra para jogos e trabalho pesado!",
@@ -603,7 +633,7 @@
       "validation": {
         "version": 2,
         "state": "pending",
-        "checked_at": "2026-11-06T19:00:46.737Z",
+        "checked_at": "2026-11-07T10:02:03.912Z",
         "reasons": [
           "Ficha aguardando leitura dentro dos limites da rodada"
         ]
@@ -714,381 +744,6 @@
       ],
       "description_evidence": "Leve o poder do Predator Helios Neo para onde você for! Este notebook gamer combina performance e design para suas batalhas virtuais. E para completar, ganhe uma mochila exclusiva de brinde, perfeita para transportar seu setup com segurança e estilo. intel® core? i9-14900hx - 2,2 ghz / 5,8 ghz32gb ddr5 5600 mhzdiisco: 1 tb windows 11nvidia rtx 4070 graphics 8gb gddr6Possuo caixa original e o laptop esta com pouquíssimo uso.",
       "detail_title": "Laptop Predator Helios Neo intel® core i9-14900hx com rtx4070"
-    },
-    {
-      "id": "1550295521",
-      "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-avell-storm-450-pro-1550295521",
-      "title": "Notebook Avell Storm 450 Pro",
-      "cpu_term": "family:avell-storm",
-      "search_terms": [
-        "family:avell-storm"
-      ],
-      "description_discovery": true,
-      "price_brl": 5000,
-      "ram_gb": null,
-      "storage_gb": null,
-      "gpu": null,
-      "location": null,
-      "condition": "Usado - Excelente",
-      "status": "active",
-      "first_seen": "2026-11-05",
-      "last_seen": "2026-11-05",
-      "notes": null,
-      "desc_checked": true,
-      "validation": {
-        "version": 2,
-        "state": "pending",
-        "checked_at": "2026-11-05T10:03:17.675Z",
-        "reasons": [
-          "Especificação não confirmada: RAM",
-          "Especificação não confirmada: GPU",
-          "CPU não confirmada no anúncio"
-        ],
-        "listing_price_brl": 5000,
-        "detail_price_brl": 5000,
-        "visible_price_brl": null,
-        "structured_price_brl": 5000,
-        "title_specs": {
-          "ram_gb": null,
-          "storage_gb": null,
-          "gpu": null
-        },
-        "description_specs": {
-          "ram_gb": null,
-          "storage_gb": null,
-          "gpu": null
-        },
-        "cpu_confirmed": false,
-        "description_checked": true
-      },
-      "description_evidence": "Potencialize seu dia com o Notebook Avell Storm 450 Pro! Desempenho incrível para todas as suas tarefas e entretenimento. Design moderno e tela vibrante para uma experiência visual imersiva. Ideal para trabalho, estudo e jogos.Notebook em ótimo estado, foi usado apenas para estudos de faculdade.",
-      "detail_title": "Notebook Avell Storm 450 Pro ",
-      "configuration_warnings": [
-        "Armazenamento não informado"
-      ],
-      "out_of_scope_at": null,
-      "price_history": [
-        {
-          "at": "2026-11-05T10:03:41.787Z",
-          "price_brl": 5000
-        }
-      ]
-    },
-    {
-      "id": "1546506873",
-      "url": "https://pa.olx.com.br/regiao-de-maraba/informatica/notebooks/notebook-gamer-avell-storm-bs-350-1546506873",
-      "title": "Notebook Gamer Avell Storm BS 350",
-      "cpu_term": "family:avell-storm",
-      "search_terms": [
-        "family:avell-storm"
-      ],
-      "description_discovery": true,
-      "price_brl": 5300,
-      "ram_gb": null,
-      "storage_gb": null,
-      "gpu": "RTX 3050",
-      "location": null,
-      "condition": "Usado - Excelente",
-      "status": "active",
-      "first_seen": null,
-      "last_seen": null,
-      "notes": null,
-      "desc_checked": true,
-      "validation": {
-        "version": 2,
-        "state": "rejected",
-        "checked_at": "2026-11-05T10:03:41.782Z",
-        "reasons": [
-          "CPU fora da busca",
-          "Especificação não confirmada: RAM",
-          "CPU não confirmada no anúncio"
-        ],
-        "listing_price_brl": 5300,
-        "detail_price_brl": 5300,
-        "visible_price_brl": null,
-        "structured_price_brl": 5300,
-        "title_specs": {
-          "ram_gb": null,
-          "storage_gb": null,
-          "gpu": null
-        },
-        "description_specs": {
-          "ram_gb": null,
-          "storage_gb": null,
-          "gpu": "RTX 3050"
-        },
-        "cpu_confirmed": false,
-        "description_checked": true
-      },
-      "description_evidence": "Vendo Notebook Gamer Avell em excelente estado de conservação, sem nenhum detalhe, usado poucas vezes. Especificações de hardware:? GeForce® RTX 3050 (4GB GDDR6)? Intel® Core?M i7-12650H Alder Lake (24MB cache, 3.5GHz ~ 4.7GHz Turbo Boost Max 3.0)? Upgrade Grátis - 32GB [2x 16GB - Dual Channel] Memória DDR4 (3200MHZ)? SSD M.2 NVME 512GB - Geração 4 - [3.400 MB/s? 15.6\" FHD WVA (1920x1080p) - 144Hz / Matte / Contraste: 1000:1/ Brilho 250 cd/m²",
-      "detail_title": "Notebook Gamer Avell Storm BS 350",
-      "configuration_warnings": [
-        "Armazenamento não informado"
-      ]
-    },
-    {
-      "id": "1550499708",
-      "url": "https://df.olx.com.br/distrito-federal-e-regiao/informatica/notebooks/notebook-avell-storm-450-i7-rtx-4050-com-caixa-e-carregador-originais-1550499708",
-      "title": "Notebook Avell STORM 450 i7 RTX 4050 com caixa e carregador originais",
-      "cpu_term": "family:avell-storm",
-      "search_terms": [
-        "family:avell-storm"
-      ],
-      "description_discovery": true,
-      "price_brl": 6000,
-      "ram_gb": 16,
-      "storage_gb": 512,
-      "gpu": "RTX 4050",
-      "location": null,
-      "condition": "Usado - Excelente",
-      "status": "active",
-      "first_seen": null,
-      "last_seen": null,
-      "notes": null,
-      "desc_checked": true,
-      "validation": {
-        "version": 2,
-        "state": "rejected",
-        "checked_at": "2026-11-06T19:02:16.811Z",
-        "reasons": [
-          "Defeito ou avaria declarados no anúncio",
-          "RAM abaixo do mínimo de 32 GB",
-          "CPU não confirmada no anúncio"
-        ],
-        "listing_price_brl": 6000,
-        "detail_price_brl": 6000,
-        "visible_price_brl": null,
-        "structured_price_brl": 6000,
-        "title_specs": {
-          "ram_gb": null,
-          "storage_gb": null,
-          "gpu": "RTX 4050"
-        },
-        "description_specs": {
-          "ram_gb": 16,
-          "storage_gb": 512,
-          "gpu": "RTX 4050"
-        },
-        "cpu_confirmed": false,
-        "description_checked": true,
-        "detail_diagnostic": {
-          "state": "ready",
-          "http_status": 200,
-          "document_state": "interactive",
-          "description_found": true,
-          "price_found": true,
-          "structured_product_found": true,
-          "description_source": "structured",
-          "same_ad": true,
-          "body_length": 1727,
-          "wait_ms": 991,
-          "samples": 2
-        }
-      },
-      "description_evidence": "Notebook gamer Avell STORM 450 com 8 meses de uso em excelente condições, não possue nenhuma avaria ou defeito e está funcionando perfeitamente. Acompanha caixa e carregador originaisDetalhes:- Processador Intel i7 de 13 geração- 16 GB de RAM- GPU dedicado Nvidia GeForce RTX 4050- 512 GB de armazenamento SSD- Teclado RGB",
-      "detail_title": "Notebook Avell STORM 450 i7 RTX 4050 com caixa e carregador originais",
-      "configuration_warnings": []
-    },
-    {
-      "id": "1541030102",
-      "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-i7-rtx4050-32gb-1541030102",
-      "title": "Notebook Gamer Avell Storm i7 RTX4050 32GB",
-      "cpu_term": "family:avell-storm",
-      "search_terms": [
-        "family:avell-storm"
-      ],
-      "description_discovery": true,
-      "price_brl": 6000,
-      "ram_gb": 32,
-      "storage_gb": 64,
-      "gpu": "RTX 4050",
-      "location": null,
-      "condition": "Usado - Excelente",
-      "status": "active",
-      "first_seen": null,
-      "last_seen": null,
-      "notes": null,
-      "desc_checked": true,
-      "validation": {
-        "version": 2,
-        "state": "rejected",
-        "checked_at": "2026-11-05T10:02:41.739Z",
-        "reasons": [
-          "CPU fora da busca",
-          "CPU não confirmada no anúncio"
-        ],
-        "listing_price_brl": 6000,
-        "detail_price_brl": 6000,
-        "visible_price_brl": null,
-        "structured_price_brl": 6000,
-        "title_specs": {
-          "ram_gb": null,
-          "storage_gb": null,
-          "gpu": "RTX 4050"
-        },
-        "description_specs": {
-          "ram_gb": 32,
-          "storage_gb": 64,
-          "gpu": null
-        },
-        "cpu_confirmed": false,
-        "description_checked": true
-      },
-      "description_evidence": "Placa de vídeo NVIDIA GeForceRTX 4050 6GB GDDR6ProcessadorIntel Core i7-12650H(12ª geração)10 núcleos / 16 threads24 MB de cachede 1.70 GHz até 4.70 GHzMemória RAM32 GB DDR4 3200 MHzMáximo de 64 GBArmazenamento SSDSSD de 512 GB NVMeSSD de 256 GB NVMeTela16:9 LED 15,6\" pol.Full HD (1920 x 1080 px) 144HzWi-Fi 6 (802.11ax)Bluetooth 5.21x USB 2.02x USB 3.11x USB-C1x USB-C (DisplayPort)1x HDMI1x P2 (fone + mic)1x rede RJ-451x leitor de cartões",
-      "detail_title": "Notebook Gamer Avell Storm i7 RTX4050 32GB",
-      "configuration_warnings": []
-    },
-    {
-      "id": "1548592870",
-      "url": "https://df.olx.com.br/distrito-federal-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-450r-ryzen-7-rtx-4050-ssd-1tb-512gb-1548592870",
-      "title": "Notebook Gamer Avell Storm 450R Ryzen 7 RTX 4050 SSD 1TB + 512GB",
-      "cpu_term": "family:avell-storm",
-      "search_terms": [
-        "family:avell-storm"
-      ],
-      "description_discovery": true,
-      "price_brl": 6000,
-      "ram_gb": 16,
-      "storage_gb": 1024,
-      "gpu": "RTX 4050",
-      "location": null,
-      "condition": "Usado - Excelente",
-      "status": "active",
-      "first_seen": null,
-      "last_seen": null,
-      "notes": null,
-      "desc_checked": true,
-      "validation": {
-        "version": 2,
-        "state": "rejected",
-        "checked_at": "2026-11-05T10:02:53.989Z",
-        "reasons": [
-          "RAM abaixo do mínimo exigido",
-          "RAM abaixo do mínimo de 32 GB",
-          "CPU não confirmada no anúncio"
-        ],
-        "listing_price_brl": 6000,
-        "detail_price_brl": 6000,
-        "visible_price_brl": null,
-        "structured_price_brl": 6000,
-        "title_specs": {
-          "ram_gb": null,
-          "storage_gb": 1024,
-          "gpu": "RTX 4050"
-        },
-        "description_specs": {
-          "ram_gb": 16,
-          "storage_gb": 1024,
-          "gpu": "RTX 4050"
-        },
-        "cpu_confirmed": false,
-        "description_checked": true
-      },
-      "description_evidence": "Vendo notebook gamer Avell Storm 450R com processador AMD Ryzen 7 7735HS, 8 núcleos e 16 threads, e placa de vídeo dedicada NVIDIA GeForce RTX 4050.Tela de 15,6 polegadas Full HD com taxa de atualização de até 165 Hz.Possui dois SSDs NVMe instalados: Kingston NV2 de 1 TB e FORESEE de 512 GB.Atualmente está com Linux BigLinux instalado.Processador AMD Ryzen 7 7735HS ? 8 núcleos e 16 threadsMemória RAM - 16 GB instalados¹Placa de vídeo dedicada - NVIDIA GeForce RTX 4050 LaptopVídeo integrado - AMD Radeon 680MSSD principal - FORESEE XP2000 NVMe de 512 GBSegundo SSD - Kingston NV2 NVMe de 1 TBArmazenamento total 1 TB + 512 GBTela - 15,6? Full HD, 1920 × 1080, até 165 HzWi-Fi - MediaTek MT7922 ? padrão Wi-Fi 6/6ERede cabeada - Gigabit EthernetSistema atual - BigLinux, baseado em Manjaro",
-      "detail_title": "Notebook Gamer Avell Storm 450R Ryzen 7 RTX 4050 SSD 1TB + 512GB",
-      "configuration_warnings": []
-    },
-    {
-      "id": "1548268436",
-      "url": "https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-two-1548268436",
-      "title": "Notebook Gamer Avell Storm Two",
-      "cpu_term": "family:avell-storm",
-      "search_terms": [
-        "family:avell-storm"
-      ],
-      "description_discovery": true,
-      "price_brl": 7199,
-      "ram_gb": null,
-      "storage_gb": null,
-      "gpu": "RTX 3070 TI",
-      "location": null,
-      "condition": "Usado - Excelente",
-      "status": "active",
-      "first_seen": null,
-      "last_seen": null,
-      "notes": null,
-      "desc_checked": true,
-      "validation": {
-        "version": 2,
-        "state": "rejected",
-        "checked_at": "2026-11-05T19:02:17.801Z",
-        "reasons": [
-          "CPU fora da busca",
-          "Especificação não confirmada: RAM",
-          "CPU não confirmada no anúncio"
-        ],
-        "listing_price_brl": 7199,
-        "detail_price_brl": 7199,
-        "visible_price_brl": null,
-        "structured_price_brl": 7199,
-        "title_specs": {
-          "ram_gb": null,
-          "storage_gb": null,
-          "gpu": null
-        },
-        "description_specs": {
-          "ram_gb": null,
-          "storage_gb": null,
-          "gpu": "RTX 3070 TI"
-        },
-        "cpu_confirmed": false,
-        "description_checked": true
-      },
-      "description_evidence": "Notebook Gamer Avell Storm TwoIntel Core i7 12700H 2.3GHz16gb memória RAMSSD 1tbVídeo NVidia RTX 3070ti 8gbMonitor 15.6 FHD IPSTeclado retroiluminadoFonte/carregador originalCom caixaCom nota fiscal",
-      "detail_title": "Notebook Gamer Avell Storm Two",
-      "configuration_warnings": [
-        "Armazenamento não informado"
-      ]
-    },
-    {
-      "id": "1545937266",
-      "url": "https://sp.olx.com.br/regiao-de-sorocaba/informatica/notebooks/notebook-avell-storm-450-rtx-4050-ryzen-7-1545937266",
-      "title": "Notebook avell storm 450 rtx 4050 ryzen 7",
-      "cpu_term": "family:avell-storm",
-      "search_terms": [
-        "family:avell-storm"
-      ],
-      "description_discovery": true,
-      "price_brl": 7250,
-      "ram_gb": 16,
-      "storage_gb": 1024,
-      "gpu": "RTX 4050",
-      "location": null,
-      "condition": "novo",
-      "status": "active",
-      "first_seen": null,
-      "last_seen": null,
-      "notes": null,
-      "desc_checked": true,
-      "validation": {
-        "version": 2,
-        "state": "rejected",
-        "checked_at": "2026-11-05T10:03:05.989Z",
-        "reasons": [
-          "RAM abaixo do mínimo exigido",
-          "RAM abaixo do mínimo de 32 GB",
-          "CPU não confirmada no anúncio"
-        ],
-        "listing_price_brl": 7250,
-        "detail_price_brl": 7250,
-        "visible_price_brl": null,
-        "structured_price_brl": 7250,
-        "title_specs": {
-          "ram_gb": null,
-          "storage_gb": null,
-          "gpu": "RTX 4050"
-        },
-        "description_specs": {
-          "ram_gb": 16,
-          "storage_gb": 1024,
-          "gpu": "RTX 4050"
-        },
-        "cpu_confirmed": false,
-        "description_checked": true
-      },
-      "description_evidence": "Notebook Avell Storm Ryzen 7 + RTX 4050 | Apenas 9 meses de uso!Potencialize seus jogos, projetos e tarefas com o Avell Storm! Equipado com processador AMD Ryzen 7 e placa de vídeo NVIDIA GeForce RTX 4050, oferece excelente desempenho para jogos, desenvolvimento de games, edição e produtividade.ESPECIFICAÇÕES TÉCNICASProcessador: AMD Ryzen? 7 7435HS, 8 núcleos, cache de 16 MB e frequência de 3,1 GHz até 4,5 GHz Max BoostPlaca de vídeo: NVIDIA GeForce® RTX 4050 com 6 GB GDDR6Memória RAM: 16 GB DDR5 4800 MHz (2x 8 GB, Dual Channel)Armazenamento: SSD M.2 NVMe de 1 TB, geração 4, com velocidade de até 5.000 MB/sTela: 15,6\" Full HD (1920 x 1080), WVA, 165 Hz, acabamento Matte e 100% sRGBESTADO DE CONSERVAÇÃOApenas 9 meses de usoExtremamente bem cuidado e conservadoAinda na garantia do fabricante, conforme o prazo vigenteFuncionamento e desempenho excelentesSISTEMA OPERACIONALO notebook foi adquirido originalmente sem sistema operacional. Entrego formatado e com Windows instalado, pronto para uso.Uma excelente opção para quem busca um notebook gamer potente, com SSD de 1 TB, tela de 165 Hz e uma RTX 4050, sem precisar investir em um equipamento novo!Entre em contato para mais informações.",
-      "detail_title": "Notebook avell storm 450 rtx 4050 ryzen 7",
-      "configuration_warnings": []
     }
   ],
   "pending_terms": [
@@ -1096,7 +751,7 @@
   ],
   "baseline_snapshot": {
     "schema_version": 2,
-    "generated_at": "2026-11-06T10:03:42.217Z",
+    "generated_at": "2026-11-06T19:02:16.937Z",
     "coverage_status": {
       "9955hx3d": {
         "checked_at": "2026-11-04T19:10:55.600Z",
@@ -1153,8 +808,8 @@
         "error": "Listagem incompleta: limite de 12 cards ou próxima página pendente"
       },
       "13980hx": {
-        "checked_at": "2026-11-06T10:03:42.217Z",
-        "last_success_at": "2026-11-06T10:03:42.217Z",
+        "checked_at": "2026-11-06T19:02:16.937Z",
+        "last_success_at": "2026-11-06T19:02:16.937Z",
         "state": "success",
         "error": null
       },
@@ -1177,44 +832,44 @@
         "error": null
       },
       "14900hx": {
-        "checked_at": "2026-11-06T10:03:42.217Z",
+        "checked_at": "2026-11-06T19:02:16.937Z",
         "last_success_at": "2026-10-29T13:02:50.929Z",
         "state": "failed",
         "error": "1 ficha(s) aguardando leitura dentro dos limites da rodada"
       },
       "13900hx": {
-        "checked_at": "2026-11-06T10:03:42.217Z",
-        "last_success_at": "2026-11-06T10:03:42.217Z",
+        "checked_at": "2026-11-06T19:02:16.937Z",
+        "last_success_at": "2026-11-06T19:02:16.937Z",
         "state": "success",
         "error": null
       },
       "7845hx": {
-        "checked_at": "2026-11-03T10:04:13.577Z",
-        "last_success_at": "2026-11-03T10:04:13.577Z",
+        "checked_at": "2026-11-06T19:02:16.937Z",
+        "last_success_at": "2026-11-06T19:02:16.937Z",
         "state": "success",
         "error": null
       },
       "8840hx": {
-        "checked_at": "2026-11-03T10:04:13.577Z",
-        "last_success_at": "2026-11-03T10:04:13.577Z",
+        "checked_at": "2026-11-06T19:02:16.937Z",
+        "last_success_at": "2026-11-06T19:02:16.937Z",
         "state": "success",
         "error": null
       },
       "aimax390": {
-        "checked_at": "2026-11-03T10:04:13.577Z",
-        "last_success_at": "2026-11-03T10:04:13.577Z",
+        "checked_at": "2026-11-06T19:02:16.937Z",
+        "last_success_at": "2026-11-06T19:02:16.937Z",
         "state": "success",
         "error": null
       },
       "14700hx": {
-        "checked_at": "2026-11-06T10:03:42.217Z",
-        "last_success_at": "2026-11-06T10:03:42.217Z",
+        "checked_at": "2026-11-06T19:02:16.937Z",
+        "last_success_at": "2026-11-06T19:02:16.937Z",
         "state": "success",
         "error": null
       },
       "hx470": {
-        "checked_at": "2026-11-03T10:04:13.577Z",
-        "last_success_at": "2026-11-03T10:04:13.577Z",
+        "checked_at": "2026-11-06T19:02:16.937Z",
+        "last_success_at": "2026-11-06T19:02:16.937Z",
         "state": "success",
         "error": null
       },
@@ -1249,10 +904,10 @@
         "error": null
       },
       "family:avell-storm": {
-        "checked_at": "2026-11-05T10:03:41.787Z",
-        "last_success_at": "2026-11-02T10:03:57.107Z",
-        "state": "failed",
-        "error": "2 ficha(s) aguardando leitura dentro dos limites da rodada"
+        "checked_at": "2026-11-06T19:02:16.937Z",
+        "last_success_at": "2026-11-06T19:02:16.937Z",
+        "state": "success",
+        "error": null
       },
       "family:helios-neo-16:14700hx": {
         "checked_at": "2026-11-05T19:02:17.807Z",
@@ -1270,8 +925,8 @@
     "run": {
       "date": "2026-11-06",
       "timezone": "America/Sao_Paulo",
-      "started_at": "2026-11-06T10:00:22.042Z",
-      "completed_at": "2026-11-06T10:03:42.217Z",
+      "started_at": "2026-11-06T19:00:22.004Z",
+      "completed_at": "2026-11-06T19:02:16.937Z",
       "in_progress": false,
       "phase": "partial",
       "partial": true,
@@ -1279,11 +934,11 @@
         "14700hx",
         "13980hx",
         "13900hx",
-        "8940hx",
-        "7940hx",
-        "13950hx",
-        "275hx",
-        "family:rog-strix-g16:13980hx"
+        "7845hx",
+        "8840hx",
+        "aimax390",
+        "hx470",
+        "family:avell-storm"
       ],
       "failed_terms": [
         {
@@ -1302,44 +957,24 @@
       "deferred_coverage": [],
       "unattempted_terms": [],
       "description_discovery": {
-        "extra_details": 3,
-        "total_details": 8,
-        "detail_ms": 3166,
-        "recovered_validated": 1,
-        "cache_hits": 4,
+        "extra_details": 1,
+        "total_details": 1,
+        "detail_ms": 1559,
+        "recovered_validated": 0,
+        "cache_hits": 14,
         "by_term": {
-          "14700hx": 2,
-          "14900hx": 1
+          "family:avell-storm": 1
         },
         "detail_yield": {
-          "14700hx": {
-            "reads": 5,
+          "family:avell-storm": {
+            "reads": 1,
             "validated_offers": 0,
             "read_keys": [
-              "1545266033",
-              "1547313199",
-              "1522141686",
-              "1550643017",
-              "1548107625"
-            ]
-          },
-          "13980hx": {
-            "reads": 2,
-            "validated_offers": 2,
-            "read_keys": [
-              "1548266943",
-              "1545009098"
-            ]
-          },
-          "14900hx": {
-            "reads": 1,
-            "validated_offers": 1,
-            "read_keys": [
-              "1548163140"
+              "1550499708"
             ]
           }
         },
-        "new_details": 8,
+        "new_details": 1,
         "total_detail_limit": 12,
         "queued_candidates": 16,
         "retry_waiting": 1,
@@ -1363,12 +998,12 @@
             "1545266033"
           ],
           "pending": 3,
-          "detail_reads": 5,
+          "detail_reads": 0,
           "limited": false,
           "listing_incomplete": false,
           "listing_limit": 36,
           "details_pending": 0,
-          "total_results": 24,
+          "total_results": 23,
           "details_pending_offers": 0,
           "details_pending_tracking": 0,
           "tracking_candidates": 7,
@@ -1377,26 +1012,25 @@
             "tracking": []
           },
           "recommendations_ignored": 0,
-          "detail_read_attempts": 5,
+          "detail_read_attempts": 0,
           "validated_offers_from_reads": 0,
-          "validated_offers_per_read": 0
+          "validated_offers_per_read": null
         },
         "13980hx": {
-          "returned": 2,
-          "validated": 2,
+          "returned": 1,
+          "validated": 1,
           "query": "13980hx",
-          "unique_eligible_candidates": 2,
+          "unique_eligible_candidates": 1,
           "eligible_candidate_ids": [
-            "1548266943",
             "1545009098"
           ],
           "pending": 0,
-          "detail_reads": 2,
+          "detail_reads": 0,
           "limited": false,
           "listing_incomplete": false,
           "listing_limit": 12,
           "details_pending": 0,
-          "total_results": 5,
+          "total_results": 4,
           "details_pending_offers": 0,
           "details_pending_tracking": 0,
           "tracking_candidates": 0,
@@ -1405,9 +1039,9 @@
             "tracking": []
           },
           "recommendations_ignored": 0,
-          "detail_read_attempts": 2,
-          "validated_offers_from_reads": 2,
-          "validated_offers_per_read": 1
+          "detail_read_attempts": 0,
+          "validated_offers_from_reads": 0,
+          "validated_offers_per_read": null
         },
         "14900hx": {
           "returned": 4,
@@ -1418,12 +1052,12 @@
             "1548163140"
           ],
           "pending": 3,
-          "detail_reads": 1,
+          "detail_reads": 0,
           "limited": true,
           "listing_incomplete": false,
           "listing_limit": 60,
           "details_pending": 1,
-          "total_results": 38,
+          "total_results": 40,
           "details_pending_offers": 0,
           "details_pending_tracking": 1,
           "tracking_candidates": 3,
@@ -1434,9 +1068,9 @@
             ]
           },
           "recommendations_ignored": 0,
-          "detail_read_attempts": 1,
-          "validated_offers_from_reads": 1,
-          "validated_offers_per_read": 1
+          "detail_read_attempts": 0,
+          "validated_offers_from_reads": 0,
+          "validated_offers_per_read": null
         },
         "13900hx": {
           "returned": 0,
@@ -1450,7 +1084,7 @@
           "listing_incomplete": false,
           "listing_limit": 12,
           "details_pending": 0,
-          "total_results": 9,
+          "total_results": 10,
           "details_pending_offers": 0,
           "details_pending_tracking": 0,
           "tracking_candidates": 0,
@@ -1463,60 +1097,10 @@
           "validated_offers_from_reads": 0,
           "validated_offers_per_read": null
         },
-        "8940hx": {
+        "7845hx": {
           "returned": 0,
           "validated": 0,
-          "query": "8940hx",
-          "unique_eligible_candidates": 0,
-          "eligible_candidate_ids": [],
-          "pending": 0,
-          "detail_reads": 0,
-          "limited": false,
-          "listing_incomplete": false,
-          "listing_limit": 12,
-          "details_pending": 0,
-          "total_results": 9,
-          "details_pending_offers": 0,
-          "details_pending_tracking": 0,
-          "tracking_candidates": 0,
-          "pending_detail_keys": {
-            "offers": [],
-            "tracking": []
-          },
-          "recommendations_ignored": 0,
-          "detail_read_attempts": 0,
-          "validated_offers_from_reads": 0,
-          "validated_offers_per_read": null
-        },
-        "7940hx": {
-          "returned": 0,
-          "validated": 0,
-          "query": "7940hx",
-          "unique_eligible_candidates": 0,
-          "eligible_candidate_ids": [],
-          "pending": 0,
-          "detail_reads": 0,
-          "limited": false,
-          "listing_incomplete": false,
-          "listing_limit": 12,
-          "details_pending": 0,
-          "total_results": 0,
-          "details_pending_offers": 0,
-          "details_pending_tracking": 0,
-          "tracking_candidates": 0,
-          "pending_detail_keys": {
-            "offers": [],
-            "tracking": []
-          },
-          "recommendations_ignored": 40,
-          "detail_read_attempts": 0,
-          "validated_offers_from_reads": 0,
-          "validated_offers_per_read": null
-        },
-        "13950hx": {
-          "returned": 0,
-          "validated": 0,
-          "query": "13950hx",
+          "query": "7845hx",
           "unique_eligible_candidates": 0,
           "eligible_candidate_ids": [],
           "pending": 0,
@@ -1538,47 +1122,44 @@
           "validated_offers_from_reads": 0,
           "validated_offers_per_read": null
         },
-        "275hx": {
-          "returned": 1,
+        "8840hx": {
+          "returned": 0,
           "validated": 0,
-          "query": "275hx",
+          "query": "8840hx",
           "unique_eligible_candidates": 0,
           "eligible_candidate_ids": [],
-          "pending": 1,
-          "detail_reads": 0,
-          "limited": false,
-          "listing_incomplete": false,
-          "listing_limit": 36,
-          "details_pending": 0,
-          "total_results": 23,
-          "details_pending_offers": 0,
-          "details_pending_tracking": 0,
-          "tracking_candidates": 1,
-          "pending_detail_keys": {
-            "offers": [],
-            "tracking": []
-          },
-          "recommendations_ignored": 0,
-          "detail_read_attempts": 0,
-          "validated_offers_from_reads": 0,
-          "validated_offers_per_read": null
-        },
-        "family:rog-strix-g16:13980hx": {
-          "returned": 2,
-          "validated": 2,
-          "query": "rog strix g16 13980hx",
-          "unique_eligible_candidates": 2,
-          "eligible_candidate_ids": [
-            "1548266943",
-            "1545009098"
-          ],
           "pending": 0,
           "detail_reads": 0,
           "limited": false,
           "listing_incomplete": false,
-          "listing_limit": 60,
+          "listing_limit": 12,
           "details_pending": 0,
-          "total_results": 3,
+          "total_results": 0,
+          "details_pending_offers": 0,
+          "details_pending_tracking": 0,
+          "tracking_candidates": 0,
+          "pending_detail_keys": {
+            "offers": [],
+            "tracking": []
+          },
+          "recommendations_ignored": 39,
+          "detail_read_attempts": 0,
+          "validated_offers_from_reads": 0,
+          "validated_offers_per_read": null
+        },
+        "aimax390": {
+          "returned": 0,
+          "validated": 0,
+          "query": "ryzen ai max 390 notebook",
+          "unique_eligible_candidates": 0,
+          "eligible_candidate_ids": [],
+          "pending": 0,
+          "detail_reads": 0,
+          "limited": false,
+          "listing_incomplete": false,
+          "listing_limit": 12,
+          "details_pending": 0,
+          "total_results": 1,
           "details_pending_offers": 0,
           "details_pending_tracking": 0,
           "tracking_candidates": 0,
@@ -1590,6 +1171,64 @@
           "detail_read_attempts": 0,
           "validated_offers_from_reads": 0,
           "validated_offers_per_read": null
+        },
+        "hx470": {
+          "returned": 0,
+          "validated": 0,
+          "query": "ryzen ai 9 hx 470 notebook",
+          "unique_eligible_candidates": 0,
+          "eligible_candidate_ids": [],
+          "pending": 0,
+          "detail_reads": 0,
+          "limited": false,
+          "listing_incomplete": false,
+          "listing_limit": 12,
+          "details_pending": 0,
+          "total_results": 0,
+          "details_pending_offers": 0,
+          "details_pending_tracking": 0,
+          "tracking_candidates": 0,
+          "pending_detail_keys": {
+            "offers": [],
+            "tracking": []
+          },
+          "recommendations_ignored": 24,
+          "detail_read_attempts": 0,
+          "validated_offers_from_reads": 0,
+          "validated_offers_per_read": null
+        },
+        "family:avell-storm": {
+          "returned": 7,
+          "validated": 0,
+          "query": "avell storm",
+          "unique_eligible_candidates": 7,
+          "eligible_candidate_ids": [
+            "1550295521",
+            "1546506873",
+            "1550499708",
+            "1541030102",
+            "1548592870",
+            "1548268436",
+            "1545937266"
+          ],
+          "pending": 1,
+          "detail_reads": 1,
+          "limited": false,
+          "listing_incomplete": false,
+          "listing_limit": 60,
+          "details_pending": 0,
+          "total_results": 23,
+          "details_pending_offers": 0,
+          "details_pending_tracking": 0,
+          "tracking_candidates": 0,
+          "pending_detail_keys": {
+            "offers": [],
+            "tracking": []
+          },
+          "recommendations_ignored": 0,
+          "detail_read_attempts": 1,
+          "validated_offers_from_reads": 0,
+          "validated_offers_per_read": 0
         }
       },
       "family_experiment": {
@@ -1621,21 +1260,21 @@
         "13980hx",
         "14900hx",
         "13900hx",
-        "8940hx",
-        "7940hx",
-        "13950hx",
-        "275hx",
-        "family:rog-strix-g16:13980hx"
+        "7845hx",
+        "8840hx",
+        "aimax390",
+        "hx470",
+        "family:avell-storm"
       ],
       "successful_coverage": [
         "14700hx",
         "13980hx",
         "13900hx",
-        "8940hx",
-        "7940hx",
-        "13950hx",
-        "275hx",
-        "family:rog-strix-g16:13980hx"
+        "7845hx",
+        "8840hx",
+        "aimax390",
+        "hx470",
+        "family:avell-storm"
       ],
       "failed_coverage": [
         "14900hx"
@@ -1686,22 +1325,22 @@
             "13980hx",
             "14900hx",
             "13900hx",
-            "8940hx",
-            "7940hx",
-            "13950hx",
-            "275hx",
-            "family:rog-strix-g16:13980hx"
+            "7845hx",
+            "8840hx",
+            "aimax390",
+            "hx470",
+            "family:avell-storm"
           ],
           "completed_terms": [
             "14700hx",
             "13980hx",
             "14900hx",
             "13900hx",
-            "8940hx",
-            "7940hx",
-            "13950hx",
-            "275hx",
-            "family:rog-strix-g16:13980hx"
+            "7845hx",
+            "8840hx",
+            "aimax390",
+            "hx470",
+            "family:avell-storm"
           ],
           "incomplete_terms": [],
           "pending_details": 0,
@@ -1717,12 +1356,10 @@
           "max_price_brl": 10000,
           "scheduled_terms": [
             "14700hx",
-            "14900hx",
-            "275hx"
+            "14900hx"
           ],
           "completed_terms": [
-            "14700hx",
-            "275hx"
+            "14700hx"
           ],
           "incomplete_terms": [
             "14900hx"
@@ -1731,8 +1368,8 @@
           "min_price_exclusive": true,
           "queued_candidates": 5,
           "pending_candidates": 8,
-          "scheduled": 3,
-          "completed": 2,
+          "scheduled": 2,
+          "completed": 1,
           "incomplete": 1,
           "status": "partial"
         }
@@ -1750,7 +1387,7 @@
       },
       "collection_summary": {
         "schema_version": 1,
-        "collected_at": "2026-11-06T10:03:42.217Z",
+        "collected_at": "2026-11-06T19:02:16.937Z",
         "execution": "success",
         "issues": [
           "1 ficha(s) aguardando leitura dentro dos limites da rodada"
@@ -1776,22 +1413,22 @@
                 "13980hx",
                 "14900hx",
                 "13900hx",
-                "8940hx",
-                "7940hx",
-                "13950hx",
-                "275hx",
-                "family:rog-strix-g16:13980hx"
+                "7845hx",
+                "8840hx",
+                "aimax390",
+                "hx470",
+                "family:avell-storm"
               ],
               "completed_terms": [
                 "14700hx",
                 "13980hx",
                 "14900hx",
                 "13900hx",
-                "8940hx",
-                "7940hx",
-                "13950hx",
-                "275hx",
-                "family:rog-strix-g16:13980hx"
+                "7845hx",
+                "8840hx",
+                "aimax390",
+                "hx470",
+                "family:avell-storm"
               ],
               "incomplete_terms": [],
               "pending_details": 0,
@@ -1807,12 +1444,10 @@
               "max_price_brl": 10000,
               "scheduled_terms": [
                 "14700hx",
-                "14900hx",
-                "275hx"
+                "14900hx"
               ],
               "completed_terms": [
-                "14700hx",
-                "275hx"
+                "14700hx"
               ],
               "incomplete_terms": [
                 "14900hx"
@@ -1821,8 +1456,8 @@
               "min_price_exclusive": true,
               "queued_candidates": 5,
               "pending_candidates": 8,
-              "scheduled": 3,
-              "completed": 2,
+              "scheduled": 2,
+              "completed": 1,
               "incomplete": 1,
               "status": "partial"
             }
@@ -1900,7 +1535,7 @@
         "configuration_warnings": [
           "Armazenamento não informado"
         ],
-        "out_of_scope_at": "2026-11-06T10:03:42.217Z",
+        "out_of_scope_at": "2026-11-06T19:02:16.937Z",
         "price_history": [
           {
             "at": "2026-10-25T19:02:46.963Z",
@@ -1958,7 +1593,7 @@
         "configuration_warnings": [
           "Armazenamento não informado"
         ],
-        "out_of_scope_at": "2026-11-06T10:03:42.217Z",
+        "out_of_scope_at": "2026-11-06T19:02:16.937Z",
         "price_history": [
           {
             "at": "2026-11-03T19:18:31.145Z",
@@ -2017,7 +1652,7 @@
         "configuration_warnings": [
           "Armazenamento não informado"
         ],
-        "out_of_scope_at": "2026-11-06T10:03:42.217Z",
+        "out_of_scope_at": "2026-11-06T19:02:16.937Z",
         "price_history": [
           {
             "at": "2026-10-26T19:04:17.307Z",
@@ -2148,7 +1783,7 @@
           "cpu_confirmed": true,
           "description_checked": true
         },
-        "out_of_scope_at": "2026-11-06T10:03:42.217Z",
+        "out_of_scope_at": "2026-11-06T19:02:16.937Z",
         "price_history": [
           {
             "at": "2026-11-03T10:04:13.577Z",
@@ -2243,7 +1878,7 @@
         "description_evidence": "Eleve sua experiência gamer com o Notebook Gamer Predator Helios Neo! Equipado com o poderoso Intel® Core i7-14700HX e a incrível Nvidia Geforce RTX 4070, este notebook oferece desempenho de ponta para os jogos mais exigentes. Com 16GB de RAM e 512GB de SSD, desfrute de velocidade e fluidez em todas as suas jogadas. O design moderno e a tela de 16 polegadas proporcionam imersão total. Prepare-se para dominar o campo de batalha!",
         "detail_title": "NOTEBOOK GAMER PREDATOR HELIOS NEO CORE I7-14700HX  RTX 4070",
         "configuration_warnings": [],
-        "out_of_scope_at": "2026-11-06T10:03:42.217Z",
+        "out_of_scope_at": "2026-11-06T19:02:16.937Z",
         "price_history": [
           {
             "at": "2026-11-06T10:03:42.217Z",
@@ -2405,72 +2040,12 @@
         "detail_title": "Notebook Gamer Predator Helios Neo / Phn16-72-74vx /  Intel® Core I7-14700hx De 14ªgeração"
       },
       {
-        "id": "1548266943",
-        "url": "https://sc.olx.com.br/florianopolis-e-regiao/informatica/notebooks/notebook-asus-rog-strix-g16-i9-13980hx-rtx-4060-1tb-32gb-ddr5-1548266943",
-        "title": "Notebook ASUS ROG Strix G16 | i9-13980HX | RTX 4060 | 1TB | 32GB DDR5",
-        "cpu_term": "13980hx",
-        "search_terms": [
-          "13980hx",
-          "family:rog-strix-g16:13980hx"
-        ],
-        "description_discovery": false,
-        "price_brl": 7927,
-        "ram_gb": 32,
-        "storage_gb": 1024,
-        "gpu": "RTX 4060",
-        "location": null,
-        "condition": "Usado - Excelente",
-        "status": "active",
-        "first_seen": "2026-10-29",
-        "last_seen": "2026-11-06",
-        "notes": null,
-        "desc_checked": true,
-        "validation": {
-          "version": 2,
-          "state": "validated",
-          "checked_at": "2026-11-06T10:01:50.062Z",
-          "reasons": [],
-          "listing_price_brl": 7927,
-          "detail_price_brl": 7927,
-          "visible_price_brl": null,
-          "structured_price_brl": 7927,
-          "title_specs": {
-            "ram_gb": 32,
-            "storage_gb": 1024,
-            "gpu": "RTX 4060"
-          },
-          "description_specs": {
-            "ram_gb": 32,
-            "storage_gb": 1024,
-            "gpu": "RTX 4060"
-          },
-          "cpu_confirmed": true,
-          "description_checked": true
-        },
-        "description_evidence": "Eleve sua experiência gamer com o Notebook ASUS ROG Strix G16! Equipado com processador i9-13980HX e placa de vídeo RTX 4060, este notebook oferece desempenho excepcional para os jogos mais exigentes. Com 1TB de armazenamento WD BLACK e 32GB 5600MT/s de RAM DDR5 Kingston FURY Impact, você terá velocidade e espaço de sobra para todos os seus jogos e arquivos. Design moderno e refrigeração avançada para sessões de jogo intensas.Notebook em excelente estado, muito bem cuidado e super conservado. Eu utilizava um teclado externo, evitando o desgaste do teclado original.Acompanha: 16 GB de memória RAM que vieram originalmente com o notebook.Cabo HDMI.Motivo da venda: Migrei para um MacBook e, por isso, não estou mais utilizando este notebook.Importante: Não aceito propostas de negociação nem trocas. Apenas venda pelo valor anunciado.Notebook muito bem cuidado, pronto para o próximo dono!",
-        "detail_title": "Notebook ASUS ROG Strix G16 | i9-13980HX | RTX 4060 | 1TB | 32GB DDR5",
-        "configuration_warnings": [],
-        "out_of_scope_at": null,
-        "price_history": [
-          {
-            "at": "2026-10-29T13:02:50.929Z",
-            "price_brl": 7927
-          }
-        ],
-        "opportunity": {
-          "state": "insufficient_comparables",
-          "sample": 1,
-          "reason": "Sem três anúncios independentes recentes com família, CPU, GPU, RAM e condição semelhantes"
-        }
-      },
-      {
         "id": "1545009098",
         "url": "https://sc.olx.com.br/florianopolis-e-regiao/informatica/notebooks/notebook-asus-rog-strix-g16-i9-13980hx-rtx-4060-1tb-32gb-ddr5-1545009098",
         "title": "Notebook ASUS ROG Strix G16 | i9-13980HX | RTX 4060 | 1TB | 32GB DDR5",
         "cpu_term": "13980hx",
         "search_terms": [
-          "13980hx",
-          "family:rog-strix-g16:13980hx"
+          "13980hx"
         ],
         "description_discovery": false,
         "price_brl": 7927,
@@ -2613,7 +2188,7 @@
         "validation": {
           "version": 2,
           "state": "pending",
-          "checked_at": "2026-11-06T10:02:26.366Z",
+          "checked_at": "2026-11-06T19:00:46.737Z",
           "reasons": [
             "Ficha aguardando leitura dentro dos limites da rodada"
           ]
@@ -2729,6 +2304,473 @@
         "detail_title": "Laptop Predator Helios Neo intel® core i9-14900hx com rtx4070"
       },
       {
+        "id": "1550295521",
+        "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-avell-storm-450-pro-1550295521",
+        "title": "Notebook Avell Storm 450 Pro",
+        "cpu_term": "family:avell-storm",
+        "search_terms": [
+          "family:avell-storm"
+        ],
+        "description_discovery": true,
+        "price_brl": 5000,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": null,
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": "2026-11-05",
+        "last_seen": "2026-11-06",
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "pending",
+          "checked_at": "2026-11-05T10:03:17.675Z",
+          "reasons": [
+            "Especificação não confirmada: RAM",
+            "Especificação não confirmada: GPU",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 5000,
+          "detail_price_brl": 5000,
+          "visible_price_brl": null,
+          "structured_price_brl": 5000,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "description_evidence": "Potencialize seu dia com o Notebook Avell Storm 450 Pro! Desempenho incrível para todas as suas tarefas e entretenimento. Design moderno e tela vibrante para uma experiência visual imersiva. Ideal para trabalho, estudo e jogos.Notebook em ótimo estado, foi usado apenas para estudos de faculdade.",
+        "detail_title": "Notebook Avell Storm 450 Pro ",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ],
+        "out_of_scope_at": null,
+        "price_history": [
+          {
+            "at": "2026-11-05T10:03:41.787Z",
+            "price_brl": 5000
+          }
+        ]
+      },
+      {
+        "id": "1546506873",
+        "url": "https://pa.olx.com.br/regiao-de-maraba/informatica/notebooks/notebook-gamer-avell-storm-bs-350-1546506873",
+        "title": "Notebook Gamer Avell Storm BS 350",
+        "cpu_term": "family:avell-storm",
+        "search_terms": [
+          "family:avell-storm"
+        ],
+        "description_discovery": true,
+        "price_brl": 5300,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": "RTX 3050",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "out_of_scope",
+        "first_seen": "2026-10-23",
+        "last_seen": "2026-11-06",
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-11-05T10:03:41.782Z",
+          "reasons": [
+            "CPU fora da busca",
+            "Especificação não confirmada: RAM",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 5300,
+          "detail_price_brl": 5300,
+          "visible_price_brl": null,
+          "structured_price_brl": 5300,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 3050"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "description_evidence": "Vendo Notebook Gamer Avell em excelente estado de conservação, sem nenhum detalhe, usado poucas vezes. Especificações de hardware:? GeForce® RTX 3050 (4GB GDDR6)? Intel® Core?M i7-12650H Alder Lake (24MB cache, 3.5GHz ~ 4.7GHz Turbo Boost Max 3.0)? Upgrade Grátis - 32GB [2x 16GB - Dual Channel] Memória DDR4 (3200MHZ)? SSD M.2 NVME 512GB - Geração 4 - [3.400 MB/s? 15.6\" FHD WVA (1920x1080p) - 144Hz / Matte / Contraste: 1000:1/ Brilho 250 cd/m²",
+        "detail_title": "Notebook Gamer Avell Storm BS 350",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ],
+        "out_of_scope_at": "2026-11-06T19:02:16.937Z",
+        "price_history": [
+          {
+            "at": "2026-10-23T19:03:26.100Z",
+            "price_brl": 5300
+          }
+        ]
+      },
+      {
+        "id": "1550499708",
+        "url": "https://df.olx.com.br/distrito-federal-e-regiao/informatica/notebooks/notebook-avell-storm-450-i7-rtx-4050-com-caixa-e-carregador-originais-1550499708",
+        "title": "Notebook Avell STORM 450 i7 RTX 4050 com caixa e carregador originais",
+        "cpu_term": "family:avell-storm",
+        "search_terms": [
+          "family:avell-storm"
+        ],
+        "description_discovery": true,
+        "price_brl": 6000,
+        "ram_gb": 16,
+        "storage_gb": 512,
+        "gpu": "RTX 4050",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "out_of_scope",
+        "first_seen": "2026-11-06",
+        "last_seen": "2026-11-06",
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-11-06T19:02:16.811Z",
+          "reasons": [
+            "Defeito ou avaria declarados no anúncio",
+            "RAM abaixo do mínimo de 32 GB",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 6000,
+          "detail_price_brl": 6000,
+          "visible_price_brl": null,
+          "structured_price_brl": 6000,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 4050"
+          },
+          "description_specs": {
+            "ram_gb": 16,
+            "storage_gb": 512,
+            "gpu": "RTX 4050"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "description_evidence": "Notebook gamer Avell STORM 450 com 8 meses de uso em excelente condições, não possue nenhuma avaria ou defeito e está funcionando perfeitamente. Acompanha caixa e carregador originaisDetalhes:- Processador Intel i7 de 13 geração- 16 GB de RAM- GPU dedicado Nvidia GeForce RTX 4050- 512 GB de armazenamento SSD- Teclado RGB",
+        "detail_title": "Notebook Avell STORM 450 i7 RTX 4050 com caixa e carregador originais",
+        "configuration_warnings": [],
+        "out_of_scope_at": "2026-11-06T19:02:16.937Z",
+        "price_history": [
+          {
+            "at": "2026-11-06T19:02:16.937Z",
+            "price_brl": 6000
+          }
+        ]
+      },
+      {
+        "id": "1541030102",
+        "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-i7-rtx4050-32gb-1541030102",
+        "title": "Notebook Gamer Avell Storm i7 RTX4050 32GB",
+        "cpu_term": "family:avell-storm",
+        "search_terms": [
+          "family:avell-storm"
+        ],
+        "description_discovery": true,
+        "price_brl": 6000,
+        "ram_gb": 32,
+        "storage_gb": 64,
+        "gpu": "RTX 4050",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "out_of_scope",
+        "first_seen": "2026-10-17",
+        "last_seen": "2026-11-06",
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-11-05T10:02:41.739Z",
+          "reasons": [
+            "CPU fora da busca",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 6000,
+          "detail_price_brl": 6000,
+          "visible_price_brl": null,
+          "structured_price_brl": 6000,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 4050"
+          },
+          "description_specs": {
+            "ram_gb": 32,
+            "storage_gb": 64,
+            "gpu": null
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "out_of_scope_at": "2026-11-06T19:02:16.937Z",
+        "price_history": [
+          {
+            "at": "2026-10-17T19:01:57.525Z",
+            "price_brl": 6000
+          }
+        ],
+        "configuration_warnings": [],
+        "description_evidence": "Placa de vídeo NVIDIA GeForceRTX 4050 6GB GDDR6ProcessadorIntel Core i7-12650H(12ª geração)10 núcleos / 16 threads24 MB de cachede 1.70 GHz até 4.70 GHzMemória RAM32 GB DDR4 3200 MHzMáximo de 64 GBArmazenamento SSDSSD de 512 GB NVMeSSD de 256 GB NVMeTela16:9 LED 15,6\" pol.Full HD (1920 x 1080 px) 144HzWi-Fi 6 (802.11ax)Bluetooth 5.21x USB 2.02x USB 3.11x USB-C1x USB-C (DisplayPort)1x HDMI1x P2 (fone + mic)1x rede RJ-451x leitor de cartões",
+        "detail_title": "Notebook Gamer Avell Storm i7 RTX4050 32GB"
+      },
+      {
+        "id": "1548592870",
+        "url": "https://df.olx.com.br/distrito-federal-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-450r-ryzen-7-rtx-4050-ssd-1tb-512gb-1548592870",
+        "title": "Notebook Gamer Avell Storm 450R Ryzen 7 RTX 4050 SSD 1TB + 512GB",
+        "cpu_term": "family:avell-storm",
+        "search_terms": [
+          "family:avell-storm"
+        ],
+        "description_discovery": true,
+        "price_brl": 6000,
+        "ram_gb": 16,
+        "storage_gb": 1024,
+        "gpu": "RTX 4050",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "out_of_scope",
+        "first_seen": "2026-11-05",
+        "last_seen": "2026-11-06",
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-11-05T10:02:53.989Z",
+          "reasons": [
+            "RAM abaixo do mínimo exigido",
+            "RAM abaixo do mínimo de 32 GB",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 6000,
+          "detail_price_brl": 6000,
+          "visible_price_brl": null,
+          "structured_price_brl": 6000,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": 1024,
+            "gpu": "RTX 4050"
+          },
+          "description_specs": {
+            "ram_gb": 16,
+            "storage_gb": 1024,
+            "gpu": "RTX 4050"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "description_evidence": "Vendo notebook gamer Avell Storm 450R com processador AMD Ryzen 7 7735HS, 8 núcleos e 16 threads, e placa de vídeo dedicada NVIDIA GeForce RTX 4050.Tela de 15,6 polegadas Full HD com taxa de atualização de até 165 Hz.Possui dois SSDs NVMe instalados: Kingston NV2 de 1 TB e FORESEE de 512 GB.Atualmente está com Linux BigLinux instalado.Processador AMD Ryzen 7 7735HS ? 8 núcleos e 16 threadsMemória RAM - 16 GB instalados¹Placa de vídeo dedicada - NVIDIA GeForce RTX 4050 LaptopVídeo integrado - AMD Radeon 680MSSD principal - FORESEE XP2000 NVMe de 512 GBSegundo SSD - Kingston NV2 NVMe de 1 TBArmazenamento total 1 TB + 512 GBTela - 15,6? Full HD, 1920 × 1080, até 165 HzWi-Fi - MediaTek MT7922 ? padrão Wi-Fi 6/6ERede cabeada - Gigabit EthernetSistema atual - BigLinux, baseado em Manjaro",
+        "detail_title": "Notebook Gamer Avell Storm 450R Ryzen 7 RTX 4050 SSD 1TB + 512GB",
+        "configuration_warnings": [],
+        "out_of_scope_at": "2026-11-06T19:02:16.937Z",
+        "price_history": [
+          {
+            "at": "2026-11-05T10:03:41.787Z",
+            "price_brl": 6000
+          }
+        ]
+      },
+      {
+        "id": "1548268436",
+        "url": "https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-two-1548268436",
+        "title": "Notebook Gamer Avell Storm Two",
+        "cpu_term": "family:avell-storm",
+        "search_terms": [
+          "family:avell-storm"
+        ],
+        "description_discovery": true,
+        "price_brl": 7199,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": "RTX 3070 TI",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "out_of_scope",
+        "first_seen": "2026-10-30",
+        "last_seen": "2026-11-06",
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-11-05T19:02:17.801Z",
+          "reasons": [
+            "CPU fora da busca",
+            "Especificação não confirmada: RAM",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 7199,
+          "detail_price_brl": 7199,
+          "visible_price_brl": null,
+          "structured_price_brl": 7199,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 3070 TI"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "out_of_scope_at": "2026-11-06T19:02:16.937Z",
+        "price_history": [
+          {
+            "at": "2026-10-30T10:04:54.013Z",
+            "price_brl": 7199
+          }
+        ],
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ],
+        "description_evidence": "Notebook Gamer Avell Storm TwoIntel Core i7 12700H 2.3GHz16gb memória RAMSSD 1tbVídeo NVidia RTX 3070ti 8gbMonitor 15.6 FHD IPSTeclado retroiluminadoFonte/carregador originalCom caixaCom nota fiscal",
+        "detail_title": "Notebook Gamer Avell Storm Two"
+      },
+      {
+        "id": "1545937266",
+        "url": "https://sp.olx.com.br/regiao-de-sorocaba/informatica/notebooks/notebook-avell-storm-450-rtx-4050-ryzen-7-1545937266",
+        "title": "Notebook avell storm 450 rtx 4050 ryzen 7",
+        "cpu_term": "family:avell-storm",
+        "search_terms": [
+          "family:avell-storm"
+        ],
+        "description_discovery": true,
+        "price_brl": 7250,
+        "ram_gb": 16,
+        "storage_gb": 1024,
+        "gpu": "RTX 4050",
+        "location": null,
+        "condition": "novo",
+        "status": "out_of_scope",
+        "first_seen": "2026-10-20",
+        "last_seen": "2026-11-06",
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-11-05T10:03:05.989Z",
+          "reasons": [
+            "RAM abaixo do mínimo exigido",
+            "RAM abaixo do mínimo de 32 GB",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 7250,
+          "detail_price_brl": 7250,
+          "visible_price_brl": null,
+          "structured_price_brl": 7250,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 4050"
+          },
+          "description_specs": {
+            "ram_gb": 16,
+            "storage_gb": 1024,
+            "gpu": "RTX 4050"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true
+        },
+        "out_of_scope_at": "2026-11-06T19:02:16.937Z",
+        "price_history": [
+          {
+            "at": "2026-10-20T19:02:03.601Z",
+            "price_brl": 7500
+          },
+          {
+            "at": "2026-10-30T10:04:54.013Z",
+            "price_brl": 7250
+          }
+        ],
+        "configuration_warnings": [],
+        "description_evidence": "Notebook Avell Storm Ryzen 7 + RTX 4050 | Apenas 9 meses de uso!Potencialize seus jogos, projetos e tarefas com o Avell Storm! Equipado com processador AMD Ryzen 7 e placa de vídeo NVIDIA GeForce RTX 4050, oferece excelente desempenho para jogos, desenvolvimento de games, edição e produtividade.ESPECIFICAÇÕES TÉCNICASProcessador: AMD Ryzen? 7 7435HS, 8 núcleos, cache de 16 MB e frequência de 3,1 GHz até 4,5 GHz Max BoostPlaca de vídeo: NVIDIA GeForce® RTX 4050 com 6 GB GDDR6Memória RAM: 16 GB DDR5 4800 MHz (2x 8 GB, Dual Channel)Armazenamento: SSD M.2 NVMe de 1 TB, geração 4, com velocidade de até 5.000 MB/sTela: 15,6\" Full HD (1920 x 1080), WVA, 165 Hz, acabamento Matte e 100% sRGBESTADO DE CONSERVAÇÃOApenas 9 meses de usoExtremamente bem cuidado e conservadoAinda na garantia do fabricante, conforme o prazo vigenteFuncionamento e desempenho excelentesSISTEMA OPERACIONALO notebook foi adquirido originalmente sem sistema operacional. Entrego formatado e com Windows instalado, pronto para uso.Uma excelente opção para quem busca um notebook gamer potente, com SSD de 1 TB, tela de 165 Hz e uma RTX 4050, sem precisar investir em um equipamento novo!Entre em contato para mais informações.",
+        "detail_title": "Notebook avell storm 450 rtx 4050 ryzen 7"
+      },
+      {
+        "id": "1548266943",
+        "url": "https://sc.olx.com.br/florianopolis-e-regiao/informatica/notebooks/notebook-asus-rog-strix-g16-i9-13980hx-rtx-4060-1tb-32gb-ddr5-1548266943",
+        "title": "Notebook ASUS ROG Strix G16 | i9-13980HX | RTX 4060 | 1TB | 32GB DDR5",
+        "cpu_term": "13980hx",
+        "search_terms": [
+          "13980hx",
+          "family:rog-strix-g16:13980hx"
+        ],
+        "description_discovery": false,
+        "price_brl": 7927,
+        "ram_gb": 32,
+        "storage_gb": 1024,
+        "gpu": "RTX 4060",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": "2026-10-29",
+        "last_seen": "2026-11-06",
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "validated",
+          "checked_at": "2026-11-06T10:01:50.062Z",
+          "reasons": [],
+          "listing_price_brl": 7927,
+          "detail_price_brl": 7927,
+          "visible_price_brl": null,
+          "structured_price_brl": 7927,
+          "title_specs": {
+            "ram_gb": 32,
+            "storage_gb": 1024,
+            "gpu": "RTX 4060"
+          },
+          "description_specs": {
+            "ram_gb": 32,
+            "storage_gb": 1024,
+            "gpu": "RTX 4060"
+          },
+          "cpu_confirmed": true,
+          "description_checked": true
+        },
+        "description_evidence": "Eleve sua experiência gamer com o Notebook ASUS ROG Strix G16! Equipado com processador i9-13980HX e placa de vídeo RTX 4060, este notebook oferece desempenho excepcional para os jogos mais exigentes. Com 1TB de armazenamento WD BLACK e 32GB 5600MT/s de RAM DDR5 Kingston FURY Impact, você terá velocidade e espaço de sobra para todos os seus jogos e arquivos. Design moderno e refrigeração avançada para sessões de jogo intensas.Notebook em excelente estado, muito bem cuidado e super conservado. Eu utilizava um teclado externo, evitando o desgaste do teclado original.Acompanha: 16 GB de memória RAM que vieram originalmente com o notebook.Cabo HDMI.Motivo da venda: Migrei para um MacBook e, por isso, não estou mais utilizando este notebook.Importante: Não aceito propostas de negociação nem trocas. Apenas venda pelo valor anunciado.Notebook muito bem cuidado, pronto para o próximo dono!",
+        "detail_title": "Notebook ASUS ROG Strix G16 | i9-13980HX | RTX 4060 | 1TB | 32GB DDR5",
+        "configuration_warnings": [],
+        "out_of_scope_at": null,
+        "price_history": [
+          {
+            "at": "2026-10-29T13:02:50.929Z",
+            "price_brl": 7927
+          }
+        ],
+        "opportunity": {
+          "state": "insufficient_comparables",
+          "sample": 1,
+          "reason": "Sem três anúncios independentes recentes com família, CPU, GPU, RAM e condição semelhantes"
+        }
+      },
+      {
         "id": "1540167012",
         "url": "https://go.olx.com.br/grande-goiania-e-anapolis/informatica/notebooks/alienware-16x-aurora-ultra-9-275hx-rtx-5060-8gb-32gb-ram-1tb-seminovo-1540167012",
         "title": "Alienware 16X Aurora Ultra 9 275HX + RTX 5060 8GB + 32GB RAM + 1TB - Seminovo",
@@ -2783,65 +2825,6 @@
           ]
         },
         "configuration_warnings": []
-      },
-      {
-        "id": "1548268436",
-        "url": "https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-two-1548268436",
-        "title": "Notebook Gamer Avell Storm Two",
-        "cpu_term": "family:avell-storm",
-        "search_terms": [
-          "family:avell-storm"
-        ],
-        "description_discovery": true,
-        "price_brl": 7199,
-        "ram_gb": null,
-        "storage_gb": null,
-        "gpu": "RTX 3070 TI",
-        "location": null,
-        "condition": "Usado - Excelente",
-        "status": "out_of_scope",
-        "first_seen": "2026-10-30",
-        "last_seen": "2026-11-05",
-        "notes": null,
-        "desc_checked": true,
-        "validation": {
-          "version": 2,
-          "state": "rejected",
-          "checked_at": "2026-11-05T19:02:17.801Z",
-          "reasons": [
-            "CPU fora da busca",
-            "Especificação não confirmada: RAM",
-            "CPU não confirmada no anúncio"
-          ],
-          "listing_price_brl": 7199,
-          "detail_price_brl": 7199,
-          "visible_price_brl": null,
-          "structured_price_brl": 7199,
-          "title_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": null
-          },
-          "description_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": "RTX 3070 TI"
-          },
-          "cpu_confirmed": false,
-          "description_checked": true
-        },
-        "out_of_scope_at": "2026-11-05T19:02:17.807Z",
-        "price_history": [
-          {
-            "at": "2026-10-30T10:04:54.013Z",
-            "price_brl": 7199
-          }
-        ],
-        "configuration_warnings": [
-          "Armazenamento não informado"
-        ],
-        "description_evidence": "Notebook Gamer Avell Storm TwoIntel Core i7 12700H 2.3GHz16gb memória RAMSSD 1tbVídeo NVidia RTX 3070ti 8gbMonitor 15.6 FHD IPSTeclado retroiluminadoFonte/carregador originalCom caixaCom nota fiscal",
-        "detail_title": "Notebook Gamer Avell Storm Two"
       },
       {
         "id": "1550339131",
@@ -2964,298 +2947,6 @@
             "price_brl": 7000
           }
         ]
-      },
-      {
-        "id": "1550295521",
-        "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-avell-storm-450-pro-1550295521",
-        "title": "Notebook Avell Storm 450 Pro",
-        "cpu_term": "family:avell-storm",
-        "search_terms": [
-          "family:avell-storm"
-        ],
-        "description_discovery": true,
-        "price_brl": 5000,
-        "ram_gb": null,
-        "storage_gb": null,
-        "gpu": null,
-        "location": null,
-        "condition": "Usado - Excelente",
-        "status": "active",
-        "first_seen": "2026-11-05",
-        "last_seen": "2026-11-05",
-        "notes": null,
-        "desc_checked": true,
-        "validation": {
-          "version": 2,
-          "state": "pending",
-          "checked_at": "2026-11-05T10:03:17.675Z",
-          "reasons": [
-            "Especificação não confirmada: RAM",
-            "Especificação não confirmada: GPU",
-            "CPU não confirmada no anúncio"
-          ],
-          "listing_price_brl": 5000,
-          "detail_price_brl": 5000,
-          "visible_price_brl": null,
-          "structured_price_brl": 5000,
-          "title_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": null
-          },
-          "description_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": null
-          },
-          "cpu_confirmed": false,
-          "description_checked": true
-        },
-        "description_evidence": "Potencialize seu dia com o Notebook Avell Storm 450 Pro! Desempenho incrível para todas as suas tarefas e entretenimento. Design moderno e tela vibrante para uma experiência visual imersiva. Ideal para trabalho, estudo e jogos.Notebook em ótimo estado, foi usado apenas para estudos de faculdade.",
-        "detail_title": "Notebook Avell Storm 450 Pro ",
-        "configuration_warnings": [
-          "Armazenamento não informado"
-        ],
-        "out_of_scope_at": null,
-        "price_history": [
-          {
-            "at": "2026-11-05T10:03:41.787Z",
-            "price_brl": 5000
-          }
-        ]
-      },
-      {
-        "id": "1546506873",
-        "url": "https://pa.olx.com.br/regiao-de-maraba/informatica/notebooks/notebook-gamer-avell-storm-bs-350-1546506873",
-        "title": "Notebook Gamer Avell Storm BS 350",
-        "cpu_term": "family:avell-storm",
-        "search_terms": [
-          "family:avell-storm"
-        ],
-        "description_discovery": true,
-        "price_brl": 5300,
-        "ram_gb": null,
-        "storage_gb": null,
-        "gpu": "RTX 3050",
-        "location": null,
-        "condition": "Usado - Excelente",
-        "status": "out_of_scope",
-        "first_seen": "2026-10-23",
-        "last_seen": "2026-11-05",
-        "notes": null,
-        "desc_checked": true,
-        "validation": {
-          "version": 2,
-          "state": "rejected",
-          "checked_at": "2026-11-05T10:03:41.782Z",
-          "reasons": [
-            "CPU fora da busca",
-            "Especificação não confirmada: RAM",
-            "CPU não confirmada no anúncio"
-          ],
-          "listing_price_brl": 5300,
-          "detail_price_brl": 5300,
-          "visible_price_brl": null,
-          "structured_price_brl": 5300,
-          "title_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": null
-          },
-          "description_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": "RTX 3050"
-          },
-          "cpu_confirmed": false,
-          "description_checked": true
-        },
-        "description_evidence": "Vendo Notebook Gamer Avell em excelente estado de conservação, sem nenhum detalhe, usado poucas vezes. Especificações de hardware:? GeForce® RTX 3050 (4GB GDDR6)? Intel® Core?M i7-12650H Alder Lake (24MB cache, 3.5GHz ~ 4.7GHz Turbo Boost Max 3.0)? Upgrade Grátis - 32GB [2x 16GB - Dual Channel] Memória DDR4 (3200MHZ)? SSD M.2 NVME 512GB - Geração 4 - [3.400 MB/s? 15.6\" FHD WVA (1920x1080p) - 144Hz / Matte / Contraste: 1000:1/ Brilho 250 cd/m²",
-        "detail_title": "Notebook Gamer Avell Storm BS 350",
-        "configuration_warnings": [
-          "Armazenamento não informado"
-        ],
-        "out_of_scope_at": "2026-11-05T10:03:41.787Z",
-        "price_history": [
-          {
-            "at": "2026-10-23T19:03:26.100Z",
-            "price_brl": 5300
-          }
-        ]
-      },
-      {
-        "id": "1541030102",
-        "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-i7-rtx4050-32gb-1541030102",
-        "title": "Notebook Gamer Avell Storm i7 RTX4050 32GB",
-        "cpu_term": "family:avell-storm",
-        "search_terms": [
-          "family:avell-storm"
-        ],
-        "description_discovery": true,
-        "price_brl": 6000,
-        "ram_gb": 32,
-        "storage_gb": 64,
-        "gpu": "RTX 4050",
-        "location": null,
-        "condition": "Usado - Excelente",
-        "status": "out_of_scope",
-        "first_seen": "2026-10-17",
-        "last_seen": "2026-11-05",
-        "notes": null,
-        "desc_checked": true,
-        "validation": {
-          "version": 2,
-          "state": "rejected",
-          "checked_at": "2026-11-05T10:02:41.739Z",
-          "reasons": [
-            "CPU fora da busca",
-            "CPU não confirmada no anúncio"
-          ],
-          "listing_price_brl": 6000,
-          "detail_price_brl": 6000,
-          "visible_price_brl": null,
-          "structured_price_brl": 6000,
-          "title_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": "RTX 4050"
-          },
-          "description_specs": {
-            "ram_gb": 32,
-            "storage_gb": 64,
-            "gpu": null
-          },
-          "cpu_confirmed": false,
-          "description_checked": true
-        },
-        "out_of_scope_at": "2026-11-05T10:03:41.787Z",
-        "price_history": [
-          {
-            "at": "2026-10-17T19:01:57.525Z",
-            "price_brl": 6000
-          }
-        ],
-        "configuration_warnings": [],
-        "description_evidence": "Placa de vídeo NVIDIA GeForceRTX 4050 6GB GDDR6ProcessadorIntel Core i7-12650H(12ª geração)10 núcleos / 16 threads24 MB de cachede 1.70 GHz até 4.70 GHzMemória RAM32 GB DDR4 3200 MHzMáximo de 64 GBArmazenamento SSDSSD de 512 GB NVMeSSD de 256 GB NVMeTela16:9 LED 15,6\" pol.Full HD (1920 x 1080 px) 144HzWi-Fi 6 (802.11ax)Bluetooth 5.21x USB 2.02x USB 3.11x USB-C1x USB-C (DisplayPort)1x HDMI1x P2 (fone + mic)1x rede RJ-451x leitor de cartões",
-        "detail_title": "Notebook Gamer Avell Storm i7 RTX4050 32GB"
-      },
-      {
-        "id": "1548592870",
-        "url": "https://df.olx.com.br/distrito-federal-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-450r-ryzen-7-rtx-4050-ssd-1tb-512gb-1548592870",
-        "title": "Notebook Gamer Avell Storm 450R Ryzen 7 RTX 4050 SSD 1TB + 512GB",
-        "cpu_term": "family:avell-storm",
-        "search_terms": [
-          "family:avell-storm"
-        ],
-        "description_discovery": true,
-        "price_brl": 6000,
-        "ram_gb": 16,
-        "storage_gb": 1024,
-        "gpu": "RTX 4050",
-        "location": null,
-        "condition": "Usado - Excelente",
-        "status": "out_of_scope",
-        "first_seen": "2026-11-05",
-        "last_seen": "2026-11-05",
-        "notes": null,
-        "desc_checked": true,
-        "validation": {
-          "version": 2,
-          "state": "rejected",
-          "checked_at": "2026-11-05T10:02:53.989Z",
-          "reasons": [
-            "RAM abaixo do mínimo exigido",
-            "RAM abaixo do mínimo de 32 GB",
-            "CPU não confirmada no anúncio"
-          ],
-          "listing_price_brl": 6000,
-          "detail_price_brl": 6000,
-          "visible_price_brl": null,
-          "structured_price_brl": 6000,
-          "title_specs": {
-            "ram_gb": null,
-            "storage_gb": 1024,
-            "gpu": "RTX 4050"
-          },
-          "description_specs": {
-            "ram_gb": 16,
-            "storage_gb": 1024,
-            "gpu": "RTX 4050"
-          },
-          "cpu_confirmed": false,
-          "description_checked": true
-        },
-        "description_evidence": "Vendo notebook gamer Avell Storm 450R com processador AMD Ryzen 7 7735HS, 8 núcleos e 16 threads, e placa de vídeo dedicada NVIDIA GeForce RTX 4050.Tela de 15,6 polegadas Full HD com taxa de atualização de até 165 Hz.Possui dois SSDs NVMe instalados: Kingston NV2 de 1 TB e FORESEE de 512 GB.Atualmente está com Linux BigLinux instalado.Processador AMD Ryzen 7 7735HS ? 8 núcleos e 16 threadsMemória RAM - 16 GB instalados¹Placa de vídeo dedicada - NVIDIA GeForce RTX 4050 LaptopVídeo integrado - AMD Radeon 680MSSD principal - FORESEE XP2000 NVMe de 512 GBSegundo SSD - Kingston NV2 NVMe de 1 TBArmazenamento total 1 TB + 512 GBTela - 15,6? Full HD, 1920 × 1080, até 165 HzWi-Fi - MediaTek MT7922 ? padrão Wi-Fi 6/6ERede cabeada - Gigabit EthernetSistema atual - BigLinux, baseado em Manjaro",
-        "detail_title": "Notebook Gamer Avell Storm 450R Ryzen 7 RTX 4050 SSD 1TB + 512GB",
-        "configuration_warnings": [],
-        "out_of_scope_at": "2026-11-05T10:03:41.787Z",
-        "price_history": [
-          {
-            "at": "2026-11-05T10:03:41.787Z",
-            "price_brl": 6000
-          }
-        ]
-      },
-      {
-        "id": "1545937266",
-        "url": "https://sp.olx.com.br/regiao-de-sorocaba/informatica/notebooks/notebook-avell-storm-450-rtx-4050-ryzen-7-1545937266",
-        "title": "Notebook avell storm 450 rtx 4050 ryzen 7",
-        "cpu_term": "family:avell-storm",
-        "search_terms": [
-          "family:avell-storm"
-        ],
-        "description_discovery": true,
-        "price_brl": 7250,
-        "ram_gb": 16,
-        "storage_gb": 1024,
-        "gpu": "RTX 4050",
-        "location": null,
-        "condition": "novo",
-        "status": "out_of_scope",
-        "first_seen": "2026-10-20",
-        "last_seen": "2026-11-05",
-        "notes": null,
-        "desc_checked": true,
-        "validation": {
-          "version": 2,
-          "state": "rejected",
-          "checked_at": "2026-11-05T10:03:05.989Z",
-          "reasons": [
-            "RAM abaixo do mínimo exigido",
-            "RAM abaixo do mínimo de 32 GB",
-            "CPU não confirmada no anúncio"
-          ],
-          "listing_price_brl": 7250,
-          "detail_price_brl": 7250,
-          "visible_price_brl": null,
-          "structured_price_brl": 7250,
-          "title_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": "RTX 4050"
-          },
-          "description_specs": {
-            "ram_gb": 16,
-            "storage_gb": 1024,
-            "gpu": "RTX 4050"
-          },
-          "cpu_confirmed": false,
-          "description_checked": true
-        },
-        "out_of_scope_at": "2026-11-05T10:03:41.787Z",
-        "price_history": [
-          {
-            "at": "2026-10-20T19:02:03.601Z",
-            "price_brl": 7500
-          },
-          {
-            "at": "2026-10-30T10:04:54.013Z",
-            "price_brl": 7250
-          }
-        ],
-        "configuration_warnings": [],
-        "description_evidence": "Notebook Avell Storm Ryzen 7 + RTX 4050 | Apenas 9 meses de uso!Potencialize seus jogos, projetos e tarefas com o Avell Storm! Equipado com processador AMD Ryzen 7 e placa de vídeo NVIDIA GeForce RTX 4050, oferece excelente desempenho para jogos, desenvolvimento de games, edição e produtividade.ESPECIFICAÇÕES TÉCNICASProcessador: AMD Ryzen? 7 7435HS, 8 núcleos, cache de 16 MB e frequência de 3,1 GHz até 4,5 GHz Max BoostPlaca de vídeo: NVIDIA GeForce® RTX 4050 com 6 GB GDDR6Memória RAM: 16 GB DDR5 4800 MHz (2x 8 GB, Dual Channel)Armazenamento: SSD M.2 NVMe de 1 TB, geração 4, com velocidade de até 5.000 MB/sTela: 15,6\" Full HD (1920 x 1080), WVA, 165 Hz, acabamento Matte e 100% sRGBESTADO DE CONSERVAÇÃOApenas 9 meses de usoExtremamente bem cuidado e conservadoAinda na garantia do fabricante, conforme o prazo vigenteFuncionamento e desempenho excelentesSISTEMA OPERACIONALO notebook foi adquirido originalmente sem sistema operacional. Entrego formatado e com Windows instalado, pronto para uso.Uma excelente opção para quem busca um notebook gamer potente, com SSD de 1 TB, tela de 165 Hz e uma RTX 4050, sem precisar investir em um equipamento novo!Entre em contato para mais informações.",
-        "detail_title": "Notebook avell storm 450 rtx 4050 ryzen 7"
       },
       {
         "id": "1538622677",
@@ -13929,24 +13620,36 @@
   },
   "blocked_until": null,
   "description_discovery": {
-    "extra_details": 1,
-    "total_details": 1,
-    "detail_ms": 1559,
-    "recovered_validated": 0,
-    "cache_hits": 14,
+    "extra_details": 2,
+    "total_details": 6,
+    "detail_ms": 2443,
+    "recovered_validated": 1,
+    "cache_hits": 2,
     "by_term": {
-      "family:avell-storm": 1
+      "14700hx": 1,
+      "14900hx": 1
     },
     "detail_yield": {
-      "family:avell-storm": {
-        "reads": 1,
+      "14700hx": {
+        "reads": 5,
         "validated_offers": 0,
         "read_keys": [
-          "1550499708"
+          "1550643017",
+          "1549921750",
+          "1522141686",
+          "1549722069",
+          "1548107625"
+        ]
+      },
+      "14900hx": {
+        "reads": 1,
+        "validated_offers": 1,
+        "read_keys": [
+          "1548163140"
         ]
       }
     },
-    "new_details": 1,
+    "new_details": 6,
     "total_detail_limit": 12,
     "queued_candidates": 16,
     "retry_waiting": 1,
@@ -13963,14 +13666,15 @@
       "returned": 10,
       "validated": 2,
       "query": "14700hx",
-      "unique_eligible_candidates": 3,
+      "unique_eligible_candidates": 4,
       "eligible_candidate_ids": [
+        "1550643017",
         "1547313199",
         "1549921750",
         "1545266033"
       ],
       "pending": 3,
-      "detail_reads": 0,
+      "detail_reads": 5,
       "limited": false,
       "listing_incomplete": false,
       "listing_limit": 36,
@@ -13978,24 +13682,22 @@
       "total_results": 23,
       "details_pending_offers": 0,
       "details_pending_tracking": 0,
-      "tracking_candidates": 7,
+      "tracking_candidates": 6,
       "pending_detail_keys": {
         "offers": [],
         "tracking": []
       },
       "recommendations_ignored": 0,
-      "detail_read_attempts": 0,
+      "detail_read_attempts": 5,
       "validated_offers_from_reads": 0,
-      "validated_offers_per_read": null
+      "validated_offers_per_read": 0
     },
     "13980hx": {
-      "returned": 1,
-      "validated": 1,
+      "returned": 0,
+      "validated": 0,
       "query": "13980hx",
-      "unique_eligible_candidates": 1,
-      "eligible_candidate_ids": [
-        "1545009098"
-      ],
+      "unique_eligible_candidates": 0,
+      "eligible_candidate_ids": [],
       "pending": 0,
       "detail_reads": 0,
       "limited": false,
@@ -14024,7 +13726,7 @@
         "1548163140"
       ],
       "pending": 3,
-      "detail_reads": 0,
+      "detail_reads": 1,
       "limited": true,
       "listing_incomplete": false,
       "listing_limit": 60,
@@ -14040,9 +13742,9 @@
         ]
       },
       "recommendations_ignored": 0,
-      "detail_read_attempts": 0,
-      "validated_offers_from_reads": 0,
-      "validated_offers_per_read": null
+      "detail_read_attempts": 1,
+      "validated_offers_from_reads": 1,
+      "validated_offers_per_read": 1
     },
     "13900hx": {
       "returned": 0,
@@ -14056,7 +13758,7 @@
       "listing_incomplete": false,
       "listing_limit": 12,
       "details_pending": 0,
-      "total_results": 10,
+      "total_results": 9,
       "details_pending_offers": 0,
       "details_pending_tracking": 0,
       "tracking_candidates": 0,
@@ -14069,10 +13771,35 @@
       "validated_offers_from_reads": 0,
       "validated_offers_per_read": null
     },
-    "7845hx": {
+    "290hx": {
       "returned": 0,
       "validated": 0,
-      "query": "7845hx",
+      "query": "290hx",
+      "unique_eligible_candidates": 0,
+      "eligible_candidate_ids": [],
+      "pending": 0,
+      "detail_reads": 0,
+      "limited": false,
+      "listing_incomplete": false,
+      "listing_limit": 12,
+      "details_pending": 0,
+      "total_results": 4,
+      "details_pending_offers": 0,
+      "details_pending_tracking": 0,
+      "tracking_candidates": 0,
+      "pending_detail_keys": {
+        "offers": [],
+        "tracking": []
+      },
+      "recommendations_ignored": 0,
+      "detail_read_attempts": 0,
+      "validated_offers_from_reads": 0,
+      "validated_offers_per_read": null
+    },
+    "9955hx": {
+      "returned": 0,
+      "validated": 0,
+      "query": "9955hx",
       "unique_eligible_candidates": 0,
       "eligible_candidate_ids": [],
       "pending": 0,
@@ -14094,10 +13821,10 @@
       "validated_offers_from_reads": 0,
       "validated_offers_per_read": null
     },
-    "8840hx": {
+    "aimax395": {
       "returned": 0,
       "validated": 0,
-      "query": "8840hx",
+      "query": "ryzen ai max 395 notebook",
       "unique_eligible_candidates": 0,
       "eligible_candidate_ids": [],
       "pending": 0,
@@ -14106,32 +13833,7 @@
       "listing_incomplete": false,
       "listing_limit": 12,
       "details_pending": 0,
-      "total_results": 0,
-      "details_pending_offers": 0,
-      "details_pending_tracking": 0,
-      "tracking_candidates": 0,
-      "pending_detail_keys": {
-        "offers": [],
-        "tracking": []
-      },
-      "recommendations_ignored": 39,
-      "detail_read_attempts": 0,
-      "validated_offers_from_reads": 0,
-      "validated_offers_per_read": null
-    },
-    "aimax390": {
-      "returned": 0,
-      "validated": 0,
-      "query": "ryzen ai max 390 notebook",
-      "unique_eligible_candidates": 0,
-      "eligible_candidate_ids": [],
-      "pending": 0,
-      "detail_reads": 0,
-      "limited": false,
-      "listing_incomplete": false,
-      "listing_limit": 12,
-      "details_pending": 0,
-      "total_results": 1,
+      "total_results": 2,
       "details_pending_offers": 0,
       "details_pending_tracking": 0,
       "tracking_candidates": 0,
@@ -14144,52 +13846,19 @@
       "validated_offers_from_reads": 0,
       "validated_offers_per_read": null
     },
-    "hx470": {
+    "family:legion-pro-5": {
       "returned": 0,
       "validated": 0,
-      "query": "ryzen ai 9 hx 470 notebook",
+      "query": "legion pro 5",
       "unique_eligible_candidates": 0,
       "eligible_candidate_ids": [],
       "pending": 0,
       "detail_reads": 0,
-      "limited": false,
-      "listing_incomplete": false,
-      "listing_limit": 12,
-      "details_pending": 0,
-      "total_results": 0,
-      "details_pending_offers": 0,
-      "details_pending_tracking": 0,
-      "tracking_candidates": 0,
-      "pending_detail_keys": {
-        "offers": [],
-        "tracking": []
-      },
-      "recommendations_ignored": 24,
-      "detail_read_attempts": 0,
-      "validated_offers_from_reads": 0,
-      "validated_offers_per_read": null
-    },
-    "family:avell-storm": {
-      "returned": 7,
-      "validated": 0,
-      "query": "avell storm",
-      "unique_eligible_candidates": 7,
-      "eligible_candidate_ids": [
-        "1550295521",
-        "1546506873",
-        "1550499708",
-        "1541030102",
-        "1548592870",
-        "1548268436",
-        "1545937266"
-      ],
-      "pending": 1,
-      "detail_reads": 1,
       "limited": false,
       "listing_incomplete": false,
       "listing_limit": 60,
       "details_pending": 0,
-      "total_results": 23,
+      "total_results": 2,
       "details_pending_offers": 0,
       "details_pending_tracking": 0,
       "tracking_candidates": 0,
@@ -14198,9 +13867,9 @@
         "tracking": []
       },
       "recommendations_ignored": 0,
-      "detail_read_attempts": 1,
+      "detail_read_attempts": 0,
       "validated_offers_from_reads": 0,
-      "validated_offers_per_read": 0
+      "validated_offers_per_read": null
     }
   }
 }
