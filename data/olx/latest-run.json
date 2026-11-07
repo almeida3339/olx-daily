@@ -1,21 +1,21 @@
 {
   "schema_version": 1,
-  "run_id": "2026-11-07T10-03-12-127Z",
-  "committed_at": "2026-11-07T10:03:12.223Z",
-  "snapshot": "runs/2026-11-07T10-03-12-127Z/snapshot.json",
-  "report": "runs/2026-11-07T10-03-12-127Z/report.md",
+  "run_id": "2026-11-07T19-01-19-123Z",
+  "committed_at": "2026-11-07T19:01:19.189Z",
+  "snapshot": "runs/2026-11-07T19-01-19-123Z/snapshot.json",
+  "report": "runs/2026-11-07T19-01-19-123Z/report.md",
   "quarantine": null,
   "summary": {
     "schema_version": 1,
-    "collected_at": "2026-11-07T10:03:12.127Z",
+    "collected_at": "2026-11-07T19:01:19.123Z",
     "execution": "success",
     "issues": [
       "1 ficha(s) aguardando leitura dentro dos limites da rodada"
     ],
     "coverage": {
       "status": "partial",
-      "scheduled": 8,
-      "completed": 7,
+      "scheduled": 5,
+      "completed": 4,
       "incomplete": 1,
       "deferred": 0,
       "pending_descriptions": 16,
@@ -33,27 +33,21 @@
             "13980hx",
             "14900hx",
             "13900hx",
-            "290hx",
-            "9955hx",
-            "aimax395",
-            "family:legion-pro-5"
+            "family:dell-g16"
           ],
           "completed_terms": [
             "14700hx",
             "13980hx",
             "14900hx",
             "13900hx",
-            "290hx",
-            "9955hx",
-            "aimax395",
-            "family:legion-pro-5"
+            "family:dell-g16"
           ],
           "incomplete_terms": [],
           "pending_details": 0,
           "queued_candidates": 11,
           "pending_candidates": 9,
-          "scheduled": 8,
-          "completed": 8,
+          "scheduled": 5,
+          "completed": 5,
           "incomplete": 0,
           "status": "partial"
         },
@@ -91,19 +85,19 @@
     }
   },
   "checksums": {
-    "snapshot_sha256": "1af7330668aabbe6da92076a2d9cd311f703332c4dd02d241ce851ee1d5516eb",
-    "report_sha256": "ee10eda2fcaa10b9720a60b9abf1f317c1576bee157a19329556cbd6e929c100"
+    "snapshot_sha256": "81270727639153dc884edacd42730b5d7ebf24b6d6d152b2a3b326b8baec9031",
+    "report_sha256": "650fc47e3afe62e4407c6961e0071796ecad87572fa4ec4c8faa30af52791c7e"
   },
   "metadata": {
     "source": "olx-notebooks",
     "transport": "cdp",
-    "collection_started_at": "2026-11-07T10:00:22.526Z",
-    "collected_count": 14,
+    "collection_started_at": "2026-11-07T19:00:15.945Z",
+    "collected_count": 13,
     "failed_term_count": 1,
-    "successful_term_count": 7,
+    "successful_term_count": 4,
     "in_progress": false,
     "validated_count": 3,
-    "pending_count": 6,
+    "pending_count": 5,
     "rejected_count": 5,
     "quarantined_item_count": 0
   }

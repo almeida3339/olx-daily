@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "selection_policy_version": 3,
-  "round": "2026-11-07T10:00:22.526Z",
+  "round": "2026-11-07T19:00:15.945Z",
   "queue": [
     {
       "key": "1548198514",
@@ -354,7 +354,7 @@
         "14900hx"
       ],
       "first_observed_at": "2026-10-29T13:00:02.524Z",
-      "last_observed_at": "2026-11-07T10:02:03.909Z",
+      "last_observed_at": "2026-11-07T19:00:42.636Z",
       "last_detail_attempt_at": "2026-11-02T10:03:32.322Z",
       "detail_attempts": 3,
       "last_reasons": [
@@ -489,151 +489,6 @@
     }
   ],
   "cache": [
-    {
-      "key": "1549985151",
-      "title": "Notbook Gamer Predator I9 14900HX + RTX 4070",
-      "price_brl": 8900,
-      "card_fingerprint": "[\"Notbook Gamer Predator I9 14900HX + RTX 4070\",8900,[\"14900hx\"],null,\"RTX 4070\"]",
-      "checked_at": "2026-11-04T10:02:16.210Z",
-      "item": {
-        "id": "1549985151",
-        "url": "https://df.olx.com.br/distrito-federal-e-regiao/informatica/notebooks/notbook-gamer-predator-i9-14900hx-rtx-4070-1549985151",
-        "title": "Notbook Gamer Predator I9 14900HX + RTX 4070",
-        "cpu_term": "14900hx",
-        "search_terms": [
-          "14900hx"
-        ],
-        "description_discovery": false,
-        "price_brl": 8900,
-        "ram_gb": null,
-        "storage_gb": null,
-        "gpu": "RTX 4070",
-        "location": null,
-        "condition": "novo",
-        "status": "active",
-        "first_seen": null,
-        "last_seen": null,
-        "notes": null,
-        "desc_checked": true,
-        "validation": {
-          "version": 2,
-          "state": "pending",
-          "checked_at": "2026-11-04T10:02:16.208Z",
-          "reasons": [
-            "Especificação não confirmada: RAM"
-          ],
-          "listing_price_brl": 8900,
-          "detail_price_brl": 8900,
-          "visible_price_brl": null,
-          "structured_price_brl": 8900,
-          "title_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": "RTX 4070"
-          },
-          "description_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": null
-          },
-          "cpu_confirmed": true,
-          "description_checked": true,
-          "detail_diagnostic": {
-            "state": "ready",
-            "http_status": 200,
-            "document_state": "interactive",
-            "description_found": true,
-            "price_found": true,
-            "structured_product_found": true,
-            "description_source": "structured",
-            "same_ad": true,
-            "body_length": 1808,
-            "wait_ms": 548,
-            "samples": 2
-          }
-        },
-        "description_evidence": "Notbook GamerPredator Helios Neo 16I9 14900HXRTX 4070 8gb32gb DDR5512gb M2 NVMETela IPS 240hzTeclado RGBTodo original, acompanha caixa.Notbook não tem 1 marca de uso, extremamente novo. Entre em contato 6199658-9873",
-        "detail_title": "Notbook Gamer Predator I9 14900HX + RTX 4070 ",
-        "configuration_warnings": [
-          "Armazenamento não informado"
-        ]
-      }
-    },
-    {
-      "key": "1547281460",
-      "title": "Notebook Gamer Avell Storm 450 Intel I7 32gram 500gb Rtx4050",
-      "price_brl": 6000,
-      "card_fingerprint": "[\"Notebook Gamer Avell Storm 450 Intel I7 32gram 500gb Rtx4050\",6000,[],null,\"RTX 4050\"]",
-      "checked_at": "2026-11-04T10:03:00.119Z",
-      "item": {
-        "id": "1547281460",
-        "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-450-intel-i7-32gram-500gb-rtx4050-1547281460",
-        "title": "Notebook Gamer Avell Storm 450 Intel I7 32gram 500gb Rtx4050",
-        "cpu_term": "family:avell-storm",
-        "search_terms": [
-          "family:avell-storm"
-        ],
-        "description_discovery": true,
-        "price_brl": 6000,
-        "ram_gb": null,
-        "storage_gb": null,
-        "gpu": "RTX 4050",
-        "location": null,
-        "condition": null,
-        "status": "active",
-        "first_seen": null,
-        "last_seen": null,
-        "notes": null,
-        "desc_checked": false,
-        "validation": {
-          "version": 2,
-          "state": "pending",
-          "checked_at": "2026-11-04T10:03:00.118Z",
-          "reasons": [
-            "Anúncio indisponível na página de detalhe",
-            "Descrição do anúncio não localizada",
-            "Preço integral do anúncio não localizado",
-            "Especificação não confirmada: RAM",
-            "CPU não confirmada no anúncio"
-          ],
-          "listing_price_brl": 6000,
-          "detail_price_brl": null,
-          "visible_price_brl": null,
-          "structured_price_brl": null,
-          "title_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": "RTX 4050"
-          },
-          "description_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": null
-          },
-          "cpu_confirmed": false,
-          "description_checked": false,
-          "detail_diagnostic": {
-            "state": "unavailable",
-            "http_status": 410,
-            "document_state": "loading",
-            "description_found": false,
-            "price_found": false,
-            "structured_product_found": false,
-            "description_source": null,
-            "same_ad": true,
-            "body_length": 0,
-            "wait_ms": 12,
-            "samples": 1
-          }
-        },
-        "description_evidence": "",
-        "detail_title": "",
-        "configuration_warnings": [
-          "Armazenamento não informado"
-        ]
-      },
-      "unavailable_round": "2026-11-04T10:00:15.940Z"
-    },
     {
       "key": "1539191902",
       "title": "Notebook Gamer ROG STRIX G16 RTX 4060",
@@ -2176,38 +2031,95 @@
         "detail_title": "Notebook Gamer MSI Vector 16 HX A14VFG - Potência de sobra para jogos e trabalho pesado!",
         "configuration_warnings": []
       }
+    },
+    {
+      "key": "1550390905",
+      "title": "Dell G16 7620 RTX3050 Ti - RAM 32GB - SSD 512GB",
+      "price_brl": 4999,
+      "card_fingerprint": "[\"Dell G16 7620 RTX3050 Ti - RAM 32GB - SSD 512GB\",4999,[],32,\"RTX 3050 TI\"]",
+      "checked_at": "2026-11-07T19:01:19.112Z",
+      "item": {
+        "id": "1550390905",
+        "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/dell-g16-7620-rtx3050-ti-ram-32gb-ssd-512gb-1550390905",
+        "title": "Dell G16 7620 RTX3050 Ti - RAM 32GB - SSD 512GB",
+        "cpu_term": "family:dell-g16",
+        "search_terms": [
+          "family:dell-g16"
+        ],
+        "description_discovery": true,
+        "price_brl": 4999,
+        "ram_gb": 32,
+        "storage_gb": 512,
+        "gpu": "RTX 3050 TI",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-11-07T19:01:19.109Z",
+          "reasons": [
+            "CPU fora da busca",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 4999,
+          "detail_price_brl": 4999,
+          "visible_price_brl": null,
+          "structured_price_brl": 4999,
+          "title_specs": {
+            "ram_gb": 32,
+            "storage_gb": 512,
+            "gpu": "RTX 3050 TI"
+          },
+          "description_specs": {
+            "ram_gb": 32,
+            "storage_gb": null,
+            "gpu": "RTX 3050 TI"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true,
+          "detail_diagnostic": {
+            "state": "ready",
+            "http_status": 200,
+            "document_state": "interactive",
+            "description_found": true,
+            "price_found": true,
+            "structured_product_found": true,
+            "description_source": "structured",
+            "same_ad": true,
+            "body_length": 1995,
+            "wait_ms": 602,
+            "samples": 2
+          }
+        },
+        "description_evidence": "O notebook foi comprado nos Estados Unidos, e está em perfeito estado de conservação e funcionamento, muito bem cuidado e pronto para uso. Realizei um upgrade de memória para 32GB.Modelo Dell G16 7620 - P105FTela: 16 polegadas - Quad-High Definition Plus (QHD+) 165 HzResolução: 2560 x 1600 pixels (16:10)Processador: Intel i7-12700H (12ª Geração)Memória: 32GB (2x16 GB) DDR5 4800MHzArmazenamento SSD: 512 GBPlaca de vídeo: NVIDIA GeForce RTX 3050 Ti Laptop GPU (4 GB)Teclado Retroiluminado com RGB",
+        "detail_title": "Dell G16 7620 RTX3050 Ti - RAM 32GB - SSD 512GB",
+        "configuration_warnings": []
+      }
     }
   ],
   "metrics": {
-    "extra_details": 2,
-    "total_details": 6,
-    "detail_ms": 2443,
-    "recovered_validated": 1,
-    "cache_hits": 2,
+    "extra_details": 1,
+    "total_details": 1,
+    "detail_ms": 1083,
+    "recovered_validated": 0,
+    "cache_hits": 7,
     "by_term": {
-      "14700hx": 1,
-      "14900hx": 1
+      "family:dell-g16": 1
     },
     "detail_yield": {
-      "14700hx": {
-        "reads": 5,
+      "family:dell-g16": {
+        "reads": 1,
         "validated_offers": 0,
         "read_keys": [
-          "1550643017",
-          "1549921750",
-          "1522141686",
-          "1549722069",
-          "1548107625"
-        ]
-      },
-      "14900hx": {
-        "reads": 1,
-        "validated_offers": 1,
-        "read_keys": [
-          "1548163140"
+          "1550390905"
         ]
       }
     },
-    "new_details": 6
+    "new_details": 1
   }
 }
