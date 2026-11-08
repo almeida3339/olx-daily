@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-11-08T11-01-08-912Z",
+  "committed_at": "2026-11-08T11:01:08.951Z",
+  "snapshot": "runs/2026-11-08T11-01-08-912Z/snapshot.json",
+  "report": "runs/2026-11-08T11-01-08-912Z/report.md",
+  "quarantine": null,
+  "summary": {
+    "schema_version": 1,
+    "collected_at": "2026-11-08T11:01:08.912Z",
+    "execution": "success",
+    "issues": [],
+    "coverage": {
+      "status": "complete",
+      "scheduled": 1,
+      "completed": 1,
+      "incomplete": 0,
+      "deferred": 0,
+      "pending_descriptions": 0,
+      "pending_candidates": 0,
+      "pending_details": 0,
+      "heuristic_stops": [],
+      "heuristic_reasons": {}
+    },
+    "findings": {
+      "new_items": [],
+      "price_changes": [],
+      "active_count": 0,
+      "pending_count": 0,
+      "new_count": 0,
+      "price_count": 0
+    }
+  },
+  "checksums": {
+    "snapshot_sha256": "c385f441be84ca36b074b61644936cceb218fcc614dd7bca61529c38f63765ad",
+    "report_sha256": "0f6696f1d10b33a386bf7ab00331be057d16322ec24a9109913f63f69a19bdde"
+  },
+  "metadata": {
+    "source": "enjoei-momotaro",
+    "collected_count": 0,
+    "pending_count": 0,
+    "failed_term_count": 0,
+    "quarantined_item_count": 0
+  }
+}

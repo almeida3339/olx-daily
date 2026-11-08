@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-11-08T11-01-08-531Z",
+  "committed_at": "2026-11-08T11:01:10.700Z",
+  "snapshot": "runs/2026-11-08T11-01-08-531Z/snapshot.json",
+  "report": "runs/2026-11-08T11-01-08-531Z/report.md",
+  "quarantine": null,
+  "summary": {
+    "schema_version": 1,
+    "collected_at": "2026-11-08T11:01:10.659Z",
+    "execution": "success",
+    "issues": [],
+    "coverage": {
+      "status": "partial",
+      "scheduled": 4,
+      "completed": 4,
+      "incomplete": 0,
+      "deferred": 0,
+      "pending_descriptions": 0,
+      "pending_candidates": 3,
+      "pending_details": 0,
+      "heuristic_stops": [
+        "fot walka"
+      ],
+      "heuristic_reasons": {
+        "fot walka": "first_page_no_match"
+      }
+    },
+    "findings": {
+      "new_items": [],
+      "price_changes": [],
+      "active_count": 1,
+      "pending_count": 3,
+      "new_count": 0,
+      "price_count": 0
+    }
+  },
+  "checksums": {
+    "snapshot_sha256": "12b35aead970527d8a43ea5df73b202f7244d5629704b776b7a127a5d63dffa0",
+    "report_sha256": "51f97bdb1bd7673ebc3e7362f8fcc539588d1a45db0e7c7602c6fc9ebf0e9155"
+  },
+  "metadata": {
+    "source": "enjoei-tenis",
+    "collected_count": 0,
+    "pending_count": 2,
+    "failed_term_count": 0,
+    "incomplete_term_count": 0,
+    "quarantined_item_count": 0
+  }
+}
