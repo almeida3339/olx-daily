@@ -1,7 +1,23 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-08T11:01:09.553Z",
+  "updated_at": "2026-11-08T19:01:11.530Z",
   "runs": [
+    {
+      "run_id": "2026-11-08T19-01-11-189Z",
+      "committed_at": "2026-11-08T19:01:11.468Z",
+      "completed_at": "2026-11-08T19:01:11.438Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 249,
+      "item_count": 2,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "lifefactory",
+        "label": "Lifefactory",
+        "collected_count": 1,
+        "quarantined_item_count": 0
+      }
+    },
     {
       "run_id": "2026-11-08T11-01-09-148Z",
       "committed_at": "2026-11-08T11:01:09.420Z",
@@ -10,12 +26,12 @@
       "partial": false,
       "duration_ms": 229,
       "item_count": 2,
-      "quarantined_item_count": 0,
       "metadata": {
         "source": "lifefactory",
         "label": "Lifefactory",
         "collected_count": 1,
-        "quarantined_item_count": 0
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     },
     {
@@ -1894,22 +1910,6 @@
       "run_id": "2026-10-03T19-00-40-361Z",
       "committed_at": "2026-10-03T19:00:42.111Z",
       "completed_at": "2026-10-03T19:00:42.111Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": null,
-      "item_count": 2,
-      "metadata": {
-        "source": "lifefactory",
-        "label": "Lifefactory",
-        "collected_count": 1,
-        "quarantined_item_count": 0,
-        "in_progress": false
-      }
-    },
-    {
-      "run_id": "2026-10-03T11-01-01-028Z",
-      "committed_at": "2026-10-03T11:01:01.214Z",
-      "completed_at": "2026-10-03T11:01:01.214Z",
       "outcome": "success",
       "partial": false,
       "duration_ms": null,
