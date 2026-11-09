@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-11-09T11-01-14-611Z",
+  "committed_at": "2026-11-09T11:01:15.043Z",
+  "snapshot": "runs/2026-11-09T11-01-14-611Z/snapshot.json",
+  "report": "runs/2026-11-09T11-01-14-611Z/report.md",
+  "quarantine": null,
+  "summary": {
+    "schema_version": 1,
+    "collected_at": "2026-11-09T11:01:15.026Z",
+    "execution": "success",
+    "issues": [],
+    "coverage": {
+      "status": "complete",
+      "scheduled": 1,
+      "completed": 1,
+      "incomplete": 0,
+      "deferred": 0,
+      "pending_descriptions": 0,
+      "pending_candidates": 0,
+      "pending_details": 0,
+      "heuristic_stops": [],
+      "heuristic_reasons": {}
+    },
+    "findings": {
+      "new_items": [],
+      "price_changes": [],
+      "active_count": 1,
+      "pending_count": 0,
+      "new_count": 0,
+      "price_count": 0
+    }
+  },
+  "checksums": {
+    "snapshot_sha256": "d8746603b8c6f35c40ead1b2de095f4e9377fe6dce409b886957ee0b9c19bacd",
+    "report_sha256": "8a2d465d3bff12a184c6f31f1233cfd2978288c51d386584aa429d41cd9e564c"
+  },
+  "metadata": {
+    "source": "lifefactory",
+    "label": "Lifefactory",
+    "collected_count": 1,
+    "quarantined_item_count": 0
+  }
+}
