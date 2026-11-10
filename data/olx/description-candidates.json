@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "selection_policy_version": 3,
-  "round": "2026-11-09T19:00:20.229Z",
+  "round": "2026-11-10T10:00:17.969Z",
   "queue": [
     {
       "key": "1550480850",
@@ -248,44 +248,6 @@
       "retry_kind": "missing_configuration"
     },
     {
-      "key": "1545146400",
-      "card": {
-        "title": "Notebook predator helios neo 16",
-        "url": "https://se.olx.com.br/sergipe/informatica/notebooks/notebook-predator-helios-neo-16-1545146400",
-        "price_brl": 8000,
-        "location": "Aracaju, Atalaia",
-        "text": "",
-        "ram_gb": null,
-        "storage_gb": null,
-        "cpu_term": "family:helios-neo-16",
-        "description_discovery": true
-      },
-      "terms": [
-        "family:helios-neo-16"
-      ],
-      "first_observed_at": "2026-11-08T19:01:06.134Z",
-      "last_observed_at": "2026-11-08T19:01:53.268Z"
-    },
-    {
-      "key": "1533508306",
-      "card": {
-        "title": "Notebook Gamer Predator Helios Neo 16",
-        "url": "https://ba.olx.com.br/grande-salvador/informatica/notebooks/notebook-gamer-predator-helios-neo-16-1533508306",
-        "price_brl": 8000,
-        "location": "Salvador, Brotas",
-        "text": "",
-        "ram_gb": null,
-        "storage_gb": null,
-        "cpu_term": "family:helios-neo-16",
-        "description_discovery": true
-      },
-      "terms": [
-        "family:helios-neo-16"
-      ],
-      "first_observed_at": "2026-11-08T19:01:06.134Z",
-      "last_observed_at": "2026-11-08T19:01:53.271Z"
-    },
-    {
       "key": "1548369848",
       "card": {
         "title": "Avell I9 notebook",
@@ -470,23 +432,34 @@
       "retry_kind": "missing_configuration"
     },
     {
-      "key": "1522141686",
+      "key": "1550955483",
       "card": {
-        "title": "Notebook Gamer NAVE Estelar (i7-14700HX  / 32GB / RTX 4060 8GB)",
-        "url": "https://sc.olx.com.br/florianopolis-e-regiao/informatica/notebooks/notebook-gamer-nave-estelar-i7-14700hx-32gb-rtx-4060-8gb-1522141686",
-        "price_brl": 8399,
-        "location": "Florianópolis, Cachoeira do Bom Jesus",
-        "text": "Notebook Gamer NAVE Estelar (i7-14700HX / 32GB / RTX 4060 8GB)\nEntrega Fácil\nParcele sem juros\n\nledlemos08\n5.0\n\nR$ 8.499\n\nR$ 8.399\nem até 3x de R$ 2.799,67 sem juros\n\nFlorianópolis, Cachoeira do Bom Jesus\n\n1 de nov, 12:11\n\nSlide 1\nSlide 2\nAdicionar aos favoritos",
+        "title": "((LACRADO)) Rog Strix Ultra 9 275hx RTX5060 16/512gb (Nota fiscal e garantia 2 anos)",
+        "url": "https://rs.olx.com.br/regioes-de-pelotas-rio-grande-e-bage/informatica/notebooks/lacrado-rog-strix-ultra-9-275hx-rtx5060-16-512gb-nota-fiscal-e-garantia-2-anos-1550955483",
+        "price_brl": 10000,
+        "location": "Rio Grande, Cidade Nova",
+        "text": "((LACRADO)) Rog Strix Ultra 9 275hx RTX5060 16/512gb (Nota fiscal e garantia 2 anos)\nEntrega Fácil\nParcele sem juros\n\njvm_almeida\n5.0\n\nR$ 10.000\nem até 3x de R$ 3.333,33 sem juros\n\nRio Grande, Cidade Nova\n\n6 de nov, 21:53\n\nSlide 1\nSlide 2\nSlide 3\nAdicionar aos favoritos",
         "ram_gb": null,
         "storage_gb": null,
-        "cpu_term": "14700hx",
+        "cpu_term": "275hx",
         "description_discovery": false
       },
       "terms": [
-        "14700hx"
+        "275hx"
       ],
-      "first_observed_at": "2026-11-09T10:00:19.267Z",
-      "last_observed_at": "2026-11-09T19:00:34.031Z"
+      "first_observed_at": "2026-11-09T19:01:29.084Z",
+      "last_observed_at": "2026-11-09T19:01:29.084Z",
+      "last_detail_attempt_at": "2026-11-10T10:03:24.392Z",
+      "detail_attempts": 1,
+      "last_reasons": [
+        "Especificação não confirmada: RAM"
+      ],
+      "last_evidence": {
+        "cpu_confirmed": true,
+        "ram_gb": null,
+        "gpu": "RTX 5060"
+      },
+      "retry_kind": "missing_configuration"
     },
     {
       "key": "1448456884",
@@ -505,13 +478,13 @@
         "14900hx"
       ],
       "first_observed_at": "2026-10-29T13:00:02.524Z",
-      "last_observed_at": "2026-11-09T19:00:57.105Z",
-      "last_detail_attempt_at": "2026-11-02T10:03:32.322Z",
-      "detail_attempts": 3,
+      "last_observed_at": "2026-11-10T10:00:50.459Z",
+      "last_detail_attempt_at": "2026-11-10T10:03:36.456Z",
+      "detail_attempts": 4,
       "last_reasons": [
         "Especificação divergente: GPU"
       ],
-      "next_retry_at": "2026-11-09T10:03:32.322Z",
+      "next_retry_at": "2026-11-17T10:03:36.456Z",
       "last_evidence": {
         "cpu_confirmed": true,
         "ram_gb": 32,
@@ -637,63 +610,6 @@
         "gpu": "RTX 4070"
       },
       "retry_kind": "missing_configuration"
-    },
-    {
-      "key": "1550955483",
-      "card": {
-        "title": "((LACRADO)) Rog Strix Ultra 9 275hx RTX5060 16/512gb (Nota fiscal e garantia 2 anos)",
-        "url": "https://rs.olx.com.br/regioes-de-pelotas-rio-grande-e-bage/informatica/notebooks/lacrado-rog-strix-ultra-9-275hx-rtx5060-16-512gb-nota-fiscal-e-garantia-2-anos-1550955483",
-        "price_brl": 10000,
-        "location": "Rio Grande, Cidade Nova",
-        "text": "((LACRADO)) Rog Strix Ultra 9 275hx RTX5060 16/512gb (Nota fiscal e garantia 2 anos)\nEntrega Fácil\nParcele sem juros\n\njvm_almeida\n5.0\n\nR$ 10.000\nem até 3x de R$ 3.333,33 sem juros\n\nRio Grande, Cidade Nova\n\n6 de nov, 21:53\n\nSlide 1\nSlide 2\nSlide 3\nAdicionar aos favoritos",
-        "ram_gb": null,
-        "storage_gb": null,
-        "cpu_term": "275hx",
-        "description_discovery": false
-      },
-      "terms": [
-        "275hx"
-      ],
-      "first_observed_at": "2026-11-09T19:01:29.084Z",
-      "last_observed_at": "2026-11-09T19:01:29.084Z"
-    },
-    {
-      "key": "1546506873",
-      "card": {
-        "title": "Notebook Gamer Avell Storm BS 350",
-        "url": "https://pa.olx.com.br/regiao-de-maraba/informatica/notebooks/notebook-gamer-avell-storm-bs-350-1546506873",
-        "price_brl": 5300,
-        "location": "Marabá, Belo Horizonte",
-        "text": "",
-        "ram_gb": null,
-        "storage_gb": null,
-        "cpu_term": "family:avell-storm",
-        "description_discovery": true
-      },
-      "terms": [
-        "family:avell-storm"
-      ],
-      "first_observed_at": "2026-11-09T19:02:26.029Z",
-      "last_observed_at": "2026-11-09T19:03:14.268Z"
-    },
-    {
-      "key": "1548268436",
-      "card": {
-        "title": "Notebook Gamer Avell Storm Two",
-        "url": "https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-two-1548268436",
-        "price_brl": 7199,
-        "location": "Lagoa Santa, Sítio Bom Recanto",
-        "text": "",
-        "ram_gb": null,
-        "storage_gb": null,
-        "cpu_term": "family:avell-storm",
-        "description_discovery": true
-      },
-      "terms": [
-        "family:avell-storm"
-      ],
-      "first_observed_at": "2026-11-09T19:02:26.029Z",
-      "last_observed_at": "2026-11-09T19:03:14.271Z"
     }
   ],
   "cache": [
@@ -1040,72 +956,6 @@
         },
         "description_evidence": "O notebook foi comprado nos Estados Unidos, e está em perfeito estado de conservação e funcionamento, muito bem cuidado e pronto para uso. Realizei um upgrade de memória para 32GB.Modelo Dell G16 7620 - P105FTela: 16 polegadas - Quad-High Definition Plus (QHD+) 165 HzResolução: 2560 x 1600 pixels (16:10)Processador: Intel i7-12700H (12ª Geração)Memória: 32GB (2x16 GB) DDR5 4800MHzArmazenamento SSD: 512 GBPlaca de vídeo: NVIDIA GeForce RTX 3050 Ti Laptop GPU (4 GB)Teclado Retroiluminado com RGB",
         "detail_title": "Dell G16 7620 RTX3050 Ti - RAM 32GB - SSD 512GB",
-        "configuration_warnings": []
-      }
-    },
-    {
-      "key": "1522141686",
-      "title": "Notebook Gamer NAVE Estelar (i7-14700HX  / 32GB / RTX 4060 8GB)",
-      "price_brl": 8399,
-      "card_fingerprint": "[\"Notebook Gamer NAVE Estelar (i7-14700HX  / 32GB / RTX 4060 8GB)\",8399,[\"14700hx\"],null,\"RTX 4060\"]",
-      "checked_at": "2026-11-08T10:00:30.974Z",
-      "item": {
-        "id": "1522141686",
-        "url": "https://sc.olx.com.br/florianopolis-e-regiao/informatica/notebooks/notebook-gamer-nave-estelar-i7-14700hx-32gb-rtx-4060-8gb-1522141686",
-        "title": "Notebook Gamer NAVE Estelar (i7-14700HX  / 32GB / RTX 4060 8GB)",
-        "cpu_term": "14700hx",
-        "search_terms": [
-          "14700hx"
-        ],
-        "description_discovery": false,
-        "price_brl": 8399,
-        "ram_gb": 32,
-        "storage_gb": 1536,
-        "gpu": "RTX 4060",
-        "location": null,
-        "condition": "novo",
-        "status": "active",
-        "first_seen": null,
-        "last_seen": null,
-        "notes": null,
-        "desc_checked": true,
-        "validation": {
-          "version": 2,
-          "state": "validated",
-          "checked_at": "2026-11-08T10:00:30.967Z",
-          "reasons": [],
-          "listing_price_brl": 8399,
-          "detail_price_brl": 8399,
-          "visible_price_brl": null,
-          "structured_price_brl": 8399,
-          "title_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": "RTX 4060"
-          },
-          "description_specs": {
-            "ram_gb": 32,
-            "storage_gb": 1536,
-            "gpu": "RTX 4060"
-          },
-          "cpu_confirmed": true,
-          "description_checked": true,
-          "detail_diagnostic": {
-            "state": "ready",
-            "http_status": 200,
-            "document_state": "interactive",
-            "description_found": true,
-            "price_found": true,
-            "structured_product_found": true,
-            "description_source": "structured",
-            "same_ad": true,
-            "body_length": 2655,
-            "wait_ms": 559,
-            "samples": 2
-          }
-        },
-        "description_evidence": "Vendo Notebook Gamer NAVE Estelar, uma verdadeira máquina de altíssimo desempenho, ideal para rodar todos os jogos atuais no Ultra, trabalhar com edição de vídeo pesada, modelagem 3D e renderização. Equipamento robusto e com configurações de última geração.Processador: Intel Core i7-14700HX (14ª Geração) - 20 Núcleos (8 P-cores + 12 E-cores) / 28 Threads - Desempenho absurdo para qualquer tarefa.Placa de Vídeo: NVIDIA GeForce RTX 4060 Laptop (8GB GDDR6) - Roda tudo com Ray Tracing e DLSS 3.Memória RAM: 32GB DDR5 (2x 16GB a 5600 MHz) - Velocidade extrema para multitarefas.Armazenamento Duplo (1.5TB total):- SSD 1: 1TB NVMe (Kingston)- SSD 2: 512GB NVMe (Micron)Equipamento em perfeito estado de funcionamento, conforme mostram os testes de hardware nas fotos. Possui excelente sistema de refrigeração (grandes saídas de ar na parte inferior). Detalhes estéticos normais de uso na tampa (acabamento fosco padrão da marca), mas sem trincos ou quebras estruturais. Realmente 100%, adquirido em novembro de 2024. Ele está impecável! Um novo nessa configuração está R$11k à vista. Então o valor atual já está bem condizente com as configurações. Acompanha caixa original.",
-        "detail_title": "Notebook Gamer NAVE Estelar (i7-14700HX  / 32GB / RTX 4060 8GB)",
         "configuration_warnings": []
       }
     },
@@ -2600,47 +2450,553 @@
         ]
       },
       "unavailable_round": "2026-11-09T19:00:20.229Z"
+    },
+    {
+      "key": "1546506873",
+      "title": "Notebook Gamer Avell Storm BS 350",
+      "price_brl": 5300,
+      "card_fingerprint": "[\"Notebook Gamer Avell Storm BS 350\",5300,[],null,null]",
+      "checked_at": "2026-11-10T10:02:24.603Z",
+      "item": {
+        "id": "1546506873",
+        "url": "https://pa.olx.com.br/regiao-de-maraba/informatica/notebooks/notebook-gamer-avell-storm-bs-350-1546506873",
+        "title": "Notebook Gamer Avell Storm BS 350",
+        "cpu_term": "family:avell-storm",
+        "search_terms": [
+          "family:avell-storm"
+        ],
+        "description_discovery": true,
+        "price_brl": 5300,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": "RTX 3050",
+        "location": null,
+        "condition": null,
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-11-10T10:02:24.590Z",
+          "reasons": [
+            "CPU fora da busca",
+            "Especificação não confirmada: RAM",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 5300,
+          "detail_price_brl": 5300,
+          "visible_price_brl": null,
+          "structured_price_brl": 5300,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 3050"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true,
+          "detail_diagnostic": {
+            "state": "ready",
+            "http_status": 200,
+            "document_state": "loading",
+            "description_found": true,
+            "price_found": true,
+            "structured_product_found": true,
+            "description_source": "structured",
+            "same_ad": true,
+            "body_length": 0,
+            "wait_ms": 521,
+            "samples": 2
+          }
+        },
+        "description_evidence": "Vendo Notebook Gamer Avell em excelente estado de conservação, sem nenhum detalhe, usado poucas vezes. Especificações de hardware:? GeForce® RTX 3050 (4GB GDDR6)? Intel® Core?M i7-12650H Alder Lake (24MB cache, 3.5GHz ~ 4.7GHz Turbo Boost Max 3.0)? Upgrade Grátis - 32GB [2x 16GB - Dual Channel] Memória DDR4 (3200MHZ)? SSD M.2 NVME 512GB - Geração 4 - [3.400 MB/s? 15.6\" FHD WVA (1920x1080p) - 144Hz / Matte / Contraste: 1000:1/ Brilho 250 cd/m²",
+        "detail_title": "Notebook Gamer Avell Storm BS 350",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ]
+      }
+    },
+    {
+      "key": "1548268436",
+      "title": "Notebook Gamer Avell Storm Two",
+      "price_brl": 7199,
+      "card_fingerprint": "[\"Notebook Gamer Avell Storm Two\",7199,[],null,null]",
+      "checked_at": "2026-11-10T10:02:36.695Z",
+      "item": {
+        "id": "1548268436",
+        "url": "https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-two-1548268436",
+        "title": "Notebook Gamer Avell Storm Two",
+        "cpu_term": "family:avell-storm",
+        "search_terms": [
+          "family:avell-storm"
+        ],
+        "description_discovery": true,
+        "price_brl": 7199,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": "RTX 3070 TI",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-11-10T10:02:36.693Z",
+          "reasons": [
+            "CPU fora da busca",
+            "Especificação não confirmada: RAM",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 7199,
+          "detail_price_brl": 7199,
+          "visible_price_brl": null,
+          "structured_price_brl": 7199,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 3070 TI"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true,
+          "detail_diagnostic": {
+            "state": "ready",
+            "http_status": 200,
+            "document_state": "interactive",
+            "description_found": true,
+            "price_found": true,
+            "structured_product_found": true,
+            "description_source": "structured",
+            "same_ad": true,
+            "body_length": 1749,
+            "wait_ms": 591,
+            "samples": 2
+          }
+        },
+        "description_evidence": "Notebook Gamer Avell Storm TwoIntel Core i7 12700H 2.3GHz16gb memória RAMSSD 1tbVídeo NVidia RTX 3070ti 8gbMonitor 15.6 FHD IPSTeclado retroiluminadoFonte/carregador originalCom caixaCom nota fiscal",
+        "detail_title": "Notebook Gamer Avell Storm Two",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ]
+      }
+    },
+    {
+      "key": "1545146400",
+      "title": "Notebook predator helios neo 16",
+      "price_brl": 8000,
+      "card_fingerprint": "[\"Notebook predator helios neo 16\",8000,[],null,null]",
+      "checked_at": "2026-11-10T10:02:48.648Z",
+      "item": {
+        "id": "1545146400",
+        "url": "https://se.olx.com.br/sergipe/informatica/notebooks/notebook-predator-helios-neo-16-1545146400",
+        "title": "Notebook predator helios neo 16",
+        "cpu_term": "family:helios-neo-16",
+        "search_terms": [
+          "family:helios-neo-16"
+        ],
+        "description_discovery": true,
+        "price_brl": 8000,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": "RTX 4060",
+        "location": null,
+        "condition": null,
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-11-10T10:02:48.646Z",
+          "reasons": [
+            "CPU fora da busca",
+            "Especificação não confirmada: RAM",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 8000,
+          "detail_price_brl": 8000,
+          "visible_price_brl": null,
+          "structured_price_brl": 8000,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true,
+          "detail_diagnostic": {
+            "state": "ready",
+            "http_status": 200,
+            "document_state": "loading",
+            "description_found": true,
+            "price_found": true,
+            "structured_product_found": true,
+            "description_source": "structured",
+            "same_ad": true,
+            "body_length": 0,
+            "wait_ms": 513,
+            "samples": 2
+          }
+        },
+        "description_evidence": "Nome do dispositivo NOTEBOOK PREDATOR HELIOS NEO 16 Processador Intel(R) Core(TM) i7-14650HX (2.20 GHz)RAM instalada 16,0 GB (utilizável: 15,7 GB)Placa gráfica NVIDIA GeForce RTX 4060 Laptop GPU (8 GB)Intel(R) UHD Graphics (128 MB)Armazenamento 411 GB de 954 GB usadosID do Produto 00342-21239-33961-AAOEMTipo de sistema Sistema operacional de 64 bits, processador baseado em x64Caneta e toque Nenhuma entrada à caneta ou por toque disponível para este vídeo",
+        "detail_title": "Notebook predator helios neo 16",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ]
+      }
+    },
+    {
+      "key": "1533508306",
+      "title": "Notebook Gamer Predator Helios Neo 16",
+      "price_brl": 8000,
+      "card_fingerprint": "[\"Notebook Gamer Predator Helios Neo 16\",8000,[],null,null]",
+      "checked_at": "2026-11-10T10:03:00.442Z",
+      "item": {
+        "id": "1533508306",
+        "url": "https://ba.olx.com.br/grande-salvador/informatica/notebooks/notebook-gamer-predator-helios-neo-16-1533508306",
+        "title": "Notebook Gamer Predator Helios Neo 16",
+        "cpu_term": "family:helios-neo-16",
+        "search_terms": [
+          "family:helios-neo-16"
+        ],
+        "description_discovery": true,
+        "price_brl": 8000,
+        "ram_gb": 16,
+        "storage_gb": null,
+        "gpu": "RTX 4060",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-11-10T10:03:00.440Z",
+          "reasons": [
+            "RAM abaixo do mínimo exigido",
+            "RAM abaixo do mínimo de 32 GB",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 8000,
+          "detail_price_brl": 8000,
+          "visible_price_brl": null,
+          "structured_price_brl": 8000,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": 16,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true,
+          "detail_diagnostic": {
+            "state": "ready",
+            "http_status": 200,
+            "document_state": "interactive",
+            "description_found": true,
+            "price_found": true,
+            "structured_product_found": true,
+            "description_source": "structured",
+            "same_ad": true,
+            "body_length": 1765,
+            "wait_ms": 552,
+            "samples": 2
+          }
+        },
+        "description_evidence": "Eleve seu gameplay a outro nível com o Notebook Gamer Predator Helios Neo 16! Equipado com processador Intel Core i7 de 13ª geração e placa de vídeo NVIDIA GeForce RTX 4060, este notebook oferece desempenho excepcional para os jogos mais exigentes. Com 16GB de RAM e um SSD rápido, a fluidez e a velocidade são garantidas. O design gamer e a tela imersiva proporcionam uma experiência visual incrível. Prepare-se para a vitória!",
+        "detail_title": "Notebook Gamer Predator Helios Neo 16",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ]
+      }
+    },
+    {
+      "key": "1522141686",
+      "title": "Notebook Gamer NAVE Estelar (i7-14700HX  / 32GB / RTX 4060 8GB)",
+      "price_brl": 8399,
+      "card_fingerprint": "[\"Notebook Gamer NAVE Estelar (i7-14700HX  / 32GB / RTX 4060 8GB)\",8399,[\"14700hx\"],null,\"RTX 4060\"]",
+      "checked_at": "2026-11-10T10:03:12.430Z",
+      "item": {
+        "id": "1522141686",
+        "url": "https://sc.olx.com.br/florianopolis-e-regiao/informatica/notebooks/notebook-gamer-nave-estelar-i7-14700hx-32gb-rtx-4060-8gb-1522141686",
+        "title": "Notebook Gamer NAVE Estelar (i7-14700HX  / 32GB / RTX 4060 8GB)",
+        "cpu_term": "14700hx",
+        "search_terms": [
+          "14700hx"
+        ],
+        "description_discovery": false,
+        "price_brl": 8399,
+        "ram_gb": 32,
+        "storage_gb": 1536,
+        "gpu": "RTX 4060",
+        "location": null,
+        "condition": "novo",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "validated",
+          "checked_at": "2026-11-10T10:03:12.427Z",
+          "reasons": [],
+          "listing_price_brl": 8399,
+          "detail_price_brl": 8399,
+          "visible_price_brl": null,
+          "structured_price_brl": 8399,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "description_specs": {
+            "ram_gb": 32,
+            "storage_gb": 1536,
+            "gpu": "RTX 4060"
+          },
+          "cpu_confirmed": true,
+          "description_checked": true,
+          "detail_diagnostic": {
+            "state": "ready",
+            "http_status": 200,
+            "document_state": "interactive",
+            "description_found": true,
+            "price_found": true,
+            "structured_product_found": true,
+            "description_source": "structured",
+            "same_ad": true,
+            "body_length": 2660,
+            "wait_ms": 548,
+            "samples": 2
+          }
+        },
+        "description_evidence": "Vendo Notebook Gamer NAVE Estelar, uma verdadeira máquina de altíssimo desempenho, ideal para rodar todos os jogos atuais no Ultra, trabalhar com edição de vídeo pesada, modelagem 3D e renderização. Equipamento robusto e com configurações de última geração.Processador: Intel Core i7-14700HX (14ª Geração) - 20 Núcleos (8 P-cores + 12 E-cores) / 28 Threads - Desempenho absurdo para qualquer tarefa.Placa de Vídeo: NVIDIA GeForce RTX 4060 Laptop (8GB GDDR6) - Roda tudo com Ray Tracing e DLSS 3.Memória RAM: 32GB DDR5 (2x 16GB a 5600 MHz) - Velocidade extrema para multitarefas.Armazenamento Duplo (1.5TB total):- SSD 1: 1TB NVMe (Kingston)- SSD 2: 512GB NVMe (Micron)Equipamento em perfeito estado de funcionamento, conforme mostram os testes de hardware nas fotos. Possui excelente sistema de refrigeração (grandes saídas de ar na parte inferior). Detalhes estéticos normais de uso na tampa (acabamento fosco padrão da marca), mas sem trincos ou quebras estruturais. Realmente 100%, adquirido em novembro de 2024. Ele está impecável! Um novo nessa configuração está R$11k à vista. Então o valor atual já está bem condizente com as configurações. Acompanha caixa original.",
+        "detail_title": "Notebook Gamer NAVE Estelar (i7-14700HX  / 32GB / RTX 4060 8GB)",
+        "configuration_warnings": []
+      }
+    },
+    {
+      "key": "1550955483",
+      "title": "((LACRADO)) Rog Strix Ultra 9 275hx RTX5060 16/512gb (Nota fiscal e garantia 2 anos)",
+      "price_brl": 10000,
+      "card_fingerprint": "[\"((LACRADO)) Rog Strix Ultra 9 275hx RTX5060 16/512gb (Nota fiscal e garantia 2 anos)\",10000,[\"275hx\"],null,\"RTX 5060\"]",
+      "checked_at": "2026-11-10T10:03:24.391Z",
+      "item": {
+        "id": "1550955483",
+        "url": "https://rs.olx.com.br/regioes-de-pelotas-rio-grande-e-bage/informatica/notebooks/lacrado-rog-strix-ultra-9-275hx-rtx5060-16-512gb-nota-fiscal-e-garantia-2-anos-1550955483",
+        "title": "((LACRADO)) Rog Strix Ultra 9 275hx RTX5060 16/512gb (Nota fiscal e garantia 2 anos)",
+        "cpu_term": "275hx",
+        "search_terms": [
+          "275hx"
+        ],
+        "description_discovery": false,
+        "price_brl": 10000,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": "RTX 5060",
+        "location": null,
+        "condition": "novo",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "pending",
+          "checked_at": "2026-11-10T10:03:24.390Z",
+          "reasons": [
+            "Especificação não confirmada: RAM"
+          ],
+          "listing_price_brl": 10000,
+          "detail_price_brl": 10000,
+          "visible_price_brl": null,
+          "structured_price_brl": 10000,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 5060"
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "cpu_confirmed": true,
+          "description_checked": true,
+          "detail_diagnostic": {
+            "state": "ready",
+            "http_status": 200,
+            "document_state": "interactive",
+            "description_found": true,
+            "price_found": true,
+            "structured_product_found": true,
+            "description_source": "structured",
+            "same_ad": true,
+            "body_length": 1928,
+            "wait_ms": 602,
+            "samples": 2
+          }
+        },
+        "description_evidence": "Produto novo lacrado com nota fiscal e garantia de 2 anos.Comprado em combo promocional.Notebook Gamer Asus Rog Strix G16Especificações na etiqueta que aparece em uma das fotos.Versão windows 11Core Ultra 9 275HXRtx 5060 8gb full power16gb ram ddr5 e 512gb de ssdTela 16\" wqxga 240hzWifi7Tampa inferior removível sem chaves para manutenção e upgrade fácilEnvio bem embalado com bastante plastico bolha!",
+        "detail_title": "((LACRADO)) Rog Strix Ultra 9 275hx RTX5060 16/512gb (Nota fiscal e garantia 2 anos)",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ]
+      }
+    },
+    {
+      "key": "1448456884",
+      "title": "Notebook Gamer Avell Storm 470 Black I9-14900HX Rtx 4070  32gb de ram  1,5TB SSD Nvme",
+      "price_brl": 8900,
+      "card_fingerprint": "[\"Notebook Gamer Avell Storm 470 Black I9-14900HX Rtx 4070  32gb de ram  1,5TB SSD Nvme\",8900,[\"14900hx\"],null,\"RTX 4070\"]",
+      "checked_at": "2026-11-10T10:03:36.456Z",
+      "item": {
+        "id": "1448456884",
+        "url": "https://ce.olx.com.br/fortaleza-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-470-black-i9-14900hx-rtx-4070-32gb-de-ram-1-5tb-ssd-nvme-1448456884",
+        "title": "Notebook Gamer Avell Storm 470 Black I9-14900HX Rtx 4070  32gb de ram  1,5TB SSD Nvme",
+        "cpu_term": "14900hx",
+        "search_terms": [
+          "14900hx"
+        ],
+        "description_discovery": false,
+        "price_brl": 8900,
+        "ram_gb": 32,
+        "storage_gb": 1536,
+        "gpu": "RTX 4060",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "pending",
+          "checked_at": "2026-11-10T10:03:36.453Z",
+          "reasons": [
+            "Especificação divergente: GPU"
+          ],
+          "listing_price_brl": 8900,
+          "detail_price_brl": 8900,
+          "visible_price_brl": null,
+          "structured_price_brl": 8900,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": 1536,
+            "gpu": "RTX 4070"
+          },
+          "description_specs": {
+            "ram_gb": 32,
+            "storage_gb": 1536,
+            "gpu": "RTX 4060"
+          },
+          "cpu_confirmed": true,
+          "description_checked": true,
+          "detail_diagnostic": {
+            "state": "ready",
+            "http_status": 200,
+            "document_state": "interactive",
+            "description_found": true,
+            "price_found": true,
+            "structured_product_found": true,
+            "description_source": "structured",
+            "same_ad": true,
+            "body_length": 1799,
+            "wait_ms": 585,
+            "samples": 2
+          }
+        },
+        "description_evidence": "GeForce® RTX 4060 (8GB GDDR6)Intel® Core? i9-14900HX (36 MB Intel® Smart Cache, 2.2 GHz, Turbo Max 5.8 GHz)32GB [2x 16GB - Dual Channel] Memória DDR5 (5600 MHZ)SSD M.2 NVME 1,5 TB - Geração 4 - [ 5.000 MB/s ]16\" QHD WVA (2560x1600p) - 240Hz / Matte / Contraste: 1300:1 / Brilho 500 cd/m²Original Windows 11 ProGarantia de 12 meses Loja",
+        "detail_title": "Notebook Gamer Avell Storm 470 Black I9-14900HX Rtx 4070  32gb de ram  1,5TB SSD Nvme",
+        "configuration_warnings": []
+      }
     }
   ],
   "metrics": {
-    "extra_details": 8,
-    "total_details": 8,
-    "detail_ms": 8014,
+    "extra_details": 7,
+    "total_details": 7,
+    "detail_ms": 4399,
     "recovered_validated": 0,
-    "cache_hits": 3,
+    "cache_hits": 2,
     "by_term": {
+      "family:avell-storm": 2,
+      "family:helios-neo-16": 2,
       "14700hx": 1,
-      "family:avell-storm": 4,
-      "family:helios-neo-16": 3
+      "275hx": 1,
+      "14900hx": 1
     },
     "detail_yield": {
+      "family:avell-storm": {
+        "reads": 2,
+        "validated_offers": 0,
+        "read_keys": [
+          "1546506873",
+          "1548268436"
+        ]
+      },
+      "family:helios-neo-16": {
+        "reads": 2,
+        "validated_offers": 0,
+        "read_keys": [
+          "1545146400",
+          "1533508306"
+        ]
+      },
       "14700hx": {
         "reads": 1,
         "validated_offers": 0,
         "read_keys": [
-          "1545266033"
+          "1522141686"
         ]
       },
-      "family:avell-storm": {
-        "reads": 4,
+      "275hx": {
+        "reads": 1,
         "validated_offers": 0,
         "read_keys": [
-          "1550499708",
-          "1541030102",
-          "1548592870",
-          "1545937266"
+          "1550955483"
         ]
       },
-      "family:helios-neo-16": {
-        "reads": 3,
+      "14900hx": {
+        "reads": 1,
         "validated_offers": 0,
         "read_keys": [
-          "1547853164",
-          "1549864825",
-          "1542844072"
+          "1448456884"
         ]
       }
     },
-    "new_details": 8
+    "new_details": 6,
+    "retry_details": 1
   }
 }
