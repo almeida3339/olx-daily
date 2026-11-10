@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-10T19:01:35.374Z",
+  "updated_at": "2026-11-10T19:02:54.020Z",
   "runs": [
     {
-      "run_id": "2026-11-10T19-01-35-137Z",
-      "committed_at": "2026-11-10T19:01:35.334Z",
-      "completed_at": "2026-11-10T19:01:35.318Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 181,
+      "run_id": "2026-11-10T19-02-53-024Z",
+      "committed_at": "2026-11-10T19:02:53.789Z",
+      "completed_at": "2026-11-10T19:02:53.781Z",
+      "outcome": "deferred",
+      "partial": true,
+      "duration_ms": 757,
       "item_count": 0,
       "quarantined_item_count": 0,
       "metadata": {
@@ -16,22 +16,6 @@
         "label": "Google Pixel Watch 5",
         "collected_count": 0,
         "quarantined_item_count": 0
-      }
-    },
-    {
-      "run_id": "2026-11-10T11-01-18-934Z",
-      "committed_at": "2026-11-10T11:01:19.142Z",
-      "completed_at": "2026-11-10T11:01:19.122Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 188,
-      "item_count": 0,
-      "metadata": {
-        "source": "google-pixel-watch-5",
-        "label": "Google Pixel Watch 5",
-        "collected_count": 0,
-        "quarantined_item_count": 0,
-        "in_progress": false
       }
     },
     {
@@ -1910,6 +1894,22 @@
       "run_id": "2026-09-27T10-51-05-017Z",
       "committed_at": "2026-09-27T10:51:12.495Z",
       "completed_at": "2026-09-27T10:51:12.495Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": null,
+      "item_count": 0,
+      "metadata": {
+        "source": "google-pixel-watch-5",
+        "label": "Google Pixel Watch 5",
+        "collected_count": 0,
+        "quarantined_item_count": 0,
+        "in_progress": false
+      }
+    },
+    {
+      "run_id": "2026-09-26T19-46-35-512Z",
+      "committed_at": "2026-09-26T19:46:42.212Z",
+      "completed_at": "2026-09-26T19:46:42.212Z",
       "outcome": "success",
       "partial": false,
       "duration_ms": null,
