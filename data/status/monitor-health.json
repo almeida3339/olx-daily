@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-11-11T11:01:20.118Z",
+  "generated_at": "2026-11-11T19:01:26.540Z",
   "sources": [
     {
       "id": "enjoei-momotaro",
@@ -9,8 +9,8 @@
       "collection_state": "healthy",
       "coverage_state": "healthy",
       "operational_status": "success",
-      "updated_at": "2026-11-11T11:01:13.882Z",
-      "age_ms": 6236,
+      "updated_at": "2026-11-11T19:01:15.765Z",
+      "age_ms": 10775,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -30,7 +30,7 @@
           "fresh_terms": 1,
           "checked_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-11-11T11:01:13.882Z"
+          "updated_at": "2026-11-11T19:01:15.765Z"
         }
       ],
       "message": "Enjoei: Saudável (1/1 consultas recentes; 1/1 concluídas)"
@@ -42,8 +42,8 @@
       "collection_state": "healthy",
       "coverage_state": "healthy",
       "operational_status": "success",
-      "updated_at": "2026-11-11T11:01:15.206Z",
-      "age_ms": 4912,
+      "updated_at": "2026-11-11T19:01:17.081Z",
+      "age_ms": 9459,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -53,7 +53,7 @@
         "deferred": 0,
         "complete": 10,
         "success_rate": 1,
-        "median_duration_ms": 614
+        "median_duration_ms": 627
       },
       "marketplaces": [
         {
@@ -63,7 +63,7 @@
           "fresh_terms": 2,
           "checked_terms": 2,
           "warming_terms": 0,
-          "updated_at": "2026-11-11T11:01:15.206Z"
+          "updated_at": "2026-11-11T19:01:17.081Z"
         }
       ],
       "message": "Enjoei: Saudável (2/2 consultas recentes; 2/2 concluídas)"
@@ -75,8 +75,8 @@
       "collection_state": "healthy",
       "coverage_state": "healthy",
       "operational_status": "success",
-      "updated_at": "2026-11-11T11:01:15.771Z",
-      "age_ms": 4347,
+      "updated_at": "2026-11-11T19:01:17.740Z",
+      "age_ms": 8800,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -86,7 +86,7 @@
         "deferred": 0,
         "complete": 10,
         "success_rate": 1,
-        "median_duration_ms": 137
+        "median_duration_ms": 138
       },
       "marketplaces": [
         {
@@ -96,7 +96,7 @@
           "fresh_terms": 1,
           "checked_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-11-11T11:01:15.771Z"
+          "updated_at": "2026-11-11T19:01:17.740Z"
         }
       ],
       "message": "Enjoei: Saudável (1/1 consultas recentes; 1/1 concluídas)"
@@ -108,8 +108,41 @@
       "collection_state": "healthy",
       "coverage_state": "healthy",
       "operational_status": "success",
-      "updated_at": "2026-11-11T11:01:16.290Z",
-      "age_ms": 3828,
+      "updated_at": "2026-11-11T19:01:18.303Z",
+      "age_ms": 8237,
+      "invalid_snapshots": 0,
+      "history": {
+        "sample": 10,
+        "partial": 0,
+        "failed": 0,
+        "blocked": 0,
+        "deferred": 0,
+        "complete": 10,
+        "success_rate": 1,
+        "median_duration_ms": 82
+      },
+      "marketplaces": [
+        {
+          "label": "Enjoei",
+          "state": "healthy",
+          "total_terms": 1,
+          "fresh_terms": 1,
+          "checked_terms": 1,
+          "warming_terms": 0,
+          "updated_at": "2026-11-11T19:01:18.303Z"
+        }
+      ],
+      "message": "Enjoei: Saudável (1/1 consultas recentes; 1/1 concluídas)"
+    },
+    {
+      "id": "enjoei-fullcount",
+      "label": "Enjoei Jeans Fullcount 40",
+      "state": "healthy",
+      "collection_state": "healthy",
+      "coverage_state": "healthy",
+      "operational_status": "success",
+      "updated_at": "2026-11-11T19:01:18.876Z",
+      "age_ms": 7664,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -129,40 +162,7 @@
           "fresh_terms": 1,
           "checked_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-11-11T11:01:16.290Z"
-        }
-      ],
-      "message": "Enjoei: Saudável (1/1 consultas recentes; 1/1 concluídas)"
-    },
-    {
-      "id": "enjoei-fullcount",
-      "label": "Enjoei Jeans Fullcount 40",
-      "state": "healthy",
-      "collection_state": "healthy",
-      "coverage_state": "healthy",
-      "operational_status": "success",
-      "updated_at": "2026-11-11T11:01:16.985Z",
-      "age_ms": 3133,
-      "invalid_snapshots": 0,
-      "history": {
-        "sample": 10,
-        "partial": 0,
-        "failed": 0,
-        "blocked": 0,
-        "deferred": 0,
-        "complete": 10,
-        "success_rate": 1,
-        "median_duration_ms": 74
-      },
-      "marketplaces": [
-        {
-          "label": "Enjoei",
-          "state": "healthy",
-          "total_terms": 1,
-          "fresh_terms": 1,
-          "checked_terms": 1,
-          "warming_terms": 0,
-          "updated_at": "2026-11-11T11:01:16.985Z"
+          "updated_at": "2026-11-11T19:01:18.876Z"
         }
       ],
       "message": "Enjoei: Saudável (1/1 consultas recentes; 1/1 concluídas)"
@@ -174,8 +174,8 @@
       "collection_state": "healthy",
       "coverage_state": "healthy",
       "operational_status": "success",
-      "updated_at": "2026-11-11T11:01:18.033Z",
-      "age_ms": 2085,
+      "updated_at": "2026-11-11T19:01:19.954Z",
+      "age_ms": 6586,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -185,7 +185,7 @@
         "deferred": 0,
         "complete": 10,
         "success_rate": 1,
-        "median_duration_ms": 584
+        "median_duration_ms": 626
       },
       "marketplaces": [
         {
@@ -195,7 +195,7 @@
           "fresh_terms": 2,
           "checked_terms": 2,
           "warming_terms": 0,
-          "updated_at": "2026-11-11T11:01:18.033Z"
+          "updated_at": "2026-11-11T19:01:19.954Z"
         }
       ],
       "message": "Enjoei: Saudável (2/2 consultas recentes; 2/2 concluídas)"
@@ -207,8 +207,8 @@
       "collection_state": "healthy",
       "coverage_state": "healthy",
       "operational_status": "success",
-      "updated_at": "2026-11-11T11:01:13.920Z",
-      "age_ms": 6198,
+      "updated_at": "2026-11-11T19:01:15.734Z",
+      "age_ms": 10806,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -228,7 +228,7 @@
           "fresh_terms": 1,
           "checked_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-11-11T11:01:13.920Z"
+          "updated_at": "2026-11-11T19:01:15.734Z"
         }
       ],
       "message": "Enjoei: Saudável (1/1 consultas recentes; 1/1 concluídas)"
@@ -240,8 +240,8 @@
       "collection_state": "healthy",
       "coverage_state": "healthy",
       "operational_status": "success",
-      "updated_at": "2026-11-11T11:01:13.838Z",
-      "age_ms": 6280,
+      "updated_at": "2026-11-11T19:01:15.765Z",
+      "age_ms": 10775,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -251,7 +251,7 @@
         "deferred": 0,
         "complete": 10,
         "success_rate": 1,
-        "median_duration_ms": 311
+        "median_duration_ms": 343
       },
       "marketplaces": [
         {
@@ -261,7 +261,7 @@
           "fresh_terms": 1,
           "checked_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-11-11T11:01:13.838Z"
+          "updated_at": "2026-11-11T19:01:15.765Z"
         }
       ],
       "message": "Enjoei: Saudável (1/1 consultas recentes; 1/1 concluídas)"
@@ -273,8 +273,8 @@
       "collection_state": "healthy",
       "coverage_state": "healthy",
       "operational_status": "success",
-      "updated_at": "2026-11-11T11:01:16.578Z",
-      "age_ms": 3540,
+      "updated_at": "2026-11-11T19:01:15.786Z",
+      "age_ms": 10754,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -294,7 +294,7 @@
           "fresh_terms": 1,
           "checked_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-11-11T11:01:16.578Z"
+          "updated_at": "2026-11-11T19:01:15.786Z"
         }
       ],
       "message": "Enjoei: Saudável (1/1 consultas recentes; 1/1 concluídas)"
@@ -306,8 +306,8 @@
       "collection_state": "healthy",
       "coverage_state": "healthy",
       "operational_status": "success",
-      "updated_at": "2026-11-11T11:01:13.854Z",
-      "age_ms": 6264,
+      "updated_at": "2026-11-11T19:01:15.693Z",
+      "age_ms": 10847,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -327,7 +327,7 @@
           "fresh_terms": 1,
           "checked_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-11-11T11:01:13.854Z"
+          "updated_at": "2026-11-11T19:01:15.693Z"
         }
       ],
       "message": "Enjoei: Saudável (1/1 consultas recentes; 1/1 concluídas)"
@@ -340,7 +340,7 @@
       "coverage_state": "stale",
       "operational_status": "partial",
       "updated_at": "2026-11-11T10:01:23.572Z",
-      "age_ms": 3596546,
+      "age_ms": 32402968,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -381,8 +381,8 @@
       "collection_state": "healthy",
       "coverage_state": "healthy",
       "operational_status": "success",
-      "updated_at": "2026-11-11T11:01:15.942Z",
-      "age_ms": 4176,
+      "updated_at": "2026-11-11T19:01:17.928Z",
+      "age_ms": 8612,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -392,7 +392,7 @@
         "deferred": 0,
         "complete": 10,
         "success_rate": 1,
-        "median_duration_ms": 2370
+        "median_duration_ms": 2441
       },
       "marketplaces": [
         {
@@ -402,7 +402,7 @@
           "fresh_terms": 20,
           "checked_terms": 20,
           "warming_terms": 0,
-          "updated_at": "2026-11-11T11:01:15.942Z"
+          "updated_at": "2026-11-11T19:01:17.928Z"
         }
       ],
       "message": "Enjoei: Saudável (20/20 consultas recentes; 20/20 concluídas)"
@@ -410,21 +410,21 @@
     {
       "id": "enjoei",
       "label": "Enjoei Tênis 42",
-      "state": "healthy",
-      "collection_state": "healthy",
-      "coverage_state": "healthy",
-      "operational_status": "success",
-      "updated_at": "2026-11-11T11:01:15.933Z",
-      "age_ms": 4185,
+      "state": "partial",
+      "collection_state": "partial",
+      "coverage_state": "partial",
+      "operational_status": "partial",
+      "updated_at": "2026-11-11T19:01:24.286Z",
+      "age_ms": 2254,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
-        "partial": 0,
+        "partial": 1,
         "failed": 0,
         "blocked": 0,
         "deferred": 0,
-        "complete": 10,
-        "success_rate": 1,
+        "complete": 9,
+        "success_rate": 0.9,
         "median_duration_ms": 4321
       },
       "marketplaces": [
@@ -435,7 +435,7 @@
           "fresh_terms": 4,
           "checked_terms": 4,
           "warming_terms": 0,
-          "updated_at": "2026-11-11T11:01:15.578Z"
+          "updated_at": "2026-11-11T19:01:17.599Z"
         },
         {
           "label": "Enjoei diárias",
@@ -457,15 +457,15 @@
         },
         {
           "label": "Enjoei descoberta semanal",
-          "state": "healthy",
+          "state": "partial",
           "total_terms": 10,
-          "fresh_terms": 10,
+          "fresh_terms": 9,
           "checked_terms": 10,
           "warming_terms": 0,
-          "updated_at": "2026-11-05T19:01:19.578Z"
+          "updated_at": "2026-11-11T19:01:19.288Z"
         }
       ],
-      "message": "Enjoei prioritárias: Saudável (4/4 consultas recentes; 4/4 concluídas) · Enjoei diárias: Saudável (2/2 consultas recentes; 2/2 concluídas) · Enjoei rodízio: Saudável (16/16 consultas recentes; 16/16 concluídas) · Enjoei descoberta semanal: Saudável (10/10 consultas recentes; 10/10 concluídas)"
+      "message": "Enjoei prioritárias: Saudável (4/4 consultas recentes; 4/4 concluídas) · Enjoei diárias: Saudável (2/2 consultas recentes; 2/2 concluídas) · Enjoei rodízio: Saudável (16/16 consultas recentes; 16/16 concluídas) · Enjoei descoberta semanal: Cobertura parcial (10/10 consultas recentes; 9/10 concluídas)"
     },
     {
       "id": "lifefactory",
@@ -474,8 +474,8 @@
       "collection_state": "healthy",
       "coverage_state": "healthy",
       "operational_status": "success",
-      "updated_at": "2026-11-11T11:01:14.103Z",
-      "age_ms": 6015,
+      "updated_at": "2026-11-11T19:01:16.295Z",
+      "age_ms": 10245,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -485,7 +485,7 @@
         "deferred": 4,
         "complete": 6,
         "success_rate": 0.6,
-        "median_duration_ms": 805
+        "median_duration_ms": 569
       },
       "marketplaces": [
         {
@@ -495,7 +495,7 @@
           "fresh_terms": 1,
           "checked_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-11-11T11:01:14.103Z"
+          "updated_at": "2026-11-11T19:01:16.295Z"
         },
         {
           "label": "OLX",
@@ -516,18 +516,18 @@
       "collection_state": "healthy",
       "coverage_state": "healthy",
       "operational_status": "success",
-      "updated_at": "2026-11-11T11:01:14.787Z",
-      "age_ms": 5331,
+      "updated_at": "2026-11-11T19:01:16.962Z",
+      "age_ms": 9578,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
         "partial": 0,
         "failed": 0,
         "blocked": 0,
-        "deferred": 4,
-        "complete": 6,
-        "success_rate": 0.6,
-        "median_duration_ms": 802
+        "deferred": 3,
+        "complete": 7,
+        "success_rate": 0.7,
+        "median_duration_ms": 320
       },
       "marketplaces": [
         {
@@ -537,7 +537,7 @@
           "fresh_terms": 1,
           "checked_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-11-11T11:01:14.787Z"
+          "updated_at": "2026-11-11T19:01:16.962Z"
         },
         {
           "label": "OLX",
@@ -558,8 +558,8 @@
       "collection_state": "healthy",
       "coverage_state": "healthy",
       "operational_status": "success",
-      "updated_at": "2026-11-11T11:01:15.355Z",
-      "age_ms": 4763,
+      "updated_at": "2026-11-11T19:01:17.689Z",
+      "age_ms": 8851,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -569,7 +569,7 @@
         "deferred": 0,
         "complete": 10,
         "success_rate": 1,
-        "median_duration_ms": 17498
+        "median_duration_ms": 308
       },
       "marketplaces": [
         {
@@ -579,7 +579,7 @@
           "fresh_terms": 1,
           "checked_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-11-11T11:01:15.355Z"
+          "updated_at": "2026-11-11T19:01:17.689Z"
         },
         {
           "label": "OLX",
@@ -600,18 +600,18 @@
       "collection_state": "healthy",
       "coverage_state": "healthy",
       "operational_status": "success",
-      "updated_at": "2026-11-11T11:01:17.244Z",
-      "age_ms": 2874,
+      "updated_at": "2026-11-11T19:01:19.584Z",
+      "age_ms": 6956,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
         "partial": 0,
         "failed": 0,
         "blocked": 0,
-        "deferred": 5,
-        "complete": 5,
-        "success_rate": 0.5,
-        "median_duration_ms": 9752
+        "deferred": 4,
+        "complete": 6,
+        "success_rate": 0.6,
+        "median_duration_ms": 1573
       },
       "marketplaces": [
         {
@@ -621,7 +621,7 @@
           "fresh_terms": 3,
           "checked_terms": 3,
           "warming_terms": 0,
-          "updated_at": "2026-11-11T11:01:17.244Z"
+          "updated_at": "2026-11-11T19:01:19.584Z"
         },
         {
           "label": "OLX",
@@ -642,18 +642,18 @@
       "collection_state": "healthy",
       "coverage_state": "healthy",
       "operational_status": "success",
-      "updated_at": "2026-11-11T11:01:17.772Z",
-      "age_ms": 2346,
+      "updated_at": "2026-11-11T19:01:20.220Z",
+      "age_ms": 6320,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
         "partial": 0,
         "failed": 0,
         "blocked": 0,
-        "deferred": 4,
-        "complete": 6,
-        "success_rate": 0.6,
-        "median_duration_ms": 757
+        "deferred": 3,
+        "complete": 7,
+        "success_rate": 0.7,
+        "median_duration_ms": 217
       },
       "marketplaces": [
         {
@@ -663,7 +663,7 @@
           "fresh_terms": 1,
           "checked_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-11-11T11:01:17.772Z"
+          "updated_at": "2026-11-11T19:01:20.220Z"
         },
         {
           "label": "OLX",
@@ -684,8 +684,8 @@
       "collection_state": "healthy",
       "coverage_state": "blocked",
       "operational_status": "deferred",
-      "updated_at": "2026-11-11T11:01:18.103Z",
-      "age_ms": 2015,
+      "updated_at": "2026-11-11T19:01:20.672Z",
+      "age_ms": 5868,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -695,7 +695,7 @@
         "deferred": 7,
         "complete": 3,
         "success_rate": 0.3,
-        "median_duration_ms": 1103
+        "median_duration_ms": 937
       },
       "marketplaces": [
         {
@@ -727,7 +727,7 @@
       "coverage_state": "stale",
       "operational_status": "partial",
       "updated_at": "2026-10-28T12:25:51.267Z",
-      "age_ms": 1204528851,
+      "age_ms": 1233335273,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -750,7 +750,7 @@
           "updated_at": "2026-10-28T12:25:51.267Z"
         }
       ],
-      "message": "Sob demanda · última coleta há 13 dia(s) · ML: Coleta desatualizada (0/20 consultas recentes; 0/20 concluídas)"
+      "message": "Sob demanda · última coleta há 14 dia(s) · ML: Coleta desatualizada (0/20 consultas recentes; 0/20 concluídas)"
     },
     {
       "id": "mercadolivre-oneplus-buds-pro-3",
@@ -760,7 +760,7 @@
       "coverage_state": "stale",
       "operational_status": "success",
       "updated_at": "2026-10-28T12:26:37.415Z",
-      "age_ms": 1204482703,
+      "age_ms": 1233289125,
       "invalid_snapshots": 0,
       "history": {
         "sample": 6,
@@ -783,7 +783,7 @@
           "updated_at": "2026-10-28T12:26:37.415Z"
         }
       ],
-      "message": "Sob demanda · última coleta há 13 dia(s) · ML: Coleta desatualizada (0/1 consultas recentes; 0/1 concluídas)"
+      "message": "Sob demanda · última coleta há 14 dia(s) · ML: Coleta desatualizada (0/1 consultas recentes; 0/1 concluídas)"
     },
     {
       "id": "mercadolivre-google-pixel-watch-5",
@@ -793,7 +793,7 @@
       "coverage_state": "stale",
       "operational_status": "success",
       "updated_at": "2026-10-28T12:26:16.758Z",
-      "age_ms": 1204503360,
+      "age_ms": 1233309782,
       "invalid_snapshots": 0,
       "history": {
         "sample": 5,
@@ -816,7 +816,7 @@
           "updated_at": "2026-10-28T12:26:16.758Z"
         }
       ],
-      "message": "Sob demanda · última coleta há 13 dia(s) · ML: Coleta desatualizada (0/1 consultas recentes; 0/1 concluídas)"
+      "message": "Sob demanda · última coleta há 14 dia(s) · ML: Coleta desatualizada (0/1 consultas recentes; 0/1 concluídas)"
     },
     {
       "id": "mercadolivre-lifefactory",
@@ -826,7 +826,7 @@
       "coverage_state": "stale",
       "operational_status": "success",
       "updated_at": "2026-10-28T12:26:58.029Z",
-      "age_ms": 1204462089,
+      "age_ms": 1233268511,
       "invalid_snapshots": 0,
       "history": {
         "sample": 7,
@@ -849,7 +849,7 @@
           "updated_at": "2026-10-28T12:26:58.029Z"
         }
       ],
-      "message": "Sob demanda · última coleta há 13 dia(s) · ML: Coleta desatualizada (0/1 consultas recentes; 0/1 concluídas)"
+      "message": "Sob demanda · última coleta há 14 dia(s) · ML: Coleta desatualizada (0/1 consultas recentes; 0/1 concluídas)"
     },
     {
       "id": "mercadolivre-tela-galaxybook3",
@@ -859,7 +859,7 @@
       "coverage_state": "stale",
       "operational_status": "success",
       "updated_at": "2026-10-28T12:27:20.526Z",
-      "age_ms": 1204439592,
+      "age_ms": 1233246014,
       "invalid_snapshots": 0,
       "history": {
         "sample": 8,
@@ -882,7 +882,7 @@
           "updated_at": "2026-10-28T12:27:20.526Z"
         }
       ],
-      "message": "Sob demanda · última coleta há 13 dia(s) · ML: Coleta desatualizada (0/1 consultas recentes; 0/1 concluídas)"
+      "message": "Sob demanda · última coleta há 14 dia(s) · ML: Coleta desatualizada (0/1 consultas recentes; 0/1 concluídas)"
     },
     {
       "id": "mercadolivre-melanger",
@@ -892,7 +892,7 @@
       "coverage_state": "stale",
       "operational_status": "success",
       "updated_at": "2026-10-28T12:27:44.366Z",
-      "age_ms": 1204415752,
+      "age_ms": 1233222174,
       "invalid_snapshots": 0,
       "history": {
         "sample": 7,
@@ -915,7 +915,7 @@
           "updated_at": "2026-10-28T12:27:44.366Z"
         }
       ],
-      "message": "Sob demanda · última coleta há 13 dia(s) · ML: Coleta desatualizada (0/1 consultas recentes; 0/1 concluídas)"
+      "message": "Sob demanda · última coleta há 14 dia(s) · ML: Coleta desatualizada (0/1 consultas recentes; 0/1 concluídas)"
     },
     {
       "id": "mercadolivre-tenis-42",
@@ -925,7 +925,7 @@
       "coverage_state": "stale",
       "operational_status": "success",
       "updated_at": "2026-10-28T12:43:01.109Z",
-      "age_ms": 1203499009,
+      "age_ms": 1232305431,
       "invalid_snapshots": 0,
       "history": {
         "sample": 7,
@@ -948,7 +948,7 @@
           "updated_at": "2026-10-28T12:43:01.109Z"
         }
       ],
-      "message": "Sob demanda · última coleta há 13 dia(s) · ML: Coleta desatualizada (0/6 consultas recentes; 0/6 concluídas)"
+      "message": "Sob demanda · última coleta há 14 dia(s) · ML: Coleta desatualizada (0/6 consultas recentes; 0/6 concluídas)"
     },
     {
       "id": "mercadolivre-oled-monitores",
@@ -958,7 +958,7 @@
       "coverage_state": "stale",
       "operational_status": "success",
       "updated_at": "2026-10-28T12:38:52.308Z",
-      "age_ms": 1203747810,
+      "age_ms": 1232554232,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -981,7 +981,7 @@
           "updated_at": "2026-10-28T12:38:52.308Z"
         }
       ],
-      "message": "Sob demanda · última coleta há 13 dia(s) · ML: Coleta desatualizada (0/21 consultas recentes; 0/21 concluídas)"
+      "message": "Sob demanda · última coleta há 14 dia(s) · ML: Coleta desatualizada (0/21 consultas recentes; 0/21 concluídas)"
     },
     {
       "id": "notifications",
