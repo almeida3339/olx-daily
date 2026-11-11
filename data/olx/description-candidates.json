@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "selection_policy_version": 3,
-  "round": "2026-11-10T19:00:14.329Z",
+  "round": "2026-11-11T10:00:16.132Z",
   "queue": [
     {
       "key": "1550480850",
@@ -448,7 +448,7 @@
         "14900hx"
       ],
       "first_observed_at": "2026-10-29T13:00:02.524Z",
-      "last_observed_at": "2026-11-10T19:00:58.964Z",
+      "last_observed_at": "2026-11-11T10:00:40.715Z",
       "last_detail_attempt_at": "2026-11-10T10:03:36.456Z",
       "detail_attempts": 4,
       "last_reasons": [
@@ -613,75 +613,6 @@
     }
   ],
   "cache": [
-    {
-      "key": "1550390905",
-      "title": "Dell G16 7620 RTX3050 Ti - RAM 32GB - SSD 512GB",
-      "price_brl": 4999,
-      "card_fingerprint": "[\"Dell G16 7620 RTX3050 Ti - RAM 32GB - SSD 512GB\",4999,[],32,\"RTX 3050 TI\"]",
-      "checked_at": "2026-11-07T19:01:19.112Z",
-      "item": {
-        "id": "1550390905",
-        "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/dell-g16-7620-rtx3050-ti-ram-32gb-ssd-512gb-1550390905",
-        "title": "Dell G16 7620 RTX3050 Ti - RAM 32GB - SSD 512GB",
-        "cpu_term": "family:dell-g16",
-        "search_terms": [
-          "family:dell-g16"
-        ],
-        "description_discovery": true,
-        "price_brl": 4999,
-        "ram_gb": 32,
-        "storage_gb": 512,
-        "gpu": "RTX 3050 TI",
-        "location": null,
-        "condition": "Usado - Excelente",
-        "status": "active",
-        "first_seen": null,
-        "last_seen": null,
-        "notes": null,
-        "desc_checked": true,
-        "validation": {
-          "version": 2,
-          "state": "rejected",
-          "checked_at": "2026-11-07T19:01:19.109Z",
-          "reasons": [
-            "CPU fora da busca",
-            "CPU não confirmada no anúncio"
-          ],
-          "listing_price_brl": 4999,
-          "detail_price_brl": 4999,
-          "visible_price_brl": null,
-          "structured_price_brl": 4999,
-          "title_specs": {
-            "ram_gb": 32,
-            "storage_gb": 512,
-            "gpu": "RTX 3050 TI"
-          },
-          "description_specs": {
-            "ram_gb": 32,
-            "storage_gb": null,
-            "gpu": "RTX 3050 TI"
-          },
-          "cpu_confirmed": false,
-          "description_checked": true,
-          "detail_diagnostic": {
-            "state": "ready",
-            "http_status": 200,
-            "document_state": "interactive",
-            "description_found": true,
-            "price_found": true,
-            "structured_product_found": true,
-            "description_source": "structured",
-            "same_ad": true,
-            "body_length": 1995,
-            "wait_ms": 602,
-            "samples": 2
-          }
-        },
-        "description_evidence": "O notebook foi comprado nos Estados Unidos, e está em perfeito estado de conservação e funcionamento, muito bem cuidado e pronto para uso. Realizei um upgrade de memória para 32GB.Modelo Dell G16 7620 - P105FTela: 16 polegadas - Quad-High Definition Plus (QHD+) 165 HzResolução: 2560 x 1600 pixels (16:10)Processador: Intel i7-12700H (12ª Geração)Memória: 32GB (2x16 GB) DDR5 4800MHzArmazenamento SSD: 512 GBPlaca de vídeo: NVIDIA GeForce RTX 3050 Ti Laptop GPU (4 GB)Teclado Retroiluminado com RGB",
-        "detail_title": "Dell G16 7620 RTX3050 Ti - RAM 32GB - SSD 512GB",
-        "configuration_warnings": []
-      }
-    },
     {
       "key": "1550480850",
       "title": "Notebook Gamer Acer Predator Helios Neo 16 - i7 13° + 32gb ram",
@@ -2736,21 +2667,92 @@
           "Armazenamento não informado"
         ]
       }
+    },
+    {
+      "key": "1550390905",
+      "title": "Dell G16 7620 RTX3050 Ti - RAM 32GB - SSD 512GB",
+      "price_brl": 4999,
+      "card_fingerprint": "[\"Dell G16 7620 RTX3050 Ti - RAM 32GB - SSD 512GB\",4999,[],32,\"RTX 3050 TI\"]",
+      "checked_at": "2026-11-11T10:01:23.558Z",
+      "item": {
+        "id": "1550390905",
+        "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/dell-g16-7620-rtx3050-ti-ram-32gb-ssd-512gb-1550390905",
+        "title": "Dell G16 7620 RTX3050 Ti - RAM 32GB - SSD 512GB",
+        "cpu_term": "family:dell-g16",
+        "search_terms": [
+          "family:dell-g16"
+        ],
+        "description_discovery": true,
+        "price_brl": 4999,
+        "ram_gb": 32,
+        "storage_gb": 512,
+        "gpu": "RTX 3050 TI",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-11-11T10:01:23.553Z",
+          "reasons": [
+            "CPU fora da busca",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 4999,
+          "detail_price_brl": 4999,
+          "visible_price_brl": null,
+          "structured_price_brl": 4999,
+          "title_specs": {
+            "ram_gb": 32,
+            "storage_gb": 512,
+            "gpu": "RTX 3050 TI"
+          },
+          "description_specs": {
+            "ram_gb": 32,
+            "storage_gb": null,
+            "gpu": "RTX 3050 TI"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true,
+          "detail_diagnostic": {
+            "state": "ready",
+            "http_status": 200,
+            "document_state": "interactive",
+            "description_found": true,
+            "price_found": true,
+            "structured_product_found": true,
+            "description_source": "structured",
+            "same_ad": true,
+            "body_length": 1913,
+            "wait_ms": 604,
+            "samples": 2
+          }
+        },
+        "description_evidence": "O notebook foi comprado nos Estados Unidos, e está em perfeito estado de conservação e funcionamento, muito bem cuidado e pronto para uso. Realizei um upgrade de memória para 32GB.Modelo Dell G16 7620 - P105FTela: 16 polegadas - Quad-High Definition Plus (QHD+) 165 HzResolução: 2560 x 1600 pixels (16:10)Processador: Intel i7-12700H (12ª Geração)Memória: 32GB (2x16 GB) DDR5 4800MHzArmazenamento SSD: 512 GBPlaca de vídeo: NVIDIA GeForce RTX 3050 Ti Laptop GPU (4 GB)Teclado Retroiluminado com RGB",
+        "detail_title": "Dell G16 7620 RTX3050 Ti - RAM 32GB - SSD 512GB",
+        "configuration_warnings": []
+      }
     }
   ],
   "metrics": {
-    "extra_details": 0,
+    "extra_details": 1,
     "total_details": 1,
-    "detail_ms": 0,
+    "detail_ms": 955,
     "recovered_validated": 0,
     "cache_hits": 2,
-    "by_term": {},
+    "by_term": {
+      "family:dell-g16": 1
+    },
     "detail_yield": {
-      "14900hx": {
+      "family:dell-g16": {
         "reads": 1,
         "validated_offers": 0,
         "read_keys": [
-          "1551564119"
+          "1550390905"
         ]
       }
     },

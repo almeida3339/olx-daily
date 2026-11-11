@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-10T19:00:07.156Z",
+  "generated_at": "2026-11-11T10:00:08.758Z",
   "source": "local",
   "delivery": {
     "email": "skipped",
@@ -44,7 +44,7 @@
       {
         "source": "olx",
         "status": "partial",
-        "completed_terms": 7,
+        "completed_terms": 4,
         "incomplete_terms": 1,
         "deferred_terms": 0,
         "pending_candidates": 11,
@@ -271,13 +271,16 @@
     "4912404b-b5af-44c8-99e8-a26b7d633d77",
     "f3191dd9-2a30-4563-9f96-e99df7131954",
     "b12eda37-50d5-4e5c-9122-9be22faf6213",
-    "96db51f6-9340-4272-a937-21ced68abda2"
+    "96db51f6-9340-4272-a937-21ced68abda2",
+    "8a27ba80-d69d-4bad-97a5-134eed04e79f",
+    "88616236-aff1-461c-ad3c-7a9e62f3af45",
+    "7f90b33b-4d30-4999-be50-b9d74992dc1c"
   ],
   "round_summary": {
     "schema_version": 1,
-    "run_id": "fa4b366f-79dd-4d7a-ba7b-a6826dab624d",
-    "started_at": "2026-11-10T19:00:07.156Z",
-    "completed_at": "2026-11-10T19:03:01.510Z",
+    "run_id": "d08ce60f-fdd0-4f17-8a31-f6119da67e9f",
+    "started_at": "2026-11-11T10:00:08.758Z",
+    "completed_at": "2026-11-11T10:02:11.434Z",
     "execution": "success",
     "delivery": {
       "email": "skipped",
@@ -289,15 +292,15 @@
         "label": "OLX Notebooks",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-10T19:02:15.760Z",
+          "collected_at": "2026-11-11T10:01:23.572Z",
           "execution": "success",
           "issues": [
             "1 ficha(s) aguardando leitura dentro dos limites da rodada"
           ],
           "coverage": {
             "status": "partial",
-            "scheduled": 8,
-            "completed": 7,
+            "scheduled": 5,
+            "completed": 4,
             "incomplete": 1,
             "deferred": 0,
             "pending_descriptions": 20,
@@ -315,27 +318,21 @@
                   "13980hx",
                   "14900hx",
                   "13900hx",
-                  "290hx",
-                  "9955hx",
-                  "aimax395",
-                  "family:legion-pro-5"
+                  "family:dell-g16"
                 ],
                 "completed_terms": [
                   "14700hx",
                   "13980hx",
                   "14900hx",
                   "13900hx",
-                  "290hx",
-                  "9955hx",
-                  "aimax395",
-                  "family:legion-pro-5"
+                  "family:dell-g16"
                 ],
                 "incomplete_terms": [],
                 "pending_details": 0,
                 "queued_candidates": 14,
                 "pending_candidates": 11,
-                "scheduled": 8,
-                "completed": 8,
+                "scheduled": 5,
+                "completed": 5,
                 "incomplete": 0,
                 "status": "partial"
               },
@@ -378,7 +375,7 @@
         "label": "Lifefactory",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-10T19:02:18.889Z",
+          "collected_at": "2026-11-11T10:01:26.415Z",
           "execution": "success",
           "issues": [
             "Consultas adiadas pela programação; as consultas executadas foram concluídas."
@@ -410,7 +407,7 @@
         "label": "Tela Book3",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-10T19:02:20.964Z",
+          "collected_at": "2026-11-11T10:01:29.059Z",
           "execution": "success",
           "issues": [
             "Consultas adiadas pela programação; as consultas executadas foram concluídas."
@@ -442,7 +439,7 @@
         "label": "Melanger",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-10T19:02:41.253Z",
+          "collected_at": "2026-11-11T10:01:48.814Z",
           "execution": "success",
           "issues": [],
           "coverage": {
@@ -472,7 +469,7 @@
         "label": "OnePlus Buds Pro 3",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-10T19:02:52.308Z",
+          "collected_at": "2026-11-11T10:01:59.773Z",
           "execution": "success",
           "issues": [
             "Consultas adiadas pela programação; as consultas executadas foram concluídas."
@@ -504,7 +501,7 @@
         "label": "Google Pixel Watch 5",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-10T19:02:53.781Z",
+          "collected_at": "2026-11-11T10:02:02.186Z",
           "execution": "success",
           "issues": [
             "Consultas adiadas pela programação; as consultas executadas foram concluídas."
@@ -536,7 +533,7 @@
         "label": "Monitores OLED",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-10T19:02:55.806Z",
+          "collected_at": "2026-11-11T10:02:03.893Z",
           "execution": "success",
           "issues": [
             "OLX: consultas adiadas após bloqueio; retomada prevista em 11/11/2026, 16:05:01 BRT."
