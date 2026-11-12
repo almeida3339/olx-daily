@@ -1,37 +1,31 @@
 {
   "schema_version": 1,
-  "run_id": "2026-11-12T11-01-14-350Z",
-  "committed_at": "2026-11-12T11:01:20.913Z",
-  "snapshot": "runs/2026-11-12T11-01-14-350Z/snapshot.json",
-  "report": "runs/2026-11-12T11-01-14-350Z/report.md",
+  "run_id": "2026-11-12T19-01-10-351Z",
+  "committed_at": "2026-11-12T19:01:14.678Z",
+  "snapshot": "runs/2026-11-12T19-01-10-351Z/snapshot.json",
+  "report": "runs/2026-11-12T19-01-10-351Z/report.md",
   "quarantine": null,
   "summary": {
     "schema_version": 1,
-    "collected_at": "2026-11-12T11:01:20.887Z",
+    "collected_at": "2026-11-12T19:01:14.640Z",
     "execution": "success",
-    "issues": [
-      "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-    ],
+    "issues": [],
     "coverage": {
-      "status": "deferred",
-      "scheduled": 12,
-      "completed": 12,
+      "status": "partial",
+      "scheduled": 8,
+      "completed": 8,
       "incomplete": 0,
-      "deferred": 1,
+      "deferred": 0,
       "pending_descriptions": 0,
       "pending_candidates": 5,
       "pending_details": 0,
       "heuristic_stops": [
         "fot walka",
-        "fot voet",
-        "fot bruk",
-        "fot lito"
+        "fot noga"
       ],
       "heuristic_reasons": {
         "fot walka": "first_page_no_match",
-        "fot voet": "first_page_no_match",
-        "fot bruk": "first_page_no_match",
-        "fot lito": "first_page_no_match"
+        "fot noga": "first_page_no_match"
       }
     },
     "findings": {
@@ -44,12 +38,12 @@
     }
   },
   "checksums": {
-    "snapshot_sha256": "6c773c3a0c33f847d561a48b3bd1010c51ab78b428f44ccf3aaaf6ed33a9161a",
-    "report_sha256": "22d07d70711a30f22bcc9a937fa37dfd9e67d9f6ecc9225f162a82a6a39f8fc4"
+    "snapshot_sha256": "7afdb25868eb0d6f734e90c8e3b2ece47cf7f6cf96f3650c404c0ffad46c64bd",
+    "report_sha256": "f195c3edb81127a96910fc33f2f7120e3108eb6094a2e7097ee9e5ec828f6dfb"
   },
   "metadata": {
     "source": "enjoei-tenis",
-    "collected_count": 1,
+    "collected_count": 0,
     "pending_count": 5,
     "failed_term_count": 0,
     "incomplete_term_count": 0,
