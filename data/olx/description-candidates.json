@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "selection_policy_version": 3,
-  "round": "2026-11-12T19:03:45.646Z",
+  "round": "2026-11-13T10:00:19.967Z",
   "queue": [
     {
       "key": "1550480850",
@@ -13,14 +13,13 @@
         "text": "",
         "ram_gb": 32,
         "storage_gb": null,
-        "cpu_term": "family:helios-neo-16",
-        "description_discovery": true
+        "cpu_term": "family:helios-neo-16"
       },
       "terms": [
         "family:helios-neo-16"
       ],
       "first_observed_at": "2026-11-08T19:01:06.134Z",
-      "last_observed_at": "2026-11-08T19:01:06.134Z",
+      "last_observed_at": "2026-11-13T10:01:53.163Z",
       "last_detail_attempt_at": "2026-11-08T19:01:17.523Z",
       "detail_attempts": 1,
       "last_reasons": [
@@ -65,6 +64,37 @@
       "retry_kind": "missing_configuration"
     },
     {
+      "key": "1551937477",
+      "card": {
+        "title": "? Notebook Avell Storm 450 ? RTX 4050 + i7 | R$ 6.000",
+        "url": "https://pb.olx.com.br/paraiba/informatica/notebooks/notebook-avell-storm-450-rtx-4050-i7-r-6-000-1551937477",
+        "price_brl": 6000,
+        "location": "João Pessoa, Ilha do Bispo",
+        "text": "",
+        "ram_gb": null,
+        "storage_gb": null,
+        "cpu_term": "family:avell-storm",
+        "description_discovery": true
+      },
+      "terms": [
+        "family:avell-storm"
+      ],
+      "first_observed_at": "2026-11-12T19:40:40.184Z",
+      "last_observed_at": "2026-11-12T19:40:40.184Z",
+      "last_detail_attempt_at": "2026-11-12T19:40:53.007Z",
+      "detail_attempts": 1,
+      "last_reasons": [
+        "Especificação não confirmada: RAM",
+        "CPU não confirmada no anúncio"
+      ],
+      "last_evidence": {
+        "cpu_confirmed": false,
+        "ram_gb": null,
+        "gpu": "RTX 4050"
+      },
+      "retry_kind": "missing_configuration"
+    },
+    {
       "key": "1547737777",
       "card": {
         "title": "Notebook Helios Neo Predator Neo 16 RTX4060",
@@ -80,7 +110,7 @@
         "family:helios-neo-16"
       ],
       "first_observed_at": "2026-10-27T10:04:52.418Z",
-      "last_observed_at": "2026-11-08T19:01:06.134Z",
+      "last_observed_at": "2026-11-13T10:01:53.162Z",
       "last_detail_attempt_at": "2026-10-30T10:04:42.692Z",
       "detail_attempts": 2,
       "last_reasons": [
@@ -191,21 +221,20 @@
       "card": {
         "title": "Notebook Helios Predator Neo 16 RTX 4060",
         "url": "https://sp.olx.com.br/regiao-de-sorocaba/informatica/notebooks/notebook-helios-predator-neo-16-rtx-4060-1550842329",
-        "price_brl": 7400,
+        "price_brl": 6800,
         "location": "Sorocaba, Centro",
         "text": "",
         "ram_gb": null,
         "storage_gb": null,
-        "cpu_term": "family:helios-neo-16",
-        "description_discovery": true
+        "cpu_term": "family:helios-neo-16"
       },
       "terms": [
         "family:helios-neo-16"
       ],
       "first_observed_at": "2026-11-08T19:01:06.134Z",
-      "last_observed_at": "2026-11-08T19:01:06.134Z",
-      "last_detail_attempt_at": "2026-11-08T19:01:41.307Z",
+      "last_observed_at": "2026-11-13T10:01:53.162Z",
       "detail_attempts": 1,
+      "last_detail_attempt_at": "2026-11-13T10:02:15.740Z",
       "last_reasons": [
         "Especificação não confirmada: RAM",
         "CPU não confirmada no anúncio"
@@ -344,17 +373,16 @@
         "url": "https://sp.olx.com.br/baixada-santista-e-litoral-sul/informatica/notebooks/note-gamer-predator-helios-neo-16-1550625917",
         "price_brl": 6300,
         "location": "Praia Grande, Ocian",
-        "text": "",
+        "text": "NOTE GAMER PREDATOR HELIOS NEO 16\nEntrega Fácil\nParcele sem juros\n\nThiago Zicchella\n5.0\n\nR$ 6.300\nem até 3x de R$ 2.100,00 sem juros\n\nPraia Grande, Ocian\n\n5 de nov, 19:47\n\nSlide 1\nSlide 2\nSlide 3\nSlide 4\nSlide 5\nAdicionar aos favoritos",
         "ram_gb": null,
         "storage_gb": null,
-        "cpu_term": "family:helios-neo-16",
-        "description_discovery": true
+        "cpu_term": "family:helios-neo-16"
       },
       "terms": [
         "family:helios-neo-16"
       ],
       "first_observed_at": "2026-11-08T19:01:06.134Z",
-      "last_observed_at": "2026-11-08T19:01:53.253Z",
+      "last_observed_at": "2026-11-13T10:01:53.162Z",
       "last_detail_attempt_at": "2026-11-09T10:03:07.455Z",
       "detail_attempts": 1,
       "last_reasons": [
@@ -374,31 +402,20 @@
       "card": {
         "title": "Notebook helios neo 16",
         "url": "https://to.olx.com.br/tocantins/informatica/notebooks/notebook-helios-neo-16-1535352665",
-        "price_brl": 7200,
+        "price_brl": 6900,
         "location": "Brejinho de Nazaré",
         "text": "",
         "ram_gb": null,
         "storage_gb": null,
-        "cpu_term": "family:helios-neo-16"
+        "cpu_term": "family:helios-neo-16",
+        "description_discovery": true
       },
       "terms": [
         "family:helios-neo-16"
       ],
       "first_observed_at": "2026-10-30T19:02:44.284Z",
-      "last_observed_at": "2026-11-08T19:01:06.134Z",
-      "last_detail_attempt_at": "2026-11-02T10:03:20.732Z",
-      "detail_attempts": 2,
-      "last_reasons": [
-        "Especificação não confirmada: RAM",
-        "Especificação não confirmada: GPU",
-        "CPU não confirmada no anúncio"
-      ],
-      "last_evidence": {
-        "cpu_confirmed": false,
-        "ram_gb": null,
-        "gpu": null
-      },
-      "retry_kind": "missing_configuration"
+      "last_observed_at": "2026-11-13T10:02:40.191Z",
+      "detail_attempts": 0
     },
     {
       "key": "1546298970",
@@ -416,7 +433,7 @@
         "family:helios-neo-16"
       ],
       "first_observed_at": "2026-10-24T10:02:50.169Z",
-      "last_observed_at": "2026-11-08T19:01:06.134Z",
+      "last_observed_at": "2026-11-13T10:01:53.163Z",
       "last_detail_attempt_at": "2026-11-01T10:02:22.300Z",
       "detail_attempts": 2,
       "last_reasons": [
@@ -438,7 +455,7 @@
         "url": "https://ce.olx.com.br/fortaleza-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-470-black-i9-14900hx-rtx-4070-32gb-de-ram-1-5tb-ssd-nvme-1448456884",
         "price_brl": 8900,
         "location": "Fortaleza, Vila União",
-        "text": "Notebook Gamer Avell Storm 470 Black I9-14900HX Rtx 4070 32gb de ram 1,5TB SSD Nvme\nEntrega Fácil\nParcele sem juros\n\nLoja Tiger Gaming\n2.7\n\nR$ 8.900\nem até 3x de R$ 2.966,67 sem juros\nOnline\n\nFortaleza, Vila União\n\n26 de out, 13:27\n\nSlide 1\nSlide 2\nSlide 3\nSlide 4\nSlide 5\nSlide 6\nAdicionar aos favoritos",
+        "text": "Notebook Gamer Avell Storm 470 Black I9-14900HX Rtx 4070 32gb de ram 1,5TB SSD Nvme\nEntrega Fácil\nParcele sem juros\n\nLoja Tiger Gaming\n2.7\n\nR$ 8.900\nem até 3x de R$ 2.966,67 sem juros\n\nFortaleza, Vila União\n\n26 de out, 13:27\n\nSlide 1\nSlide 2\nSlide 3\nSlide 4\nSlide 5\nSlide 6\nAdicionar aos favoritos",
         "ram_gb": 32,
         "storage_gb": 1536,
         "cpu_term": "14900hx",
@@ -448,7 +465,7 @@
         "14900hx"
       ],
       "first_observed_at": "2026-10-29T13:00:02.524Z",
-      "last_observed_at": "2026-11-12T19:04:28.654Z",
+      "last_observed_at": "2026-11-13T10:00:45.695Z",
       "last_detail_attempt_at": "2026-11-10T10:03:36.456Z",
       "detail_attempts": 4,
       "last_reasons": [
@@ -511,6 +528,35 @@
       "last_observed_at": "2026-11-04T10:00:41.094Z",
       "last_detail_attempt_at": "2026-10-30T10:00:45.636Z",
       "detail_attempts": 2,
+      "last_reasons": [
+        "Especificação não confirmada: RAM"
+      ],
+      "last_evidence": {
+        "cpu_confirmed": true,
+        "ram_gb": null,
+        "gpu": "RTX 4070"
+      },
+      "retry_kind": "missing_configuration"
+    },
+    {
+      "key": "1552331799",
+      "card": {
+        "title": "Notebook Gamer Alienware m16 R1 | i9 13900HX | RTX 4070 | 32GB | 1TB",
+        "url": "https://sc.olx.com.br/norte-de-santa-catarina/informatica/notebooks/notebook-gamer-alienware-m16-r1-i9-13900hx-rtx-4070-32gb-1tb-1552331799",
+        "price_brl": 9300,
+        "location": "Joinville, Floresta",
+        "text": "Notebook Gamer Alienware m16 R1 | i9 13900HX | RTX 4070 | 32GB | 1TB\nFrete grátis\nAté 10x sem juros\nR$ 9.300\nem até 10x de R$ 930,00 sem juros\n\nJoinville, Floresta\n\nHoje, 12:49\n\nSlide 1\nSlide 2\nSlide 3\nSlide 4\nSlide 5\nAdicionar aos favoritos",
+        "ram_gb": 32,
+        "storage_gb": 1024,
+        "cpu_term": "13900hx"
+      },
+      "terms": [
+        "13900hx"
+      ],
+      "first_observed_at": "2026-11-12T19:39:36.219Z",
+      "last_observed_at": "2026-11-12T19:39:36.219Z",
+      "last_detail_attempt_at": "2026-11-12T19:39:37.211Z",
+      "detail_attempts": 1,
       "last_reasons": [
         "Especificação não confirmada: RAM"
       ],
@@ -612,143 +658,121 @@
       "retry_kind": "missing_configuration"
     },
     {
-      "key": "1552331799",
+      "key": "1548737764",
       "card": {
-        "title": "Notebook Gamer Alienware m16 R1 | i9 13900HX | RTX 4070 | 32GB | 1TB",
-        "url": "https://sc.olx.com.br/norte-de-santa-catarina/informatica/notebooks/notebook-gamer-alienware-m16-r1-i9-13900hx-rtx-4070-32gb-1tb-1552331799",
-        "price_brl": 9300,
-        "location": "Joinville, Floresta",
-        "text": "Notebook Gamer Alienware m16 R1 | i9 13900HX | RTX 4070 | 32GB | 1TB\nFrete grátis\nAté 10x sem juros\nR$ 9.300\nem até 10x de R$ 930,00 sem juros\n\nJoinville, Floresta\n\nHoje, 12:49\n\nSlide 1\nSlide 2\nSlide 3\nSlide 4\nSlide 5\nAdicionar aos favoritos",
-        "ram_gb": 32,
-        "storage_gb": 1024,
-        "cpu_term": "13900hx"
-      },
-      "terms": [
-        "13900hx"
-      ],
-      "first_observed_at": "2026-11-12T19:39:36.219Z",
-      "last_observed_at": "2026-11-12T19:39:36.219Z",
-      "last_detail_attempt_at": "2026-11-12T19:39:37.211Z",
-      "detail_attempts": 1,
-      "last_reasons": [
-        "Especificação não confirmada: RAM"
-      ],
-      "last_evidence": {
-        "cpu_confirmed": true,
-        "ram_gb": null,
-        "gpu": "RTX 4070"
-      },
-      "retry_kind": "missing_configuration"
-    },
-    {
-      "key": "1551937477",
-      "card": {
-        "title": "? Notebook Avell Storm 450 ? RTX 4050 + i7 | R$ 6.000",
-        "url": "https://pb.olx.com.br/paraiba/informatica/notebooks/notebook-avell-storm-450-rtx-4050-i7-r-6-000-1551937477",
-        "price_brl": 6000,
-        "location": "João Pessoa, Ilha do Bispo",
-        "text": "",
+        "title": "Notebook Gamer - Acer Predator",
+        "url": "https://es.olx.com.br/norte-do-espirito-santo/informatica/notebooks/notebook-gamer-acer-predator-1548737764",
+        "price_brl": 5000,
+        "location": "Vila Velha, Santa Inês",
+        "text": "Notebook Gamer - Acer Predator\nFrete grátis\nAté 10x sem juros\n\nR$ 6.500\n\nR$ 5.000\nem até 10x de R$ 500,00 sem juros\n\nVila Velha, Santa Inês\n\n29 de out, 23:38\n\nSlide 1\nSlide 2\nAdicionar aos favoritos",
         "ram_gb": null,
         "storage_gb": null,
-        "cpu_term": "family:avell-storm",
+        "cpu_term": "family:helios-neo-16",
         "description_discovery": true
       },
       "terms": [
-        "family:avell-storm"
+        "family:helios-neo-16"
       ],
-      "first_observed_at": "2026-11-12T19:40:40.184Z",
-      "last_observed_at": "2026-11-12T19:40:40.184Z",
-      "last_detail_attempt_at": "2026-11-12T19:40:53.007Z",
-      "detail_attempts": 1,
-      "last_reasons": [
-        "Especificação não confirmada: RAM",
-        "CPU não confirmada no anúncio"
-      ],
-      "last_evidence": {
-        "cpu_confirmed": false,
+      "first_observed_at": "2026-11-13T10:01:53.161Z",
+      "last_observed_at": "2026-11-13T10:02:40.188Z"
+    },
+    {
+      "key": "1535263118",
+      "card": {
+        "title": "Acer Predator Helios Neo 16",
+        "url": "https://rj.olx.com.br/rio-de-janeiro-e-regiao/informatica/notebooks/acer-predator-helios-neo-16-1535263118",
+        "price_brl": 7000,
+        "location": "Magé, Praia do Anil (Guia de Pacobaíba)",
+        "text": "",
         "ram_gb": null,
-        "gpu": "RTX 4050"
+        "storage_gb": null,
+        "cpu_term": "family:helios-neo-16",
+        "description_discovery": true
       },
-      "retry_kind": "missing_configuration"
+      "terms": [
+        "family:helios-neo-16"
+      ],
+      "first_observed_at": "2026-11-13T10:01:53.163Z",
+      "last_observed_at": "2026-11-13T10:02:40.194Z"
+    },
+    {
+      "key": "1547853164",
+      "card": {
+        "title": "Notebook Gamer Predator Helios Neo 16",
+        "url": "https://pi.olx.com.br/regiao-de-teresina-e-parnaiba/informatica/notebooks/notebook-gamer-predator-helios-neo-16-1547853164",
+        "price_brl": 7389,
+        "location": "Porto",
+        "text": "",
+        "ram_gb": null,
+        "storage_gb": null,
+        "cpu_term": "family:helios-neo-16",
+        "description_discovery": true
+      },
+      "terms": [
+        "family:helios-neo-16"
+      ],
+      "first_observed_at": "2026-11-13T10:01:53.163Z",
+      "last_observed_at": "2026-11-13T10:02:40.196Z"
+    },
+    {
+      "key": "1551915647",
+      "card": {
+        "title": "Notebook Acer Predator HELIOS NEO 16",
+        "url": "https://sp.olx.com.br/grande-campinas/informatica/notebooks/notebook-acer-predator-helios-neo-16-1551915647",
+        "price_brl": 7500,
+        "location": "Cosmópolis, Parque Residencial das Andorinhas",
+        "text": "",
+        "ram_gb": null,
+        "storage_gb": null,
+        "cpu_term": "family:helios-neo-16",
+        "description_discovery": true
+      },
+      "terms": [
+        "family:helios-neo-16"
+      ],
+      "first_observed_at": "2026-11-13T10:01:53.163Z",
+      "last_observed_at": "2026-11-13T10:02:40.198Z"
+    },
+    {
+      "key": "1549864825",
+      "card": {
+        "title": "Notebook Gamer Acer Predator Helios Neo 16",
+        "url": "https://mg.olx.com.br/regiao-de-juiz-de-fora/informatica/notebooks/notebook-gamer-acer-predator-helios-neo-16-1549864825",
+        "price_brl": 7500,
+        "location": "Prados",
+        "text": "",
+        "ram_gb": null,
+        "storage_gb": null,
+        "cpu_term": "family:helios-neo-16",
+        "description_discovery": true
+      },
+      "terms": [
+        "family:helios-neo-16"
+      ],
+      "first_observed_at": "2026-11-13T10:01:53.163Z",
+      "last_observed_at": "2026-11-13T10:02:40.200Z"
+    },
+    {
+      "key": "1547381377",
+      "card": {
+        "title": "Notebook Predator I7 Rtx 4060",
+        "url": "https://go.olx.com.br/grande-goiania-e-anapolis/informatica/notebooks/notebook-predator-i7-rtx-4060-1547381377",
+        "price_brl": 7500,
+        "location": "Goiânia, Setor Oeste",
+        "text": "",
+        "ram_gb": null,
+        "storage_gb": null,
+        "cpu_term": "family:helios-neo-16",
+        "description_discovery": true
+      },
+      "terms": [
+        "family:helios-neo-16"
+      ],
+      "first_observed_at": "2026-11-13T10:01:53.163Z",
+      "last_observed_at": "2026-11-13T10:02:40.187Z"
     }
   ],
   "cache": [
-    {
-      "key": "1542844072",
-      "title": "Notebook gamer helios neo 16",
-      "price_brl": 7600,
-      "card_fingerprint": "[\"Notebook gamer helios neo 16\",7600,[],null,null]",
-      "checked_at": "2026-11-09T19:03:49.667Z",
-      "item": {
-        "id": "1542844072",
-        "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-gamer-helios-neo-16-1542844072",
-        "title": "Notebook gamer helios neo 16",
-        "cpu_term": "family:helios-neo-16",
-        "search_terms": [
-          "family:helios-neo-16"
-        ],
-        "description_discovery": true,
-        "price_brl": 7600,
-        "ram_gb": null,
-        "storage_gb": null,
-        "gpu": null,
-        "location": null,
-        "condition": null,
-        "status": "active",
-        "first_seen": null,
-        "last_seen": null,
-        "notes": null,
-        "desc_checked": false,
-        "validation": {
-          "version": 2,
-          "state": "pending",
-          "checked_at": "2026-11-09T19:03:49.666Z",
-          "reasons": [
-            "Anúncio indisponível na página de detalhe",
-            "Descrição do anúncio não localizada",
-            "Preço integral do anúncio não localizado",
-            "Especificação não confirmada: RAM",
-            "Especificação não confirmada: GPU",
-            "CPU não confirmada no anúncio"
-          ],
-          "listing_price_brl": 7600,
-          "detail_price_brl": null,
-          "visible_price_brl": null,
-          "structured_price_brl": null,
-          "title_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": null
-          },
-          "description_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": null
-          },
-          "cpu_confirmed": false,
-          "description_checked": false,
-          "detail_diagnostic": {
-            "state": "unavailable",
-            "http_status": 410,
-            "document_state": "loading",
-            "description_found": false,
-            "price_found": false,
-            "structured_product_found": false,
-            "description_source": null,
-            "same_ad": true,
-            "body_length": 0,
-            "wait_ms": 15,
-            "samples": 1
-          }
-        },
-        "description_evidence": "",
-        "detail_title": "",
-        "configuration_warnings": [
-          "Armazenamento não informado"
-        ]
-      },
-      "unavailable_round": "2026-11-09T19:00:20.229Z"
-    },
     {
       "key": "1546506873",
       "title": "Notebook Gamer Avell Storm BS 350",
@@ -2009,46 +2033,386 @@
         "detail_title": "Notebook avell storm 450 rtx 4050 ryzen 7",
         "configuration_warnings": []
       }
-    }
-  ],
-  "metrics": {
-    "extra_details": 6,
-    "total_details": 7,
-    "detail_ms": 6081,
-    "recovered_validated": 0,
-    "cache_hits": 3,
-    "by_term": {
-      "14700hx": 1,
-      "family:avell-storm": 5
     },
-    "detail_yield": {
-      "14700hx": {
-        "reads": 1,
-        "validated_offers": 0,
-        "read_keys": [
-          "1545266033"
-        ]
-      },
-      "13900hx": {
-        "reads": 1,
-        "validated_offers": 0,
-        "read_keys": [
-          "1552331799"
-        ]
-      },
-      "family:avell-storm": {
-        "reads": 5,
-        "validated_offers": 0,
-        "read_keys": [
-          "1551937477",
-          "1550499708",
-          "1541030102",
-          "1548592870",
-          "1545937266"
+    {
+      "key": "1552346978",
+      "title": "Acer Predator Helios 16 - I7 - RTX 4060 - 16GB - 1TB SSD",
+      "price_brl": 6500,
+      "card_fingerprint": "[\"Acer Predator Helios 16 - I7 - RTX 4060 - 16GB - 1TB SSD\",6500,[],null,\"RTX 4060\"]",
+      "checked_at": "2026-11-13T10:02:03.853Z",
+      "item": {
+        "id": "1552346978",
+        "url": "https://rj.olx.com.br/serra-angra-dos-reis-e-regiao/informatica/notebooks/acer-predator-helios-16-i7-rtx-4060-16gb-1tb-ssd-1552346978",
+        "title": "Acer Predator Helios 16 - I7 - RTX 4060 - 16GB - 1TB SSD",
+        "cpu_term": "family:helios-neo-16",
+        "search_terms": [
+          "family:helios-neo-16"
+        ],
+        "description_discovery": true,
+        "price_brl": 6500,
+        "ram_gb": 16,
+        "storage_gb": 1024,
+        "gpu": "RTX 4060",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-11-13T10:02:03.850Z",
+          "reasons": [
+            "RAM abaixo do mínimo exigido",
+            "RAM abaixo do mínimo de 32 GB",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 6500,
+          "detail_price_brl": 6500,
+          "visible_price_brl": null,
+          "structured_price_brl": 6500,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": 1024,
+            "gpu": "RTX 4060"
+          },
+          "description_specs": {
+            "ram_gb": 16,
+            "storage_gb": 1024,
+            "gpu": "RTX 4060"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true,
+          "detail_diagnostic": {
+            "state": "ready",
+            "http_status": 200,
+            "document_state": "interactive",
+            "description_found": true,
+            "price_found": true,
+            "structured_product_found": true,
+            "description_source": "structured",
+            "same_ad": true,
+            "body_length": 1911,
+            "wait_ms": 577,
+            "samples": 2
+          }
+        },
+        "description_evidence": "Acer Predator Helios Neo 16 versão TOP de linha, com RTX 4060, 1TB SSD, 16GB RAM E I7 13650HX.Bateria praticamente zerada, com 60 cargas feitas somente.Sem detalhes, o notebook tá impecável.~GOLPISTA NEM PERDE TEMPO~Domine seus jogos com o Acer Predator Helios 16! Equipado com uma potente RTX 4060 e 16GB de RAM, este notebook gamer oferece desempenho excepcional para as experiências mais imersivas. Desfrute de gráficos de ponta e alta taxa de quadros para levar sua jogabilidade a outro nível.",
+        "detail_title": "Acer Predator Helios 16 - I7 - RTX 4060 - 16GB - 1TB SSD",
+        "configuration_warnings": []
+      }
+    },
+    {
+      "key": "1550842329",
+      "title": "Notebook Helios Predator Neo 16 RTX 4060",
+      "price_brl": 6800,
+      "card_fingerprint": "[\"Notebook Helios Predator Neo 16 RTX 4060\",6800,[],null,\"RTX 4060\"]",
+      "checked_at": "2026-11-13T10:02:15.740Z",
+      "item": {
+        "id": "1550842329",
+        "url": "https://sp.olx.com.br/regiao-de-sorocaba/informatica/notebooks/notebook-helios-predator-neo-16-rtx-4060-1550842329",
+        "title": "Notebook Helios Predator Neo 16 RTX 4060",
+        "cpu_term": "family:helios-neo-16",
+        "search_terms": [
+          "family:helios-neo-16"
+        ],
+        "description_discovery": true,
+        "price_brl": 6800,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": "RTX 4060",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "pending",
+          "checked_at": "2026-11-13T10:02:15.737Z",
+          "reasons": [
+            "Especificação não confirmada: RAM",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 6800,
+          "detail_price_brl": 6800,
+          "visible_price_brl": null,
+          "structured_price_brl": 6800,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true,
+          "detail_diagnostic": {
+            "state": "ready",
+            "http_status": 200,
+            "document_state": "interactive",
+            "description_found": true,
+            "price_found": true,
+            "structured_product_found": true,
+            "description_source": "structured",
+            "same_ad": true,
+            "body_length": 1791,
+            "wait_ms": 518,
+            "samples": 2
+          }
+        },
+        "description_evidence": "Eleve sua experiência gamer com o Notebook Helios Predator Neo 16! Equipado com RTX 4060, este notebook oferece desempenho gráfico de ponta para os jogos mais exigentes. Design moderno e recursos avançados para dominar qualquer desafio.Zerinho, com caixa, estou vendendo por vou comprar um melhor!",
+        "detail_title": "Notebook Helios Predator Neo 16 RTX 4060",
+        "configuration_warnings": [
+          "Armazenamento não informado"
         ]
       }
     },
-    "new_details": 7,
+    {
+      "key": "1550328558",
+      "title": "Acer Predator Helios Neo 16 RTX 4060",
+      "price_brl": 6800,
+      "card_fingerprint": "[\"Acer Predator Helios Neo 16 RTX 4060\",6800,[],null,\"RTX 4060\"]",
+      "checked_at": "2026-11-13T10:02:27.787Z",
+      "item": {
+        "id": "1550328558",
+        "url": "https://rs.olx.com.br/regioes-de-porto-alegre-torres-e-santa-cruz-do-sul/informatica/notebooks/acer-predator-helios-neo-16-rtx-4060-1550328558",
+        "title": "Acer Predator Helios Neo 16 RTX 4060",
+        "cpu_term": "family:helios-neo-16",
+        "search_terms": [
+          "family:helios-neo-16"
+        ],
+        "description_discovery": true,
+        "price_brl": 6800,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": "RTX 4060",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-11-13T10:02:27.786Z",
+          "reasons": [
+            "CPU fora da busca",
+            "Especificação não confirmada: RAM",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 6800,
+          "detail_price_brl": 6800,
+          "visible_price_brl": null,
+          "structured_price_brl": 6800,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "cpu_confirmed": false,
+          "description_checked": true,
+          "detail_diagnostic": {
+            "state": "ready",
+            "http_status": 200,
+            "document_state": "interactive",
+            "description_found": true,
+            "price_found": true,
+            "structured_product_found": true,
+            "description_source": "structured",
+            "same_ad": true,
+            "body_length": 1555,
+            "wait_ms": 544,
+            "samples": 2
+          }
+        },
+        "description_evidence": "Acer Predator Helios Neo 16?I7 13700HX 16C/24TRTX 4060 8GB GDDR616 DDR5 5600MHZSSD NVME 512GB GEN4TELA 16? FHD+ 1920X1200 165HZ",
+        "detail_title": "Acer Predator Helios Neo 16 RTX 4060",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ]
+      }
+    },
+    {
+      "key": "1532294162",
+      "title": "Troco Por Desktop Notebook Acer Predator Helios Neo 16 (i7 13ª/ RTX 4060) com NF",
+      "price_brl": 6800,
+      "card_fingerprint": "[\"Troco Por Desktop Notebook Acer Predator Helios Neo 16 (i7 13ª/ RTX 4060) com NF\",6800,[],null,\"RTX 4060\"]",
+      "checked_at": "2026-11-13T10:02:40.182Z",
+      "item": {
+        "id": "1532294162",
+        "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/troco-por-desktop-notebook-acer-predator-helios-neo-16-i7-13-rtx-4060-com-nf-1532294162",
+        "title": "Troco Por Desktop Notebook Acer Predator Helios Neo 16 (i7 13ª/ RTX 4060) com NF",
+        "cpu_term": "family:helios-neo-16",
+        "search_terms": [
+          "family:helios-neo-16"
+        ],
+        "description_discovery": true,
+        "price_brl": 6800,
+        "ram_gb": 16,
+        "storage_gb": null,
+        "gpu": "RTX 4060",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-11-13T10:02:40.180Z",
+          "reasons": [
+            "RAM abaixo do mínimo exigido",
+            "RAM abaixo do mínimo de 32 GB",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 6800,
+          "detail_price_brl": 6800,
+          "visible_price_brl": null,
+          "structured_price_brl": 6800,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "description_specs": {
+            "ram_gb": 16,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true,
+          "detail_diagnostic": {
+            "state": "ready",
+            "http_status": 200,
+            "document_state": "interactive",
+            "description_found": true,
+            "price_found": true,
+            "structured_product_found": true,
+            "description_source": "structured",
+            "same_ad": true,
+            "body_length": 3036,
+            "wait_ms": 857,
+            "samples": 2
+          }
+        },
+        "description_evidence": "Acer Predator Helios Neo 16 - Modelo PHN16-71-709KEstado de conservação impecável / Uso extremamente cuidadosoAPENAS TROCA - Notebook gamer de altíssimo desempenho, ideal para jogos pesados, edição de vídeo, renderização e tarefas exigentes.Destaques do aparelho e conservação:- Conservação 10/10: Sempre utilizado com teclado e mouse externos, ou seja, o teclado, o touchpad e a carcaça do notebook não possuem marcas de uso ou desgaste de digitação.- Saúde da bateria e componentes: Utilizado predominantemente ligado à tomada (o que preserva os ciclos de carga da bateria, evitando desgastes prematuros).- Procedência garantida: Comprado diretamente na loja oficial da Acer.- Documentação completa: Acompanha nota fiscal original e a caixa original em perfeitas condições.- Pouco tempo de uso: Ligado pela primeira vez em 25 de julho de 2024.ESPECIFICAÇÕES TÉCNICAS (Modelo PHN16-71-709K):- Processador: Intel Core i7-13650HX (13ª Geração)- Placa de Vídeo: NVIDIA GeForce RTX 4060 (8 GB GDDR6)- Memória RAM: 16 GB DDR5 4800 MHz- Armazenamento: SSD NVMe de 512 GB- Tela: 16\" WUXGA (1920 x 1200), IPS, 165 Hz, 100% sRGB (excelente fidelidade de cores e fluidez)- Teclado: RGB de 4 zonas (padrão ABNT2)MOTIVO DA TROCA:Não necessito mais de mobilidade no meu dia a dia.CONDIÇÕES DE NEGOCIAÇÃO:- Troca: Aceito troca APENAS por PC Gamer C/ Plataforma mais atual (tenho volta em dinheiro).- Não tenho interesse em trocas por outros notebooks, videogames ou celulares.- Retirada em mãos em local seguro para testar tudo com calma.",
+        "detail_title": "Troco Por Desktop Notebook Acer Predator Helios Neo 16 (i7 13ª/ RTX 4060) com NF",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ]
+      }
+    },
+    {
+      "key": "1532551802",
+      "title": "Troco Notebook Gamer Acer Predator Helios Neo 16 (i7 13ª/ RTX 4060/ 16gb/ 1tb))",
+      "price_brl": 6800,
+      "card_fingerprint": "[\"Troco Notebook Gamer Acer Predator Helios Neo 16 (i7 13ª/ RTX 4060/ 16gb/ 1tb))\",6800,[],null,\"RTX 4060\"]",
+      "checked_at": "2026-11-13T10:02:51.815Z",
+      "item": {
+        "id": "1532551802",
+        "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/troco-notebook-gamer-acer-predator-helios-neo-16-i7-13-rtx-4060-16gb-1tb-1532551802",
+        "title": "Troco Notebook Gamer Acer Predator Helios Neo 16 (i7 13ª/ RTX 4060/ 16gb/ 1tb))",
+        "cpu_term": "family:helios-neo-16",
+        "search_terms": [
+          "family:helios-neo-16"
+        ],
+        "description_discovery": true,
+        "price_brl": 6800,
+        "ram_gb": 16,
+        "storage_gb": 1024,
+        "gpu": "RTX 4060",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-11-13T10:02:51.811Z",
+          "reasons": [
+            "RAM abaixo do mínimo exigido",
+            "RAM abaixo do mínimo de 32 GB",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 6800,
+          "detail_price_brl": 6800,
+          "visible_price_brl": null,
+          "structured_price_brl": 6800,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": 1024,
+            "gpu": "RTX 4060"
+          },
+          "description_specs": {
+            "ram_gb": 16,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "cpu_confirmed": false,
+          "description_checked": true,
+          "detail_diagnostic": {
+            "state": "ready",
+            "http_status": 200,
+            "document_state": "interactive",
+            "description_found": true,
+            "price_found": true,
+            "structured_product_found": true,
+            "description_source": "structured",
+            "same_ad": true,
+            "body_length": 3120,
+            "wait_ms": 536,
+            "samples": 2
+          }
+        },
+        "description_evidence": "Acer Predator Helios Neo 16 - Modelo PHN16-71-709KEstado de conservação impecável / Uso extremamente cuidadosoAPENAS TROCA - notebook gamer de altíssimo desempenho, ideal para jogos pesados, edição de vídeo, renderização e tarefas exigentes.Destaques do aparelho e conservação:- Conservação 10/10: Sempre utilizado com teclado e mouse externos, ou seja, o teclado, o touchpad e a carcaça do notebook não possuem marcas de uso ou desgaste de digitação.- Saúde da bateria e componentes: Utilizado predominantemente ligado à tomada (o que preserva os ciclos de carga da bateria, evitando desgastes prematuros).- Procedência garantida: Comprado diretamente na loja oficial da Acer.- Documentação completa: Acompanha nota fiscal original e a caixa original em perfeitas condições.- Pouco tempo de uso: Ligado pela primeira vez em 25 de julho de 2024.ESPECIFICAÇÕES TÉCNICAS (Modelo PHN16-71-709K):- Processador: Intel Core i7-13650HX (13ª Geração)- Placa de Vídeo: NVIDIA GeForce RTX 4060 (8 GB GDDR6)- Memória RAM: 16 GB DDR5 4800 MHz- Armazenamento: SSD NVMe de 512 GB- Tela: 16\" WUXGA (1920 x 1200), IPS, 165 Hz, 100% sRGB (excelente fidelidade de cores e fluidez)- Teclado: RGB de 4 zonas (padrão ABNT2)MOTIVO DA TROCA:Não necessito mais de mobilidade no meu dia a dia.CONDIÇÕES DE NEGOCIAÇÃO:- Troca: Aceito troca APENAS por PC Gamer C/ Plataforma +Atual ou Igual (tenho volta em dinheiro).- Não tenho interesse em trocas por outros notebooks, videogames ou celulares.- Retirada em mãos em local seguro para testar tudo com calma.",
+        "detail_title": "Troco Notebook Gamer Acer Predator Helios Neo 16 (i7 13ª/ RTX 4060/ 16gb/ 1tb))",
+        "configuration_warnings": []
+      }
+    }
+  ],
+  "metrics": {
+    "extra_details": 5,
+    "total_details": 5,
+    "detail_ms": 4741,
+    "recovered_validated": 0,
+    "cache_hits": 4,
+    "by_term": {
+      "family:helios-neo-16": 5
+    },
+    "detail_yield": {
+      "family:helios-neo-16": {
+        "reads": 5,
+        "validated_offers": 0,
+        "read_keys": [
+          "1552346978",
+          "1550842329",
+          "1550328558",
+          "1532294162",
+          "1532551802"
+        ]
+      }
+    },
+    "new_details": 5,
     "reallocated_details": 1
   }
 }
