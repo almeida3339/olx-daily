@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-13T10:00:10.786Z",
+  "generated_at": "2026-11-13T19:16:18.045Z",
   "source": "local",
   "delivery": {
     "email": "skipped",
@@ -44,13 +44,12 @@
       {
         "source": "olx",
         "status": "partial",
-        "completed_terms": 6,
-        "incomplete_terms": 2,
+        "completed_terms": 8,
+        "incomplete_terms": 1,
         "deferred_terms": 0,
-        "pending_candidates": 18,
+        "pending_candidates": 14,
         "reasons": [
-          "1 ficha(s) aguardando leitura dentro dos limites da rodada",
-          "Listagem incompleta: limite de 90 cards ou próxima página pendente; 8 ficha(s) aguardando leitura dentro dos limites da rodada"
+          "2 ficha(s) aguardando leitura dentro dos limites da rodada"
         ]
       },
       {
@@ -77,12 +76,14 @@
       },
       {
         "source": "melanger",
-        "status": "success",
-        "completed_terms": 2,
+        "status": "deferred",
+        "completed_terms": 1,
         "incomplete_terms": 0,
-        "deferred_terms": 0,
+        "deferred_terms": 1,
         "pending_candidates": 0,
-        "reasons": []
+        "reasons": [
+          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+        ]
       },
       {
         "source": "oneplus-buds-pro-3",
@@ -97,19 +98,17 @@
       },
       {
         "source": "google-pixel-watch-5",
-        "status": "deferred",
-        "completed_terms": 1,
+        "status": "success",
+        "completed_terms": 2,
         "incomplete_terms": 0,
-        "deferred_terms": 1,
+        "deferred_terms": 0,
         "pending_candidates": 0,
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ]
+        "reasons": []
       },
       {
         "source": "oled-monitores",
         "status": "deferred",
-        "completed_terms": 1,
+        "completed_terms": 3,
         "incomplete_terms": 0,
         "deferred_terms": 10,
         "pending_candidates": 1,
@@ -123,8 +122,7 @@
         "source": "olx",
         "status": "partial",
         "reasons": [
-          "1 ficha(s) aguardando leitura dentro dos limites da rodada",
-          "Listagem incompleta: limite de 90 cards ou próxima página pendente; 8 ficha(s) aguardando leitura dentro dos limites da rodada"
+          "2 ficha(s) aguardando leitura dentro dos limites da rodada"
         ]
       },
       {
@@ -142,14 +140,14 @@
         ]
       },
       {
-        "source": "oneplus-buds-pro-3",
+        "source": "melanger",
         "status": "deferred",
         "reasons": [
           "Consultas adiadas pela programação; as consultas executadas foram concluídas."
         ]
       },
       {
-        "source": "google-pixel-watch-5",
+        "source": "oneplus-buds-pro-3",
         "status": "deferred",
         "reasons": [
           "Consultas adiadas pela programação; as consultas executadas foram concluídas."
@@ -284,13 +282,14 @@
     "caee3549-ad2c-4433-aa1d-d75d20a55d0a",
     "e9a68026-0765-4313-b67e-c56e8d6f2275",
     "22c1dfa0-b844-4f8b-a207-e1301c7d2468",
-    "084a2886-65c1-4c91-9716-efdd7a4f5047"
+    "084a2886-65c1-4c91-9716-efdd7a4f5047",
+    "a7545c9e-5d99-4ffd-b5a7-d1999c0260ca"
   ],
   "round_summary": {
     "schema_version": 1,
-    "run_id": "e4f3c807-2820-4a19-82b5-231bbae20d8d",
-    "started_at": "2026-11-13T10:00:10.786Z",
-    "completed_at": "2026-11-13T10:03:39.955Z",
+    "run_id": "bb0e612e-e017-4222-8f17-cd7246b0c1a3",
+    "started_at": "2026-11-13T19:16:18.045Z",
+    "completed_at": "2026-11-13T19:20:07.542Z",
     "execution": "success",
     "delivery": {
       "email": "skipped",
@@ -302,20 +301,19 @@
         "label": "OLX Notebooks",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-13T10:02:51.818Z",
+          "collected_at": "2026-11-13T19:19:28.836Z",
           "execution": "success",
           "issues": [
-            "1 ficha(s) aguardando leitura dentro dos limites da rodada",
-            "Listagem incompleta: limite de 90 cards ou próxima página pendente; 8 ficha(s) aguardando leitura dentro dos limites da rodada"
+            "2 ficha(s) aguardando leitura dentro dos limites da rodada"
           ],
           "coverage": {
             "status": "partial",
-            "scheduled": 8,
-            "completed": 6,
-            "incomplete": 2,
+            "scheduled": 9,
+            "completed": 8,
+            "incomplete": 1,
             "deferred": 0,
-            "pending_descriptions": 28,
-            "pending_candidates": 18,
+            "pending_descriptions": 25,
+            "pending_candidates": 14,
             "pending_details": 0,
             "heuristic_stops": [],
             "heuristic_reasons": {},
@@ -329,29 +327,30 @@
                   "13980hx",
                   "14900hx",
                   "13900hx",
-                  "8940hx",
-                  "7940hx",
-                  "13950hx",
-                  "family:helios-neo-16"
+                  "7845hx",
+                  "8840hx",
+                  "aimax390",
+                  "hx470",
+                  "family:legion-pro-5"
                 ],
                 "completed_terms": [
                   "14700hx",
                   "13980hx",
                   "14900hx",
                   "13900hx",
-                  "8940hx",
-                  "7940hx",
-                  "13950hx"
+                  "7845hx",
+                  "8840hx",
+                  "aimax390",
+                  "hx470",
+                  "family:legion-pro-5"
                 ],
-                "incomplete_terms": [
-                  "family:helios-neo-16"
-                ],
-                "pending_details": 7,
-                "queued_candidates": 21,
-                "pending_candidates": 18,
-                "scheduled": 8,
-                "completed": 7,
-                "incomplete": 1,
+                "incomplete_terms": [],
+                "pending_details": 0,
+                "queued_candidates": 17,
+                "pending_candidates": 14,
+                "scheduled": 9,
+                "completed": 9,
+                "incomplete": 0,
                 "status": "partial"
               },
               "tracking": {
@@ -369,10 +368,10 @@
                 "incomplete_terms": [
                   "14900hx"
                 ],
-                "pending_details": 1,
+                "pending_details": 2,
                 "min_price_exclusive": true,
-                "queued_candidates": 7,
-                "pending_candidates": 9,
+                "queued_candidates": 8,
+                "pending_candidates": 10,
                 "scheduled": 3,
                 "completed": 2,
                 "incomplete": 1,
@@ -384,7 +383,7 @@
             "new_items": [],
             "price_changes": [],
             "active_count": 1,
-            "pending_count": 18,
+            "pending_count": 14,
             "new_count": 0,
             "price_count": 0
           }
@@ -395,7 +394,7 @@
         "label": "Lifefactory",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-13T10:02:55.253Z",
+          "collected_at": "2026-11-13T19:19:32.288Z",
           "execution": "success",
           "issues": [
             "Consultas adiadas pela programação; as consultas executadas foram concluídas."
@@ -427,7 +426,7 @@
         "label": "Tela Book3",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-13T10:02:57.142Z",
+          "collected_at": "2026-11-13T19:19:34.707Z",
           "execution": "success",
           "issues": [
             "Consultas adiadas pela programação; as consultas executadas foram concluídas."
@@ -459,15 +458,17 @@
         "label": "Melanger",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-13T10:03:17.105Z",
+          "collected_at": "2026-11-13T19:19:37.108Z",
           "execution": "success",
-          "issues": [],
+          "issues": [
+            "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+          ],
           "coverage": {
-            "status": "complete",
-            "scheduled": 2,
-            "completed": 2,
+            "status": "deferred",
+            "scheduled": 1,
+            "completed": 1,
             "incomplete": 0,
-            "deferred": 0,
+            "deferred": 1,
             "pending_descriptions": 0,
             "pending_candidates": 0,
             "pending_details": 0,
@@ -489,7 +490,7 @@
         "label": "OnePlus Buds Pro 3",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-13T10:03:28.467Z",
+          "collected_at": "2026-11-13T19:19:41.515Z",
           "execution": "success",
           "issues": [
             "Consultas adiadas pela programação; as consultas executadas foram concluídas."
@@ -521,17 +522,15 @@
         "label": "Google Pixel Watch 5",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-13T10:03:30.456Z",
+          "collected_at": "2026-11-13T19:19:53.430Z",
           "execution": "success",
-          "issues": [
-            "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-          ],
+          "issues": [],
           "coverage": {
-            "status": "deferred",
-            "scheduled": 1,
-            "completed": 1,
+            "status": "complete",
+            "scheduled": 2,
+            "completed": 2,
             "incomplete": 0,
-            "deferred": 1,
+            "deferred": 0,
             "pending_descriptions": 0,
             "pending_candidates": 0,
             "pending_details": 0,
@@ -553,15 +552,15 @@
         "label": "Monitores OLED",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-13T10:03:32.489Z",
+          "collected_at": "2026-11-13T19:19:56.168Z",
           "execution": "success",
           "issues": [
             "OLX: consultas adiadas após bloqueio; retomada prevista em 14/11/2026, 16:05:02 BRT."
           ],
           "coverage": {
             "status": "deferred",
-            "scheduled": 1,
-            "completed": 1,
+            "scheduled": 3,
+            "completed": 3,
             "incomplete": 0,
             "deferred": 10,
             "pending_descriptions": 0,
