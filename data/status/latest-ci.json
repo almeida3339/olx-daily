@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-12T19:01:10.252Z",
+  "generated_at": "2026-11-13T11:01:39.272Z",
   "source": "ci",
   "delivery": {
     "email": "skipped",
@@ -44,7 +44,7 @@
       {
         "source": "enjoei-notebooks",
         "status": "success",
-        "completed_terms": 4,
+        "completed_terms": 20,
         "incomplete_terms": 0,
         "deferred_terms": 0,
         "pending_candidates": 0,
@@ -52,12 +52,14 @@
       },
       {
         "source": "enjoei",
-        "status": "partial",
-        "completed_terms": 8,
+        "status": "deferred",
+        "completed_terms": 13,
         "incomplete_terms": 0,
-        "deferred_terms": 0,
+        "deferred_terms": 6,
         "pending_candidates": 5,
-        "reasons": []
+        "reasons": [
+          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+        ]
       },
       {
         "source": "enjoei-zegna",
@@ -196,21 +198,21 @@
       },
       {
         "source": "oled-monitores",
-        "status": "deferred",
-        "completed_terms": 0,
+        "status": "partial",
+        "completed_terms": 3,
         "incomplete_terms": 0,
-        "deferred_terms": 21,
+        "deferred_terms": 0,
         "pending_candidates": 1,
-        "reasons": [
-          "OLX: consultas adiadas após bloqueio; retomada prevista em 14/11/2026, 16:05:02 BRT."
-        ]
+        "reasons": []
       }
     ],
     "warnings": [
       {
         "source": "enjoei",
-        "status": "partial",
-        "reasons": []
+        "status": "deferred",
+        "reasons": [
+          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+        ]
       },
       {
         "source": "enjoei-ricardo-almeida",
@@ -219,10 +221,8 @@
       },
       {
         "source": "oled-monitores",
-        "status": "deferred",
-        "reasons": [
-          "OLX: consultas adiadas após bloqueio; retomada prevista em 14/11/2026, 16:05:02 BRT."
-        ]
+        "status": "partial",
+        "reasons": []
       }
     ],
     "errors": []
@@ -343,14 +343,17 @@
     "fc0f8cdc-8542-4fba-8e0a-534942ccca55",
     "708f2fd8-a495-418b-a140-5ecf73b78067",
     "65f17dbd-64b2-43f6-92fd-93562b127950",
+    "caee3549-ad2c-4433-aa1d-d75d20a55d0a",
     "e9a68026-0765-4313-b67e-c56e8d6f2275",
-    "22c1dfa0-b844-4f8b-a207-e1301c7d2468"
+    "22c1dfa0-b844-4f8b-a207-e1301c7d2468",
+    "084a2886-65c1-4c91-9716-efdd7a4f5047",
+    "23c8da41-47f2-4d0f-8d03-902135dc3fce"
   ],
   "round_summary": {
     "schema_version": 1,
-    "run_id": "b5f189ee-442b-4476-90aa-46660a8c4f48",
-    "started_at": "2026-11-12T19:01:10.252Z",
-    "completed_at": "2026-11-12T19:01:15.000Z",
+    "run_id": "4390ccfd-5658-4f11-ab59-d91f8de08e65",
+    "started_at": "2026-11-13T11:01:39.272Z",
+    "completed_at": "2026-11-13T11:01:48.955Z",
     "execution": "success",
     "delivery": {
       "email": "skipped",
@@ -362,13 +365,13 @@
         "label": "Enjoei Notebooks",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-12T19:01:12.811Z",
+          "collected_at": "2026-11-13T11:01:48.787Z",
           "execution": "success",
           "issues": [],
           "coverage": {
             "status": "complete",
-            "scheduled": 4,
-            "completed": 4,
+            "scheduled": 20,
+            "completed": 20,
             "incomplete": 0,
             "deferred": 0,
             "pending_descriptions": 0,
@@ -392,25 +395,27 @@
         "label": "Enjoei Tênis 42",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-12T19:01:14.640Z",
+          "collected_at": "2026-11-13T11:01:46.569Z",
           "execution": "success",
-          "issues": [],
+          "issues": [
+            "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+          ],
           "coverage": {
-            "status": "partial",
-            "scheduled": 8,
-            "completed": 8,
+            "status": "deferred",
+            "scheduled": 13,
+            "completed": 13,
             "incomplete": 0,
-            "deferred": 0,
+            "deferred": 6,
             "pending_descriptions": 0,
             "pending_candidates": 5,
             "pending_details": 0,
             "heuristic_stops": [
               "fot walka",
-              "fot noga"
+              "fot"
             ],
             "heuristic_reasons": {
               "fot walka": "first_page_no_match",
-              "fot noga": "first_page_no_match"
+              "fot": "first_page_no_candidate"
             }
           },
           "findings": {
@@ -428,7 +433,7 @@
         "label": "Enjoei Calças Zegna 40",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-12T19:01:10.758Z",
+          "collected_at": "2026-11-13T11:01:39.720Z",
           "execution": "success",
           "issues": [],
           "coverage": {
@@ -455,7 +460,7 @@
         "label": "Enjoei Jeans Ricardo Almeida 40",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-12T19:01:10.874Z",
+          "collected_at": "2026-11-13T11:01:41.998Z",
           "execution": "success",
           "issues": [],
           "coverage": {
@@ -473,7 +478,7 @@
           "findings": {
             "new_items": [],
             "price_changes": [],
-            "active_count": 2,
+            "active_count": 3,
             "pending_count": 1,
             "new_count": 0,
             "price_count": 0
@@ -485,7 +490,7 @@
         "label": "Enjoei Jeans Jacob Cohën 40",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-12T19:01:10.764Z",
+          "collected_at": "2026-11-13T11:01:39.687Z",
           "execution": "success",
           "issues": [],
           "coverage": {
@@ -515,7 +520,7 @@
         "label": "Enjoei Jeans Brunello Cucinelli 40",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-12T19:01:10.898Z",
+          "collected_at": "2026-11-13T11:01:39.794Z",
           "execution": "success",
           "issues": [],
           "coverage": {
@@ -545,7 +550,7 @@
         "label": "Enjoei Jeans Momotaro Jeans 40",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-12T19:01:10.810Z",
+          "collected_at": "2026-11-13T11:01:39.710Z",
           "execution": "success",
           "issues": [],
           "coverage": {
@@ -575,7 +580,7 @@
         "label": "Enjoei Jeans Pure Blue Japan (PBJ) 40",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-12T19:01:11.836Z",
+          "collected_at": "2026-11-13T11:01:40.705Z",
           "execution": "success",
           "issues": [],
           "coverage": {
@@ -605,7 +610,7 @@
         "label": "Enjoei Jeans The Strike Gold 40",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-12T19:01:12.348Z",
+          "collected_at": "2026-11-13T11:01:41.215Z",
           "execution": "success",
           "issues": [],
           "coverage": {
@@ -635,7 +640,7 @@
         "label": "Enjoei Jeans Kapital 40",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-12T19:01:12.837Z",
+          "collected_at": "2026-11-13T11:01:41.693Z",
           "execution": "success",
           "issues": [],
           "coverage": {
@@ -665,7 +670,7 @@
         "label": "Enjoei Jeans Fullcount 40",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-12T19:01:13.323Z",
+          "collected_at": "2026-11-13T11:01:42.185Z",
           "execution": "success",
           "issues": [],
           "coverage": {
@@ -695,7 +700,7 @@
         "label": "Enjoei Jeans OrSlow 40",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-12T19:01:14.277Z",
+          "collected_at": "2026-11-13T11:01:43.097Z",
           "execution": "success",
           "issues": [],
           "coverage": {
@@ -725,7 +730,7 @@
         "label": "Lifefactory",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-12T19:01:11.017Z",
+          "collected_at": "2026-11-13T11:01:40.089Z",
           "execution": "success",
           "issues": [],
           "coverage": {
@@ -755,7 +760,7 @@
         "label": "Tela Book3",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-12T19:01:11.604Z",
+          "collected_at": "2026-11-13T11:01:40.733Z",
           "execution": "success",
           "issues": [],
           "coverage": {
@@ -785,7 +790,7 @@
         "label": "Melanger",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-12T19:01:12.191Z",
+          "collected_at": "2026-11-13T11:01:41.548Z",
           "execution": "success",
           "issues": [],
           "coverage": {
@@ -815,7 +820,7 @@
         "label": "OnePlus Buds Pro 3",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-12T19:01:13.784Z",
+          "collected_at": "2026-11-13T11:01:43.116Z",
           "execution": "success",
           "issues": [],
           "coverage": {
@@ -845,7 +850,7 @@
         "label": "Google Pixel Watch 5",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-12T19:01:14.345Z",
+          "collected_at": "2026-11-13T11:01:43.641Z",
           "execution": "success",
           "issues": [],
           "coverage": {
@@ -875,17 +880,15 @@
         "label": "Monitores OLED",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-12T19:01:14.803Z",
+          "collected_at": "2026-11-13T11:01:45.108Z",
           "execution": "success",
-          "issues": [
-            "OLX: consultas adiadas após bloqueio; retomada prevista em 14/11/2026, 16:05:02 BRT."
-          ],
+          "issues": [],
           "coverage": {
-            "status": "deferred",
-            "scheduled": 0,
-            "completed": 0,
+            "status": "partial",
+            "scheduled": 3,
+            "completed": 3,
             "incomplete": 0,
-            "deferred": 21,
+            "deferred": 0,
             "pending_descriptions": 0,
             "pending_candidates": 1,
             "pending_details": 0,

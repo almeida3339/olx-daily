@@ -1,23 +1,21 @@
 {
   "schema_version": 1,
-  "run_id": "2026-11-13T10-02-53-916Z",
-  "committed_at": "2026-11-13T10:02:55.264Z",
-  "snapshot": "runs/2026-11-13T10-02-53-916Z/snapshot.json",
-  "report": "runs/2026-11-13T10-02-53-916Z/report.md",
+  "run_id": "2026-11-13T11-01-39-966Z",
+  "committed_at": "2026-11-13T11:01:40.114Z",
+  "snapshot": "runs/2026-11-13T11-01-39-966Z/snapshot.json",
+  "report": "runs/2026-11-13T11-01-39-966Z/report.md",
   "quarantine": null,
   "summary": {
     "schema_version": 1,
-    "collected_at": "2026-11-13T10:02:55.253Z",
+    "collected_at": "2026-11-13T11:01:40.089Z",
     "execution": "success",
-    "issues": [
-      "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-    ],
+    "issues": [],
     "coverage": {
-      "status": "deferred",
+      "status": "complete",
       "scheduled": 1,
       "completed": 1,
       "incomplete": 0,
-      "deferred": 1,
+      "deferred": 0,
       "pending_descriptions": 0,
       "pending_candidates": 0,
       "pending_details": 0,
@@ -34,7 +32,7 @@
     }
   },
   "checksums": {
-    "snapshot_sha256": "7fb554bffc6505f233f969d0e93eeec27b5f7c809850ca2572f987effb8e67c4",
+    "snapshot_sha256": "fa6a8190ede7440ca68d053c5f450ca958967f56ccbbf25a857780635c932391",
     "report_sha256": "5ec28f6fb8d03cf56c514005a20613e3c364c33165855f4b14459415d13815d0"
   },
   "metadata": {
