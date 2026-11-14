@@ -1,21 +1,23 @@
 {
   "schema_version": 1,
-  "run_id": "2026-11-13T19-19-38-313Z",
-  "committed_at": "2026-11-13T19:19:41.527Z",
-  "snapshot": "runs/2026-11-13T19-19-38-313Z/snapshot.json",
-  "report": "runs/2026-11-13T19-19-38-313Z/report.md",
+  "run_id": "2026-11-14T10-03-12-283Z",
+  "committed_at": "2026-11-14T10:03:15.643Z",
+  "snapshot": "runs/2026-11-14T10-03-12-283Z/snapshot.json",
+  "report": "runs/2026-11-14T10-03-12-283Z/report.md",
   "quarantine": null,
   "summary": {
     "schema_version": 1,
-    "collected_at": "2026-11-13T19:19:41.515Z",
+    "collected_at": "2026-11-14T10:03:15.634Z",
     "execution": "success",
-    "issues": [],
+    "issues": [
+      "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+    ],
     "coverage": {
-      "status": "complete",
-      "scheduled": 3,
-      "completed": 3,
+      "status": "deferred",
+      "scheduled": 4,
+      "completed": 4,
       "incomplete": 0,
-      "deferred": 0,
+      "deferred": 2,
       "pending_descriptions": 0,
       "pending_candidates": 0,
       "pending_details": 0,
@@ -25,15 +27,15 @@
     "findings": {
       "new_items": [],
       "price_changes": [],
-      "active_count": 1,
+      "active_count": 0,
       "pending_count": 0,
       "new_count": 0,
       "price_count": 0
     }
   },
   "checksums": {
-    "snapshot_sha256": "81fb1aa8fff0f719e50daad83f68e6e3392ccf4f786eacc9690590008e62c458",
-    "report_sha256": "d8e675306059e627e5ff2365b4db7644473cea55900e39c49d536ed5780750ad"
+    "snapshot_sha256": "302caf523fdd8ac50b03026aa5a5a7bbc6847f5bdab7e60953a7f80176f224c4",
+    "report_sha256": "e7b6122d1464b1c7de9f8c916316af1ac22bbe967b566b82d4a07dcd1dad7cc9"
   },
   "metadata": {
     "source": "oneplus-buds-pro-3",
