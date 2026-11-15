@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-14T19:00:11.023Z",
+  "generated_at": "2026-11-15T10:00:10.768Z",
   "source": "local",
   "delivery": {
     "email": "skipped",
@@ -39,19 +39,12 @@
   "monitoring": {
     "scope": "local-watchlists",
     "partial": true,
-    "status": "blocked",
+    "status": "partial",
     "outcomes": [
-      {
-        "source": "oled-monitores",
-        "status": "blocked",
-        "reasons": [
-          "Saiu com código 4: {\"event\":\"olx_access_blocked\",\"id\":\"olx-access-2026-11-14T19-05-03-307Z-a9739298\",\"at\":\"2026-11-14T19:05:03.307Z\",\"stage\":\"listing\",\"query\":\"aw2726dm\",\"url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"final_url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"http_status\":403,\"title\":\"Attention Required! | Cloudflare\",\"kind\":\"hard_denial\",\"ray_id\":\"a5a84912abcd566f\",\"message\":\"Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a5a84912abcd566f).\"}\n  Aviso: termo \"aw2726dm\" em https://www.olx.com.br/brasil/informatica/monitores falhou — Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a5a84912abcd566f).\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.\nColeta OLED parcial: 1 consulta(s) incompleta(s), 9 adiada(s).\nOLX:aw2726dm: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a5a84912abcd566f).\nOLX: consultas adiadas…"
-        ]
-      },
       {
         "source": "olx",
         "status": "partial",
-        "completed_terms": 4,
+        "completed_terms": 6,
         "incomplete_terms": 1,
         "deferred_terms": 0,
         "pending_candidates": 12,
@@ -95,9 +88,9 @@
       {
         "source": "oneplus-buds-pro-3",
         "status": "deferred",
-        "completed_terms": 3,
+        "completed_terms": 4,
         "incomplete_terms": 0,
-        "deferred_terms": 3,
+        "deferred_terms": 2,
         "pending_candidates": 0,
         "reasons": [
           "Consultas adiadas pela programação; as consultas executadas foram concluídas."
@@ -112,6 +105,17 @@
         "pending_candidates": 0,
         "reasons": [
           "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+        ]
+      },
+      {
+        "source": "oled-monitores",
+        "status": "deferred",
+        "completed_terms": 4,
+        "incomplete_terms": 0,
+        "deferred_terms": 9,
+        "pending_candidates": 1,
+        "reasons": [
+          "OLX: consultas adiadas após bloqueio; retomada prevista em 17/11/2026, 16:05:03 BRT."
         ]
       }
     ],
@@ -157,11 +161,16 @@
         "reasons": [
           "Consultas adiadas pela programação; as consultas executadas foram concluídas."
         ]
+      },
+      {
+        "source": "oled-monitores",
+        "status": "deferred",
+        "reasons": [
+          "OLX: consultas adiadas após bloqueio; retomada prevista em 17/11/2026, 16:05:03 BRT."
+        ]
       }
     ],
-    "errors": [
-      "Monitores OLED: Saiu com código 4: {\"event\":\"olx_access_blocked\",\"id\":\"olx-access-2026-11-14T19-05-03-307Z-a9739298\",\"at\":\"2026-11-14T19:05:03.307Z\",\"stage\":\"listing\",\"query\":\"aw2726dm\",\"url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"final_url\":\"https://www.olx.com.br/brasil/informatica/monitores?[redacted]\",\"http_status\":403,\"title\":\"Attention Required! | Cloudflare\",\"kind\":\"hard_denial\",\"ray_id\":\"a5a84912abcd566f\",\"message\":\"Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a5a84912abcd566f).\"}\n  Aviso: termo \"aw2726dm\" em https://www.olx.com.br/brasil/informatica/monitores falhou — Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a5a84912abcd566f).\nOLX bloqueada; demais consultas da fonte interrompidas e anúncios anteriores preservados.\nColeta OLED parcial: 1 consulta(s) incompleta(s), 9 adiada(s).\nOLX:aw2726dm: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a5a84912abcd566f).\nOLX: c…"
-    ]
+    "errors": []
   },
   "notification_sent_ids": [
     "ba389d82-208c-40a7-ada6-a22a454a4618",
@@ -287,14 +296,17 @@
     "23c8da41-47f2-4d0f-8d03-902135dc3fce",
     "27bfc86d-be03-4d6c-8e13-2f6465e72be5",
     "93fa4304-c1a0-4fa3-ab98-0e209c10708d",
-    "8f2c8be5-a000-471c-b608-60648d153b22"
+    "8f2c8be5-a000-471c-b608-60648d153b22",
+    "4b896c97-fbb8-47b7-865c-9c050f8ad163",
+    "0daa17b9-97be-4832-9318-c363e114326e",
+    "62ecd15f-764f-447e-8664-0369e873b7ff"
   ],
   "round_summary": {
     "schema_version": 1,
-    "run_id": "89b35459-19be-4900-8b6e-ddc069711925",
-    "started_at": "2026-11-14T19:00:11.023Z",
-    "completed_at": "2026-11-14T19:05:12.460Z",
-    "execution": "failed",
+    "run_id": "b90bd538-6012-4f48-bacf-e2110eebfb2e",
+    "started_at": "2026-11-15T10:00:10.768Z",
+    "completed_at": "2026-11-15T10:02:41.693Z",
+    "execution": "success",
     "delivery": {
       "email": "skipped",
       "whatsapp": "sent"
@@ -305,15 +317,15 @@
         "label": "OLX Notebooks",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-14T19:01:25.524Z",
+          "collected_at": "2026-11-15T10:02:08.690Z",
           "execution": "success",
           "issues": [
             "1 ficha(s) aguardando leitura dentro dos limites da rodada"
           ],
           "coverage": {
             "status": "partial",
-            "scheduled": 5,
-            "completed": 4,
+            "scheduled": 7,
+            "completed": 6,
             "incomplete": 1,
             "deferred": 0,
             "pending_descriptions": 22,
@@ -331,21 +343,25 @@
                   "13980hx",
                   "14900hx",
                   "13900hx",
-                  "family:dell-g16"
+                  "9955hx3d",
+                  "255hx",
+                  "family:avell-a65"
                 ],
                 "completed_terms": [
                   "14700hx",
                   "13980hx",
                   "14900hx",
                   "13900hx",
-                  "family:dell-g16"
+                  "9955hx3d",
+                  "255hx",
+                  "family:avell-a65"
                 ],
                 "incomplete_terms": [],
                 "pending_details": 0,
                 "queued_candidates": 15,
                 "pending_candidates": 12,
-                "scheduled": 5,
-                "completed": 5,
+                "scheduled": 7,
+                "completed": 7,
                 "incomplete": 0,
                 "status": "partial"
               },
@@ -355,11 +371,13 @@
                 "scheduled_terms": [
                   "14700hx",
                   "14900hx",
-                  "13900hx"
+                  "13900hx",
+                  "255hx"
                 ],
                 "completed_terms": [
                   "14700hx",
-                  "13900hx"
+                  "13900hx",
+                  "255hx"
                 ],
                 "incomplete_terms": [
                   "14900hx"
@@ -367,9 +385,9 @@
                 "pending_details": 1,
                 "min_price_exclusive": true,
                 "queued_candidates": 7,
-                "pending_candidates": 9,
-                "scheduled": 3,
-                "completed": 2,
+                "pending_candidates": 8,
+                "scheduled": 4,
+                "completed": 3,
                 "incomplete": 1,
                 "status": "partial"
               }
@@ -390,7 +408,7 @@
         "label": "Lifefactory",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-14T19:01:29.052Z",
+          "collected_at": "2026-11-15T10:02:12.702Z",
           "execution": "success",
           "issues": [
             "Consultas adiadas pela programação; as consultas executadas foram concluídas."
@@ -422,7 +440,7 @@
         "label": "Tela Book3",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-14T19:01:31.369Z",
+          "collected_at": "2026-11-15T10:02:14.907Z",
           "execution": "success",
           "issues": [
             "Consultas adiadas pela programação; as consultas executadas foram concluídas."
@@ -454,7 +472,7 @@
         "label": "Melanger",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-14T19:01:33.432Z",
+          "collected_at": "2026-11-15T10:02:17.224Z",
           "execution": "success",
           "issues": [
             "Consultas adiadas pela programação; as consultas executadas foram concluídas."
@@ -486,17 +504,17 @@
         "label": "OnePlus Buds Pro 3",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-14T19:01:36.945Z",
+          "collected_at": "2026-11-15T10:02:25.499Z",
           "execution": "success",
           "issues": [
             "Consultas adiadas pela programação; as consultas executadas foram concluídas."
           ],
           "coverage": {
             "status": "deferred",
-            "scheduled": 3,
-            "completed": 3,
+            "scheduled": 4,
+            "completed": 4,
             "incomplete": 0,
-            "deferred": 3,
+            "deferred": 2,
             "pending_descriptions": 0,
             "pending_candidates": 0,
             "pending_details": 0,
@@ -518,7 +536,7 @@
         "label": "Google Pixel Watch 5",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-14T19:01:38.956Z",
+          "collected_at": "2026-11-15T10:02:27.812Z",
           "execution": "success",
           "issues": [
             "Consultas adiadas pela programação; as consultas executadas foram concluídas."
@@ -550,17 +568,16 @@
         "label": "Monitores OLED",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-14T19:05:03.753Z",
-          "execution": "blocked",
+          "collected_at": "2026-11-15T10:02:31.059Z",
+          "execution": "success",
           "issues": [
-            "OLX:aw2726dm: Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a5a84912abcd566f).",
             "OLX: consultas adiadas após bloqueio; retomada prevista em 17/11/2026, 16:05:03 BRT."
           ],
           "coverage": {
-            "status": "partial",
-            "scheduled": 5,
+            "status": "deferred",
+            "scheduled": 4,
             "completed": 4,
-            "incomplete": 1,
+            "incomplete": 0,
             "deferred": 9,
             "pending_descriptions": 0,
             "pending_candidates": 1,
