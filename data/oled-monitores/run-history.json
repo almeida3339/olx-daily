@@ -1,7 +1,22 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-15T10:02:31.555Z",
+  "updated_at": "2026-11-15T11:01:31.628Z",
   "runs": [
+    {
+      "run_id": "2026-11-15T11-01-31-543Z",
+      "committed_at": "2026-11-15T11:01:31.564Z",
+      "completed_at": "2026-11-15T11:01:31.543Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 522,
+      "item_count": 18,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "monitores-oled",
+        "collected_count": 3,
+        "quarantined_item_count": 0
+      }
+    },
     {
       "run_id": "2026-11-15T10-02-31-059Z",
       "committed_at": "2026-11-15T10:02:31.073Z",
@@ -10,11 +25,11 @@
       "partial": true,
       "duration_ms": 1872,
       "item_count": 18,
-      "quarantined_item_count": 0,
       "metadata": {
         "source": "monitores-oled",
         "collected_count": 3,
-        "quarantined_item_count": 0
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     },
     {
@@ -1788,22 +1803,6 @@
       "outcome": "success",
       "partial": false,
       "duration_ms": 94474,
-      "item_count": 4,
-      "metadata": {
-        "source": "monitores-oled",
-        "label": "Monitores OLED",
-        "collected_count": 0,
-        "quarantined_item_count": 0,
-        "in_progress": false
-      }
-    },
-    {
-      "run_id": "2026-10-12T19-01-13-193Z",
-      "committed_at": "2026-10-12T19:01:20.817Z",
-      "completed_at": "2026-10-12T19:01:20.796Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 7603,
       "item_count": 4,
       "metadata": {
         "source": "monitores-oled",

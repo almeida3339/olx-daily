@@ -1,7 +1,23 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-15T10:02:17.721Z",
+  "updated_at": "2026-11-15T11:01:29.129Z",
   "runs": [
+    {
+      "run_id": "2026-11-15T11-01-28-943Z",
+      "committed_at": "2026-11-15T11:01:29.099Z",
+      "completed_at": "2026-11-15T11:01:29.084Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 141,
+      "item_count": 6,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "melanger",
+        "label": "Melanger",
+        "collected_count": 0,
+        "quarantined_item_count": 0
+      }
+    },
     {
       "run_id": "2026-11-15T10-02-16-258Z",
       "committed_at": "2026-11-15T10:02:17.237Z",
@@ -10,12 +26,12 @@
       "partial": true,
       "duration_ms": 966,
       "item_count": 6,
-      "quarantined_item_count": 0,
       "metadata": {
         "source": "melanger",
         "label": "Melanger",
         "collected_count": 0,
-        "quarantined_item_count": 0
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     },
     {
@@ -1897,22 +1913,6 @@
       "outcome": "partial",
       "partial": true,
       "duration_ms": 12902,
-      "item_count": 5,
-      "metadata": {
-        "source": "melanger",
-        "label": "Melanger",
-        "collected_count": 1,
-        "quarantined_item_count": 0,
-        "in_progress": false
-      }
-    },
-    {
-      "run_id": "2026-10-11T19-00-46-542Z",
-      "committed_at": "2026-10-11T19:00:54.917Z",
-      "completed_at": "2026-10-11T19:00:54.898Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 8356,
       "item_count": 5,
       "metadata": {
         "source": "melanger",
