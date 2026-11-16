@@ -13,7 +13,7 @@ import { classifyMonitorError } from './monitor-errors.mjs';
 import { readOlxNotebookDetail, assertOlxAccessible } from './olx-notebook-quality.mjs';
 import { parseBrlPrice, extractOlxId } from './parsers.mjs';
 import { OLED_PRICE, OLED_POLICY_VERSION, OLED_DETAIL_TTL_MS, assessOledMonitor, isCompleteOledMonitor,
-  isApprovedOledMonitor, hasApprovedOledEvidence, classifySavedOledItem, normalizeOledSearchTerm, oledPendingReason, oledModelIds, oledSearchMatchesTitle } from './oled-monitor-scope.mjs';
+  isApprovedOledMonitor, hasApprovedOledEvidence, classifySavedOledItem, normalizeOledSearchTerm, oledPendingReason, oledModelIds, oledSearchMatchesTitle, oledOlxAwaitsManualCheck } from './oled-monitor-scope.mjs';
 import { oledQuerySpecs, planOledQueries } from './oled-search-plan.mjs';
 
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
@@ -58,6 +58,9 @@ async function collect({ root,dataDir }) {
   const configured=['OLX','Enjoei'].flatMap(source=>oledQuerySpecs(source).map(s=>`${source}:${s.id}`));
   const skipEnjoei=args.includes('--skip-enjoei')||process.env.SKIP_ENJOEI==='1';
   const skipOlx=args.includes('--skip-olx')||process.env.SKIP_OLX==='1';
+  const manualResume = args.includes('--resume-after-verification') && !skipOlx;
+  if (oledOlxAwaitsManualCheck(blocks.OLX)) blocks.OLX = {...blocks.OLX, awaiting_manual_check:true};
+  const manualHoldMessage = 'OLX: consultas adiadas. Retomada suspensa após bloqueios repetidos. Aguarda verificação manual.';
   const count={OLX:{search_requests:0,detail_reads:0,cache_hits:0},Enjoei:{search_requests:0,detail_reads:0,cache_hits:0}};
   const budgets={OLX:{details:6,cards:60},Enjoei:{pages:8,details:4}};
   const checkpointItem=async(item)=>{
@@ -165,11 +168,14 @@ async function collect({ root,dataDir }) {
     let remaining=Date.parse(blocks.OLX?.blocked_until??'')-Date.now();
     // The morning job can reach this collector a few minutes before a 24h
     // pause expires. Wait locally instead of losing the whole morning slot.
-    if(remaining>0&&remaining<=5*60_000){
+    if(!oledOlxAwaitsManualCheck(blocks.OLX)&&remaining>0&&remaining<=5*60_000){
       console.log(`OLED OLX: pausa termina em ${Math.ceil(remaining/60_000)} min; aguardando sem acessar o site.`);
       while(remaining>0){await sleep(Math.min(30_000,remaining));remaining=Date.parse(blocks.OLX.blocked_until)-Date.now();}
     }
-    if(Date.parse(blocks.OLX?.blocked_until??'')>Date.now()){
+    if(oledOlxAwaitsManualCheck(blocks.OLX) && !manualResume){
+      deferred.push(...plan.map(spec=>`OLX:${spec.id}`));
+      console.log(manualHoldMessage);
+    }else if(Date.parse(blocks.OLX?.blocked_until??'')>Date.now()){
       deferred.push(...plan.map(s=>`OLX:${s.id}`));
       const retryAt=new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Sao_Paulo',dateStyle:'short',timeStyle:'short'}).format(new Date(blocks.OLX.blocked_until));
       console.log(`OLED OLX: pausa após bloqueio até ${retryAt} BRT; ${plan.length} consultas adiadas. Nenhum acesso realizado.`);
@@ -229,10 +235,12 @@ async function collect({ root,dataDir }) {
         if(result.blocked){
           const reason=[...result.failedTermErrors.values()].at(-1),diagnostic=result.accessDiagnostics.at(-1);
           const consecutive=(blocks.OLX?.consecutive_blocks??(recovering?1:0))+1;
+          const awaitingManual = oledOlxAwaitsManualCheck(blocks.OLX);
           const hours=Math.min(72,24*2**(consecutive-1));
           blocks.OLX={blocked_at:nowIso(),blocked_until:new Date(Date.now()+hours*3600_000).toISOString(),reason,
             consecutive_blocks:consecutive,cooldown_hours:hours,recovery_kind:diagnostic?.kind??'verification',
             diagnostic_id:diagnostic?.id,stage:diagnostic?.stage,ray_id:diagnostic?.ray_id};
+          if (awaitingManual || oledOlxAwaitsManualCheck(blocks.OLX)) blocks.OLX.awaiting_manual_check = true;
         }
         else if(result.attemptedTerms.size&&!result.failedTerms.size)delete blocks.OLX;
         for(const query of result.failedTerms)failed.set(`OLX:${query}`,result.failedTermErrors.get(query));
@@ -264,7 +272,7 @@ async function collect({ root,dataDir }) {
     run:{label:'Monitores OLED',started_at:started,completed_at:completed,partial:unsuccessful.length>0||deferred.length>0,
       deferred_coverage:deferred,
       errors:[...unsuccessful.map(id=>`${id}: ${failed.get(id)??'Consulta não executada após interrupção'}`),
-        ...(deferred.length?[blocks.OLX?.blocked_until&&Date.parse(blocks.OLX.blocked_until)>Date.now()
+        ...(deferred.length?[oledOlxAwaitsManualCheck(blocks.OLX) ? manualHoldMessage : blocks.OLX?.blocked_until&&Date.parse(blocks.OLX.blocked_until)>Date.now()
           ?`OLX: consultas adiadas após bloqueio; retomada prevista em ${new Date(blocks.OLX.blocked_until).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'})} BRT.`
           :'Consultas adiadas por frequência ou orçamento compartilhado.']:[])],
       oled_policy_version:OLED_POLICY_VERSION,discovery:{sources:count,budgets,query_yield:metrics}}});

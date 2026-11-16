@@ -4,9 +4,12 @@ import { DEFAULT_CPU_TERMS } from './cpu-terms.mjs';
 import { readJsonValidated, writeJsonAtomic } from './monitor-runtime.mjs';
 import { isOlxRecommendationUrl } from './olx-listing.mjs';
 import { reserveOlxAccess } from './olx-traffic.mjs';
+import { isLowYieldNotebookFamily } from './notebook-search-plan.mjs';
 
 export const cardKey = card => extractOlxId(card.url) ?? card.url.split('?')[0];
 const quotaTerm = term => term.startsWith('family:') ? term.split(':').slice(0, 2).join(':') : term;
+const detailLimit = (term, perTerm) => isLowYieldNotebookFamily(term) ? Math.min(2, perTerm)
+  : term.startsWith('family:') ? Math.max(perTerm, 4) : perTerm;
 export const isGoneOlxDetail = item => item?.validation?.detail_diagnostic?.http_status === 410
   && item.validation.detail_diagnostic.same_ad === true;
 const parked = entry => entry.retry_kind === 'missing_configuration';
@@ -91,6 +94,8 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
     && (entry.unavailable_round ?? old?.round) === round && isGoneOlxDetail(entry.item));
   // Migrate pending retries without renewing observation or attempt timestamps.
   for (const entry of state.queue) {
+    entry.terms = [...new Set(entry.terms.map(term => isLowYieldNotebookFamily(term) ? quotaTerm(term) : term))];
+    if (isLowYieldNotebookFamily(entry.card.cpu_term)) entry.card.cpu_term = quotaTerm(entry.card.cpu_term);
     if (!entry.last_detail_attempt_at) continue;
     const cached = state.cache.find(value => value.key === entry.key && value.title === entry.card.title && value.price_brl === entry.card.price_brl)?.item;
     entry.last_evidence ??= cached ? { cpu_confirmed: Boolean(cached.validation?.cpu_confirmed),
@@ -169,7 +174,7 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
       const retry = Boolean(waiting?.last_detail_attempt_at);
       if (retry && !finishRound && (state.metrics.retry_details ?? 0) >= totalLimit - newReserved) return false;
       if ((state.metrics.total_details ?? 0) >= totalLimit) return false;
-      const termLimit=term.startsWith('family:')?Math.max(perTerm,4):perTerm;
+      const termLimit = detailLimit(term, perTerm);
       const quota = quotaTerm(term);
       const termUsed = state.metrics.by_term[quota] ?? 0;
       let reallocated = false;
@@ -177,8 +182,8 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
       if (discovery && termUsed >= termLimit) {
         const alternative = state.queue.some(entry => entry.card.price_brl <= displayMaxPrice && ready(entry)
           && entry.key !== (card && cardKey(card)) && !results.has(entry.key) && entry.terms.some(other => quotaTerm(other) !== quota
-            && (state.metrics.by_term[quotaTerm(other)] ?? 0) < (other.startsWith('family:') ? Math.max(perTerm,4) : perTerm)));
-        reallocated = Boolean(finishRound && allowReallocation && term.startsWith('family:') && termUsed === termLimit
+            && (state.metrics.by_term[quotaTerm(other)] ?? 0) < detailLimit(other, perTerm)));
+        reallocated = Boolean(finishRound && allowReallocation && term.startsWith('family:') && !isLowYieldNotebookFamily(term) && termUsed === termLimit
           && card?.price_brl <= displayMaxPrice && (state.metrics.reallocated_details ?? 0) < 1 && !alternative);
         if (!reallocated) return false;
       }

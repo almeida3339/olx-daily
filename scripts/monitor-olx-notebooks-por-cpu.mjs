@@ -1,7 +1,7 @@
 import { setMonitorExit } from './lib/monitor-outcome.mjs';
 import { reserveOlxAccess, recordOlxYield, readOlxTraffic } from './lib/olx-traffic.mjs';
 import { extractNotebookRamText, meetsNotebookRamMinimum, NOTEBOOK_MIN_RAM_GB, notebookCpuTerms, hasExplicitOtherNotebookCpu } from './lib/notebook-policy.mjs';
-import { OLX_NOTEBOOK_FAMILIES, OLX_FAMILY_SEARCHES, OLX_FAMILY_EXPERIMENT, planNotebookFamilies, notebookOpportunity, notebookPriceLabels, recordFamilyExperiment } from './lib/notebook-search-plan.mjs';
+import { OLX_NOTEBOOK_FAMILIES, OLX_FAMILY_SEARCHES, OLX_FAMILY_EXPERIMENT, isLowYieldNotebookFamily, planNotebookFamilies, notebookOpportunity, notebookPriceLabels, recordFamilyExperiment } from './lib/notebook-search-plan.mjs';
 import fs from "node:fs/promises";
 import { createDescriptionQueue, cardCpuState, cardKey, isGoneOlxDetail } from "./lib/olx-description-queue.mjs";
 import { readOlxListing, finishOlxListing } from './lib/olx-listing.mjs';
@@ -60,7 +60,7 @@ const descriptionsOnly = args.includes('--descriptions-only');
 const cpuArg = getOptionValue(args, "--cpu");
 const configuredCpuTerms = cpuArg ? cpuArg.split(",").map((s) => s.trim().toLowerCase()).filter(Boolean) : DEFAULT_CPU_TERMS;
 let cpuTerms = orderOlxCpuTerms(configuredCpuTerms);
-const configuredSearches = [...configuredCpuTerms, ...(!cpuArg ? OLX_FAMILY_SEARCHES.map(spec => spec.id) : [])];
+const configuredSearches = [...configuredCpuTerms, ...(!cpuArg ? OLX_NOTEBOOK_FAMILIES.map(spec => spec.id) : [])];
 const olxQuery = term => OLX_FAMILY_SEARCHES.find(spec => spec.id === term)?.query ?? cpuSearchQuery(term);
 let resumedProgress = null;
 let descriptionQueue;
@@ -117,7 +117,7 @@ async function main() {
     return;
   }
   const sameConfiguration = savedProgress?.configuration === configuredSearches.join(',')
-    || (!cpuArg && savedProgress?.configuration === [...configuredCpuTerms, ...OLX_NOTEBOOK_FAMILIES.map(spec => spec.id)].join(','));
+    || (!cpuArg && savedProgress?.configuration === [...configuredCpuTerms, ...OLX_FAMILY_SEARCHES.map(spec => spec.id)].join(','));
   if (!args.includes('--full-sweep') && sameConfiguration && savedProgress.pending_terms?.length
       && now.getTime() - Date.parse(savedProgress.started_at) < RESUME_MAX_AGE_MS
       && Array.isArray(savedProgress.collected) && Array.isArray(savedProgress.successful_terms)
@@ -173,7 +173,7 @@ async function main() {
     await collectOlxTerms({
       runDate, runTimestamp, previousSnapshot, transport: "playwright",
       collectTerm: (term) => collectForCpuTerm(page, term, maxAdsPerCpu, previousSnapshot),
-      drainDetails: () => drainDescriptionQueue(card => enrichAd(page, card)),
+      drainDetails: terms => drainDescriptionQueue(card => enrichAd(page, card), terms),
       resetSession: async () => {
         const context = page.context();
         await page.close().catch(() => {});
@@ -216,7 +216,7 @@ async function runWithRawCdp({ cdpUrl, runDate, runTimestamp, previousSnapshot }
     await collectOlxTerms({
       runDate, runTimestamp, previousSnapshot, transport: "cdp",
       collectTerm: (term) => collectForCpuTermRawCdp(tab, term, maxAdsPerCpu, previousSnapshot),
-      drainDetails: () => drainDescriptionQueue(card => enrichAdRawCdp(cdpUrl, card)),
+      drainDetails: terms => drainDescriptionQueue(card => enrichAdRawCdp(cdpUrl, card), terms),
       resetSession,
     });
   } finally {
@@ -315,7 +315,10 @@ async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transp
         for (const item of results) {
           const existing = collected.findIndex(x => (x.id ?? x.url) === (item.id ?? item.url));
           if (existing < 0) collected.push(item);
-          else collected[existing] = item;
+          else {
+            const observedAt = item.listing_observed_at ?? collected[existing].listing_observed_at;
+            collected[existing] = observedAt ? { ...item, listing_observed_at: observedAt } : item;
+          }
         }
         if (results.coverage_incomplete) failedTerms.push({ term, error: results.incomplete_reasons.join('; '), kind: 'incomplete' });
         else successfulTerms.push(term);
@@ -348,9 +351,13 @@ async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transp
       await persistProgress(true);
     }, { onBatchCompleted: () => saveProgress(true), onBatchResumed: resetSession });
     if (!listingOnly && drainDetails) {
-      for (const item of await drainDetails()) {
+      for (const item of await drainDetails(new Set(Object.keys(queryYield)))) {
         const existing = collected.findIndex(x => (x.id ?? x.url) === (item.id ?? item.url));
-        if (existing < 0) collected.push(item); else collected[existing] = item;
+        if (existing < 0) collected.push(item);
+        else {
+          const observedAt = collected[existing].listing_observed_at;
+          collected[existing] = observedAt ? { ...item, listing_observed_at: observedAt } : item;
+        }
       }
     }
   } catch (error) {
@@ -477,10 +484,11 @@ async function notebookListingLimit(term,base,previous){
   return olxNotebookListingLimit(term,base,{...last,listing_incomplete},saved);
 }
 
-async function drainDescriptionQueue(openDetail) {
+async function drainDescriptionQueue(openDetail, searchedTerms) {
   const items = [];
   // First exhaust ordinary allocations, then consider one spare family slot.
   drainPasses: for (const allowReallocation of [false, true]) for (const card of descriptionQueue.pending()) {
+    if (isLowYieldNotebookFamily(card.cpu_term) && !descriptionsOnly && !searchedTerms.has(card.cpu_term)) continue;
     const metrics = descriptionQueue.summary();
     if (metrics.total_details >= metrics.total_detail_limit || metrics.extra_details >= metrics.per_round_limit) break drainPasses;
     const cached = descriptionQueue.cached(card);
@@ -508,6 +516,7 @@ async function drainDescriptionQueue(openDetail) {
 
 async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openDetail) {
   const familySearch = cpuTerm.startsWith('family:');
+  const observedAt = new Date().toISOString();
   const specificCpu = OLX_FAMILY_SEARCHES.find(spec => spec.id === cpuTerm)?.cpu;
   const eligible = [...new Map(cards.filter(card => card.url && card.title && card.price_brl != null
     && isNotebookCategoryUrl(card.url) && !hasExcludedKeyword(`${card.title}\n${card.text ?? ''}`)
@@ -602,6 +611,8 @@ async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openD
     ...(items.details_pending ? [`${items.details_pending} ficha(s) aguardando leitura dentro dos limites da rodada`] : []),
   ];
   items.coverage_incomplete = items.incomplete_reasons.length > 0;
+  const listed = new Set(eligible.map(cardKey));
+  for (const item of items) if (listed.has(cardKey(item))) item.listing_observed_at = observedAt;
   console.log(`  Descrições adicionais: ${metrics.extra_details}/8 nesta rodada; ${metrics.queued_candidates} candidato(s) na fila.`);
   if (items.coverage_incomplete) console.log(`  Cobertura parcial: ${items.incomplete_reasons.join('; ')}.`);
   return items.sort((a, b) => a.price_brl - b.price_brl);
@@ -1261,7 +1272,12 @@ function mergeWithPreviousSnapshot({ runDate, now, collected, previousSnapshot, 
       filters: { ram_gb: { min: NOTEBOOK_MIN_RAM_GB }, price_brl: { min: PRICE_MIN_BRL, max: PRICE_MAX_BRL } },
     });
     result.price_range_brl = { min: PRICE_MIN_BRL, max: PRICE_MAX_BRL };
+    const priorById = new Map((previousSnapshot?.items ?? []).map(item => [item.id ?? item.url, item]));
     result.items = result.items.map(item => {
+      if (!item.listing_observed_at) {
+        const prior = priorById.get(item.id ?? item.url);
+        item = { ...item, listing_observed_on: prior?.listing_observed_on ?? prior?.last_seen ?? null };
+      }
       const current = revalidateSavedOlxItem(item);
       if (item.status === 'out_of_scope' && item.validation?.state === 'rejected'
           && current.validation?.state !== 'rejected') {

@@ -6,7 +6,8 @@ import { listCommittedRuns, readJsonValidated, readLatestValidSnapshot, timestam
 import { mergeCoverageStatus } from "./monitor-coverage.mjs";
 import { watchlistHealthDefinitions } from "./watchlists-registry.mjs";
 import { DEFAULT_CPU_TERMS } from './cpu-terms.mjs';
-import { notebookQueryMaxAgeHours } from './notebook-search-plan.mjs';
+import { notebookQueryMaxAgeHours, OLX_FAMILY_EXPERIMENT } from './notebook-search-plan.mjs';
+import { oledOlxAwaitsManualCheck } from './oled-monitor-scope.mjs';
 import { oledQuerySpecs, oledMlIntervalHours } from './oled-search-plan.mjs';
 import { classifyMonitorOutcome } from './monitor-outcome.mjs';
 
@@ -32,7 +33,8 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
     coverage = mergeCoverageStatus(coverage, snapshot ?? {});
     const configuredRaw = snapshot?.run?.configured_coverage ?? snapshot?.run?.configured_terms ?? [];
     const configured = ['olx','enjoei-notebooks','mercadolivre-notebooks'].includes(id)
-      ? configuredRaw.filter(key => key.startsWith('family:') || DEFAULT_CPU_TERMS.includes(key)) : configuredRaw;
+      ? configuredRaw.filter(key => (key.startsWith('family:') || DEFAULT_CPU_TERMS.includes(key))
+        && (id !== 'olx' || !OLX_FAMILY_EXPERIMENT.some(spec => spec.id === key))) : configuredRaw;
     const ageByKey={};
     for(const key of configured){
       const term=id==='olx'?key:key.startsWith('OLX:')?key.slice(4):null;
@@ -77,7 +79,8 @@ export async function buildMonitorHealth(root, { now = new Date() } = {}) {
     if (profileBlocked) state = 'blocked';
     const hardDenial = Object.entries(snapshot?.source_blocks ?? {}).find(([source, block]) => source === 'OLX' && block.recovery_kind === 'hard_denial');
     const olxPause = snapshot?.source_blocks?.OLX;
-    const pauseNote = Date.parse(olxPause?.blocked_until ?? '') > now
+    const pauseNote = oledOlxAwaitsManualCheck(olxPause) ? 'OLX aguarda verificação manual após bloqueios repetidos. '
+      : Date.parse(olxPause?.blocked_until ?? '') > now
       ? `OLX em pausa após bloqueio até ${new Date(olxPause.blocked_until).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })} BRT; consultas adiadas. ` : '';
     const freshnessNote = id.startsWith('mercadolivre-')
       ? `Sob demanda · ${ageMs == null ? 'sem coleta registrada' : `última coleta há ${formatHealthAge(ageMs)}`} · ` : '';
@@ -194,7 +197,8 @@ function coverageHealth(configured, coverage, { now, maxAgeMs, id, sourceBlocks,
       if (now.getTime() - Date.parse(term.checked_at) > term.max_age_ms) return 'stale';
       return term.state === 'failed' ? 'partial' : 'healthy';
     });
-    const blocked = Date.parse(sourceBlocks[label]?.blocked_until ?? '') > now.getTime();
+    const blocked = (label === 'OLX' && oledOlxAwaitsManualCheck(sourceBlocks[label]))
+      || Date.parse(sourceBlocks[label]?.blocked_until ?? '') > now.getTime();
     return { label, state: blocked ? 'blocked' : worstState(states), total_terms: terms.length, fresh_terms: states.filter((state) => state === 'healthy').length,
       checked_terms: terms.filter(term => Number.isFinite(Date.parse(term.checked_at))
         && now.getTime() - Date.parse(term.checked_at) <= term.max_age_ms).length,

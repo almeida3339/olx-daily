@@ -17,7 +17,7 @@ import { mercadoLivreDashboardCards, resolveWatchlistDataDir } from "./lib/watch
 import { buildLocalTriggerCommands } from "./lib/dashboard-triggers.mjs";
 import { createDashboardParser, runTimestampFromFile } from "./lib/dashboard-parsing.mjs";
 import { isValidatedOlxItem, revalidateSavedOlxItem } from './lib/olx-notebook-quality.mjs';
-import { OLX_FAMILY_EXPERIMENT, OLX_FAMILY_SEARCHES, notebookPriceLabels } from './lib/notebook-search-plan.mjs';
+import { OLX_FAMILY_EXPERIMENT, OLX_FAMILY_SEARCHES, notebookPriceLabels, notebookAvailability } from './lib/notebook-search-plan.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -137,6 +137,7 @@ async function main() {
   const currentOled = await currentSnapshotReport(OLED_MONITORES_DIR, 3000);
   const {snapshot:olxSnapshot} = await readLatestValidSnapshot(OLX_DIR);
   if (olxSnapshot?.run?.query_yield) olx.priceCoverage = buildOlxPriceCoverage(olxSnapshot);
+  olx.currentReport = await currentSnapshotReport(OLX_DIR, 8000);
   olx.familyExperiment = olxSnapshot?.run?.family_experiment ?? {};
   if (currentOled) oledMonitores.currentReport = currentOled;
   const [olxUpdated, enjoeiNbUpdated, enjoeiTenisUpdated, dockUpdated, fitbitUpdated, lifefactoryUpdated, telaBook3Updated, melangerUpdated, buds4ProUpdated, onePlusBudsUpdated, pixelWatch4Updated, pixelWatch5Updated, ouraUpdated, oledMonitoresUpdated] = await Promise.all([
@@ -266,7 +267,8 @@ async function gather(dir, prefix, excludePrefix, detailsByUrl = new Map()) {
       p.priceCount = p.allPriceItems.length;
       for (const item of [...p.allNewItems, ...p.allPriceItems]) {
         const detail = detailsByUrl.get(item.url);
-        if (detail?.status !== 'active' || !isValidatedOlxItem(detail)) continue;
+        if (!detail || !isValidatedOlxItem(detail)) continue;
+        item.observationLabel = notebookAvailability(detail).label;
         const shownPrice = parseBrlPrice(item.priceTo ?? item.price);
         item.priceLabels = notebookPriceLabels(shownPrice === Number(detail.price_brl)
           ? detail.opportunity ?? {} : {}, shownPrice);
@@ -559,6 +561,7 @@ async function currentSnapshotReport(dir, displayMax = Infinity) {
   const items = (snapshot.items ?? [])
     .filter((item) => item.status === "active" && Number(item.price_brl) <= displayMax
       && (dir !== MERCADOLIVRE_NOTEBOOKS_DIR || isEligibleNotebook(item))
+      && (dir !== OLX_DIR || (Number(item.price_brl) >= 2000 && isValidatedOlxItem(item)))
       && (dir !== path.join(ROOT, 'data', 'mercadolivre-tenis-42') || isApprovedMercadoLivreShoe(item))
       && (![OLED_MONITORES_DIR, path.join(ROOT, "data", "mercadolivre-oled-monitores")].includes(dir) || isApprovedOledMonitor(item)))
     .slice(0, MAX)
@@ -569,7 +572,9 @@ async function currentSnapshotReport(dir, displayMax = Infinity) {
       url: item.url,
       firstSeen: item.first_seen,
       checkedAt: item.details_checked_at ?? item.validation?.checked_at ?? null,
-      observationLabel: formatObservationLabel(item.first_seen, item.details_checked_at ?? item.validation?.checked_at),
+      observationLabel: dir === OLX_DIR ? notebookAvailability(item).label
+        : formatObservationLabel(item.first_seen, item.details_checked_at ?? item.validation?.checked_at),
+      ...(dir === OLX_DIR ? {priceLabels: notebookPriceLabels(item.opportunity ?? {}, item.price_brl)} : {}),
       machine: summarizeMachine(item.title, {
         ...item,
         ...(() => {
@@ -962,7 +967,8 @@ function renderHighlight(item) {
     ? priceChangeHtml(item)
     : item.price ? `<span class="ip">${e(item.price)}</span>` : "";
   const labels = item.priceLabels?.length ? `<small>${e(item.priceLabels.join(' · '))}</small>` : '';
-  return `<li class="highlight-item"><span class="highlight-kind ${item.isPrice ? "price" : "new"}">${kind}</span><span class="highlight-title">${titleHtml}<small>${e(item.source)} · ${e(item.runLabel ?? "hoje")}</small>${labels}</span>${value}</li>`;
+  const observation = item.observationLabel ? `<small>${e(item.observationLabel)}</small>` : '';
+  return `<li class="highlight-item"><span class="highlight-kind ${item.isPrice ? "price" : "new"}">${kind}</span><span class="highlight-title">${titleHtml}<small>${e(item.source)} · ${e(item.runLabel ?? "hoje")}</small>${labels}${observation}</span>${value}</li>`;
 }
 
 function renderFamilyExperiment(history) {
@@ -981,7 +987,7 @@ function renderFamilyExperiment(history) {
     });
     return rows.join('') + `<p class="hint">${ready ? 'Amostra mínima atingida para esta família.' : 'Comparação preliminar. São necessárias duas rodadas de cada versão.'}</p>`;
   });
-  return `<details class="history-changes"><summary>Teste de buscas por família</summary><p class="hint">Exclusivos em relação às buscas por CPU observadas na mesma rodada, na faixa até R$ 8.000.</p>${groups.join('')}</details>`;
+  return `<details class="history-changes"><summary>Histórico do teste de buscas por família</summary><p class="hint">As variantes com CPU saíram do rodízio. As buscas amplas de Helios Neo 16 e ROG Strix G16 são semanais. Exclusivos são candidatos até R$ 8.000 que as consultas por CPU da rodada não retornaram.</p>${groups.join('')}</details>`;
 }
 
 function renderSection(title, sub, reports, dpath, stampInfo) {

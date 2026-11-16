@@ -7,7 +7,8 @@ import { createDescriptionQueue, descriptionRetryPolicy } from '../scripts/lib/o
 import { buildMonitorHealth, collectionHealthAlerts } from '../scripts/lib/monitor-health.mjs';
 import { LEGACY_OLX_HEALTH_ERROR, reconcileRecordedHealthErrors } from '../scripts/lib/collection-summary.mjs';
 import { writeJsonAtomic } from '../scripts/lib/monitor-runtime.mjs';
-import { planNotebookFamilies, OLX_NOTEBOOK_FAMILIES, recordFamilyExperiment, notebookPriceLabels } from '../scripts/lib/notebook-search-plan.mjs';
+import { planNotebookFamilies, OLX_NOTEBOOK_FAMILIES, recordFamilyExperiment, notebookPriceLabels, notebookAvailability } from '../scripts/lib/notebook-search-plan.mjs';
+import { oledOlxAwaitsManualCheck } from '../scripts/lib/oled-monitor-scope.mjs';
 
 test('410 retires the matching ad across resumes and permits a later listing observation', async t => {
   const {file} = await fixture(t);
@@ -28,7 +29,7 @@ test('410 retires the matching ad across resumes and permits a later listing obs
   assert.equal(resumedNext.pending().length, 1);
 });
 
-test('one family slot alternates between broad and specific search with a shared cadence', () => {
+test('weekly family slot schedules only broad searches and honors the latest legacy attempt', () => {
   const now = Date.parse('2026-11-10T19:00:00Z');
   const family = 'family:helios-neo-16';
   const specific = `${family}:14700hx`;
@@ -36,11 +37,25 @@ test('one family slot alternates between broad and specific search with a shared
     [`notebooks:${id}`, {last_attempt_at: new Date(now - 60_000).toISOString()}]));
   queries[`notebooks:${family}`].last_attempt_at = new Date(now - 25 * 3600_000).toISOString();
   const plan = () => planNotebookFamilies(null, {now, traffic:{queries}});
-  assert.deepEqual(plan(), [specific]);
+  assert.deepEqual(plan(), []);
   queries[`notebooks:${specific}`] = {last_attempt_at:new Date(now - 120_000).toISOString()};
   assert.deepEqual(plan(), []);
-  queries[`notebooks:${specific}`].last_attempt_at = new Date(now - 24 * 3600_000).toISOString();
+  queries[`notebooks:${family}`].last_attempt_at = new Date(now - 8 * 86400_000).toISOString();
+  queries[`notebooks:${specific}`].last_attempt_at = new Date(now - 7 * 86400_000).toISOString();
   assert.deepEqual(plan(), [family]);
+});
+
+test('availability uses actual observation time and handles old snapshots', () => {
+  const item = {status:'active', listing_observed_at:'2026-11-12T10:15:00Z', last_seen:'2026-11-16'};
+  assert.equal(notebookAvailability(item, Date.parse('2026-11-15T10:14:59Z')).needsConfirmation, false);
+  assert.equal(notebookAvailability(item, Date.parse('2026-11-15T10:15:00Z')).needsConfirmation, true);
+  assert.match(notebookAvailability({status:'active',last_seen:'2026-11-12'}, Date.parse('2026-11-16T10:00:00Z')).label, /12\/11\/2026.*Disponibilidade a confirmar/);
+});
+
+test('expired OLED cooldown still requires manual verification after repeated hard denials', () => {
+  assert.equal(oledOlxAwaitsManualCheck({recovery_kind:'hard_denial',consecutive_blocks:3,blocked_until:'2026-11-01'}), true);
+  assert.equal(oledOlxAwaitsManualCheck({recovery_kind:'hard_denial',consecutive_blocks:2}), false);
+  assert.equal(oledOlxAwaitsManualCheck({recovery_kind:'verification',awaiting_manual_check:true}), true);
 });
 
 const card=(id,title,price=6500,text='')=>({url:`https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-${id}`,title,price_brl:price,text,description_discovery:true});
@@ -55,7 +70,7 @@ test('recent OLX collection keeps stale family visible without becoming a techni
   const {root}=await fixture(t), now=new Date('2026-10-30T19:05:00Z');
   const snapshot={schema_version:2,items:[],run:{started_at:'2026-10-30T19:00:00Z',completed_at:'2026-10-30T19:04:00Z',partial:false,
     configured_coverage:['13980hx','family:rog-strix-g16'],scheduled_coverage:['13980hx'],successful_coverage:['13980hx'],failed_terms:[]},
-    coverage_status:{'family:rog-strix-g16':{checked_at:'2026-10-25T19:00:00Z',state:'success'}}};
+    coverage_status:{'family:rog-strix-g16':{checked_at:'2026-10-22T19:00:00Z',state:'success'}}};
   const dir=path.join(root,'data','olx');
   await fs.mkdir(dir,{recursive:true});
   await writeJsonAtomic(path.join(dir,'snapshot-2026-10-30T19-04-00-000Z.json'),snapshot);

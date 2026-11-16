@@ -7,13 +7,13 @@ import {createDescriptionQueue} from '../scripts/lib/olx-description-queue.mjs';
 import {buildOlxPriceCoverage,olxPriceCoverageLines} from '../scripts/lib/olx-price-coverage.mjs';
 import {buildCollectionSummary,collectionSummaryLine,roundSummaryLine} from '../scripts/lib/collection-summary.mjs';
 
-const card=(id,term='family:helios-neo-16',price=7000)=>({url:`https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-${id}`,title:'Notebook 13980hx 32GB RAM RTX 4060',price_brl:price,cpu_term:term,description_discovery:true});
+const card=(id,term='family:avell-a65',price=7000)=>({url:`https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/notebook-${id}`,title:'Notebook 13980hx 32GB RAM RTX 4060',price_brl:price,cpu_term:term,description_discovery:true});
 async function queueFixture(t,{cards=[card('155000001'),card('155000002')],metrics={},perRound=8,reserveAccess=async()=>{}}={}){
   const dir=await fs.mkdtemp(path.join(os.tmpdir(),'spare-description-'));
   t.after(()=>fs.rm(dir,{recursive:true,force:true}));
   const file=path.join(dir,'queue.json'),now=new Date().toISOString();
   await fs.writeFile(file,JSON.stringify({round:'replay',cache:[],queue:cards.map(c=>({key:c.url.match(/\d+$/)[0],card:c,terms:[c.cpu_term],first_observed_at:now,last_observed_at:now})),
-    metrics:{extra_details:7,total_details:9,by_term:{'family:helios-neo-16':4,'family:avell-storm':2,'family:rog-strix-g16':1},...metrics}}));
+    metrics:{extra_details:7,total_details:9,by_term:{'family:avell-a65':4,'family:avell-storm':2,'family:rog-strix-g16':1},...metrics}}));
   return createDescriptionQueue(file,'replay',{perRound,reserveAccess});
 }
 
@@ -38,8 +38,8 @@ test('ready alternative family is served before lending a slot',async t=>{
 });
 
 test('reallocation remains one per round and cannot bypass price or global access limits',async t=>{
-  const a=card('155000005'),b=card('155000006','family:avell-storm'),expensive=card('155000007','family:helios-neo-16',9000);
-  const q=await queueFixture(t,{cards:[a,b,expensive],perRound:10,metrics:{by_term:{'family:helios-neo-16':4,'family:avell-storm':4}}});
+  const a=card('155000005'),b=card('155000006','family:avell-storm'),expensive=card('155000007','family:avell-a65',9000);
+  const q=await queueFixture(t,{cards:[a,b,expensive],perRound:10,metrics:{by_term:{'family:avell-a65':4,'family:avell-storm':4}}});
   assert.equal(await q.reserveDetail(expensive.cpu_term,true,expensive,{finishRound:true}),false);
   assert.equal(await q.reserveDetail(a.cpu_term,true,a,{finishRound:true}),true);
   assert.equal(await q.reserveDetail(b.cpu_term,true,b,{finishRound:true}),false);
@@ -48,6 +48,16 @@ test('reallocation remains one per round and cannot bypass price or global acces
   const deferred=await queueFixture(t,{reserveAccess:async()=>{const e=Error('Daily budget reached');e.kind='deferred';throw e;}});
   assert.equal(await deferred.reserveDetail(a.cpu_term,true,a,{finishRound:true}),false);
   assert.equal(deferred.summary().extra_details,7);assert.equal(deferred.summary().reallocated_details,undefined);
+});
+
+test('weekly family cap includes the final queue pass and legacy aliases', async t => {
+  const term = 'family:helios-neo-16';
+  const cards = [card('155000008', term+':14700hx'),card('155000009', term),card('155000010', term)];
+  const q = await queueFixture(t,{cards,metrics:{extra_details:0,total_details:0,by_term:{}}});
+  assert.equal(q.pending(term).length,3);
+  assert.equal(await q.reserveDetail(cards[0].cpu_term,true,cards[0]),true);
+  assert.equal(await q.reserveDetail(term,true,cards[1]),true);
+  assert.equal(await q.reserveDetail(term,true,cards[2],{finishRound:true}),false);
 });
 
 function snapshotFixture(){

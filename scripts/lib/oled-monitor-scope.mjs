@@ -136,3 +136,7 @@ export function filterOledReport(report, details = new Map()) {
   return lines.map(line => /^(?:- )?Novos produtos:/.test(line) ? line.replace(/\*\*\d+\*\*/,`**${count(/^## Novos produtos/)}**`)
     : /^(?:- )?Altera[cç][oõ]es de pre[cç]o:/.test(line) ? line.replace(/\*\*\d+\*\*/,`**${count(/^## Mudan[cç]as de pre[cç]o/)}**`) : line).join('\n');
 }
+export function oledOlxAwaitsManualCheck(block) {
+  return block?.awaiting_manual_check === true
+    || (block?.recovery_kind === 'hard_denial' && block.consecutive_blocks >= 3);
+}

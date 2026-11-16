@@ -17,6 +17,9 @@ export const OLX_FAMILY_EXPERIMENT = [
 
 export const OLX_FAMILY_SEARCHES = [...OLX_NOTEBOOK_FAMILIES, ...OLX_FAMILY_EXPERIMENT];
 
+export const isLowYieldNotebookFamily = term => OLX_FAMILY_EXPERIMENT.some(spec =>
+  spec.family === term || spec.id === term);
+
 export function recordFamilyExperiment(history = {}, rows, round, validatedIds, detailYield = {}) {
   const next = { ...history };
   const cpuRows = Object.entries(rows).filter(([term, row]) =>
@@ -56,6 +59,7 @@ export function notebookPriceLabels(opportunity, price = 8000) {
 }
 
 export function notebookQueryMaxAgeHours(key, source) {
+  if (isLowYieldNotebookFamily(key)) return 168;
   if (key.startsWith('family:')) return 72;
   return NOTEBOOK_PRIORITY_CPUS.includes(key) ? 24 : source === 'mercadolivre-notebooks' ? 168 : 48;
 }
@@ -74,6 +78,7 @@ export function planNotebookFamilies(previous, { now = Date.now(), budget = 1, f
   const due = OLX_NOTEBOOK_FAMILIES.filter(({ id }) => {
     if (fullSweep) return true;
     const {record, at} = lastFamilyAttempt(id);
+    if (isLowYieldNotebookFamily(id)) return now - at >= 168 * 3600_000;
     if (record?.last_attempt_at) return now - at >= olxIntervalHours('notebooks', id, record) * 3600_000;
     return !previous?.coverage_status?.[id]?.last_success_at
       || now - Date.parse(previous.coverage_status[id].last_success_at) >= 24 * 3600_000;
@@ -81,12 +86,23 @@ export function planNotebookFamilies(previous, { now = Date.now(), budget = 1, f
   // A partial query still consumed its slot. Rotate by attempt time so an
   // incomplete family cannot starve families that have never been queried.
   return due.sort((a,b) => lastFamilyAttempt(a.id).at - lastFamilyAttempt(b.id).at)
-    .slice(0, fullSweep ? Infinity : budget).map(({id}) => {
-      const variant = OLX_FAMILY_EXPERIMENT.find(spec => spec.family === id);
-      if (fullSweep || !variant) return id;
-      const broad = attempts(id).at;
-      return broad > attempts(variant.id).at ? variant.id : id;
-    });
+    .slice(0, fullSweep ? Infinity : budget).map(({id}) => id);
+}
+
+export function notebookAvailability(item, now = Date.now()) {
+  const precise = Date.parse(item.listing_observed_at ?? '');
+  const legacy = item.listing_observed_on === undefined ? item.last_seen : item.listing_observed_on;
+  const day = /^\d{4}-\d{2}-\d{2}$/.test(legacy ?? '') ? legacy : null;
+  const lastSeen = Number.isFinite(precise) ? precise : day ? Date.parse(day + 'T23:59:59.999-03:00') : null;
+  const date = Number.isFinite(precise)
+    ? new Intl.DateTimeFormat('pt-BR', {timeZone:'America/Sao_Paulo',dateStyle:'short'}).format(precise)
+    : day?.split('-').reverse().join('/');
+  const needsConfirmation = item.status !== 'active' || !Number.isFinite(lastSeen) || now - lastSeen >= 72 * 3600_000;
+  return {
+    needsConfirmation,
+    label: [date ? `Visto pela última vez em ${date}` : 'Última observação sem data',
+      needsConfirmation ? 'Disponibilidade a confirmar' : null].filter(Boolean).join(' · '),
+  };
 }
 
 export function notebookOpportunity(item, pool = []) {
