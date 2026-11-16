@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-15T19:00:12.003Z",
+  "generated_at": "2026-11-16T10:00:10.730Z",
   "source": "local",
   "delivery": {
     "email": "skipped",
@@ -44,7 +44,7 @@
       {
         "source": "olx",
         "status": "partial",
-        "completed_terms": 4,
+        "completed_terms": 8,
         "incomplete_terms": 1,
         "deferred_terms": 0,
         "pending_candidates": 10,
@@ -54,25 +54,21 @@
       },
       {
         "source": "lifefactory",
-        "status": "deferred",
-        "completed_terms": 1,
+        "status": "success",
+        "completed_terms": 2,
         "incomplete_terms": 0,
-        "deferred_terms": 1,
+        "deferred_terms": 0,
         "pending_candidates": 0,
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ]
+        "reasons": []
       },
       {
         "source": "tela-galaxybook3",
-        "status": "deferred",
-        "completed_terms": 1,
+        "status": "success",
+        "completed_terms": 2,
         "incomplete_terms": 0,
-        "deferred_terms": 1,
+        "deferred_terms": 0,
         "pending_candidates": 0,
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ]
+        "reasons": []
       },
       {
         "source": "melanger",
@@ -110,9 +106,9 @@
       {
         "source": "oled-monitores",
         "status": "deferred",
-        "completed_terms": 1,
+        "completed_terms": 4,
         "incomplete_terms": 0,
-        "deferred_terms": 9,
+        "deferred_terms": 10,
         "pending_candidates": 1,
         "reasons": [
           "OLX: consultas adiadas após bloqueio; retomada prevista em 17/11/2026, 16:05:03 BRT."
@@ -125,20 +121,6 @@
         "status": "partial",
         "reasons": [
           "1 ficha(s) aguardando leitura dentro dos limites da rodada"
-        ]
-      },
-      {
-        "source": "lifefactory",
-        "status": "deferred",
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-        ]
-      },
-      {
-        "source": "tela-galaxybook3",
-        "status": "deferred",
-        "reasons": [
-          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
         ]
       },
       {
@@ -300,13 +282,16 @@
     "4b896c97-fbb8-47b7-865c-9c050f8ad163",
     "0daa17b9-97be-4832-9318-c363e114326e",
     "62ecd15f-764f-447e-8664-0369e873b7ff",
-    "7889000f-9760-4630-aec8-9171c0876ec6"
+    "7889000f-9760-4630-aec8-9171c0876ec6",
+    "15abc8ae-d6bb-4ea3-957c-e62a84718316",
+    "a604eac3-2b33-4654-9635-4d69b69b000e",
+    "b6415354-b1ee-4805-a676-c3f24a5341b6"
   ],
   "round_summary": {
     "schema_version": 1,
-    "run_id": "1d26d3ff-54dd-4e86-a244-242beb515d51",
-    "started_at": "2026-11-15T19:00:12.003Z",
-    "completed_at": "2026-11-15T19:02:26.299Z",
+    "run_id": "950a2d7d-11ca-4cd4-ad3d-520819a46dd1",
+    "started_at": "2026-11-16T10:00:10.730Z",
+    "completed_at": "2026-11-16T10:03:20.345Z",
     "execution": "success",
     "delivery": {
       "email": "skipped",
@@ -318,15 +303,15 @@
         "label": "OLX Notebooks",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-15T19:01:37.265Z",
+          "collected_at": "2026-11-16T10:02:24.886Z",
           "execution": "success",
           "issues": [
             "1 ficha(s) aguardando leitura dentro dos limites da rodada"
           ],
           "coverage": {
             "status": "partial",
-            "scheduled": 5,
-            "completed": 4,
+            "scheduled": 9,
+            "completed": 8,
             "incomplete": 1,
             "deferred": 0,
             "pending_descriptions": 22,
@@ -344,21 +329,29 @@
                   "13980hx",
                   "14900hx",
                   "13900hx",
-                  "family:avell-storm"
+                  "285hx",
+                  "275hx",
+                  "7945hx",
+                  "7945hx3d",
+                  "family:helios-neo-16:14700hx"
                 ],
                 "completed_terms": [
                   "14700hx",
                   "13980hx",
                   "14900hx",
                   "13900hx",
-                  "family:avell-storm"
+                  "285hx",
+                  "275hx",
+                  "7945hx",
+                  "7945hx3d",
+                  "family:helios-neo-16:14700hx"
                 ],
                 "incomplete_terms": [],
                 "pending_details": 0,
                 "queued_candidates": 15,
                 "pending_candidates": 10,
-                "scheduled": 5,
-                "completed": 5,
+                "scheduled": 9,
+                "completed": 9,
                 "incomplete": 0,
                 "status": "partial"
               },
@@ -380,7 +373,7 @@
                 "pending_details": 1,
                 "min_price_exclusive": true,
                 "queued_candidates": 7,
-                "pending_candidates": 8,
+                "pending_candidates": 9,
                 "scheduled": 3,
                 "completed": 2,
                 "incomplete": 1,
@@ -403,17 +396,15 @@
         "label": "Lifefactory",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-15T19:01:41.918Z",
+          "collected_at": "2026-11-16T10:02:38.072Z",
           "execution": "success",
-          "issues": [
-            "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-          ],
+          "issues": [],
           "coverage": {
-            "status": "deferred",
-            "scheduled": 1,
-            "completed": 1,
+            "status": "complete",
+            "scheduled": 2,
+            "completed": 2,
             "incomplete": 0,
-            "deferred": 1,
+            "deferred": 0,
             "pending_descriptions": 0,
             "pending_candidates": 0,
             "pending_details": 0,
@@ -435,17 +426,15 @@
         "label": "Tela Book3",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-15T19:01:44.381Z",
+          "collected_at": "2026-11-16T10:02:50.482Z",
           "execution": "success",
-          "issues": [
-            "Consultas adiadas pela programação; as consultas executadas foram concluídas."
-          ],
+          "issues": [],
           "coverage": {
-            "status": "deferred",
-            "scheduled": 1,
-            "completed": 1,
+            "status": "complete",
+            "scheduled": 2,
+            "completed": 2,
             "incomplete": 0,
-            "deferred": 1,
+            "deferred": 0,
             "pending_descriptions": 0,
             "pending_candidates": 0,
             "pending_details": 0,
@@ -467,7 +456,7 @@
         "label": "Melanger",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-15T19:01:47.096Z",
+          "collected_at": "2026-11-16T10:02:52.565Z",
           "execution": "success",
           "issues": [
             "Consultas adiadas pela programação; as consultas executadas foram concluídas."
@@ -499,7 +488,7 @@
         "label": "OnePlus Buds Pro 3",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-15T19:01:53.899Z",
+          "collected_at": "2026-11-16T10:03:04.679Z",
           "execution": "success",
           "issues": [
             "Consultas adiadas pela programação; as consultas executadas foram concluídas."
@@ -531,7 +520,7 @@
         "label": "Google Pixel Watch 5",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-15T19:01:57.606Z",
+          "collected_at": "2026-11-16T10:03:07.062Z",
           "execution": "success",
           "issues": [
             "Consultas adiadas pela programação; as consultas executadas foram concluídas."
@@ -563,17 +552,17 @@
         "label": "Monitores OLED",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-15T19:02:01.412Z",
+          "collected_at": "2026-11-16T10:03:10.395Z",
           "execution": "success",
           "issues": [
             "OLX: consultas adiadas após bloqueio; retomada prevista em 17/11/2026, 16:05:03 BRT."
           ],
           "coverage": {
             "status": "deferred",
-            "scheduled": 1,
-            "completed": 1,
+            "scheduled": 4,
+            "completed": 4,
             "incomplete": 0,
-            "deferred": 9,
+            "deferred": 10,
             "pending_descriptions": 0,
             "pending_candidates": 1,
             "pending_details": 0,
