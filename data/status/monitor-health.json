@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-11-17T19:02:05.140Z",
+  "generated_at": "2026-11-17T19:11:14.382Z",
   "sources": [
     {
       "id": "enjoei-momotaro",
@@ -10,7 +10,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-11-17T19:01:57.013Z",
-      "age_ms": 8127,
+      "age_ms": 557369,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -43,7 +43,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-11-17T19:01:58.182Z",
-      "age_ms": 6958,
+      "age_ms": 556200,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -76,7 +76,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-11-17T19:01:58.795Z",
-      "age_ms": 6345,
+      "age_ms": 555587,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -109,7 +109,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-11-17T19:01:59.337Z",
-      "age_ms": 5803,
+      "age_ms": 555045,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -142,7 +142,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-11-17T19:01:59.889Z",
-      "age_ms": 5251,
+      "age_ms": 554493,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -175,7 +175,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-11-17T19:02:01.010Z",
-      "age_ms": 4130,
+      "age_ms": 553372,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -208,7 +208,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-11-17T19:01:56.984Z",
-      "age_ms": 8156,
+      "age_ms": 557398,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -241,7 +241,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-11-17T19:01:57.017Z",
-      "age_ms": 8123,
+      "age_ms": 557365,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -274,7 +274,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-11-17T19:01:57.063Z",
-      "age_ms": 8077,
+      "age_ms": 557319,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -307,7 +307,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-11-17T19:01:56.447Z",
-      "age_ms": 8693,
+      "age_ms": 557935,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -339,8 +339,8 @@
       "collection_state": "partial",
       "coverage_state": "partial",
       "operational_status": "partial",
-      "updated_at": "2026-11-17T10:02:29.426Z",
-      "age_ms": 32375714,
+      "updated_at": "2026-11-17T19:10:12.580Z",
+      "age_ms": 61802,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -350,17 +350,17 @@
         "deferred": 0,
         "complete": 0,
         "success_rate": 0,
-        "median_duration_ms": 129785
+        "median_duration_ms": 125054
       },
       "marketplaces": [
         {
           "label": "OLX",
-          "state": "partial",
+          "state": "healthy",
           "total_terms": 20,
-          "fresh_terms": 19,
+          "fresh_terms": 20,
           "checked_terms": 20,
           "warming_terms": 0,
-          "updated_at": "2026-11-17T10:02:29.426Z"
+          "updated_at": "2026-11-17T19:10:12.580Z"
         },
         {
           "label": "OLX modelos",
@@ -369,10 +369,10 @@
           "fresh_terms": 5,
           "checked_terms": 6,
           "warming_terms": 0,
-          "updated_at": "2026-11-17T10:02:29.426Z"
+          "updated_at": "2026-11-17T19:10:12.580Z"
         }
       ],
-      "message": "OLX: Cobertura parcial (20/20 consultas recentes; 19/20 concluídas) · OLX modelos: Cobertura parcial (6/6 consultas recentes; 5/6 concluídas)"
+      "message": "OLX: Saudável (20/20 consultas recentes; 20/20 concluídas) · OLX modelos: Cobertura parcial (6/6 consultas recentes; 5/6 concluídas)"
     },
     {
       "id": "enjoei-notebooks",
@@ -382,7 +382,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-11-17T19:02:03.361Z",
-      "age_ms": 1779,
+      "age_ms": 551021,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -415,7 +415,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-11-17T19:01:59.418Z",
-      "age_ms": 5722,
+      "age_ms": 554964,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -473,19 +473,19 @@
       "state": "healthy",
       "collection_state": "healthy",
       "coverage_state": "healthy",
-      "operational_status": "success",
-      "updated_at": "2026-11-17T19:01:56.602Z",
-      "age_ms": 8538,
-      "invalid_snapshots": 0,
+      "operational_status": "deferred",
+      "updated_at": "2026-11-17T19:10:16.509Z",
+      "age_ms": 57873,
+      "invalid_snapshots": 1,
       "history": {
         "sample": 10,
         "partial": 0,
         "failed": 0,
         "blocked": 0,
-        "deferred": 3,
-        "complete": 7,
-        "success_rate": 0.7,
-        "median_duration_ms": 415
+        "deferred": 4,
+        "complete": 6,
+        "success_rate": 0.6,
+        "median_duration_ms": 922
       },
       "marketplaces": [
         {
@@ -495,7 +495,7 @@
           "fresh_terms": 1,
           "checked_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-11-17T19:01:56.602Z"
+          "updated_at": "2026-11-17T19:10:16.509Z"
         },
         {
           "label": "OLX",
@@ -515,19 +515,19 @@
       "state": "healthy",
       "collection_state": "healthy",
       "coverage_state": "healthy",
-      "operational_status": "success",
-      "updated_at": "2026-11-17T19:01:57.449Z",
-      "age_ms": 7691,
-      "invalid_snapshots": 0,
+      "operational_status": "deferred",
+      "updated_at": "2026-11-17T19:10:19.046Z",
+      "age_ms": 55336,
+      "invalid_snapshots": 1,
       "history": {
         "sample": 10,
         "partial": 0,
         "failed": 0,
         "blocked": 0,
-        "deferred": 3,
-        "complete": 7,
-        "success_rate": 0.7,
-        "median_duration_ms": 228
+        "deferred": 4,
+        "complete": 6,
+        "success_rate": 0.6,
+        "median_duration_ms": 859
       },
       "marketplaces": [
         {
@@ -537,7 +537,7 @@
           "fresh_terms": 1,
           "checked_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-11-17T19:01:57.449Z"
+          "updated_at": "2026-11-17T19:10:19.046Z"
         },
         {
           "label": "OLX",
@@ -558,9 +558,9 @@
       "collection_state": "healthy",
       "coverage_state": "healthy",
       "operational_status": "success",
-      "updated_at": "2026-11-17T19:01:58.010Z",
-      "age_ms": 7130,
-      "invalid_snapshots": 0,
+      "updated_at": "2026-11-17T19:10:36.957Z",
+      "age_ms": 37425,
+      "invalid_snapshots": 1,
       "history": {
         "sample": 10,
         "partial": 0,
@@ -569,7 +569,7 @@
         "deferred": 2,
         "complete": 8,
         "success_rate": 0.8,
-        "median_duration_ms": 305
+        "median_duration_ms": 927
       },
       "marketplaces": [
         {
@@ -579,7 +579,7 @@
           "fresh_terms": 1,
           "checked_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-11-17T19:01:58.010Z"
+          "updated_at": "2026-11-17T19:10:36.957Z"
         },
         {
           "label": "OLX",
@@ -588,7 +588,7 @@
           "fresh_terms": 1,
           "checked_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-11-17T10:02:54.699Z"
+          "updated_at": "2026-11-17T19:10:36.957Z"
         }
       ],
       "message": "Enjoei: Saudável (1/1 consultas recentes; 1/1 concluídas) · OLX: Saudável (1/1 consultas recentes; 1/1 concluídas)"
@@ -599,19 +599,19 @@
       "state": "healthy",
       "collection_state": "healthy",
       "coverage_state": "healthy",
-      "operational_status": "success",
-      "updated_at": "2026-11-17T19:01:59.624Z",
-      "age_ms": 5516,
-      "invalid_snapshots": 0,
+      "operational_status": "deferred",
+      "updated_at": "2026-11-17T19:10:40.779Z",
+      "age_ms": 33603,
+      "invalid_snapshots": 1,
       "history": {
         "sample": 10,
         "partial": 0,
         "failed": 0,
         "blocked": 0,
-        "deferred": 4,
-        "complete": 6,
-        "success_rate": 0.6,
-        "median_duration_ms": 1686
+        "deferred": 5,
+        "complete": 5,
+        "success_rate": 0.5,
+        "median_duration_ms": 2334
       },
       "marketplaces": [
         {
@@ -621,7 +621,7 @@
           "fresh_terms": 3,
           "checked_terms": 3,
           "warming_terms": 0,
-          "updated_at": "2026-11-17T19:01:59.624Z"
+          "updated_at": "2026-11-17T19:10:40.779Z"
         },
         {
           "label": "OLX",
@@ -641,19 +641,19 @@
       "state": "healthy",
       "collection_state": "healthy",
       "coverage_state": "healthy",
-      "operational_status": "success",
-      "updated_at": "2026-11-17T19:02:00.091Z",
-      "age_ms": 5049,
+      "operational_status": "deferred",
+      "updated_at": "2026-11-17T19:10:43.394Z",
+      "age_ms": 30988,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
         "partial": 0,
         "failed": 0,
         "blocked": 0,
-        "deferred": 3,
-        "complete": 7,
-        "success_rate": 0.7,
-        "median_duration_ms": 211
+        "deferred": 4,
+        "complete": 6,
+        "success_rate": 0.6,
+        "median_duration_ms": 866
       },
       "marketplaces": [
         {
@@ -663,7 +663,7 @@
           "fresh_terms": 1,
           "checked_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-11-17T19:02:00.091Z"
+          "updated_at": "2026-11-17T19:10:43.394Z"
         },
         {
           "label": "OLX",
@@ -684,18 +684,18 @@
       "collection_state": "blocked",
       "coverage_state": "blocked",
       "operational_status": "deferred",
-      "updated_at": "2026-11-17T19:02:00.356Z",
-      "age_ms": 4784,
-      "invalid_snapshots": 0,
+      "updated_at": "2026-11-17T19:10:46.959Z",
+      "age_ms": 27423,
+      "invalid_snapshots": 1,
       "history": {
         "sample": 10,
         "partial": 0,
         "failed": 0,
         "blocked": 0,
-        "deferred": 6,
-        "complete": 4,
-        "success_rate": 0.4,
-        "median_duration_ms": 1567
+        "deferred": 7,
+        "complete": 3,
+        "success_rate": 0.3,
+        "median_duration_ms": 1578
       },
       "marketplaces": [
         {
@@ -714,7 +714,7 @@
           "fresh_terms": 21,
           "checked_terms": 21,
           "warming_terms": 0,
-          "updated_at": "2026-11-17T11:01:51.366Z"
+          "updated_at": "2026-11-17T19:10:46.959Z"
         }
       ],
       "message": "OLX aguarda verificação manual após bloqueios repetidos. OLX recusou o acesso; sem CAPTCHA disponível. Cloudflare recusou o acesso à OLX; não há verificação interativa (Ray ID: a5a84912abcd566f)."
@@ -727,7 +727,7 @@
       "coverage_state": "stale",
       "operational_status": "partial",
       "updated_at": "2026-10-28T12:25:51.267Z",
-      "age_ms": 1751773873,
+      "age_ms": 1752323115,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -760,7 +760,7 @@
       "coverage_state": "stale",
       "operational_status": "success",
       "updated_at": "2026-10-28T12:26:37.415Z",
-      "age_ms": 1751727725,
+      "age_ms": 1752276967,
       "invalid_snapshots": 0,
       "history": {
         "sample": 6,
@@ -793,7 +793,7 @@
       "coverage_state": "stale",
       "operational_status": "success",
       "updated_at": "2026-10-28T12:26:16.758Z",
-      "age_ms": 1751748382,
+      "age_ms": 1752297624,
       "invalid_snapshots": 0,
       "history": {
         "sample": 5,
@@ -826,7 +826,7 @@
       "coverage_state": "stale",
       "operational_status": "success",
       "updated_at": "2026-10-28T12:26:58.029Z",
-      "age_ms": 1751707111,
+      "age_ms": 1752256353,
       "invalid_snapshots": 0,
       "history": {
         "sample": 7,
@@ -859,7 +859,7 @@
       "coverage_state": "stale",
       "operational_status": "success",
       "updated_at": "2026-10-28T12:27:20.526Z",
-      "age_ms": 1751684614,
+      "age_ms": 1752233856,
       "invalid_snapshots": 0,
       "history": {
         "sample": 8,
@@ -892,7 +892,7 @@
       "coverage_state": "stale",
       "operational_status": "success",
       "updated_at": "2026-10-28T12:27:44.366Z",
-      "age_ms": 1751660774,
+      "age_ms": 1752210016,
       "invalid_snapshots": 0,
       "history": {
         "sample": 7,
@@ -925,7 +925,7 @@
       "coverage_state": "stale",
       "operational_status": "success",
       "updated_at": "2026-10-28T12:43:01.109Z",
-      "age_ms": 1750744031,
+      "age_ms": 1751293273,
       "invalid_snapshots": 0,
       "history": {
         "sample": 7,
@@ -958,7 +958,7 @@
       "coverage_state": "healthy",
       "operational_status": "partial",
       "updated_at": "2026-11-16T17:32:12.836Z",
-      "age_ms": 91792304,
+      "age_ms": 92341546,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -1411,15 +1411,15 @@
         }
       },
       "2026-11-17": {
-        "search": 12,
-        "detail": 1,
+        "search": 22,
+        "detail": 3,
         "watchlists": {
           "notebooks": {
-            "search": 9,
-            "detail": 1
+            "search": 17,
+            "detail": 3
           },
           "melanger": {
-            "search": 2,
+            "search": 4,
             "detail": 0
           },
           "google-pixel-watch-5": {
@@ -1431,17 +1431,21 @@
           "442db3cb-5432-4818-adaf-e3c045a0acc6": {
             "search": 12,
             "detail": 1
+          },
+          "fd137333-37c9-49d1-bb68-583132f43fdb": {
+            "search": 10,
+            "detail": 2
           }
         }
       }
     },
     "queries": {
       "notebooks:14900hx": {
-        "last_attempt_at": "2026-11-17T10:00:51.585Z",
+        "last_attempt_at": "2026-11-17T19:08:47.018Z",
         "approved": 0,
         "interval_hours": 8,
-        "last_success_at": "2026-10-29T13:00:16.107Z",
-        "empty_runs": 14,
+        "last_success_at": "2026-11-17T19:09:00.329Z",
+        "empty_runs": 15,
         "prices": {},
         "listing_limit": 60,
         "listing_incomplete": false,
@@ -1476,20 +1480,20 @@
         "interval_hours": 72
       },
       "notebooks:14700hx": {
-        "last_attempt_at": "2026-11-17T10:00:19.794Z",
+        "last_attempt_at": "2026-11-17T19:08:22.641Z",
         "approved": 0,
-        "last_success_at": "2026-11-17T10:00:21.171Z",
-        "empty_runs": 38,
+        "last_success_at": "2026-11-17T19:08:23.260Z",
+        "empty_runs": 39,
         "prices": {},
         "interval_hours": 8,
         "listing_limit": 36,
         "listing_incomplete": false
       },
       "notebooks:13980hx": {
-        "last_attempt_at": "2026-11-17T10:00:39.442Z",
+        "last_attempt_at": "2026-11-17T19:08:26.047Z",
         "approved": 0,
-        "last_success_at": "2026-11-17T10:00:39.894Z",
-        "empty_runs": 21,
+        "last_success_at": "2026-11-17T19:08:35.239Z",
+        "empty_runs": 22,
         "prices": {},
         "interval_hours": 8,
         "listing_limit": 12,
@@ -1497,10 +1501,10 @@
         "last_change_at": "2026-10-29T12:59:35.694Z"
       },
       "notebooks:13900hx": {
-        "last_attempt_at": "2026-11-17T10:01:06.719Z",
+        "last_attempt_at": "2026-11-17T19:09:11.168Z",
         "approved": 0,
-        "last_success_at": "2026-11-17T10:01:07.180Z",
-        "empty_runs": 50,
+        "last_success_at": "2026-11-17T19:09:11.746Z",
+        "empty_runs": 51,
         "prices": {},
         "interval_hours": 8,
         "last_change_at": "2026-10-19T10:01:18.348Z",
@@ -1563,9 +1567,9 @@
         "interval_hours": 72
       },
       "melanger:melanger@/eletro/eletroportateis-para-cozinha-e-limpeza": {
-        "last_attempt_at": "2026-11-17T10:02:37.343Z",
+        "last_attempt_at": "2026-11-17T19:10:21.377Z",
         "approved": 2,
-        "last_success_at": "2026-11-17T10:02:41.425Z",
+        "last_success_at": "2026-11-17T19:10:24.528Z",
         "empty_runs": 0,
         "prices": {
           "1552601836": 3000,
@@ -1575,9 +1579,9 @@
         "last_change_at": "2026-11-16T19:02:03.683Z"
       },
       "melanger:melanger@/comercio-e-escritorio/gastronomia": {
-        "last_attempt_at": "2026-11-17T10:02:41.431Z",
+        "last_attempt_at": "2026-11-17T19:10:24.533Z",
         "approved": 2,
-        "last_success_at": "2026-11-17T10:02:54.312Z",
+        "last_success_at": "2026-11-17T19:10:36.524Z",
         "empty_runs": 0,
         "prices": {
           "1552601836": 3000,
@@ -1720,20 +1724,20 @@
         "last_attempt_at": "2026-10-24T19:04:21.798Z"
       },
       "notebooks:290hx": {
-        "last_attempt_at": "2026-11-14T10:01:21.710Z",
+        "last_attempt_at": "2026-11-17T19:09:19.091Z",
         "approved": 0,
-        "last_success_at": "2026-11-14T10:01:22.216Z",
-        "empty_runs": 10,
+        "last_success_at": "2026-11-17T19:09:23.847Z",
+        "empty_runs": 11,
         "prices": {},
         "interval_hours": 72,
         "listing_limit": 12,
         "listing_incomplete": false
       },
       "notebooks:9955hx": {
-        "last_attempt_at": "2026-11-14T10:01:36.941Z",
+        "last_attempt_at": "2026-11-17T19:09:27.819Z",
         "approved": 0,
-        "last_success_at": "2026-11-14T10:01:37.352Z",
-        "empty_runs": 10,
+        "last_success_at": "2026-11-17T19:09:35.554Z",
+        "empty_runs": 11,
         "prices": {},
         "interval_hours": 72,
         "listing_limit": 12,
@@ -1750,20 +1754,20 @@
         "listing_incomplete": false
       },
       "notebooks:aimax395": {
-        "last_attempt_at": "2026-11-14T10:01:49.477Z",
+        "last_attempt_at": "2026-11-17T19:09:42.316Z",
         "approved": 0,
-        "last_success_at": "2026-11-14T10:01:49.972Z",
-        "empty_runs": 10,
+        "last_success_at": "2026-11-17T19:09:47.749Z",
+        "empty_runs": 11,
         "prices": {},
         "interval_hours": 72,
         "listing_limit": 12,
         "listing_incomplete": false
       },
       "notebooks:family:dell-g16": {
-        "last_attempt_at": "2026-11-14T19:01:03.936Z",
+        "last_attempt_at": "2026-11-17T19:09:57.403Z",
         "approved": 0,
-        "last_success_at": "2026-11-14T19:01:25.514Z",
-        "empty_runs": 9,
+        "last_success_at": "2026-11-17T19:10:12.571Z",
+        "empty_runs": 10,
         "prices": {},
         "interval_hours": 72,
         "listing_limit": 60,
@@ -1817,7 +1821,7 @@
         "last_attempt_at": "2026-11-11T19:05:01.822Z"
       }
     },
-    "updated_at": "2026-11-17T10:03:06.053Z",
+    "updated_at": "2026-11-17T19:10:43.182Z",
     "limits": {
       "daily": {
         "search": 40,
@@ -1828,7 +1832,7 @@
         "detail": 14
       }
     },
-    "last_access_slot_at": "2026-11-17T10:03:04.534Z",
+    "last_access_slot_at": "2026-11-17T19:10:35.168Z",
     "access_interval_ms": 12000
   }
 }
