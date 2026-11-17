@@ -1,7 +1,23 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-16T19:02:30.947Z",
+  "updated_at": "2026-11-17T10:03:06.905Z",
   "runs": [
+    {
+      "run_id": "2026-11-17T10-02-59-880Z",
+      "committed_at": "2026-11-17T10:03:06.382Z",
+      "completed_at": "2026-11-17T10:03:06.372Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 6492,
+      "item_count": 0,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "google-pixel-watch-5",
+        "label": "Google Pixel Watch 5",
+        "collected_count": 0,
+        "quarantined_item_count": 0
+      }
+    },
     {
       "run_id": "2026-11-16T19-02-29-577Z",
       "committed_at": "2026-11-16T19:02:30.453Z",
@@ -10,12 +26,28 @@
       "partial": true,
       "duration_ms": 866,
       "item_count": 0,
-      "quarantined_item_count": 0,
       "metadata": {
         "source": "google-pixel-watch-5",
         "label": "Google Pixel Watch 5",
         "collected_count": 0,
-        "quarantined_item_count": 0
+        "quarantined_item_count": 0,
+        "in_progress": false
+      }
+    },
+    {
+      "run_id": "2026-11-16T19-02-02-020Z",
+      "committed_at": "2026-11-16T19:02:02.221Z",
+      "completed_at": "2026-11-16T19:02:02.206Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 186,
+      "item_count": 0,
+      "metadata": {
+        "source": "google-pixel-watch-5",
+        "label": "Google Pixel Watch 5",
+        "collected_count": 0,
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     },
     {
@@ -1878,38 +1910,6 @@
       "run_id": "2026-10-06T11-01-24-187Z",
       "committed_at": "2026-10-06T11:01:24.932Z",
       "completed_at": "2026-10-06T11:01:24.932Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": null,
-      "item_count": 0,
-      "metadata": {
-        "source": "google-pixel-watch-5",
-        "label": "Google Pixel Watch 5",
-        "collected_count": 0,
-        "quarantined_item_count": 0,
-        "in_progress": false
-      }
-    },
-    {
-      "run_id": "2026-10-05T19-46-15-173Z",
-      "committed_at": "2026-10-05T19:46:16.900Z",
-      "completed_at": "2026-10-05T19:46:16.900Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": null,
-      "item_count": 0,
-      "metadata": {
-        "source": "google-pixel-watch-5",
-        "label": "Google Pixel Watch 5",
-        "collected_count": 0,
-        "quarantined_item_count": 0,
-        "in_progress": false
-      }
-    },
-    {
-      "run_id": "2026-10-05T19-01-34-216Z",
-      "committed_at": "2026-10-05T19:01:34.444Z",
-      "completed_at": "2026-10-05T19:01:34.444Z",
       "outcome": "success",
       "partial": false,
       "duration_ms": null,
