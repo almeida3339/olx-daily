@@ -1,7 +1,23 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-18T10:02:17.825Z",
+  "updated_at": "2026-11-18T11:06:35.985Z",
   "runs": [
+    {
+      "run_id": "2026-11-18T11-06-34-854Z",
+      "committed_at": "2026-11-18T11:06:35.955Z",
+      "completed_at": "2026-11-18T11:06:35.940Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 1086,
+      "item_count": 2,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "oneplus-buds-pro-3",
+        "label": "OnePlus Buds Pro 3",
+        "collected_count": 0,
+        "quarantined_item_count": 0
+      }
+    },
     {
       "run_id": "2026-11-18T10-02-14-839Z",
       "committed_at": "2026-11-18T10:02:17.336Z",
@@ -10,12 +26,12 @@
       "partial": true,
       "duration_ms": 2485,
       "item_count": 2,
-      "quarantined_item_count": 0,
       "metadata": {
         "source": "oneplus-buds-pro-3",
         "label": "OnePlus Buds Pro 3",
         "collected_count": 0,
-        "quarantined_item_count": 0
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     },
     {
@@ -1902,22 +1918,6 @@
         "source": "oneplus-buds-pro-3",
         "label": "OnePlus Buds Pro 3",
         "collected_count": 1,
-        "quarantined_item_count": 0,
-        "in_progress": false
-      }
-    },
-    {
-      "run_id": "2026-10-14T19-51-43-536Z",
-      "committed_at": "2026-10-14T19:51:58.067Z",
-      "completed_at": "2026-10-14T19:51:58.036Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 14500,
-      "item_count": 1,
-      "metadata": {
-        "source": "oneplus-buds-pro-3",
-        "label": "OnePlus Buds Pro 3",
-        "collected_count": 0,
         "quarantined_item_count": 0,
         "in_progress": false
       }

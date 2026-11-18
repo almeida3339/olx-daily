@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-11-18T11-06-36-259Z",
+  "committed_at": "2026-11-18T11:06:36.259Z",
+  "snapshot": "runs/2026-11-18T11-06-36-259Z/snapshot.json",
+  "report": "runs/2026-11-18T11-06-36-259Z/report.md",
+  "quarantine": null,
+  "summary": {
+    "schema_version": 1,
+    "collected_at": "2026-11-18T11:06:36.259Z",
+    "execution": "success",
+    "issues": [],
+    "coverage": {
+      "status": "complete",
+      "scheduled": 1,
+      "completed": 1,
+      "incomplete": 0,
+      "deferred": 0,
+      "pending_descriptions": 0,
+      "pending_candidates": 0,
+      "pending_details": 0,
+      "heuristic_stops": [],
+      "heuristic_reasons": {}
+    },
+    "findings": {
+      "new_items": [],
+      "price_changes": [],
+      "active_count": 0,
+      "pending_count": 0,
+      "new_count": 0,
+      "price_count": 0
+    }
+  },
+  "checksums": {
+    "snapshot_sha256": "357be77317e48e3e0f57e7e4222e15e3db82cc5eea2c4f12e4644f7441680d7c",
+    "report_sha256": "9e16020c876b493dd72ecb0d1528db6b51bdea9c89239babe55fca03a6a31d6b"
+  },
+  "metadata": {
+    "source": "enjoei-fullcount",
+    "collected_count": 0,
+    "pending_count": 0,
+    "failed_term_count": 0,
+    "quarantined_item_count": 0
+  }
+}
