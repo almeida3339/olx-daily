@@ -1,7 +1,30 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-17T19:10:13.425Z",
+  "updated_at": "2026-11-18T10:01:48.331Z",
   "runs": [
+    {
+      "run_id": "2026-11-18T10-01-47-545Z",
+      "committed_at": "2026-11-18T10:01:47.638Z",
+      "completed_at": "2026-11-18T10:01:47.545Z",
+      "outcome": "partial",
+      "partial": true,
+      "duration_ms": 90937,
+      "item_count": 372,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "olx-notebooks",
+        "transport": "cdp",
+        "collection_started_at": "2026-11-18T10:00:16.608Z",
+        "collected_count": 11,
+        "failed_term_count": 1,
+        "successful_term_count": 4,
+        "in_progress": false,
+        "validated_count": 0,
+        "pending_count": 6,
+        "rejected_count": 5,
+        "quarantined_item_count": 0
+      }
+    },
     {
       "run_id": "2026-11-17T19-10-12-580Z",
       "committed_at": "2026-11-17T19:10:12.676Z",
@@ -10,7 +33,6 @@
       "partial": true,
       "duration_ms": 110079,
       "item_count": 372,
-      "quarantined_item_count": 0,
       "metadata": {
         "source": "olx-notebooks",
         "transport": "cdp",
@@ -2466,22 +2488,6 @@
       "partial": false,
       "duration_ms": null,
       "item_count": 237,
-      "metadata": {
-        "source": "olx-notebooks",
-        "collected_count": 51,
-        "transport": "cdp",
-        "quarantined_item_count": 0,
-        "in_progress": false
-      }
-    },
-    {
-      "run_id": "2026-09-22T19-00-09-952Z",
-      "committed_at": "2026-09-22T19:00:51.300Z",
-      "completed_at": "2026-09-22T19:00:51.300Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": null,
-      "item_count": 236,
       "metadata": {
         "source": "olx-notebooks",
         "collected_count": 51,

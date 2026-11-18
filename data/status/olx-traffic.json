@@ -2,34 +2,6 @@
   "schema_version": 1,
   "tracking_started_at": "2026-10-17T23:55:24.817Z",
   "days": {
-    "2026-11-04": {
-      "search": 14,
-      "detail": 12,
-      "watchlists": {
-        "notebooks": {
-          "search": 12,
-          "detail": 12
-        },
-        "google-pixel-watch-5": {
-          "search": 1,
-          "detail": 0
-        },
-        "oneplus-buds-pro-3": {
-          "search": 1,
-          "detail": 0
-        }
-      },
-      "rounds": {
-        "3790501a-01f0-4a63-98aa-3acb4d75c754": {
-          "search": 6,
-          "detail": 8
-        },
-        "308efbe7-f2ef-4ad5-9ef6-04e129ad3859": {
-          "search": 8,
-          "detail": 4
-        }
-      }
-    },
     "2026-11-05": {
       "search": 17,
       "detail": 13,
@@ -441,11 +413,31 @@
           "detail": 2
         }
       }
+    },
+    "2026-11-18": {
+      "search": 7,
+      "detail": 3,
+      "watchlists": {
+        "notebooks": {
+          "search": 5,
+          "detail": 3
+        },
+        "melanger": {
+          "search": 2,
+          "detail": 0
+        }
+      },
+      "rounds": {
+        "4cff2f9a-57c8-482d-babc-c1dda909d862": {
+          "search": 7,
+          "detail": 3
+        }
+      }
     }
   },
   "queries": {
     "notebooks:14900hx": {
-      "last_attempt_at": "2026-11-17T19:08:47.018Z",
+      "last_attempt_at": "2026-11-18T10:00:35.939Z",
       "approved": 0,
       "interval_hours": 8,
       "last_success_at": "2026-11-17T19:09:00.329Z",
@@ -466,13 +458,13 @@
       "prices": {}
     },
     "notebooks:family:avell-storm": {
-      "last_attempt_at": "2026-11-15T19:01:12.243Z",
+      "last_attempt_at": "2026-11-18T10:01:10.670Z",
       "approved": 0,
       "interval_hours": 48,
       "listing_limit": 60,
       "listing_incomplete": false,
-      "last_success_at": "2026-11-15T19:01:37.255Z",
-      "empty_runs": 3,
+      "last_success_at": "2026-11-18T10:01:47.535Z",
+      "empty_runs": 4,
       "prices": {}
     },
     "lifefactory:lifefactory": {
@@ -484,20 +476,20 @@
       "interval_hours": 72
     },
     "notebooks:14700hx": {
-      "last_attempt_at": "2026-11-17T19:08:22.641Z",
+      "last_attempt_at": "2026-11-18T10:00:16.728Z",
       "approved": 0,
-      "last_success_at": "2026-11-17T19:08:23.260Z",
-      "empty_runs": 39,
+      "last_success_at": "2026-11-18T10:00:17.877Z",
+      "empty_runs": 40,
       "prices": {},
       "interval_hours": 8,
       "listing_limit": 36,
       "listing_incomplete": false
     },
     "notebooks:13980hx": {
-      "last_attempt_at": "2026-11-17T19:08:26.047Z",
+      "last_attempt_at": "2026-11-18T10:00:31.092Z",
       "approved": 0,
-      "last_success_at": "2026-11-17T19:08:35.239Z",
-      "empty_runs": 22,
+      "last_success_at": "2026-11-18T10:00:31.598Z",
+      "empty_runs": 23,
       "prices": {},
       "interval_hours": 8,
       "listing_limit": 12,
@@ -505,10 +497,10 @@
       "last_change_at": "2026-10-29T12:59:35.694Z"
     },
     "notebooks:13900hx": {
-      "last_attempt_at": "2026-11-17T19:09:11.168Z",
+      "last_attempt_at": "2026-11-18T10:00:51.246Z",
       "approved": 0,
-      "last_success_at": "2026-11-17T19:09:11.746Z",
-      "empty_runs": 51,
+      "last_success_at": "2026-11-18T10:00:55.753Z",
+      "empty_runs": 52,
       "prices": {},
       "interval_hours": 8,
       "last_change_at": "2026-10-19T10:01:18.348Z",
@@ -571,9 +563,9 @@
       "interval_hours": 72
     },
     "melanger:melanger@/eletro/eletroportateis-para-cozinha-e-limpeza": {
-      "last_attempt_at": "2026-11-17T19:10:21.377Z",
+      "last_attempt_at": "2026-11-18T10:01:55.187Z",
       "approved": 2,
-      "last_success_at": "2026-11-17T19:10:24.528Z",
+      "last_success_at": "2026-11-18T10:01:59.457Z",
       "empty_runs": 0,
       "prices": {
         "1552601836": 3000,
@@ -583,9 +575,9 @@
       "last_change_at": "2026-11-16T19:02:03.683Z"
     },
     "melanger:melanger@/comercio-e-escritorio/gastronomia": {
-      "last_attempt_at": "2026-11-17T19:10:24.533Z",
+      "last_attempt_at": "2026-11-18T10:01:59.461Z",
       "approved": 2,
-      "last_success_at": "2026-11-17T19:10:36.524Z",
+      "last_success_at": "2026-11-18T10:02:12.703Z",
       "empty_runs": 0,
       "prices": {
         "1552601836": 3000,
@@ -825,7 +817,7 @@
       "last_attempt_at": "2026-11-11T19:05:01.822Z"
     }
   },
-  "updated_at": "2026-11-17T19:10:43.182Z",
+  "updated_at": "2026-11-18T10:02:19.234Z",
   "limits": {
     "daily": {
       "search": 40,
@@ -836,6 +828,6 @@
       "detail": 14
     }
   },
-  "last_access_slot_at": "2026-11-17T19:10:35.168Z",
+  "last_access_slot_at": "2026-11-18T10:02:10.670Z",
   "access_interval_ms": 12000
 }
