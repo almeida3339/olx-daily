@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-11-19T19-01-40-100Z",
+  "committed_at": "2026-11-19T19:01:40.242Z",
+  "snapshot": "runs/2026-11-19T19-01-40-100Z/snapshot.json",
+  "report": "runs/2026-11-19T19-01-40-100Z/report.md",
+  "quarantine": null,
+  "summary": {
+    "schema_version": 1,
+    "collected_at": "2026-11-19T19:01:40.224Z",
+    "execution": "success",
+    "issues": [],
+    "coverage": {
+      "status": "complete",
+      "scheduled": 1,
+      "completed": 1,
+      "incomplete": 0,
+      "deferred": 0,
+      "pending_descriptions": 0,
+      "pending_candidates": 0,
+      "pending_details": 0,
+      "heuristic_stops": [],
+      "heuristic_reasons": {}
+    },
+    "findings": {
+      "new_items": [],
+      "price_changes": [],
+      "active_count": 0,
+      "pending_count": 0,
+      "new_count": 0,
+      "price_count": 0
+    }
+  },
+  "checksums": {
+    "snapshot_sha256": "e4a3d1ef86aac6061c6236022bd409a041092936654e7eddf708cfb59894ea74",
+    "report_sha256": "aef258b69d5f083c222dae24525e2e78730587ea22cf6330a2a5426ffd5b4eac"
+  },
+  "metadata": {
+    "source": "tela-galaxy-book3",
+    "label": "Tela Galaxy Book3",
+    "collected_count": 0,
+    "quarantined_item_count": 0
+  }
+}
