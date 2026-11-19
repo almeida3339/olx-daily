@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "selection_policy_version": 3,
-  "round": "2026-11-18T19:00:14.334Z",
+  "round": "2026-11-19T10:00:15.358Z",
   "queue": [
     {
       "key": "1550480850",
@@ -499,7 +499,7 @@
         "url": "https://ce.olx.com.br/fortaleza-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-470-black-i9-14900hx-rtx-4070-32gb-de-ram-1-5tb-ssd-nvme-1448456884",
         "price_brl": 8900,
         "location": "Fortaleza, Vila União",
-        "text": "Notebook Gamer Avell Storm 470 Black I9-14900HX Rtx 4070 32gb de ram 1,5TB SSD Nvme\nEntrega Fácil\nParcele sem juros\n\nLoja Tiger Gaming\n2.7\n\nR$ 8.900\nem até 3x de R$ 2.966,67 sem juros\n\nFortaleza, Vila União\n\n26 de out, 13:27\n\nSlide 1\nSlide 2\nSlide 3\nSlide 4\nSlide 5\nSlide 6\nAdicionar aos favoritos",
+        "text": "",
         "ram_gb": 32,
         "storage_gb": 1536,
         "cpu_term": "14900hx",
@@ -509,7 +509,7 @@
         "14900hx"
       ],
       "first_observed_at": "2026-10-29T13:00:02.524Z",
-      "last_observed_at": "2026-11-18T19:00:45.372Z",
+      "last_observed_at": "2026-11-19T10:02:19.601Z",
       "last_detail_attempt_at": "2026-11-17T19:09:00.323Z",
       "detail_attempts": 5,
       "last_reasons": [
@@ -699,153 +699,190 @@
         "gpu": "RTX 4070"
       },
       "retry_kind": "missing_configuration"
+    },
+    {
+      "key": "1522889893",
+      "card": {
+        "title": "Notebook Acer Predator Helios Neo 16",
+        "url": "https://sp.olx.com.br/regiao-de-presidente-prudente/informatica/notebooks/notebook-acer-predator-helios-neo-16-1522889893",
+        "price_brl": 7500,
+        "location": "Assis, Centro",
+        "text": "",
+        "ram_gb": null,
+        "storage_gb": null,
+        "cpu_term": "14700hx",
+        "description_discovery": true
+      },
+      "terms": [
+        "14700hx"
+      ],
+      "first_observed_at": "2026-11-19T10:00:21.736Z",
+      "last_observed_at": "2026-11-19T10:00:21.736Z",
+      "last_detail_attempt_at": "2026-11-19T10:00:40.504Z",
+      "detail_attempts": 1,
+      "last_reasons": [
+        "Especificação não confirmada: RAM",
+        "Especificação não confirmada: GPU",
+        "CPU não confirmada no anúncio"
+      ],
+      "last_evidence": {
+        "cpu_confirmed": false,
+        "ram_gb": null,
+        "gpu": null
+      },
+      "retry_kind": "missing_configuration"
+    },
+    {
+      "key": "1546924993",
+      "card": {
+        "title": "VENDO NOTBOOK GAMER",
+        "url": "https://ba.olx.com.br/grande-salvador/informatica/notebooks/vendo-notbook-gamer-1546924993",
+        "price_brl": 5500,
+        "location": "Salvador, São Marcos",
+        "text": "",
+        "ram_gb": null,
+        "storage_gb": null,
+        "cpu_term": "14700hx",
+        "description_discovery": true
+      },
+      "terms": [
+        "14700hx"
+      ],
+      "first_observed_at": "2026-11-19T10:00:21.736Z",
+      "last_observed_at": "2026-11-19T10:00:21.736Z",
+      "last_detail_attempt_at": "2026-11-19T10:00:28.897Z",
+      "detail_attempts": 1,
+      "last_reasons": [
+        "Especificação não confirmada: RAM"
+      ],
+      "last_evidence": {
+        "cpu_confirmed": true,
+        "ram_gb": null,
+        "gpu": "RTX 4070"
+      },
+      "retry_kind": "missing_configuration"
+    },
+    {
+      "key": "1554174152",
+      "card": {
+        "title": "Acer Predator Helios Neo 16 | i7-14700HX | RTX 4070 | 32GB | 1,5TB SSD | 240Hz",
+        "url": "https://sp.olx.com.br/grande-campinas/informatica/notebooks/acer-predator-helios-neo-16-i7-14700hx-rtx-4070-32gb-1-5tb-ssd-240hz-1554174152",
+        "price_brl": 9590,
+        "location": "Americana, Antônio Zanaga I",
+        "text": "Acer Predator Helios Neo 16 | i7-14700HX | RTX 4070 | 32GB | 1,5TB SSD | 240Hz\nR$ 9.590\n\nAmericana, Antônio Zanaga I\n\nOntem, 16:19\n\nSlide 1\nSlide 2\nSlide 3\nSlide 4\nSlide 5\nSlide 6\nAdicionar aos favoritos",
+        "ram_gb": 32,
+        "storage_gb": 1536,
+        "cpu_term": "14700hx"
+      },
+      "terms": [
+        "14700hx"
+      ],
+      "first_observed_at": "2026-11-19T10:00:51.515Z",
+      "last_observed_at": "2026-11-19T10:00:51.515Z",
+      "last_detail_attempt_at": "2026-11-19T10:00:52.557Z",
+      "detail_attempts": 1,
+      "last_reasons": [
+        "Especificação não confirmada: RAM"
+      ],
+      "last_evidence": {
+        "cpu_confirmed": true,
+        "ram_gb": null,
+        "gpu": "RTX 4070"
+      },
+      "retry_kind": "missing_configuration"
+    },
+    {
+      "key": "1531486303",
+      "card": {
+        "title": "Notebook gamer Predator Helios Neo 16   Intel core i7 - 14700HX 14° geração",
+        "url": "https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/notebooks/notebook-gamer-predator-helios-neo-16-intel-core-i7-14700hx-14-geracao-1531486303",
+        "price_brl": 9000,
+        "location": "Belo Horizonte, Centro",
+        "text": "Notebook gamer Predator Helios Neo 16 Intel core i7 - 14700HX 14° geração\nR$ 9.000\nOnline\n\nBelo Horizonte, Centro\n\n9 de nov, 15:55\n\nEnviar mensagem\nSlide 1\nSlide 2\nSlide 3\nSlide 4\nSlide 5\nSlide 6\nAdicionar aos favoritos",
+        "ram_gb": null,
+        "storage_gb": null,
+        "cpu_term": "14700hx"
+      },
+      "terms": [
+        "14700hx"
+      ],
+      "first_observed_at": "2026-11-19T10:01:03.510Z",
+      "last_observed_at": "2026-11-19T10:01:03.510Z",
+      "last_detail_attempt_at": "2026-11-19T10:01:04.428Z",
+      "detail_attempts": 1,
+      "last_reasons": [
+        "Especificação não confirmada: RAM",
+        "Especificação não confirmada: GPU"
+      ],
+      "last_evidence": {
+        "cpu_confirmed": true,
+        "ram_gb": null,
+        "gpu": null
+      },
+      "retry_kind": "missing_configuration"
+    },
+    {
+      "key": "1531477161",
+      "card": {
+        "title": "Notebook gamer Predator Helios Neo 16   Intel core i7 - 14700HX 14° geração   512GB NVME 2",
+        "url": "https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/notebooks/notebook-gamer-predator-helios-neo-16-intel-core-i7-14700hx-14-geracao-512gb-nvme-2-1531477161",
+        "price_brl": 9000,
+        "location": "Belo Horizonte, Centro",
+        "text": "Notebook gamer Predator Helios Neo 16 Intel core i7 - 14700HX 14° geração 512GB NVME 2\nParcele sem juros\nR$ 9.000\nem até 3x de R$ 3.000,00 sem juros\n\nBelo Horizonte, Centro\n\n5 de nov, 16:12\n\nSlide 1\nSlide 2\nSlide 3\nSlide 4\nSlide 5\nSlide 6\nAdicionar aos favoritos",
+        "ram_gb": null,
+        "storage_gb": 512,
+        "cpu_term": "14700hx"
+      },
+      "terms": [
+        "14700hx"
+      ],
+      "first_observed_at": "2026-11-19T10:01:15.501Z",
+      "last_observed_at": "2026-11-19T10:01:15.501Z",
+      "last_detail_attempt_at": "2026-11-19T10:01:16.632Z",
+      "detail_attempts": 1,
+      "last_reasons": [
+        "Especificação não confirmada: RAM",
+        "Especificação não confirmada: GPU"
+      ],
+      "last_evidence": {
+        "cpu_confirmed": true,
+        "ram_gb": null,
+        "gpu": null
+      },
+      "retry_kind": "missing_configuration"
+    },
+    {
+      "key": "1551832498",
+      "card": {
+        "title": "NOTEBOOK GAMER PREDATOR HELIOS NEO i9 RTX 4070 (AVALIO TROCAS)",
+        "url": "https://rj.olx.com.br/rio-de-janeiro-e-regiao/informatica/notebooks/notebook-gamer-predator-helios-neo-i9-rtx-4070-avalio-trocas-1551832498",
+        "price_brl": 7999,
+        "location": "Rio de Janeiro, Inhoaíba",
+        "text": "",
+        "ram_gb": null,
+        "storage_gb": null,
+        "cpu_term": "14900hx",
+        "description_discovery": true
+      },
+      "terms": [
+        "14900hx"
+      ],
+      "first_observed_at": "2026-11-19T10:01:49.598Z",
+      "last_observed_at": "2026-11-19T10:01:49.598Z",
+      "last_detail_attempt_at": "2026-11-19T10:01:55.718Z",
+      "detail_attempts": 1,
+      "last_reasons": [
+        "Especificação não confirmada: RAM"
+      ],
+      "last_evidence": {
+        "cpu_confirmed": true,
+        "ram_gb": null,
+        "gpu": "RTX 4070"
+      },
+      "retry_kind": "missing_configuration"
     }
   ],
   "cache": [
-    {
-      "key": "1546506873",
-      "title": "Notebook Gamer Avell Storm BS 350",
-      "price_brl": 5300,
-      "card_fingerprint": "[\"Notebook Gamer Avell Storm BS 350\",5300,[],null,null]",
-      "checked_at": "2026-11-15T19:01:25.573Z",
-      "item": {
-        "id": "1546506873",
-        "url": "https://pa.olx.com.br/regiao-de-maraba/informatica/notebooks/notebook-gamer-avell-storm-bs-350-1546506873",
-        "title": "Notebook Gamer Avell Storm BS 350",
-        "cpu_term": "family:avell-storm",
-        "search_terms": [
-          "family:avell-storm"
-        ],
-        "description_discovery": true,
-        "price_brl": 5300,
-        "ram_gb": null,
-        "storage_gb": null,
-        "gpu": "RTX 3050",
-        "location": null,
-        "condition": "Usado - Excelente",
-        "status": "active",
-        "first_seen": null,
-        "last_seen": null,
-        "notes": null,
-        "desc_checked": true,
-        "validation": {
-          "version": 2,
-          "state": "rejected",
-          "checked_at": "2026-11-15T19:01:25.555Z",
-          "reasons": [
-            "CPU fora da busca",
-            "Especificação não confirmada: RAM",
-            "CPU não confirmada no anúncio"
-          ],
-          "listing_price_brl": 5300,
-          "detail_price_brl": 5300,
-          "visible_price_brl": null,
-          "structured_price_brl": 5300,
-          "title_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": null
-          },
-          "description_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": "RTX 3050"
-          },
-          "cpu_confirmed": false,
-          "description_checked": true,
-          "detail_diagnostic": {
-            "state": "ready",
-            "http_status": 200,
-            "document_state": "loading",
-            "description_found": true,
-            "price_found": true,
-            "structured_product_found": true,
-            "description_source": "structured",
-            "same_ad": true,
-            "body_length": 1950,
-            "wait_ms": 566,
-            "samples": 2
-          }
-        },
-        "description_evidence": "Vendo Notebook Gamer Avell em excelente estado de conservação, sem nenhum detalhe, usado poucas vezes. Especificações de hardware:? GeForce® RTX 3050 (4GB GDDR6)? Intel® Core?M i7-12650H Alder Lake (24MB cache, 3.5GHz ~ 4.7GHz Turbo Boost Max 3.0)? Upgrade Grátis - 32GB [2x 16GB - Dual Channel] Memória DDR4 (3200MHZ)? SSD M.2 NVME 512GB - Geração 4 - [3.400 MB/s? 15.6\" FHD WVA (1920x1080p) - 144Hz / Matte / Contraste: 1000:1/ Brilho 250 cd/m²",
-        "detail_title": "Notebook Gamer Avell Storm BS 350",
-        "configuration_warnings": [
-          "Armazenamento não informado"
-        ]
-      }
-    },
-    {
-      "key": "1548268436",
-      "title": "Notebook Gamer Avell Storm Two",
-      "price_brl": 7199,
-      "card_fingerprint": "[\"Notebook Gamer Avell Storm Two\",7199,[],null,null]",
-      "checked_at": "2026-11-15T19:01:37.247Z",
-      "item": {
-        "id": "1548268436",
-        "url": "https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/notebooks/notebook-gamer-avell-storm-two-1548268436",
-        "title": "Notebook Gamer Avell Storm Two",
-        "cpu_term": "family:avell-storm",
-        "search_terms": [
-          "family:avell-storm"
-        ],
-        "description_discovery": true,
-        "price_brl": 7199,
-        "ram_gb": null,
-        "storage_gb": null,
-        "gpu": "RTX 3070 TI",
-        "location": null,
-        "condition": "Usado - Excelente",
-        "status": "active",
-        "first_seen": null,
-        "last_seen": null,
-        "notes": null,
-        "desc_checked": true,
-        "validation": {
-          "version": 2,
-          "state": "rejected",
-          "checked_at": "2026-11-15T19:01:37.244Z",
-          "reasons": [
-            "CPU fora da busca",
-            "Especificação não confirmada: RAM",
-            "CPU não confirmada no anúncio"
-          ],
-          "listing_price_brl": 7199,
-          "detail_price_brl": 7199,
-          "visible_price_brl": null,
-          "structured_price_brl": 7199,
-          "title_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": null
-          },
-          "description_specs": {
-            "ram_gb": null,
-            "storage_gb": null,
-            "gpu": "RTX 3070 TI"
-          },
-          "cpu_confirmed": false,
-          "description_checked": true,
-          "detail_diagnostic": {
-            "state": "ready",
-            "http_status": 200,
-            "document_state": "interactive",
-            "description_found": true,
-            "price_found": true,
-            "structured_product_found": true,
-            "description_source": "structured",
-            "same_ad": true,
-            "body_length": 1748,
-            "wait_ms": 541,
-            "samples": 2
-          }
-        },
-        "description_evidence": "Notebook Gamer Avell Storm TwoIntel Core i7 12700H 2.3GHz16gb memória RAMSSD 1tbVídeo NVidia RTX 3070ti 8gbMonitor 15.6 FHD IPSTeclado retroiluminadoFonte/carregador originalCom caixaCom nota fiscal",
-        "detail_title": "Notebook Gamer Avell Storm Two",
-        "configuration_warnings": [
-          "Armazenamento não informado"
-        ]
-      }
-    },
     {
       "key": "1542003264",
       "title": "Laptop Predator Helios Neo intel® core i9-14900hx com rtx4070",
@@ -1475,33 +1512,686 @@
           "Armazenamento não informado"
         ]
       }
+    },
+    {
+      "key": "1546924993",
+      "title": "VENDO NOTBOOK GAMER",
+      "price_brl": 5500,
+      "card_fingerprint": "[\"VENDO NOTBOOK GAMER\",5500,[],null,null]",
+      "checked_at": "2026-11-19T10:00:28.897Z",
+      "item": {
+        "id": "1546924993",
+        "url": "https://ba.olx.com.br/grande-salvador/informatica/notebooks/vendo-notbook-gamer-1546924993",
+        "title": "VENDO NOTBOOK GAMER",
+        "cpu_term": "14700hx",
+        "search_terms": [
+          "14700hx"
+        ],
+        "description_discovery": true,
+        "price_brl": 5500,
+        "ram_gb": null,
+        "storage_gb": 512,
+        "gpu": "RTX 4070",
+        "location": null,
+        "condition": "Novo",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "pending",
+          "checked_at": "2026-11-19T10:00:28.893Z",
+          "reasons": [
+            "Especificação não confirmada: RAM"
+          ],
+          "listing_price_brl": 5500,
+          "detail_price_brl": 5500,
+          "visible_price_brl": null,
+          "structured_price_brl": 5500,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": 512,
+            "gpu": "RTX 4070"
+          },
+          "cpu_confirmed": true,
+          "description_checked": true,
+          "detail_diagnostic": {
+            "state": "ready",
+            "http_status": 200,
+            "document_state": "interactive",
+            "description_found": true,
+            "price_found": true,
+            "structured_product_found": true,
+            "description_source": "structured",
+            "same_ad": true,
+            "body_length": 1362,
+            "wait_ms": 572,
+            "samples": 2
+          }
+        },
+        "description_evidence": "Notebook Gamer Predator Helios Neo / Phn16-72-74vx / Intel® Core I7-14700hx De 14ªgeração / 16gb / 512ssd / Windows 11 Home / Nvidia Geforce Rtx 4070 Gddr6 / Tela 16 (Novo com caixa aberta)",
+        "detail_title": "VENDO NOTBOOK GAMER ",
+        "configuration_warnings": [],
+        "listing_observed_at": "2026-11-19T10:00:21.733Z"
+      }
+    },
+    {
+      "key": "1522889893",
+      "title": "Notebook Acer Predator Helios Neo 16",
+      "price_brl": 7500,
+      "card_fingerprint": "[\"Notebook Acer Predator Helios Neo 16\",7500,[],null,null]",
+      "checked_at": "2026-11-19T10:00:40.504Z",
+      "item": {
+        "id": "1522889893",
+        "url": "https://sp.olx.com.br/regiao-de-presidente-prudente/informatica/notebooks/notebook-acer-predator-helios-neo-16-1522889893",
+        "title": "Notebook Acer Predator Helios Neo 16",
+        "cpu_term": "14700hx",
+        "search_terms": [
+          "14700hx"
+        ],
+        "description_discovery": true,
+        "price_brl": 7500,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": null,
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "pending",
+          "checked_at": "2026-11-19T10:00:40.501Z",
+          "reasons": [
+            "Especificação não confirmada: RAM",
+            "Especificação não confirmada: GPU",
+            "CPU não confirmada no anúncio"
+          ],
+          "listing_price_brl": 7500,
+          "detail_price_brl": 7500,
+          "visible_price_brl": null,
+          "structured_price_brl": 7500,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "cpu_confirmed": false,
+          "description_checked": true,
+          "detail_diagnostic": {
+            "state": "ready",
+            "http_status": 200,
+            "document_state": "interactive",
+            "description_found": true,
+            "price_found": true,
+            "structured_product_found": true,
+            "description_source": "structured",
+            "same_ad": true,
+            "body_length": 1511,
+            "wait_ms": 623,
+            "samples": 2
+          }
+        },
+        "description_evidence": "Notebook Acer Predator Helios Neo 16!Windows 11 HomeIntel Core I7 14700HXNvidia GeForce RTX 407016Gb Ram DDR5 5600mhz521Gb SSDTela 2560x1600 240HzExcelente estado de conservação, sem marcas nem danos.Adquirido no site da Acer do Brasil.",
+        "detail_title": "Notebook Acer Predator Helios Neo 16",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ],
+        "listing_observed_at": "2026-11-19T10:00:21.733Z"
+      }
+    },
+    {
+      "key": "1554174152",
+      "title": "Acer Predator Helios Neo 16 | i7-14700HX | RTX 4070 | 32GB | 1,5TB SSD | 240Hz",
+      "price_brl": 9590,
+      "card_fingerprint": "[\"Acer Predator Helios Neo 16 | i7-14700HX | RTX 4070 | 32GB | 1,5TB SSD | 240Hz\",9590,[\"14700hx\"],null,\"RTX 4070\"]",
+      "checked_at": "2026-11-19T10:00:52.557Z",
+      "item": {
+        "id": "1554174152",
+        "url": "https://sp.olx.com.br/grande-campinas/informatica/notebooks/acer-predator-helios-neo-16-i7-14700hx-rtx-4070-32gb-1-5tb-ssd-240hz-1554174152",
+        "title": "Acer Predator Helios Neo 16 | i7-14700HX | RTX 4070 | 32GB | 1,5TB SSD | 240Hz",
+        "cpu_term": "14700hx",
+        "search_terms": [
+          "14700hx"
+        ],
+        "description_discovery": false,
+        "price_brl": 9590,
+        "ram_gb": null,
+        "storage_gb": 1536,
+        "gpu": "RTX 4070",
+        "location": null,
+        "condition": null,
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "pending",
+          "checked_at": "2026-11-19T10:00:52.553Z",
+          "reasons": [
+            "Especificação não confirmada: RAM"
+          ],
+          "listing_price_brl": 9590,
+          "detail_price_brl": 9590,
+          "visible_price_brl": null,
+          "structured_price_brl": 9590,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": 1536,
+            "gpu": "RTX 4070"
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": 1536,
+            "gpu": "RTX 4070"
+          },
+          "cpu_confirmed": true,
+          "description_checked": true,
+          "detail_diagnostic": {
+            "state": "ready",
+            "http_status": 200,
+            "document_state": "loading",
+            "description_found": true,
+            "price_found": true,
+            "structured_product_found": true,
+            "description_source": "structured",
+            "same_ad": true,
+            "body_length": 0,
+            "wait_ms": 526,
+            "samples": 2
+          }
+        },
+        "description_evidence": "Vendo meu Acer Predator Helios Neo 16 (PHN16-72), notebook gamer de alto desempenho, com aproximadamente 1 ano de uso e em excelente estado de conservação e na caixa original.O equipamento foi cuidadosamente utilizado e recebeu upgrades de memória RAM e armazenamento, oferecendo uma configuração superior à original.ESPECIFICAÇÕES TÉCNICASProcessador: Intel Core i7-14700HX de 14ª geração, 20 núcleos e 28 threadsPlaca de vídeo: NVIDIA GeForce RTX 4070 Laptop com 8 GB GDDR6 dedicadosMemória RAM: 32 GB DDR5 5600 MT/sArmazenamento: 1,5 TB SSD NVMe (1 TB Kingston + 512 GB original)Tela: 16 polegadas WQXGA (2560 × 1600), IPS, 240 Hz, tempo de resposta anunciado de 3 msSistema operacional: Windows 11 HomeConectividade: Wi-Fi, Bluetooth, HDMI, USB e USB-CTeclado: retroiluminado RGBUPGRADES REALIZADOSO notebook foi adquirido originalmente com 16 GB de RAM e SSD de 512 GB.Posteriormente, realizei os seguintes upgrades:- Memória RAM ampliada para 32 GB DDR5- SSD NVMe Kingston de 1 TB adicionado, totalizando aproximadamente 1,5 TB de armazenamentoESTADO DE CONSERVAÇÃONotebook em excelente estado, utilizado com muito cuidado.Durante praticamente todo o período de uso, utilizei teclado e mouse externos. Por esse motivo, o teclado integrado e o touchpad foram pouquíssimo utilizados e estão muito bem conservados.O equipamento acompanha sua caixa original e carregador.DIFERENCIAIS- Tela WQXGA de 240 Hz, excelente para jogos competitivos e alta fluidez- RTX 4070 dedicada, com suporte a ray tracing e NVIDIA DLSS- Processador Intel Core i7 de 14ª geração- 32 GB de memória DDR5- Dois SSDs NVMe instalados- Windows 11 Home instalado- Configuração comprovada por captura do HWiNFO64Motivo da Venda: Estou vendendo para investir na montagem de um computador desktop.",
+        "detail_title": "Acer Predator Helios Neo 16 | i7-14700HX | RTX 4070 | 32GB | 1,5TB SSD | 240Hz",
+        "configuration_warnings": [],
+        "listing_observed_at": "2026-11-19T10:00:21.733Z"
+      }
+    },
+    {
+      "key": "1531486303",
+      "title": "Notebook gamer Predator Helios Neo 16   Intel core i7 - 14700HX 14° geração",
+      "price_brl": 9000,
+      "card_fingerprint": "[\"Notebook gamer Predator Helios Neo 16   Intel core i7 - 14700HX 14° geração\",9000,[\"14700hx\"],null,null]",
+      "checked_at": "2026-11-19T10:01:04.428Z",
+      "item": {
+        "id": "1531486303",
+        "url": "https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/notebooks/notebook-gamer-predator-helios-neo-16-intel-core-i7-14700hx-14-geracao-1531486303",
+        "title": "Notebook gamer Predator Helios Neo 16   Intel core i7 - 14700HX 14° geração",
+        "cpu_term": "14700hx",
+        "search_terms": [
+          "14700hx"
+        ],
+        "description_discovery": false,
+        "price_brl": 9000,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": null,
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "pending",
+          "checked_at": "2026-11-19T10:01:04.426Z",
+          "reasons": [
+            "Especificação não confirmada: RAM",
+            "Especificação não confirmada: GPU"
+          ],
+          "listing_price_brl": 9000,
+          "detail_price_brl": 9000,
+          "visible_price_brl": null,
+          "structured_price_brl": 9000,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "cpu_confirmed": true,
+          "description_checked": true,
+          "detail_diagnostic": {
+            "state": "ready",
+            "http_status": 200,
+            "document_state": "interactive",
+            "description_found": true,
+            "price_found": true,
+            "structured_product_found": true,
+            "description_source": "structured",
+            "same_ad": true,
+            "body_length": 2419,
+            "wait_ms": 558,
+            "samples": 2
+          }
+        },
+        "description_evidence": "Loja Fisica - I9 TECNOLOGIA Whatsapp (031) 99447-2700 Leonardo Notebook gamer Predator Helios Neo 16 Intel core i7 - 14700HX 14° geração 512GB NVME24GB DDR5Placa de vídeo: NVIDIA GeForce RTX 4070Tela 16 polegadas 60Hz Windows 11Máquina sem marcas de uso Seminovo com todos acessórios originais e caixa 3 meses de garantia (Não fornecemos garantia na bateria de seminovos)Venha realizar seu orçamento sem compromisso, na melhor de BH, venha para a i9 Tecnologia. $$$$$ PEGAMOS SEU USADO COMO PARTE DE PAGAMENTO. $$$$$SUPORTE QUE VOCÊ PRECISA COM A EXPERIÊNCIA QUE VOCÊ MERECE.(3 meses de garantia em todos os nossos serviços)(31) 99447-2700(31) 99447-2332(31) 2526-2720Condições de pagamento: À vista (Dinheiro ou Pix) Cartão de débito Cartão de credito Link de pagamento, cartão virtual. Consulte pequenas taxas de máquina.Leonardo Endereço: Rua Curitiba, 1396, Bairro LourdesBelo Horizonte - MG(próximo ao mercado central)Site.: www.i9tecnologiabh.com.brInstagram : @i9tecnologiabhTABELA DE PREÇOS ONLINE: https://www.catalogo.i9tecnologiabh.com.br/",
+        "detail_title": "Notebook gamer Predator Helios Neo 16   Intel core i7 - 14700HX 14° geração ",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ],
+        "listing_observed_at": "2026-11-19T10:00:21.733Z"
+      }
+    },
+    {
+      "key": "1531477161",
+      "title": "Notebook gamer Predator Helios Neo 16   Intel core i7 - 14700HX 14° geração   512GB NVME 2",
+      "price_brl": 9000,
+      "card_fingerprint": "[\"Notebook gamer Predator Helios Neo 16   Intel core i7 - 14700HX 14° geração   512GB NVME 2\",9000,[\"14700hx\"],null,null]",
+      "checked_at": "2026-11-19T10:01:16.632Z",
+      "item": {
+        "id": "1531477161",
+        "url": "https://mg.olx.com.br/belo-horizonte-e-regiao/informatica/notebooks/notebook-gamer-predator-helios-neo-16-intel-core-i7-14700hx-14-geracao-512gb-nvme-2-1531477161",
+        "title": "Notebook gamer Predator Helios Neo 16   Intel core i7 - 14700HX 14° geração   512GB NVME 2",
+        "cpu_term": "14700hx",
+        "search_terms": [
+          "14700hx"
+        ],
+        "description_discovery": false,
+        "price_brl": 9000,
+        "ram_gb": null,
+        "storage_gb": 512,
+        "gpu": null,
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "pending",
+          "checked_at": "2026-11-19T10:01:16.629Z",
+          "reasons": [
+            "Especificação não confirmada: RAM",
+            "Especificação não confirmada: GPU"
+          ],
+          "listing_price_brl": 9000,
+          "detail_price_brl": 9000,
+          "visible_price_brl": null,
+          "structured_price_brl": 9000,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": 512,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "cpu_confirmed": true,
+          "description_checked": true,
+          "detail_diagnostic": {
+            "state": "ready",
+            "http_status": 200,
+            "document_state": "interactive",
+            "description_found": true,
+            "price_found": true,
+            "structured_product_found": true,
+            "description_source": "structured",
+            "same_ad": true,
+            "body_length": 1754,
+            "wait_ms": 557,
+            "samples": 2
+          }
+        },
+        "description_evidence": "Notebook gamer Predator Helios Neo 16 Intel core i7 - 14700HX 14° geração 512GB NVME24GB DDR5Placa de vídeo: NVIDIA GeForce RTX 4070Tela 16 polegadas 60Hz Windows 11Máquina sem marcas de uso Seminovo com todos acessórios originais e caixa 3 meses de garantia (Não fornecemos garantia na bateria de seminovos)",
+        "detail_title": "Notebook gamer Predator Helios Neo 16   Intel core i7 - 14700HX 14° geração   512GB NVME 2",
+        "configuration_warnings": [],
+        "listing_observed_at": "2026-11-19T10:00:21.733Z"
+      }
+    },
+    {
+      "key": "1551832498",
+      "title": "NOTEBOOK GAMER PREDATOR HELIOS NEO i9 RTX 4070 (AVALIO TROCAS)",
+      "price_brl": 7999,
+      "card_fingerprint": "[\"NOTEBOOK GAMER PREDATOR HELIOS NEO i9 RTX 4070 (AVALIO TROCAS)\",7999,[],null,\"RTX 4070\"]",
+      "checked_at": "2026-11-19T10:01:55.718Z",
+      "item": {
+        "id": "1551832498",
+        "url": "https://rj.olx.com.br/rio-de-janeiro-e-regiao/informatica/notebooks/notebook-gamer-predator-helios-neo-i9-rtx-4070-avalio-trocas-1551832498",
+        "title": "NOTEBOOK GAMER PREDATOR HELIOS NEO i9 RTX 4070 (AVALIO TROCAS)",
+        "cpu_term": "14900hx",
+        "search_terms": [
+          "14900hx"
+        ],
+        "description_discovery": true,
+        "price_brl": 7999,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": "RTX 4070",
+        "location": null,
+        "condition": "Novo",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "pending",
+          "checked_at": "2026-11-19T10:01:55.716Z",
+          "reasons": [
+            "Especificação não confirmada: RAM"
+          ],
+          "listing_price_brl": 7999,
+          "detail_price_brl": 7999,
+          "visible_price_brl": null,
+          "structured_price_brl": 7999,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 4070"
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "cpu_confirmed": true,
+          "description_checked": true,
+          "detail_diagnostic": {
+            "state": "ready",
+            "http_status": 200,
+            "document_state": "interactive",
+            "description_found": true,
+            "price_found": true,
+            "structured_product_found": true,
+            "description_source": "structured",
+            "same_ad": true,
+            "body_length": 1593,
+            "wait_ms": 552,
+            "samples": 2
+          }
+        },
+        "description_evidence": "PROCESSADOR: i9 14900HX PLACA DE VIDEO: RTX 407032 RAM TELA 2K - IPS - 100% RGB240HZTAMBÉM ACOMPANHA: BASE DE RESFRIAMENTO NOTEBOOK SEM NENHUM DEFEITO OU ARRANHÃO RODANDO TUDO NORMALMENTE, FAÇO TESTE NA HORAAVALIO TROCAS EM: PS5 NORMAL OU PRO COM VOLTA, XBOX SERIES S OU X, PC GAMER, ROG ALLY, LEGION GO, STEAM DECK",
+        "detail_title": "NOTEBOOK GAMER PREDATOR HELIOS NEO i9 RTX 4070 (AVALIO TROCAS)",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ],
+        "listing_observed_at": "2026-11-19T10:01:49.589Z"
+      }
+    },
+    {
+      "key": "1553798222",
+      "title": "ASUS ROG Strix G16 - LEIA O ANÚNCIO",
+      "price_brl": 2100,
+      "card_fingerprint": "[\"ASUS ROG Strix G16 - LEIA O ANÚNCIO\",2100,[],null,null]",
+      "checked_at": "2026-11-19T10:02:08.162Z",
+      "item": {
+        "id": "1553798222",
+        "url": "https://df.olx.com.br/distrito-federal-e-regiao/informatica/notebooks/asus-rog-strix-g16-leia-o-anuncio-1553798222",
+        "title": "ASUS ROG Strix G16 - LEIA O ANÚNCIO",
+        "cpu_term": "14900hx",
+        "search_terms": [
+          "14900hx"
+        ],
+        "description_discovery": true,
+        "price_brl": 2100,
+        "ram_gb": null,
+        "storage_gb": null,
+        "gpu": "RTX 4070",
+        "location": null,
+        "condition": "Usado - Bom",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-11-19T10:02:08.160Z",
+          "reasons": [
+            "Defeito ou avaria declarados no anúncio",
+            "Especificação não confirmada: RAM"
+          ],
+          "listing_price_brl": 2100,
+          "detail_price_brl": 2100,
+          "visible_price_brl": null,
+          "structured_price_brl": 2100,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": null
+          },
+          "description_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 4070"
+          },
+          "cpu_confirmed": true,
+          "description_checked": true,
+          "detail_diagnostic": {
+            "state": "ready",
+            "http_status": 200,
+            "document_state": "interactive",
+            "description_found": true,
+            "price_found": true,
+            "structured_product_found": true,
+            "description_source": "structured",
+            "same_ad": true,
+            "body_length": 1753,
+            "wait_ms": 559,
+            "samples": 2
+          }
+        },
+        "description_evidence": "ASUS ROG STRIX G16 - i9-14900HX + RTX 4070 + Tela 240Hz - R$ 2.500Vendo ASUS ROG Strix G16 para reparo ou retirada de peças.Configuração original:* Intel Core i9-14900HX* NVIDIA GeForce RTX 4070 8 GB* Tela de 16 polegadas, 240 Hz* Estrutura original ASUS ROGAtenção: Notebook apresenta defeito e não liga. Possível problema na placa-mãe, ainda sem diagnóstico definitivo, mas o valor que o técnico passou para consertar é de 1000 ~ 1800 Memórias RAM e SSD foram retirados e não acompanham o produto.Venda no estado em que se encontra.",
+        "detail_title": "ASUS ROG Strix G16 - LEIA O ANÚNCIO ",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ],
+        "listing_observed_at": "2026-11-19T10:01:49.589Z"
+      }
+    },
+    {
+      "key": "1554027692",
+      "title": "Avell Storm 460 i9-14900HX RTX 4060 + Llano V12",
+      "price_brl": 8900,
+      "card_fingerprint": "[\"Avell Storm 460 i9-14900HX RTX 4060 + Llano V12\",8900,[\"14900hx\"],null,\"RTX 4060\"]",
+      "checked_at": "2026-11-19T10:02:19.598Z",
+      "item": {
+        "id": "1554027692",
+        "url": "https://sp.olx.com.br/sao-paulo-e-regiao/informatica/notebooks/avell-storm-460-i9-14900hx-rtx-4060-llano-v12-1554027692",
+        "title": "Avell Storm 460 i9-14900HX RTX 4060 + Llano V12",
+        "cpu_term": "14900hx",
+        "search_terms": [
+          "14900hx"
+        ],
+        "description_discovery": false,
+        "price_brl": 8900,
+        "ram_gb": 16,
+        "storage_gb": null,
+        "gpu": "RTX 4060",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-11-19T10:02:19.597Z",
+          "reasons": [
+            "RAM abaixo do mínimo exigido",
+            "RAM abaixo do mínimo de 32 GB"
+          ],
+          "listing_price_brl": 8900,
+          "detail_price_brl": 8900,
+          "visible_price_brl": null,
+          "structured_price_brl": 8900,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "description_specs": {
+            "ram_gb": 16,
+            "storage_gb": null,
+            "gpu": "RTX 4060"
+          },
+          "cpu_confirmed": true,
+          "description_checked": true,
+          "detail_diagnostic": {
+            "state": "ready",
+            "http_status": 200,
+            "document_state": "interactive",
+            "description_found": true,
+            "price_found": true,
+            "structured_product_found": true,
+            "description_source": "structured",
+            "same_ad": true,
+            "body_length": 1972,
+            "wait_ms": 521,
+            "samples": 2
+          }
+        },
+        "description_evidence": "Avell Storm 460- Intel Core i9-14900HX- NVIDIA GeForce RTX 4060 Laptop 8 GB- 16 GB de memória DDR5- SSD NVMe 512 GB- Tela QHD 240 HzAcompanha base refrigerada Llano V12- Desenvolvida para notebooks de alta potência- Sistema de refrigeração por turbina de alta pressão- Rotação ajustável de até 2.800 RPM- Controle manual de velocidade- Iluminação RGB- Hub integrado com 3 portas USB 2.0.- Sistema de vedação para direcionamento do fluxo de arVenda do conjunto completo: notebook + Llano V12.O notebook será entregue formatado, sem sistema operacional instalado.Não aceito trocas.",
+        "detail_title": "Avell Storm 460 i9-14900HX RTX 4060 + Llano V12",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ],
+        "listing_observed_at": "2026-11-19T10:01:49.589Z"
+      }
+    },
+    {
+      "key": "1542922497",
+      "title": "Notebook Gamer DELL G16 7630 CORE I9-13900HX RTX4070 8GB",
+      "price_brl": 9800,
+      "card_fingerprint": "[\"Notebook Gamer DELL G16 7630 CORE I9-13900HX RTX4070 8GB\",9800,[\"13900hx\"],null,\"RTX 4070\"]",
+      "checked_at": "2026-11-19T10:02:49.762Z",
+      "item": {
+        "id": "1542922497",
+        "url": "https://pe.olx.com.br/grande-recife/informatica/notebooks/notebook-gamer-dell-g16-7630-core-i9-13900hx-rtx4070-8gb-1542922497",
+        "title": "Notebook Gamer DELL G16 7630 CORE I9-13900HX RTX4070 8GB",
+        "cpu_term": "13900hx",
+        "search_terms": [
+          "13900hx"
+        ],
+        "description_discovery": false,
+        "price_brl": 9800,
+        "ram_gb": 16,
+        "storage_gb": null,
+        "gpu": "RTX 4070",
+        "location": null,
+        "condition": "Usado - Excelente",
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-11-19T10:02:49.759Z",
+          "reasons": [
+            "RAM abaixo do mínimo exigido",
+            "RAM abaixo do mínimo de 32 GB"
+          ],
+          "listing_price_brl": 9800,
+          "detail_price_brl": 9800,
+          "visible_price_brl": null,
+          "structured_price_brl": 9800,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 4070"
+          },
+          "description_specs": {
+            "ram_gb": 16,
+            "storage_gb": null,
+            "gpu": "RTX 4070"
+          },
+          "cpu_confirmed": true,
+          "description_checked": true,
+          "detail_diagnostic": {
+            "state": "ready",
+            "http_status": 200,
+            "document_state": "interactive",
+            "description_found": true,
+            "price_found": true,
+            "structured_product_found": true,
+            "description_source": "structured",
+            "same_ad": true,
+            "body_length": 1783,
+            "wait_ms": 551,
+            "samples": 2
+          }
+        },
+        "description_evidence": "Domine seus jogos com o Notebook Gamer DELL G16 7630! Equipado com o poderoso processador Intel Core i9 de 13ª geração 16GB de Ram DDR5 e a incrível placa de vídeo NVIDIA GeForce RTX 4070 de 8GB, ele oferece performance de ponta para rodar os títulos mais exigentes com gráficos impressionantes. Experimente fluidez e velocidade incomparáveis em suas sessões de jogo.",
+        "detail_title": "Notebook Gamer DELL G16 7630 CORE I9-13900HX RTX4070 8GB",
+        "configuration_warnings": [
+          "Armazenamento não informado"
+        ]
+      }
     }
   ],
   "metrics": {
-    "extra_details": 1,
-    "total_details": 2,
-    "detail_ms": 1266,
+    "extra_details": 4,
+    "total_details": 9,
+    "detail_ms": 4699,
     "recovered_validated": 0,
     "cache_hits": 0,
     "by_term": {
-      "family:avell-a65": 1
+      "14700hx": 2,
+      "14900hx": 2
     },
     "detail_yield": {
-      "255hx": {
-        "reads": 1,
+      "14700hx": {
+        "reads": 5,
         "validated_offers": 0,
         "read_keys": [
-          "1552887610"
+          "1546924993",
+          "1522889893",
+          "1554174152",
+          "1531486303",
+          "1531477161"
         ]
       },
-      "family:avell-a65": {
+      "14900hx": {
+        "reads": 3,
+        "validated_offers": 0,
+        "read_keys": [
+          "1551832498",
+          "1553798222",
+          "1554027692"
+        ]
+      },
+      "13900hx": {
         "reads": 1,
         "validated_offers": 0,
         "read_keys": [
-          "1552720773"
+          "1542922497"
         ]
       }
     },
-    "new_details": 2
+    "new_details": 9
   }
 }
