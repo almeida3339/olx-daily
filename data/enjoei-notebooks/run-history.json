@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-19T19:01:44.703Z",
+  "updated_at": "2026-11-20T11:01:56.879Z",
   "runs": [
     {
-      "run_id": "2026-11-19T19-01-39-175Z",
-      "committed_at": "2026-11-19T19:01:44.645Z",
-      "completed_at": "2026-11-19T19:01:44.629Z",
+      "run_id": "2026-11-20T11-01-39-531Z",
+      "committed_at": "2026-11-20T11:01:56.791Z",
+      "completed_at": "2026-11-20T11:01:56.773Z",
       "outcome": "success",
       "partial": false,
-      "duration_ms": 5454,
+      "duration_ms": 17242,
       "item_count": 20,
       "quarantined_item_count": 0,
       "metadata": {
@@ -18,6 +18,24 @@
         "incomplete_term_count": 0,
         "collection_started_at": "2026-10-15T11:01:00.934Z",
         "quarantined_item_count": 0
+      }
+    },
+    {
+      "run_id": "2026-11-19T19-01-39-175Z",
+      "committed_at": "2026-11-19T19:01:44.645Z",
+      "completed_at": "2026-11-19T19:01:44.629Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 5454,
+      "item_count": 20,
+      "metadata": {
+        "source": "enjoei-notebooks",
+        "collected_count": 0,
+        "failed_term_count": 0,
+        "incomplete_term_count": 0,
+        "collection_started_at": "2026-10-15T11:01:00.934Z",
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     },
     {
@@ -2052,22 +2070,6 @@
       "run_id": "2026-08-21T19-00-57-583Z",
       "committed_at": "2026-08-21T19:01:18.161Z",
       "completed_at": "2026-08-21T19:01:18.161Z",
-      "outcome": "partial",
-      "partial": true,
-      "duration_ms": null,
-      "item_count": 14,
-      "metadata": {
-        "source": "enjoei-notebooks",
-        "collected_count": 1,
-        "failed_term_count": 0,
-        "quarantined_item_count": 0,
-        "in_progress": false
-      }
-    },
-    {
-      "run_id": "2026-08-21T11-00-57-885Z",
-      "committed_at": "2026-08-21T11:01:10.568Z",
-      "completed_at": "2026-08-21T11:01:10.568Z",
       "outcome": "partial",
       "partial": true,
       "duration_ms": null,
