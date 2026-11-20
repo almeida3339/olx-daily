@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "selection_policy_version": 3,
-  "round": "2026-11-19T19:00:14.473Z",
+  "round": "2026-11-20T10:00:14.403Z",
   "queue": [
     {
       "key": "1550480850",
@@ -322,7 +322,7 @@
         "14700hx"
       ],
       "first_observed_at": "2026-11-19T10:00:21.736Z",
-      "last_observed_at": "2026-11-19T19:00:20.583Z",
+      "last_observed_at": "2026-11-20T10:00:20.290Z",
       "last_detail_attempt_at": "2026-11-19T10:00:28.897Z",
       "detail_attempts": 1,
       "last_reasons": [
@@ -567,7 +567,7 @@
         "14700hx"
       ],
       "first_observed_at": "2026-11-19T10:00:21.736Z",
-      "last_observed_at": "2026-11-19T19:00:20.582Z",
+      "last_observed_at": "2026-11-20T10:00:20.290Z",
       "last_detail_attempt_at": "2026-11-19T10:00:40.504Z",
       "detail_attempts": 1,
       "last_reasons": [
@@ -599,7 +599,7 @@
         "14900hx"
       ],
       "first_observed_at": "2026-10-29T13:00:02.524Z",
-      "last_observed_at": "2026-11-19T19:00:57.124Z",
+      "last_observed_at": "2026-11-20T10:00:59.435Z",
       "last_detail_attempt_at": "2026-11-17T19:09:00.323Z",
       "detail_attempts": 5,
       "last_reasons": [
@@ -2081,23 +2081,91 @@
         ],
         "listing_observed_at": "2026-11-19T19:00:51.067Z"
       }
+    },
+    {
+      "key": "1554477422",
+      "title": "Lenovo Legion Pro 7 RTX 4080 i9 14900HX 240HZ",
+      "price_brl": 9000,
+      "card_fingerprint": "[\"Lenovo Legion Pro 7 RTX 4080 i9 14900HX 240HZ\",9000,[\"14900hx\"],null,\"RTX 4080\"]",
+      "checked_at": "2026-11-20T10:00:59.433Z",
+      "item": {
+        "id": "1554477422",
+        "url": "https://pr.olx.com.br/regiao-de-ponta-grossa-e-guarapuava/informatica/notebooks/lenovo-legion-pro-7-rtx-4080-i9-14900hx-240hz-1554477422",
+        "title": "Lenovo Legion Pro 7 RTX 4080 i9 14900HX 240HZ",
+        "cpu_term": "14900hx",
+        "search_terms": [
+          "14900hx"
+        ],
+        "description_discovery": false,
+        "price_brl": 9000,
+        "ram_gb": 16,
+        "storage_gb": 512,
+        "gpu": "RTX 4080",
+        "location": null,
+        "condition": null,
+        "status": "active",
+        "first_seen": null,
+        "last_seen": null,
+        "notes": null,
+        "desc_checked": true,
+        "validation": {
+          "version": 2,
+          "state": "rejected",
+          "checked_at": "2026-11-20T10:00:59.430Z",
+          "reasons": [
+            "Defeito ou avaria declarados no anúncio",
+            "RAM abaixo do mínimo de 32 GB"
+          ],
+          "listing_price_brl": 9000,
+          "detail_price_brl": 9000,
+          "visible_price_brl": null,
+          "structured_price_brl": 9000,
+          "title_specs": {
+            "ram_gb": null,
+            "storage_gb": null,
+            "gpu": "RTX 4080"
+          },
+          "description_specs": {
+            "ram_gb": 16,
+            "storage_gb": 512,
+            "gpu": "RTX 4080"
+          },
+          "cpu_confirmed": true,
+          "description_checked": true,
+          "detail_diagnostic": {
+            "state": "ready",
+            "http_status": 200,
+            "document_state": "interactive",
+            "description_found": true,
+            "price_found": true,
+            "structured_product_found": true,
+            "description_source": "structured",
+            "same_ad": true,
+            "body_length": 1769,
+            "wait_ms": 520,
+            "samples": 2
+          }
+        },
+        "description_evidence": "Vendendo meu Lenovo Legion Pro 7 (extremamente barato)Configurações:- RTX 4080 12GB (até 175W)- i9 14900HX- Tela 16? WQXGA (2560 x 1600) 240hz- 16GB RAM DDR5- 512GB SSD NVMEA máquina está esquentando muito! No uso esquenta acima de 87 graus e precisa ser resolvido. Usei com um ventilador virado pra ele e funcionou perfeitamente.Defeito/avaria:Esquentando muito",
+        "detail_title": "Lenovo Legion Pro 7 RTX 4080 i9 14900HX 240HZ",
+        "configuration_warnings": [],
+        "listing_observed_at": "2026-11-20T10:00:53.187Z"
+      }
     }
   ],
   "metrics": {
-    "extra_details": 1,
+    "extra_details": 0,
     "total_details": 1,
-    "detail_ms": 1030,
+    "detail_ms": 0,
     "recovered_validated": 0,
-    "cache_hits": 2,
-    "by_term": {
-      "14900hx": 1
-    },
+    "cache_hits": 3,
+    "by_term": {},
     "detail_yield": {
       "14900hx": {
         "reads": 1,
         "validated_offers": 0,
         "read_keys": [
-          "1553798222"
+          "1554477422"
         ]
       }
     },
