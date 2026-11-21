@@ -1,22 +1,23 @@
 {
   "schema_version": 1,
-  "run_id": "2026-11-20T19-02-50-804Z",
-  "committed_at": "2026-11-20T19:02:50.906Z",
-  "snapshot": "runs/2026-11-20T19-02-50-804Z/snapshot.json",
-  "report": "runs/2026-11-20T19-02-50-804Z/report.md",
+  "run_id": "2026-11-21T12-19-07-917Z",
+  "committed_at": "2026-11-21T12:19:08.049Z",
+  "snapshot": "runs/2026-11-21T12-19-07-917Z/snapshot.json",
+  "report": "runs/2026-11-21T12-19-07-917Z/report.md",
   "quarantine": null,
   "summary": {
     "schema_version": 1,
-    "collected_at": "2026-11-20T19:02:50.804Z",
+    "collected_at": "2026-11-21T12:19:07.917Z",
     "execution": "success",
     "issues": [
-      "Listagem incompleta: limite de 60 cards ou próxima página pendente; 1 ficha(s) aguardando leitura dentro dos limites da rodada"
+      "Listagem incompleta: limite de 60 cards ou próxima página pendente; 1 ficha(s) aguardando leitura dentro dos limites da rodada",
+      "Listagem incompleta: limite de 90 cards ou próxima página pendente"
     ],
     "coverage": {
       "status": "partial",
-      "scheduled": 9,
-      "completed": 8,
-      "incomplete": 1,
+      "scheduled": 8,
+      "completed": 6,
+      "incomplete": 2,
       "deferred": 0,
       "pending_descriptions": 29,
       "pending_candidates": 13,
@@ -33,31 +34,29 @@
             "13980hx",
             "14900hx",
             "13900hx",
-            "7845hx",
-            "8840hx",
-            "aimax390",
-            "hx470",
-            "family:legion-pro-5"
+            "290hx",
+            "9955hx",
+            "aimax395",
+            "family:rog-strix-g16"
           ],
           "completed_terms": [
             "14700hx",
             "13980hx",
             "13900hx",
-            "7845hx",
-            "8840hx",
-            "aimax390",
-            "hx470",
-            "family:legion-pro-5"
+            "290hx",
+            "9955hx",
+            "aimax395"
           ],
           "incomplete_terms": [
-            "14900hx"
+            "14900hx",
+            "family:rog-strix-g16"
           ],
           "pending_details": 0,
           "queued_candidates": 19,
           "pending_candidates": 13,
-          "scheduled": 9,
-          "completed": 8,
-          "incomplete": 1,
+          "scheduled": 8,
+          "completed": 6,
+          "incomplete": 2,
           "status": "partial"
         },
         "tracking": {
@@ -78,7 +77,7 @@
           "pending_details": 1,
           "min_price_exclusive": true,
           "queued_candidates": 10,
-          "pending_candidates": 12,
+          "pending_candidates": 11,
           "scheduled": 3,
           "completed": 2,
           "incomplete": 1,
@@ -96,20 +95,20 @@
     }
   },
   "checksums": {
-    "snapshot_sha256": "d203885d944d6ea50a4a1819babb407de5e14516c8965aa9d9debe06690a32cb",
-    "report_sha256": "50e25a0b1fc0e72fcd2c8c63957c178b938cdb84023454d4adefef246b85f146"
+    "snapshot_sha256": "e4e67793841a46a3cc86c14b702996b8dd476a18e4fc1187d92d3d268636ff3e",
+    "report_sha256": "3787e4b506549d3b99da1d6cf51e4bc647aa61b27e01aa2b6dc8e72763aaac42"
   },
   "metadata": {
     "source": "olx-notebooks",
     "transport": "cdp",
-    "collection_started_at": "2026-11-20T19:00:14.569Z",
-    "collected_count": 19,
-    "failed_term_count": 1,
-    "successful_term_count": 8,
+    "collection_started_at": "2026-11-21T12:17:05.368Z",
+    "collected_count": 18,
+    "failed_term_count": 2,
+    "successful_term_count": 6,
     "in_progress": false,
     "validated_count": 0,
-    "pending_count": 15,
-    "rejected_count": 4,
+    "pending_count": 13,
+    "rejected_count": 5,
     "quarantined_item_count": 0
   }
 }
