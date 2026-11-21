@@ -1,7 +1,22 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-21T12:19:42.126Z",
+  "updated_at": "2026-11-21T19:00:41.715Z",
   "runs": [
+    {
+      "run_id": "2026-11-21T19-00-41-401Z",
+      "committed_at": "2026-11-21T19:00:41.421Z",
+      "completed_at": "2026-11-21T19:00:41.401Z",
+      "outcome": "deferred",
+      "partial": true,
+      "duration_ms": 67,
+      "item_count": 18,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "monitores-oled",
+        "collected_count": 0,
+        "quarantined_item_count": 0
+      }
+    },
     {
       "run_id": "2026-11-21T12-19-41-530Z",
       "committed_at": "2026-11-21T12:19:41.553Z",
@@ -10,11 +25,26 @@
       "partial": true,
       "duration_ms": 2479,
       "item_count": 18,
-      "quarantined_item_count": 0,
       "metadata": {
         "source": "monitores-oled",
         "collected_count": 2,
-        "quarantined_item_count": 0
+        "quarantined_item_count": 0,
+        "in_progress": false
+      }
+    },
+    {
+      "run_id": "2026-11-21T11-01-47-289Z",
+      "committed_at": "2026-11-21T11:01:47.309Z",
+      "completed_at": "2026-11-21T11:01:47.289Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 2056,
+      "item_count": 18,
+      "metadata": {
+        "source": "monitores-oled",
+        "collected_count": 2,
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     },
     {
@@ -1768,36 +1798,6 @@
       "metadata": {
         "source": "monitores-oled",
         "collected_count": 1,
-        "quarantined_item_count": 0,
-        "in_progress": false
-      }
-    },
-    {
-      "run_id": "2026-10-19T19-01-19-491Z",
-      "committed_at": "2026-10-19T19:01:19.516Z",
-      "completed_at": "2026-10-19T19:01:19.491Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 710,
-      "item_count": 16,
-      "metadata": {
-        "source": "monitores-oled",
-        "collected_count": 1,
-        "quarantined_item_count": 0,
-        "in_progress": false
-      }
-    },
-    {
-      "run_id": "2026-10-19T11-01-05-245Z",
-      "committed_at": "2026-10-19T11:01:05.267Z",
-      "completed_at": "2026-10-19T11:01:05.245Z",
-      "outcome": "deferred",
-      "partial": true,
-      "duration_ms": 9,
-      "item_count": 16,
-      "metadata": {
-        "source": "monitores-oled",
-        "collected_count": 0,
         "quarantined_item_count": 0,
         "in_progress": false
       }
