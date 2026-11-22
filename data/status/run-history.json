@@ -1,7 +1,22 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-22T10:05:02.138Z",
+  "updated_at": "2026-11-22T11:01:09.879Z",
   "runs": [
+    {
+      "run_id": "0270984b-70e3-43c8-a301-f6a41dbc1127",
+      "completed_at": "2026-11-22T11:01:09.878Z",
+      "outcome": "partial",
+      "partial": true,
+      "duration_ms": 6247,
+      "item_count": 0,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "ci",
+        "monitor_errors": 0,
+        "monitor_failures": [],
+        "pending_notifications": 0
+      }
+    },
     {
       "run_id": "3483d007-0ff0-4eda-ae99-efc846f18b64",
       "completed_at": "2026-11-22T10:05:02.135Z",
@@ -1916,23 +1931,6 @@
         "source": "ci",
         "monitor_errors": 0,
         "monitor_failures": [],
-        "pending_notifications": 3
-      }
-    },
-    {
-      "run_id": "a81bcda5-f5d2-4d73-a10d-28c6bb88ef0b",
-      "completed_at": "2026-09-30T19:44:44.074Z",
-      "outcome": "failed",
-      "partial": true,
-      "duration_ms": 2678092,
-      "item_count": 3,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "local",
-        "monitor_errors": 1,
-        "monitor_failures": [
-          "Google Pixel Watch 4: Saiu com código 1: Aviso: termo \"pixel watch 4\" em https://www.olx.com.br/brasil falhou — Cloudflare bloqueando após 15s"
-        ],
         "pending_notifications": 3
       }
     }
