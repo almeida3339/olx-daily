@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-11-22T10-03-31-562Z",
+  "committed_at": "2026-11-22T10:03:31.643Z",
+  "snapshot": "runs/2026-11-22T10-03-31-562Z/snapshot.json",
+  "report": "runs/2026-11-22T10-03-31-562Z/report.md",
+  "quarantine": null,
+  "summary": {
+    "schema_version": 1,
+    "collected_at": "2026-11-22T10:03:31.562Z",
+    "execution": "success",
+    "issues": [
+      "Listagem incompleta: limite de 60 cards ou próxima página pendente; 1 ficha(s) aguardando leitura dentro dos limites da rodada",
+      "2 ficha(s) aguardando leitura dentro dos limites da rodada"
+    ],
+    "coverage": {
+      "status": "partial",
+      "scheduled": 7,
+      "completed": 5,
+      "incomplete": 2,
+      "deferred": 0,
+      "pending_descriptions": 32,
+      "pending_candidates": 15,
+      "pending_details": 0,
+      "heuristic_stops": [],
+      "heuristic_reasons": {},
+      "price_scopes": {
+        "schema_version": 1,
+        "offers": {
+          "min_price_brl": 2000,
+          "max_price_brl": 8000,
+          "scheduled_terms": [
+            "14700hx",
+            "13980hx",
+            "14900hx",
+            "13900hx",
+            "9955hx3d",
+            "255hx",
+            "family:avell-storm"
+          ],
+          "completed_terms": [
+            "14700hx",
+            "13980hx",
+            "13900hx",
+            "9955hx3d",
+            "255hx"
+          ],
+          "incomplete_terms": [
+            "14900hx",
+            "family:avell-storm"
+          ],
+          "pending_details": 1,
+          "queued_candidates": 21,
+          "pending_candidates": 15,
+          "scheduled": 7,
+          "completed": 5,
+          "incomplete": 2,
+          "status": "partial"
+        },
+        "tracking": {
+          "min_price_brl": 8000,
+          "max_price_brl": 10000,
+          "scheduled_terms": [
+            "14700hx",
+            "14900hx",
+            "13900hx"
+          ],
+          "completed_terms": [
+            "14700hx",
+            "13900hx"
+          ],
+          "incomplete_terms": [
+            "14900hx"
+          ],
+          "pending_details": 1,
+          "min_price_exclusive": true,
+          "queued_candidates": 11,
+          "pending_candidates": 12,
+          "scheduled": 3,
+          "completed": 2,
+          "incomplete": 1,
+          "status": "partial"
+        }
+      }
+    },
+    "findings": {
+      "new_items": [],
+      "price_changes": [],
+      "active_count": 0,
+      "pending_count": 15,
+      "new_count": 0,
+      "price_count": 0
+    }
+  },
+  "checksums": {
+    "snapshot_sha256": "2f1401ba1c9e15ae936e5f708b9f842868ea280a3e4f9dd5565c9c3ae6525393",
+    "report_sha256": "675903bd2e7ebf37555a66cfb1428edf5d5394d7ac98feb10cb54a9781f912f6"
+  },
+  "metadata": {
+    "source": "olx-notebooks",
+    "transport": "cdp",
+    "collection_started_at": "2026-11-22T10:00:14.542Z",
+    "collected_count": 26,
+    "failed_term_count": 2,
+    "successful_term_count": 5,
+    "in_progress": false,
+    "validated_count": 1,
+    "pending_count": 16,
+    "rejected_count": 9,
+    "quarantined_item_count": 0
+  }
+}
