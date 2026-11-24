@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-11-24T19-01-46-103Z",
+  "committed_at": "2026-11-24T19:01:46.104Z",
+  "snapshot": "runs/2026-11-24T19-01-46-103Z/snapshot.json",
+  "report": "runs/2026-11-24T19-01-46-103Z/report.md",
+  "quarantine": null,
+  "summary": {
+    "schema_version": 1,
+    "collected_at": "2026-11-24T19:01:46.103Z",
+    "execution": "success",
+    "issues": [],
+    "coverage": {
+      "status": "complete",
+      "scheduled": 1,
+      "completed": 1,
+      "incomplete": 0,
+      "deferred": 0,
+      "pending_descriptions": 0,
+      "pending_candidates": 0,
+      "pending_details": 0,
+      "heuristic_stops": [],
+      "heuristic_reasons": {}
+    },
+    "findings": {
+      "new_items": [],
+      "price_changes": [],
+      "active_count": 0,
+      "pending_count": 0,
+      "new_count": 0,
+      "price_count": 0
+    }
+  },
+  "checksums": {
+    "snapshot_sha256": "edf22317bbfd6f2e85917dceb5190de4894c616a7f8d1625d4fd7aa55833d762",
+    "report_sha256": "aedb99a1894935577d96de6147c24fa063041e5359194a535db6ced3c4ce16ff"
+  },
+  "metadata": {
+    "source": "enjoei-kapital",
+    "collected_count": 0,
+    "pending_count": 0,
+    "failed_term_count": 0,
+    "quarantined_item_count": 0
+  }
+}
