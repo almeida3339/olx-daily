@@ -60,6 +60,45 @@ test('weekly family cap includes the final queue pass and legacy aliases', async
   assert.equal(await q.reserveDetail(term,true,cards[2],{finishRound:true}),false);
 });
 
+test('family backlog shares its cap across aliases and retains the best unread cards on load and enqueue', async t => {
+  const family = 'family:helios-neo-16';
+  const alias = family + ':14700hx';
+  const weak = Array.from({ length: 7 }, (_, i) => ({
+    ...card(String(155000020 + i), i % 2 ? family : alias, 3000 + i),
+    title: 'Notebook Acer Predator Helios Neo 16',
+  }));
+  const cpu = card('155000050', '14700hx');
+  const q = await queueFixture(t, { cards: [...weak, cpu], metrics: { extra_details: 0, total_details: 0, by_term: {} } });
+  assert.equal(q.summary().unread_family_candidates_trimmed, 3);
+  assert.deepEqual(q.pending(family).map(x => x.url), weak.slice(0, 4).map(x => x.url));
+  const first = q.pending(family)[0];
+  assert.equal(await q.reserveDetail(family, true, first), true);
+  await q.remember(first, { validation: { state: 'pending', reasons: ['CPU não confirmada'] } });
+  const strong = [card('155000030', alias, 7000), card('155000031', alias, 7100)];
+  const trimmed = await q.enqueue(strong, alias);
+  assert.deepEqual([...trimmed], ['155000023']);
+  assert.equal(q.pending(family).length + q.pending(alias).length, 4);
+  assert.deepEqual(q.pending().slice(0, 3).map(x => x.url).sort(), [cpu, ...strong].map(x => x.url).sort());
+  assert.deepEqual(q.observation(first), ['CPU não confirmada']);
+  await q.enqueue([weak[3]], '14700hx');
+  assert.equal(q.pending('14700hx').length, 2);
+});
+
+test('offer coverage distinguishes candidates screened out from those still in the queue', () => {
+  const term = 'family:helios-neo-16', key = '1234';
+  const snapshot = { items: [], run: {
+    started_at: '2026-11-25T09:30:00Z', scheduled_coverage: [term], successful_coverage: [],
+    failed_terms: [{ term, kind: 'incomplete' }],
+    query_yield: { [term]: { listing_incomplete: false, details_pending: 0, excluded_from_detail_queue: [key] } },
+  } };
+  const { offers } = buildOlxPriceCoverage(snapshot);
+  assert.equal(offers.status, 'partial');
+  assert.equal(offers.pending_details, 0);
+  assert.equal(offers.excluded_from_detail_queue, 1);
+  snapshot.items.push({ id: key, validation: { state: 'validated', checked_at: '2026-11-25T09:31:00Z' } });
+  assert.equal(buildOlxPriceCoverage(snapshot).offers.status, 'complete');
+});
+
 function snapshotFixture(){
   const terms=['14700hx','13980hx','14900hx','13900hx','family:rog-strix-g16'];
   const pendingItem=(term,price)=>({id:`${term}-${price}`,status:'active',cpu_term:term,price_brl:price,

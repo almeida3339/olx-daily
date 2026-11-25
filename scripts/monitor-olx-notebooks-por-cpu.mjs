@@ -333,6 +333,7 @@ async function collectOlxTerms({ runDate, runTimestamp, previousSnapshot, transp
           details_pending_tracking: results.details_pending_tracking ?? 0,
           tracking_candidates: results.tracking_candidates ?? 0,
           pending_detail_keys: results.pending_detail_keys,
+          excluded_from_detail_queue: results.excluded_from_detail_queue,
           recommendations_ignored: results.recommendations_ignored ?? 0 };
         await recordOlxYield('notebooks',term,{complete:!results.coverage_incomplete,
           listingLimit:results.listing_limit,listingIncomplete:Boolean(results.listing_incomplete),
@@ -530,15 +531,28 @@ async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openD
     .sort((a, b) => a.price_brl - b.price_brl);
   const unknown = eligible.filter(card => (familySearch ? !hasExplicitOtherNotebookCpu(`${card.title}\n${card.text ?? ''}`) : cardCpuState(`${card.title}\n${card.text ?? ''}`, cpuTerm) === 'unknown')
     && card.price_brl >= PRICE_MIN_BRL && card.price_brl <= PRICE_MAX_BRL);
-  if (!listingOnly) await descriptionQueue.enqueue(unknown, cpuTerm);
+  const reusableDetail = card => descriptionQueue.result(card) ?? (!forceOpenDetails
+    ? descriptionQueue.cached(card) ?? (descriptionQueue.needsRecheck(card) ? null : getReusablePreviousEnrichedItem(previousSnapshot, card))
+    : null);
+  const reusableFamily = new Map();
+  if (familySearch && !listingOnly) for (const card of unknown) {
+    const saved = reusableDetail(card);
+    if (saved && ['validated', 'rejected'].includes(saved.validation?.state)) {
+      reusableFamily.set(cardKey(card), saved);
+      if (!descriptionQueue.result(card)) await descriptionQueue.useCached(card, saved);
+    }
+  }
+  const toQueue = unknown.filter(card => !reusableFamily.has(cardKey(card)));
+  const trimmed = listingOnly ? new Set() : await descriptionQueue.enqueue(toQueue, cpuTerm);
   const waiting = listingOnly ? [] : descriptionQueue.pending(cpuTerm);
   // Reserve at most two of the existing item slots; no additional scrolling.
   const reserveSlots = Math.min(2, waiting.length, maxCards);
-  const observed = listingOnly ? [] : unknown.filter(card => descriptionQueue.observation(card) !== null);
+  const observed = listingOnly ? [] : unknown.filter(card => !reusableFamily.has(cardKey(card)) && descriptionQueue.observation(card) !== null);
   const toProcess = descriptionQueue.prioritize([...matches.slice(0, maxCards - reserveSlots), ...waiting, ...matches.slice(maxCards - reserveSlots)]);
   // Keep observations visible without consuming the detail slots of new candidates.
-  toProcess.push(...observed);
+  toProcess.push(...observed, ...unknown.filter(card => reusableFamily.has(cardKey(card))));
   const items = [], seen = new Set();
+  items.excluded_from_detail_queue = toQueue.map(cardKey).filter(key => trimmed.has(key));
   items.eligible_candidate_ids = [...new Set([...matches, ...unknown]
     .filter(card => card.price_brl <= PRICE_MAX_BRL).map(cardKey))];
   items.listing_incomplete = Boolean(cards.listing_incomplete);
@@ -557,7 +571,7 @@ async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openD
     seen.add(key);
     const listingItem = listingCardToItem(card);
     if (listingOnly) { items.push(listingItem); continue; }
-    const observation = descriptionQueue.observation(card);
+    const observation = reusableFamily.has(key) ? null : descriptionQueue.observation(card);
     if (observation !== null) {
       const previous = previousSnapshot?.items.find(item => (item.id ?? item.url) === (listingItem.id ?? listingItem.url)
         && item.validation?.state === 'pending' && item.title === listingItem.title && item.price_brl === listingItem.price_brl);
@@ -566,15 +580,11 @@ async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openD
       observedCount++;
       continue;
     }
-    const current = descriptionQueue.result(card);
-    const cached = descriptionQueue.cached(card);
-    const reusable = current ?? (!forceOpenDetails
-      ? cached ?? (descriptionQueue.needsRecheck(card) ? null : getReusablePreviousEnrichedItem(previousSnapshot, card))
-      : null);
+    const reusable = reusableFamily.get(key) ?? reusableDetail(card);
     if (reusable) {
       // Preserve the CPU confirmed in the description, not the discovery query.
       items.push({ ...revalidateSavedOlxItem(reusable), search_terms: [...new Set([...(reusable.search_terms ?? []), cpuTerm])] });
-      if (!current) await descriptionQueue.useCached(card, reusable);
+      if (!reusableFamily.has(key) && !descriptionQueue.result(card)) await descriptionQueue.useCached(card, reusable);
       continue;
     }
     const inRange = card.price_brl >= PRICE_MIN_BRL && card.price_brl <= PRICE_MAX_BRL;
@@ -609,6 +619,7 @@ async function processCpuCards(cards, cpuTerm, maxCards, previousSnapshot, openD
   items.incomplete_reasons = [
     ...(items.listing_incomplete ? [`Listagem incompleta: limite de ${maxCards} cards ou próxima página pendente`] : []),
     ...(items.details_pending ? [`${items.details_pending} ficha(s) aguardando leitura dentro dos limites da rodada`] : []),
+    ...(items.excluded_from_detail_queue.length ? [`${items.excluded_from_detail_queue.length} candidato(s) fora da fila pelo limite da família`] : []),
   ];
   items.coverage_incomplete = items.incomplete_reasons.length > 0;
   const listed = new Set(eligible.map(cardKey));
@@ -1163,6 +1174,7 @@ function buildReport({ runDate, snapshot, previousSnapshot, priceMin, priceMax }
     lines.push(`- Total de detalhes reservados: **${d.total_details ?? 0}/${d.total_detail_limit ?? 12}**.`);
     if (d.reallocated_details) lines.push(`- Vaga adicional redistribuída entre famílias ao final: **${d.reallocated_details}** (dentro do orçamento existente).`);
     lines.push(`- Candidatos aguardando descrição: **${d.queued_candidates}**. Validação da fila completa: **${d.validation_complete ? 'sim' : 'não'}**.`);
+    if (d.unread_family_candidates_trimmed) lines.push(`- Fichas antigas retiradas pelo limite por família: **${d.unread_family_candidates_trimmed}**.`);
     if (d.waiting_for_configuration) lines.push(`- Em observação por configuração incompleta: **${d.waiting_for_configuration}**. Nova leitura após mudança na listagem.`);
   }
   for (const [term, row] of Object.entries(snapshot.run.query_yield ?? {})) {

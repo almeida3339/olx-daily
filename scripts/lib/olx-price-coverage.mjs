@@ -34,8 +34,10 @@ export function buildOlxPriceCoverage(snapshot, { offerMax = 8000, trackingMax =
     const knownSplit = Boolean(row && (details === 0 || classifiedOriginal === details));
     const technical = failure && failure.kind !== 'incomplete';
     const readComplete = successful.has(term) || (!technical && knownSplit && row.listing_incomplete === false);
+    const excluded = (row?.excluded_from_detail_queue ?? []).filter(key => !readAfterQueue(key)).length;
     offers.scheduled_terms.push(term); offers.pending_details += offerDetails;
-    (readComplete && !offerDetails ? offers.completed_terms : offers.incomplete_terms).push(term);
+    if (excluded) offers.excluded_from_detail_queue = (offers.excluded_from_detail_queue ?? 0) + excluded;
+    (readComplete && !offerDetails && !excluded ? offers.completed_terms : offers.incomplete_terms).push(term);
     const observedTracking = row?.tracking_candidates ?? items.filter(item => recent(item) && relates(item,term)
       && number(item.price_brl) > offerMax && number(item.price_brl) <= trackingMax).length;
     if (observedTracking || trackingDetails) {
@@ -59,7 +61,7 @@ export function buildOlxPriceCoverage(snapshot, { offerMax = 8000, trackingMax =
 export function olxPriceCoverageLines(value) {
   const {offers,tracking} = value;
   return [
-    `Ofertas até R$ ${offers.max_price_brl.toLocaleString('pt-BR')}: ${offers.completed}/${offers.scheduled} consultas concluídas; ${offers.pending_candidates} candidatos pendentes; ${offers.pending_details} fichas adiadas nesta rodada`,
+    `Ofertas até R$ ${offers.max_price_brl.toLocaleString('pt-BR')}: ${offers.completed}/${offers.scheduled} consultas concluídas; ${offers.pending_candidates} candidatos pendentes; ${offers.pending_details} fichas adiadas nesta rodada${offers.excluded_from_detail_queue ? `; ${offers.excluded_from_detail_queue} fora da fila pelo limite das famílias` : ''}`,
     `Acompanhamento acima de R$ ${offers.max_price_brl.toLocaleString('pt-BR')} até R$ ${tracking.max_price_brl.toLocaleString('pt-BR')}: ${tracking.pending_details} fichas adiadas nesta rodada; ${tracking.pending_candidates} candidatos pendentes`,
   ];
 }

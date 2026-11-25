@@ -26,6 +26,24 @@ export async function latestEnjoeiWorkflow({ now = Date.now(), fetchFn = fetch, 
   }
 }
 
+async function readEnjoeiCiStatus(root, fetchFn = fetch) {
+  const local = fs.readFile(path.join(root, 'data/status/latest-ci.json'), 'utf8')
+    .then(JSON.parse).catch(() => null);
+  const published = (async () => {
+    try {
+      const response = await fetchFn('https://raw.githubusercontent.com/almeida3339/olx-daily/main/data/status/latest-ci.json', {
+        cache: 'no-store', signal: AbortSignal.timeout(4_000),
+      });
+      return response.ok ? await response.json() : null;
+    } catch {
+      return null;
+    }
+  })();
+  const [checkout, online] = await Promise.all([local, published]);
+  const completedAt = status => Date.parse(status?.round_summary?.completed_at ?? '') || 0;
+  return completedAt(online) >= completedAt(checkout) && online?.round_summary ? online : checkout;
+}
+
 export const ENJOEI_RECOVERY_JOBS = [
   { script: 'monitor-enjoei-tenis.mjs', ids: ['enjoei'] },
   { script: 'monitor-enjoei-notebooks.mjs', ids: ['enjoei-notebooks'] },
@@ -57,29 +75,37 @@ export async function staleEnjoeiJobs(root, { now = Date.now(), maxAgeMs = 36 * 
   if (latest && latest.status !== 'completed') return [];
   const failedAt = latest && ['failure','timed_out','startup_failure'].includes(latest.conclusion)
     ? Date.parse(latest.run_started_at ?? latest.created_at) : NaN;
-  if (ciStatus === undefined) {
-    try { ciStatus=JSON.parse(await fs.readFile(path.join(root,'data/status/latest-ci.json'),'utf8')); }
-    catch (error) { if (error.code!=='ENOENT') console.warn('Status CI indisponível; recuperação usará os snapshots por monitor.'); }
-  }
+  if (ciStatus === undefined) ciStatus = await readEnjoeiCiStatus(root, fetchFn);
   const recorded=ciStatus?.round_summary;
+  const sources = new Map(Array.isArray(recorded?.sources) ? recorded.sources.map(source => [source.id, source.summary]) : []);
+  const collectedAt = id => {
+    const summary = sources.get(id);
+    if (summary?.execution !== 'success' || !(summary.coverage?.completed > 0)
+      || ['deferred', 'in_progress'].includes(summary.coverage.status)) return NaN;
+    const at = Date.parse(summary.collected_at ?? '');
+    return at <= now ? at : NaN;
+  };
   const sameFailedRun=Number.isFinite(failedAt) && Math.abs(Date.parse(recorded?.started_at ?? '')-failedAt)<30*60_000
     && Date.parse(recorded?.completed_at ?? '')>=failedAt;
   const selected = await Promise.all(ENJOEI_RECOVERY_JOBS.map(async job => {
     const snapshots = await Promise.all(job.ids.map(id => readLatestValidSnapshot(resolveWatchlistDataDir(root, id))));
-    const stale = snapshots.some(({ snapshot }) => {
+    const publishedAt = job.ids.map(collectedAt);
+    const stale = snapshots.some(({ snapshot }, index) => {
       const checkedAt = Date.parse(snapshot?.generated_at ?? '');
-      return !Number.isFinite(checkedAt) || now - checkedAt > maxAgeMs;
+      const fresh = at => Number.isFinite(at) && now - at <= maxAgeMs;
+      return !fresh(checkedAt) && !fresh(publishedAt[index]);
     });
-    const recordedSources=sameFailedRun ? job.ids.map(id=>recorded.sources?.find(source=>source.id===id)) : [];
-    const knownResult=recordedSources.length && recordedSources.every(source=>source?.summary);
-    const failedSource=knownResult && recordedSources.some((source,index)=>{
-      if (!['failed','blocked'].includes(source.summary.execution)) return false;
+    const recordedSources = sameFailedRun ? job.ids.map(id => sources.get(id)) : [];
+    const knownResult = recordedSources.length && recordedSources.every(Boolean);
+    const failedSource = knownResult && recordedSources.some((summary, index) => {
+      if (!['failed','blocked'].includes(summary.execution)) return false;
       const snapshot=snapshots[index].snapshot;
       const recovered=Date.parse(snapshot?.run?.completed_at ?? snapshot?.generated_at ?? '')>Date.parse(recorded.completed_at)
         && !snapshot?.run?.errors?.length && !['failed','blocked'].includes(snapshot?.run?.operational?.status);
       return !recovered;
     });
-    const missedRun = Number.isFinite(failedAt) && (knownResult ? failedSource : snapshots.some(({ snapshot }) => {
+    const missedRun = Number.isFinite(failedAt) && (knownResult ? failedSource : snapshots.some(({ snapshot }, index) => {
+      if (publishedAt[index] >= failedAt) return false;
       const checkedAt = Date.parse(snapshot?.run?.completed_at ?? snapshot?.generated_at ?? '');
       return !Number.isFinite(checkedAt) || checkedAt < failedAt || ['failed','blocked'].includes(snapshot?.run?.operational?.status);
     }));

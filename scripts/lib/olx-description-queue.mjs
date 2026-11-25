@@ -102,8 +102,30 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
       ram_gb: cached.ram_gb, gpu: cached.gpu } : null;
     applyRetryPolicy(entry, cached);
   }
-  state.queue.sort((a,b) => compareDescriptionCandidates(a,b,displayMaxPrice));
+  // Keep two rounds' worth of unread candidates for broad family searches.
+  // Entries also found by a specific CPU and previously read entries use their existing policy.
+  function trimUnreadFamilies() {
+    const byFamily = new Map(), removed = new Set();
+    state.queue.sort((a, b) => compareDescriptionCandidates(a, b, displayMaxPrice));
+    state.queue = state.queue.filter(entry => {
+      if (entry.last_detail_attempt_at || entry.retry_kind || !entry.terms.length
+          || !entry.terms.every(term => term.startsWith('family:'))) return true;
+      const families = [...new Set(entry.terms.map(quotaTerm))];
+      if (families.some(family => (byFamily.get(family) ?? 0) >= 2 * detailLimit(family, perTerm))) {
+        removed.add(entry.key);
+        return false;
+      }
+      for (const family of families) byFamily.set(family, (byFamily.get(family) ?? 0) + 1);
+      return true;
+    });
+    return removed;
+  }
   const save = () => writeJsonAtomic(file, state, { validate: null });
+  const trimmedAtStart = trimUnreadFamilies().size;
+  if (trimmedAtStart) {
+    state.metrics.unread_family_candidates_trimmed = (state.metrics.unread_family_candidates_trimmed ?? 0) + trimmedAtStart;
+    await save();
+  }
   const totalLimit = Number(process.env.OLX_DETAIL_MAX ?? 12);
   const newReserved = Math.min(3, Math.ceil(totalLimit / 4));
   const ready = entry => !parked(entry) && (!entry.next_retry_at || Date.parse(entry.next_retry_at) <= Date.now());
@@ -145,12 +167,14 @@ export async function createDescriptionQueue(file, round, { perTerm = 2, perRoun
           if (!existing.terms.includes(term)) existing.terms.push(term);
         } else state.queue.push({ key, card: { ...card, description_discovery: card.description_discovery ?? true }, terms: [term], first_observed_at: new Date().toISOString(), last_observed_at: new Date().toISOString() });
       }
+      const trimmed = trimUnreadFamilies();
       if (state.queue.length > 500) {
         state.queue.sort((a, b) => Number(parked(a)) - Number(parked(b))
           || Date.parse(b.last_observed_at) - Date.parse(a.last_observed_at));
         state.queue = state.queue.slice(0, 500);
       }
       await save();
+      return trimmed;
     },
     pending(term) { return state.queue.filter(x => ready(x) && (term == null || x.terms.includes(term)))
       .sort((a,b)=>compareDescriptionCandidates(a,b,displayMaxPrice))

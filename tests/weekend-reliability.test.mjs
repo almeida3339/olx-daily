@@ -76,6 +76,35 @@ test('36-hour fallback remains available outside dispatch windows when GitHub is
   assert.equal(jobs.length,7);assert.ok(jobs.every(job=>job.failed_workflow_id===null));
 });
 
+test('recent published per-source Enjoei results prevent duplicate local recovery', async t => {
+  const { root, ciStatus } = await recoveryFixture(t);
+  const now = Date.parse('2026-11-03T10:00:00Z');
+  const ciRun = { status: 'completed', conclusion: 'success' };
+  const recorded = ciStatus.round_summary;
+  const published = { round_summary: {
+    started_at: '2026-11-02T19:01:00Z',
+    completed_at: '2026-11-02T19:02:00Z',
+    sources: recorded.sources.map(({ id }) => ({ id, summary: {
+      execution: 'success', collected_at: '2026-11-02T19:01:50Z', coverage: { status: 'partial', completed: 1 },
+    } })),
+  } };
+  const fetchFn = async url => {
+    assert.match(url, /\/main\/data\/status\/latest-ci\.json$/);
+    return { ok: true, json: async () => published };
+  };
+  assert.deepEqual(await staleEnjoeiJobs(root, { now, ciRun, fetchFn }), []);
+  published.round_summary.sources.find(source => source.id === 'enjoei').summary.execution = 'failed';
+  published.round_summary.sources.find(source => source.id === 'enjoei-kapital').summary.coverage.completed = 0;
+  const jobs = await staleEnjoeiJobs(root, { now, ciRun, fetchFn });
+  assert.deepEqual(jobs.map(job => job.ids), [['enjoei'], ENJOEI_RECOVERY_JOBS.at(-1).ids]);
+
+  const statusDir = path.join(root, 'data', 'status');
+  await fs.mkdir(statusDir, { recursive: true });
+  await fs.writeFile(path.join(statusDir, 'latest-ci.json'), JSON.stringify(published));
+  const fallback = await staleEnjoeiJobs(root, { now, ciRun, fetchFn: async () => { throw new Error('offline'); } });
+  assert.deepEqual(fallback, jobs);
+});
+
 const url='https://sp.olx.com.br/informatica/notebooks/notebook-1540000001';
 const ready={url,title:'Notebook i9 13980hx 32gb RAM RTX 4060',description:'Memória RAM 32gb, CPU i9 13980hx, RTX 4060.',structured_price:7000,body_text:'Página do anúncio',document_state:'complete',structured_product_found:true,description_source:'structured'};
 test('detail reader waits for ad fields even when recommendation body is already large',async()=>{
