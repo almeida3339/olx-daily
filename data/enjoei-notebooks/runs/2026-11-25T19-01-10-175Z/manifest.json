@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-11-25T19-01-10-175Z",
+  "committed_at": "2026-11-25T19:01:12.484Z",
+  "snapshot": "runs/2026-11-25T19-01-10-175Z/snapshot.json",
+  "report": "runs/2026-11-25T19-01-10-175Z/report.md",
+  "quarantine": null,
+  "summary": {
+    "schema_version": 1,
+    "collected_at": "2026-11-25T19:01:12.472Z",
+    "execution": "success",
+    "issues": [],
+    "coverage": {
+      "status": "complete",
+      "scheduled": 4,
+      "completed": 4,
+      "incomplete": 0,
+      "deferred": 0,
+      "pending_descriptions": 0,
+      "pending_candidates": 0,
+      "pending_details": 0,
+      "heuristic_stops": [],
+      "heuristic_reasons": {}
+    },
+    "findings": {
+      "new_items": [],
+      "price_changes": [],
+      "active_count": 0,
+      "pending_count": 0,
+      "new_count": 0,
+      "price_count": 0
+    }
+  },
+  "checksums": {
+    "snapshot_sha256": "c28f5136ec5bb8aef45e0c590af9a0ef8bafdf15d2d74ac818be55fad8817cf8",
+    "report_sha256": "e20974638ada1409a3b8189a9577b158ba9b6396eee62ad3cb3434a7aa14b698"
+  },
+  "metadata": {
+    "source": "enjoei-notebooks",
+    "collected_count": 0,
+    "failed_term_count": 0,
+    "incomplete_term_count": 0,
+    "collection_started_at": "2026-10-15T11:01:00.934Z",
+    "quarantined_item_count": 0
+  }
+}
