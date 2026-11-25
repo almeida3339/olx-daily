@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-11-25T19:01:15.626Z",
+  "generated_at": "2026-11-25T19:04:49.194Z",
   "sources": [
     {
       "id": "enjoei-momotaro",
@@ -10,7 +10,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-11-25T19:01:10.683Z",
-      "age_ms": 4943,
+      "age_ms": 218511,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -43,7 +43,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-11-25T19:01:11.758Z",
-      "age_ms": 3868,
+      "age_ms": 217436,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -76,7 +76,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-11-25T19:01:12.330Z",
-      "age_ms": 3296,
+      "age_ms": 216864,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -109,7 +109,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-11-25T19:01:12.843Z",
-      "age_ms": 2783,
+      "age_ms": 216351,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -142,7 +142,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-11-25T19:01:13.350Z",
-      "age_ms": 2276,
+      "age_ms": 215844,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -175,7 +175,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-11-25T19:01:14.366Z",
-      "age_ms": 1260,
+      "age_ms": 214828,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -208,7 +208,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-11-25T19:01:10.625Z",
-      "age_ms": 5001,
+      "age_ms": 218569,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -241,7 +241,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-11-25T19:01:10.566Z",
-      "age_ms": 5060,
+      "age_ms": 218628,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -274,7 +274,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-11-25T19:01:10.623Z",
-      "age_ms": 5003,
+      "age_ms": 218571,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -307,7 +307,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-11-25T19:01:10.577Z",
-      "age_ms": 5049,
+      "age_ms": 218617,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -337,10 +337,10 @@
       "label": "OLX Notebooks",
       "state": "partial",
       "collection_state": "partial",
-      "coverage_state": "stale",
+      "coverage_state": "partial",
       "operational_status": "partial",
-      "updated_at": "2026-11-25T09:36:53.565Z",
-      "age_ms": 33862061,
+      "updated_at": "2026-11-25T19:03:06.654Z",
+      "age_ms": 102540,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -350,29 +350,29 @@
         "deferred": 0,
         "complete": 0,
         "success_rate": 0,
-        "median_duration_ms": 142044
+        "median_duration_ms": 143829
       },
       "marketplaces": [
         {
           "label": "OLX",
           "state": "partial",
           "total_terms": 20,
-          "fresh_terms": 17,
+          "fresh_terms": 16,
           "checked_terms": 20,
           "warming_terms": 0,
-          "updated_at": "2026-11-25T09:36:53.565Z"
+          "updated_at": "2026-11-25T19:03:06.654Z"
         },
         {
           "label": "OLX modelos",
-          "state": "stale",
+          "state": "partial",
           "total_terms": 6,
           "fresh_terms": 3,
-          "checked_terms": 5,
+          "checked_terms": 6,
           "warming_terms": 0,
-          "updated_at": "2026-11-25T09:36:53.565Z"
+          "updated_at": "2026-11-25T19:03:06.654Z"
         }
       ],
-      "message": "OLX: Cobertura parcial (20/20 consultas recentes; 17/20 concluídas) · OLX modelos: Coleta desatualizada (5/6 consultas recentes; 3/6 concluídas)"
+      "message": "OLX: Cobertura parcial (20/20 consultas recentes; 16/20 concluídas) · OLX modelos: Cobertura parcial (6/6 consultas recentes; 3/6 concluídas)"
     },
     {
       "id": "enjoei-notebooks",
@@ -382,7 +382,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-11-25T19:01:12.472Z",
-      "age_ms": 3154,
+      "age_ms": 216722,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -415,7 +415,7 @@
       "coverage_state": "healthy",
       "operational_status": "success",
       "updated_at": "2026-11-25T19:01:12.681Z",
-      "age_ms": 2945,
+      "age_ms": 216513,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -474,17 +474,17 @@
       "collection_state": "healthy",
       "coverage_state": "healthy",
       "operational_status": "success",
-      "updated_at": "2026-11-25T19:01:10.730Z",
-      "age_ms": 4896,
+      "updated_at": "2026-11-25T19:03:20.072Z",
+      "age_ms": 89122,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
         "partial": 0,
         "failed": 0,
         "blocked": 0,
-        "deferred": 4,
-        "complete": 6,
-        "success_rate": 0.6,
+        "deferred": 3,
+        "complete": 7,
+        "success_rate": 0.7,
         "median_duration_ms": 850
       },
       "marketplaces": [
@@ -495,7 +495,7 @@
           "fresh_terms": 1,
           "checked_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-11-25T19:01:10.730Z"
+          "updated_at": "2026-11-25T19:03:20.072Z"
         },
         {
           "label": "OLX",
@@ -504,7 +504,7 @@
           "fresh_terms": 1,
           "checked_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-11-22T10:03:45.498Z"
+          "updated_at": "2026-11-25T19:03:20.072Z"
         }
       ],
       "message": "Enjoei: Saudável (1/1 consultas recentes; 1/1 concluídas) · OLX: Saudável (1/1 consultas recentes; 1/1 concluídas)"
@@ -516,17 +516,17 @@
       "collection_state": "healthy",
       "coverage_state": "healthy",
       "operational_status": "success",
-      "updated_at": "2026-11-25T19:01:11.202Z",
-      "age_ms": 4424,
+      "updated_at": "2026-11-25T19:03:31.436Z",
+      "age_ms": 77758,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
         "partial": 0,
         "failed": 0,
         "blocked": 0,
-        "deferred": 4,
-        "complete": 6,
-        "success_rate": 0.6,
+        "deferred": 3,
+        "complete": 7,
+        "success_rate": 0.7,
         "median_duration_ms": 197
       },
       "marketplaces": [
@@ -537,7 +537,7 @@
           "fresh_terms": 1,
           "checked_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-11-25T19:01:11.202Z"
+          "updated_at": "2026-11-25T19:03:31.436Z"
         },
         {
           "label": "OLX",
@@ -546,7 +546,7 @@
           "fresh_terms": 1,
           "checked_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-11-22T10:03:56.927Z"
+          "updated_at": "2026-11-25T19:03:31.436Z"
         }
       ],
       "message": "Enjoei: Saudável (1/1 consultas recentes; 1/1 concluídas) · OLX: Saudável (1/1 consultas recentes; 1/1 concluídas)"
@@ -558,8 +558,8 @@
       "collection_state": "healthy",
       "coverage_state": "healthy",
       "operational_status": "success",
-      "updated_at": "2026-11-25T19:01:11.686Z",
-      "age_ms": 3940,
+      "updated_at": "2026-11-25T19:03:54.952Z",
+      "age_ms": 54242,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -579,7 +579,7 @@
           "fresh_terms": 1,
           "checked_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-11-25T19:01:11.686Z"
+          "updated_at": "2026-11-25T19:03:54.952Z"
         },
         {
           "label": "OLX",
@@ -588,7 +588,7 @@
           "fresh_terms": 1,
           "checked_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-11-25T09:37:18.084Z"
+          "updated_at": "2026-11-25T19:03:54.952Z"
         }
       ],
       "message": "Enjoei: Saudável (1/1 consultas recentes; 1/1 concluídas) · OLX: Saudável (1/1 consultas recentes; 1/1 concluídas)"
@@ -599,9 +599,9 @@
       "state": "healthy",
       "collection_state": "healthy",
       "coverage_state": "healthy",
-      "operational_status": "success",
-      "updated_at": "2026-11-25T19:01:13.201Z",
-      "age_ms": 2425,
+      "operational_status": "deferred",
+      "updated_at": "2026-11-25T19:04:22.276Z",
+      "age_ms": 26918,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -621,7 +621,7 @@
           "fresh_terms": 3,
           "checked_terms": 3,
           "warming_terms": 0,
-          "updated_at": "2026-11-25T19:01:13.201Z"
+          "updated_at": "2026-11-25T19:04:22.276Z"
         },
         {
           "label": "OLX",
@@ -630,7 +630,7 @@
           "fresh_terms": 3,
           "checked_terms": 3,
           "warming_terms": 0,
-          "updated_at": "2026-11-23T10:03:17.690Z"
+          "updated_at": "2026-11-25T19:04:22.276Z"
         }
       ],
       "message": "Enjoei: Saudável (3/3 consultas recentes; 3/3 concluídas) · OLX: Saudável (3/3 consultas recentes; 3/3 concluídas)"
@@ -641,9 +641,9 @@
       "state": "healthy",
       "collection_state": "healthy",
       "coverage_state": "healthy",
-      "operational_status": "success",
-      "updated_at": "2026-11-25T19:01:13.628Z",
-      "age_ms": 1998,
+      "operational_status": "deferred",
+      "updated_at": "2026-11-25T19:04:24.435Z",
+      "age_ms": 24759,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -663,7 +663,7 @@
           "fresh_terms": 1,
           "checked_terms": 1,
           "warming_terms": 0,
-          "updated_at": "2026-11-25T19:01:13.628Z"
+          "updated_at": "2026-11-25T19:04:24.435Z"
         },
         {
           "label": "OLX",
@@ -684,8 +684,8 @@
       "collection_state": "blocked",
       "coverage_state": "blocked",
       "operational_status": "deferred",
-      "updated_at": "2026-11-25T19:01:13.889Z",
-      "age_ms": 1737,
+      "updated_at": "2026-11-25T19:04:25.603Z",
+      "age_ms": 23591,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -695,7 +695,7 @@
         "deferred": 8,
         "complete": 2,
         "success_rate": 0.2,
-        "median_duration_ms": 907
+        "median_duration_ms": 780
       },
       "marketplaces": [
         {
@@ -727,7 +727,7 @@
       "coverage_state": "stale",
       "operational_status": "partial",
       "updated_at": "2026-10-28T12:25:51.267Z",
-      "age_ms": 2442924359,
+      "age_ms": 2443137927,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -760,7 +760,7 @@
       "coverage_state": "stale",
       "operational_status": "success",
       "updated_at": "2026-10-28T12:26:37.415Z",
-      "age_ms": 2442878211,
+      "age_ms": 2443091779,
       "invalid_snapshots": 0,
       "history": {
         "sample": 6,
@@ -793,7 +793,7 @@
       "coverage_state": "stale",
       "operational_status": "success",
       "updated_at": "2026-10-28T12:26:16.758Z",
-      "age_ms": 2442898868,
+      "age_ms": 2443112436,
       "invalid_snapshots": 0,
       "history": {
         "sample": 5,
@@ -826,7 +826,7 @@
       "coverage_state": "stale",
       "operational_status": "success",
       "updated_at": "2026-10-28T12:26:58.029Z",
-      "age_ms": 2442857597,
+      "age_ms": 2443071165,
       "invalid_snapshots": 0,
       "history": {
         "sample": 7,
@@ -859,7 +859,7 @@
       "coverage_state": "stale",
       "operational_status": "success",
       "updated_at": "2026-10-28T12:27:20.526Z",
-      "age_ms": 2442835100,
+      "age_ms": 2443048668,
       "invalid_snapshots": 0,
       "history": {
         "sample": 8,
@@ -892,7 +892,7 @@
       "coverage_state": "stale",
       "operational_status": "success",
       "updated_at": "2026-10-28T12:27:44.366Z",
-      "age_ms": 2442811260,
+      "age_ms": 2443024828,
       "invalid_snapshots": 0,
       "history": {
         "sample": 7,
@@ -925,7 +925,7 @@
       "coverage_state": "stale",
       "operational_status": "success",
       "updated_at": "2026-10-28T12:43:01.109Z",
-      "age_ms": 2441894517,
+      "age_ms": 2442108085,
       "invalid_snapshots": 0,
       "history": {
         "sample": 7,
@@ -958,7 +958,7 @@
       "coverage_state": "stale",
       "operational_status": "partial",
       "updated_at": "2026-11-16T17:32:12.836Z",
-      "age_ms": 782942790,
+      "age_ms": 783156358,
       "invalid_snapshots": 0,
       "history": {
         "sample": 10,
@@ -1391,14 +1391,26 @@
         }
       },
       "2026-11-25": {
-        "search": 10,
-        "detail": 1,
+        "search": 23,
+        "detail": 6,
         "watchlists": {
           "notebooks": {
-            "search": 8,
-            "detail": 1
+            "search": 15,
+            "detail": 6
           },
           "melanger": {
+            "search": 4,
+            "detail": 0
+          },
+          "lifefactory": {
+            "search": 1,
+            "detail": 0
+          },
+          "tela-galaxybook3": {
+            "search": 1,
+            "detail": 0
+          },
+          "oneplus-buds-pro-3": {
             "search": 2,
             "detail": 0
           }
@@ -1407,21 +1419,25 @@
           "c163e31c-be05-4b24-b3ca-c8bd7d711dfd": {
             "search": 10,
             "detail": 1
+          },
+          "f25bb16f-c3bf-42d9-8090-557d2fd06257": {
+            "search": 13,
+            "detail": 5
           }
         }
       }
     },
     "queries": {
       "notebooks:14900hx": {
-        "last_attempt_at": "2026-11-25T09:35:14.352Z",
-        "approved": 0,
+        "last_attempt_at": "2026-11-25T19:01:02.719Z",
+        "approved": 1,
         "interval_hours": 8,
         "last_success_at": "2026-11-17T19:09:00.329Z",
         "empty_runs": 15,
         "prices": {},
         "listing_limit": 60,
         "listing_incomplete": true,
-        "last_change_at": "2026-11-12T10:01:03.098Z"
+        "last_change_at": "2026-11-25T19:01:16.048Z"
       },
       "notebooks:family:avell-a65": {
         "last_attempt_at": "2026-11-22T19:01:16.011Z",
@@ -1434,7 +1450,7 @@
         "prices": {}
       },
       "notebooks:family:avell-storm": {
-        "last_attempt_at": "2026-11-22T10:02:29.915Z",
+        "last_attempt_at": "2026-11-25T19:02:17.694Z",
         "approved": 0,
         "interval_hours": 48,
         "listing_limit": 60,
@@ -1444,15 +1460,15 @@
         "prices": {}
       },
       "lifefactory:lifefactory": {
-        "last_attempt_at": "2026-11-22T10:03:33.856Z",
+        "last_attempt_at": "2026-11-25T19:03:10.215Z",
         "approved": 0,
-        "last_success_at": "2026-11-22T10:03:45.246Z",
-        "empty_runs": 14,
+        "last_success_at": "2026-11-25T19:03:19.771Z",
+        "empty_runs": 15,
         "prices": {},
         "interval_hours": 72
       },
       "notebooks:14700hx": {
-        "last_attempt_at": "2026-11-25T09:34:40.822Z",
+        "last_attempt_at": "2026-11-25T19:00:17.759Z",
         "approved": 0,
         "last_success_at": "2026-11-23T19:00:23.982Z",
         "empty_runs": 50,
@@ -1462,10 +1478,10 @@
         "listing_incomplete": false
       },
       "notebooks:13980hx": {
-        "last_attempt_at": "2026-11-25T09:35:02.051Z",
+        "last_attempt_at": "2026-11-25T19:00:41.174Z",
         "approved": 0,
-        "last_success_at": "2026-11-25T09:35:08.150Z",
-        "empty_runs": 35,
+        "last_success_at": "2026-11-25T19:00:47.002Z",
+        "empty_runs": 36,
         "prices": {},
         "interval_hours": 8,
         "listing_limit": 12,
@@ -1473,7 +1489,7 @@
         "last_change_at": "2026-10-29T12:59:35.694Z"
       },
       "notebooks:13900hx": {
-        "last_attempt_at": "2026-11-25T09:35:38.794Z",
+        "last_attempt_at": "2026-11-25T19:01:34.583Z",
         "approved": 0,
         "last_success_at": "2026-11-25T09:35:44.726Z",
         "empty_runs": 62,
@@ -1484,10 +1500,10 @@
         "listing_incomplete": false
       },
       "notebooks:9955hx3d": {
-        "last_attempt_at": "2026-11-22T10:02:04.002Z",
+        "last_attempt_at": "2026-11-25T19:01:52.619Z",
         "approved": 0,
-        "last_success_at": "2026-11-22T10:02:09.614Z",
-        "empty_runs": 13,
+        "last_success_at": "2026-11-25T19:01:58.254Z",
+        "empty_runs": 14,
         "prices": {},
         "interval_hours": 72,
         "listing_limit": 12,
@@ -1531,17 +1547,17 @@
         "listing_incomplete": true
       },
       "tela-galaxybook3:BA96-08462A": {
-        "last_attempt_at": "2026-11-22T10:03:47.212Z",
+        "last_attempt_at": "2026-11-25T19:03:21.844Z",
         "approved": 0,
-        "last_success_at": "2026-11-22T10:03:56.536Z",
-        "empty_runs": 14,
+        "last_success_at": "2026-11-25T19:03:31.172Z",
+        "empty_runs": 15,
         "prices": {},
         "interval_hours": 72
       },
       "melanger:melanger@/eletro/eletroportateis-para-cozinha-e-limpeza": {
-        "last_attempt_at": "2026-11-25T09:37:01.316Z",
+        "last_attempt_at": "2026-11-25T19:03:33.290Z",
         "approved": 3,
-        "last_success_at": "2026-11-25T09:37:05.819Z",
+        "last_success_at": "2026-11-25T19:03:43.003Z",
         "empty_runs": 0,
         "prices": {
           "1535383448": 4999,
@@ -1552,9 +1568,9 @@
         "last_change_at": "2026-11-19T10:03:25.547Z"
       },
       "melanger:melanger@/comercio-e-escritorio/gastronomia": {
-        "last_attempt_at": "2026-11-25T09:37:05.825Z",
+        "last_attempt_at": "2026-11-25T19:03:43.010Z",
         "approved": 6,
-        "last_success_at": "2026-11-25T09:37:17.778Z",
+        "last_success_at": "2026-11-25T19:03:54.636Z",
         "empty_runs": 0,
         "prices": {
           "1535383448": 4999,
@@ -1574,19 +1590,19 @@
         "interval_hours": 72
       },
       "oneplus-buds-pro-3:buds pro 3": {
-        "last_attempt_at": "2026-11-22T10:04:24.307Z",
+        "last_attempt_at": "2026-11-25T19:03:58.024Z",
         "approved": 0,
         "last_change_at": "2026-10-18T10:02:50.931Z",
-        "last_success_at": "2026-11-22T10:04:35.681Z",
-        "empty_runs": 10,
+        "last_success_at": "2026-11-25T19:04:09.873Z",
+        "empty_runs": 11,
         "prices": {},
         "interval_hours": 72
       },
       "oneplus-buds-pro-3:buds 3 pro": {
-        "last_attempt_at": "2026-11-22T10:04:35.685Z",
+        "last_attempt_at": "2026-11-25T19:04:09.878Z",
         "approved": 0,
-        "last_success_at": "2026-11-22T10:04:48.603Z",
-        "empty_runs": 14,
+        "last_success_at": "2026-11-25T19:04:21.955Z",
+        "empty_runs": 15,
         "prices": {},
         "interval_hours": 72
       },
@@ -1594,10 +1610,10 @@
         "last_attempt_at": "2026-11-14T19:05:03.019Z"
       },
       "notebooks:255hx": {
-        "last_attempt_at": "2026-11-22T10:02:18.019Z",
+        "last_attempt_at": "2026-11-25T19:02:01.040Z",
         "approved": 0,
-        "last_success_at": "2026-11-22T10:02:23.732Z",
-        "empty_runs": 11,
+        "last_success_at": "2026-11-25T19:02:10.588Z",
+        "empty_runs": 12,
         "prices": {},
         "interval_hours": 72,
         "listing_limit": 36,
@@ -1795,7 +1811,7 @@
         "last_attempt_at": "2026-11-11T19:05:01.822Z"
       }
     },
-    "updated_at": "2026-11-25T09:37:23.481Z",
+    "updated_at": "2026-11-25T19:04:24.296Z",
     "limits": {
       "daily": {
         "search": 40,
@@ -1806,7 +1822,7 @@
         "detail": 14
       }
     },
-    "last_access_slot_at": "2026-11-25T09:37:16.557Z",
+    "last_access_slot_at": "2026-11-25T19:04:17.694Z",
     "access_interval_ms": 12000
   }
 }
