@@ -1,7 +1,23 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-25T19:01:10.656Z",
+  "updated_at": "2026-11-26T11:01:52.245Z",
   "runs": [
+    {
+      "run_id": "2026-11-26T11-01-52-042Z",
+      "committed_at": "2026-11-26T11:01:52.212Z",
+      "completed_at": "2026-11-26T11:01:52.042Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 257,
+      "item_count": 1,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "enjoei-zegna",
+        "collected_count": 0,
+        "failed_term_count": 0,
+        "quarantined_item_count": 0
+      }
+    },
     {
       "run_id": "2026-11-25T19-01-10-577Z",
       "committed_at": "2026-11-25T19:01:10.605Z",
@@ -10,12 +26,12 @@
       "partial": false,
       "duration_ms": 409,
       "item_count": 1,
-      "quarantined_item_count": 0,
       "metadata": {
         "source": "enjoei-zegna",
         "collected_count": 0,
         "failed_term_count": 0,
-        "quarantined_item_count": 0
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     },
     {

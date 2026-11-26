@@ -1,7 +1,22 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-26T10:02:43.585Z",
+  "updated_at": "2026-11-26T11:02:03.107Z",
   "runs": [
+    {
+      "run_id": "dccdd6ef-016e-4be0-80ab-543790b9c38f",
+      "completed_at": "2026-11-26T11:02:03.106Z",
+      "outcome": "partial",
+      "partial": true,
+      "duration_ms": 11410,
+      "item_count": 0,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "ci",
+        "monitor_errors": 0,
+        "monitor_failures": [],
+        "pending_notifications": 0
+      }
+    },
     {
       "run_id": "317d7730-450e-40af-8d72-4ae1fa3e941e",
       "completed_at": "2026-11-26T10:02:43.572Z",
@@ -1905,23 +1920,6 @@
         "source": "local",
         "monitor_errors": 0,
         "monitor_failures": [],
-        "pending_notifications": 3
-      }
-    },
-    {
-      "run_id": "7263f35d-e192-4c4a-957a-4a13b5367a2f",
-      "completed_at": "2026-10-02T23:42:26.119Z",
-      "outcome": "failed",
-      "partial": true,
-      "duration_ms": 1135,
-      "item_count": 0,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "local",
-        "monitor_errors": 1,
-        "monitor_failures": [
-          "Mercado Livre: coleta bloqueada (challenge) ate 2026-10-03T22:36:00.503Z; resolva a verificacao no perfil exclusivo."
-        ],
         "pending_notifications": 3
       }
     }
