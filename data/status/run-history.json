@@ -1,7 +1,22 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-25T19:04:36.698Z",
+  "updated_at": "2026-11-26T10:02:43.585Z",
   "runs": [
+    {
+      "run_id": "317d7730-450e-40af-8d72-4ae1fa3e941e",
+      "completed_at": "2026-11-26T10:02:43.572Z",
+      "outcome": "partial",
+      "partial": true,
+      "duration_ms": 154122,
+      "item_count": 0,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "local",
+        "monitor_errors": 0,
+        "monitor_failures": [],
+        "pending_notifications": 0
+      }
+    },
     {
       "run_id": "f25bb16f-c3bf-42d9-8090-557d2fd06257",
       "completed_at": "2026-11-25T19:04:36.695Z",
@@ -1906,23 +1921,6 @@
         "monitor_errors": 1,
         "monitor_failures": [
           "Mercado Livre: coleta bloqueada (challenge) ate 2026-10-03T22:36:00.503Z; resolva a verificacao no perfil exclusivo."
-        ],
-        "pending_notifications": 3
-      }
-    },
-    {
-      "run_id": "70b33f55-aa1b-432e-8623-725874809419",
-      "completed_at": "2026-10-02T23:23:22.675Z",
-      "outcome": "failed",
-      "partial": true,
-      "duration_ms": 3142173,
-      "item_count": 0,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "local",
-        "monitor_errors": 1,
-        "monitor_failures": [
-          "Google Pixel Watch 4: Saiu com código 1: Aviso: termo \"pixel watch 4\" em https://www.olx.com.br/brasil falhou — Cloudflare bloqueando após 15s"
         ],
         "pending_notifications": 3
       }
