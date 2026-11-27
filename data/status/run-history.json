@@ -1,7 +1,22 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-26T19:03:17.222Z",
+  "updated_at": "2026-11-27T10:02:56.535Z",
   "runs": [
+    {
+      "run_id": "03c57e5b-8b08-4817-bdf8-d18f313cb952",
+      "completed_at": "2026-11-27T10:02:56.533Z",
+      "outcome": "partial",
+      "partial": true,
+      "duration_ms": 168481,
+      "item_count": 0,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "local",
+        "monitor_errors": 0,
+        "monitor_failures": [],
+        "pending_notifications": 0
+      }
+    },
     {
       "run_id": "3f532920-0fe3-4194-90ad-e9e02badfb1b",
       "completed_at": "2026-11-26T19:03:17.220Z",
@@ -1905,21 +1920,6 @@
         "monitor_failures": [
           "Google Pixel Watch 4: Saiu com código 1: Aviso: termo \"pixel watch 4\" em https://www.olx.com.br/brasil falhou — Cloudflare bloqueando após 15s"
         ],
-        "pending_notifications": 3
-      }
-    },
-    {
-      "run_id": "8b100741-8e64-4405-ab51-05a930276eb5",
-      "completed_at": "2026-10-03T00:14:43.100Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": 1039,
-      "item_count": 2,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "local",
-        "monitor_errors": 0,
-        "monitor_failures": [],
         "pending_notifications": 3
       }
     }
