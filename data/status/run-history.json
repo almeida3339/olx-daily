@@ -1,7 +1,22 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-27T10:02:56.535Z",
+  "updated_at": "2026-11-27T11:01:27.888Z",
   "runs": [
+    {
+      "run_id": "dc1a9f4e-9e21-4f6b-b26a-26cc4980083b",
+      "completed_at": "2026-11-27T11:01:27.887Z",
+      "outcome": "partial",
+      "partial": true,
+      "duration_ms": 10359,
+      "item_count": 0,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "ci",
+        "monitor_errors": 0,
+        "monitor_failures": [],
+        "pending_notifications": 0
+      }
+    },
     {
       "run_id": "03c57e5b-8b08-4817-bdf8-d18f313cb952",
       "completed_at": "2026-11-27T10:02:56.533Z",
@@ -1901,23 +1916,6 @@
         "monitor_errors": 2,
         "monitor_failures": [
           "OLX: Saiu com código 1: Falha: TypeError: fetch failed\nMonitor OLX falhou com exit code 1.\r\nNo C:\\Users\\docra\\downloads\\olx-daily\\scripts\\run-olx-monitor.ps1:84 caractere:5\r\n+     throw \"Monitor OLX falhou com exit code $LASTEXITCODE.\"\r\n+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : OperationStopped: (Monitor OLX falhou com exit code 1.:String) [], RuntimeException\r\n    + FullyQualifiedErrorId : Monitor OLX falhou com exit code 1.",
-          "Google Pixel Watch 4: Saiu com código 1: Aviso: termo \"pixel watch 4\" em https://www.olx.com.br/brasil falhou — Cloudflare bloqueando após 15s"
-        ],
-        "pending_notifications": 3
-      }
-    },
-    {
-      "run_id": "8f4df906-25a3-444e-ae17-69f5fac08dcd",
-      "completed_at": "2026-10-03T10:53:23.669Z",
-      "outcome": "failed",
-      "partial": true,
-      "duration_ms": 3196718,
-      "item_count": 1,
-      "quarantined_item_count": 0,
-      "metadata": {
-        "source": "local",
-        "monitor_errors": 1,
-        "monitor_failures": [
           "Google Pixel Watch 4: Saiu com código 1: Aviso: termo \"pixel watch 4\" em https://www.olx.com.br/brasil falhou — Cloudflare bloqueando após 15s"
         ],
         "pending_notifications": 3
