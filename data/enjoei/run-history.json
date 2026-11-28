@@ -1,7 +1,25 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-28T11:01:24.201Z",
+  "updated_at": "2026-11-28T19:01:16.193Z",
   "runs": [
+    {
+      "run_id": "2026-11-28T19-01-12-666Z",
+      "committed_at": "2026-11-28T19:01:16.135Z",
+      "completed_at": "2026-11-28T19:01:16.118Z",
+      "outcome": "success",
+      "partial": false,
+      "duration_ms": 3452,
+      "item_count": 5,
+      "quarantined_item_count": 0,
+      "metadata": {
+        "source": "enjoei-tenis",
+        "collected_count": 1,
+        "pending_count": 3,
+        "failed_term_count": 0,
+        "incomplete_term_count": 0,
+        "quarantined_item_count": 0
+      }
+    },
     {
       "run_id": "2026-11-28T11-01-18-714Z",
       "committed_at": "2026-11-28T11:01:24.123Z",
@@ -10,14 +28,14 @@
       "partial": false,
       "duration_ms": 5390,
       "item_count": 5,
-      "quarantined_item_count": 0,
       "metadata": {
         "source": "enjoei-tenis",
         "collected_count": 0,
         "pending_count": 3,
         "failed_term_count": 0,
         "incomplete_term_count": 0,
-        "quarantined_item_count": 0
+        "quarantined_item_count": 0,
+        "in_progress": false
       }
     },
     {
@@ -2032,21 +2050,6 @@
       "metadata": {
         "source": "enjoei-tenis",
         "collected_count": 3,
-        "quarantined_item_count": 0,
-        "in_progress": false
-      }
-    },
-    {
-      "run_id": "2026-09-03T11-01-02-686Z",
-      "committed_at": "2026-09-03T11:01:06.491Z",
-      "completed_at": "2026-09-03T11:01:06.491Z",
-      "outcome": "success",
-      "partial": false,
-      "duration_ms": null,
-      "item_count": 7,
-      "metadata": {
-        "source": "enjoei-tenis",
-        "collected_count": 4,
         "quarantined_item_count": 0,
         "in_progress": false
       }
