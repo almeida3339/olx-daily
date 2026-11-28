@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-27T19:00:09.727Z",
+  "generated_at": "2026-11-28T10:00:09.659Z",
   "source": "local",
   "delivery": {
     "email": "skipped",
@@ -44,13 +44,13 @@
       {
         "source": "olx",
         "status": "partial",
-        "completed_terms": 6,
+        "completed_terms": 5,
         "incomplete_terms": 3,
         "deferred_terms": 0,
         "pending_candidates": 32,
         "reasons": [
-          "4 ficha(s) aguardando leitura dentro dos limites da rodada",
-          "Listagem incompleta: limite de 60 cards ou próxima página pendente; 5 ficha(s) aguardando leitura dentro dos limites da rodada",
+          "5 ficha(s) aguardando leitura dentro dos limites da rodada",
+          "Listagem incompleta: limite de 60 cards ou próxima página pendente; 6 ficha(s) aguardando leitura dentro dos limites da rodada",
           "1 ficha(s) aguardando leitura dentro dos limites da rodada"
         ]
       },
@@ -98,17 +98,19 @@
       },
       {
         "source": "google-pixel-watch-5",
-        "status": "success",
-        "completed_terms": 2,
+        "status": "deferred",
+        "completed_terms": 1,
         "incomplete_terms": 0,
-        "deferred_terms": 0,
+        "deferred_terms": 1,
         "pending_candidates": 0,
-        "reasons": []
+        "reasons": [
+          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+        ]
       },
       {
         "source": "oled-monitores",
         "status": "deferred",
-        "completed_terms": 0,
+        "completed_terms": 1,
         "incomplete_terms": 0,
         "deferred_terms": 10,
         "pending_candidates": 1,
@@ -122,8 +124,8 @@
         "source": "olx",
         "status": "partial",
         "reasons": [
-          "4 ficha(s) aguardando leitura dentro dos limites da rodada",
-          "Listagem incompleta: limite de 60 cards ou próxima página pendente; 5 ficha(s) aguardando leitura dentro dos limites da rodada",
+          "5 ficha(s) aguardando leitura dentro dos limites da rodada",
+          "Listagem incompleta: limite de 60 cards ou próxima página pendente; 6 ficha(s) aguardando leitura dentro dos limites da rodada",
           "1 ficha(s) aguardando leitura dentro dos limites da rodada"
         ]
       },
@@ -143,6 +145,13 @@
       },
       {
         "source": "oneplus-buds-pro-3",
+        "status": "deferred",
+        "reasons": [
+          "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+        ]
+      },
+      {
+        "source": "google-pixel-watch-5",
         "status": "deferred",
         "reasons": [
           "Consultas adiadas pela programação; as consultas executadas foram concluídas."
@@ -333,13 +342,16 @@
     "1a029b84-4b69-4837-9e77-a73008c8387e",
     "206b1130-9cc2-403e-8bf2-26f2b60a3350",
     "62abb14d-e51a-4654-b0cc-2dd4d7a15685",
-    "e012ef2c-fb6a-470d-982f-0f1875842e28"
+    "e012ef2c-fb6a-470d-982f-0f1875842e28",
+    "04e3f6fb-06e3-4912-9875-d6f48a38d3b8",
+    "1a9c9f13-d586-4840-8c7c-59229cf63159",
+    "c2640f29-6db6-46b9-b814-f00ce6177c45"
   ],
   "round_summary": {
     "schema_version": 1,
-    "run_id": "25746e75-e0a3-4cdc-8455-b086ad0a8088",
-    "started_at": "2026-11-27T19:00:09.727Z",
-    "completed_at": "2026-11-27T19:04:01.172Z",
+    "run_id": "10f63068-29e3-44b1-9a01-34ce3813c6a0",
+    "started_at": "2026-11-28T10:00:09.659Z",
+    "completed_at": "2026-11-28T10:03:34.978Z",
     "execution": "success",
     "delivery": {
       "email": "skipped",
@@ -351,20 +363,20 @@
         "label": "OLX Notebooks",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-27T19:03:12.627Z",
+          "collected_at": "2026-11-28T10:02:49.170Z",
           "execution": "success",
           "issues": [
-            "4 ficha(s) aguardando leitura dentro dos limites da rodada",
-            "Listagem incompleta: limite de 60 cards ou próxima página pendente; 5 ficha(s) aguardando leitura dentro dos limites da rodada",
+            "5 ficha(s) aguardando leitura dentro dos limites da rodada",
+            "Listagem incompleta: limite de 60 cards ou próxima página pendente; 6 ficha(s) aguardando leitura dentro dos limites da rodada",
             "1 ficha(s) aguardando leitura dentro dos limites da rodada"
           ],
           "coverage": {
             "status": "partial",
-            "scheduled": 9,
-            "completed": 6,
+            "scheduled": 8,
+            "completed": 5,
             "incomplete": 3,
             "deferred": 0,
-            "pending_descriptions": 46,
+            "pending_descriptions": 48,
             "pending_candidates": 32,
             "pending_details": 0,
             "heuristic_stops": [],
@@ -379,21 +391,19 @@
                   "13980hx",
                   "14900hx",
                   "13900hx",
-                  "7845hx",
-                  "8840hx",
-                  "aimax390",
-                  "hx470",
-                  "family:legion-pro-5"
+                  "290hx",
+                  "9955hx",
+                  "aimax395",
+                  "family:dell-g16"
                 ],
                 "completed_terms": [
                   "14700hx",
                   "13980hx",
                   "13900hx",
-                  "7845hx",
-                  "8840hx",
-                  "aimax390",
-                  "hx470",
-                  "family:legion-pro-5"
+                  "290hx",
+                  "9955hx",
+                  "aimax395",
+                  "family:dell-g16"
                 ],
                 "incomplete_terms": [
                   "14900hx"
@@ -401,8 +411,8 @@
                 "pending_details": 0,
                 "queued_candidates": 27,
                 "pending_candidates": 32,
-                "scheduled": 9,
-                "completed": 8,
+                "scheduled": 8,
+                "completed": 7,
                 "incomplete": 1,
                 "status": "partial"
               },
@@ -420,10 +430,10 @@
                   "14900hx",
                   "13900hx"
                 ],
-                "pending_details": 10,
+                "pending_details": 12,
                 "min_price_exclusive": true,
-                "queued_candidates": 19,
-                "pending_candidates": 20,
+                "queued_candidates": 21,
+                "pending_candidates": 22,
                 "scheduled": 3,
                 "completed": 0,
                 "incomplete": 3,
@@ -432,11 +442,22 @@
             }
           },
           "findings": {
-            "new_items": [],
+            "new_items": [
+              {
+                "id": "1556582862",
+                "title": "Notebook Gamer Avell ION A65i i9 RTX 4060 32GB 1TB 165Hz",
+                "url": "https://pr.olx.com.br/regiao-de-curitiba-e-paranagua/informatica/notebooks/notebook-gamer-avell-ion-a65i-i9-rtx-4060-32gb-1tb-165hz-1556582862",
+                "price_brl": 7500,
+                "price_labels": [
+                  "Atende aos filtros",
+                  "Comparáveis insuficientes"
+                ]
+              }
+            ],
             "price_changes": [],
-            "active_count": 1,
+            "active_count": 2,
             "pending_count": 32,
-            "new_count": 0,
+            "new_count": 1,
             "price_count": 0
           }
         }
@@ -446,7 +467,7 @@
         "label": "Lifefactory",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-27T19:03:16.288Z",
+          "collected_at": "2026-11-28T10:02:53.026Z",
           "execution": "success",
           "issues": [
             "Consultas adiadas pela programação; as consultas executadas foram concluídas."
@@ -478,7 +499,7 @@
         "label": "Tela Book3",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-27T19:03:18.429Z",
+          "collected_at": "2026-11-28T10:02:55.551Z",
           "execution": "success",
           "issues": [
             "Consultas adiadas pela programação; as consultas executadas foram concluídas."
@@ -510,7 +531,7 @@
         "label": "Melanger",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-27T19:03:36.733Z",
+          "collected_at": "2026-11-28T10:03:13.285Z",
           "execution": "success",
           "issues": [],
           "coverage": {
@@ -540,7 +561,7 @@
         "label": "OnePlus Buds Pro 3",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-27T19:03:40.146Z",
+          "collected_at": "2026-11-28T10:03:17.086Z",
           "execution": "success",
           "issues": [
             "Consultas adiadas pela programação; as consultas executadas foram concluídas."
@@ -572,15 +593,17 @@
         "label": "Google Pixel Watch 5",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-27T19:03:48.882Z",
+          "collected_at": "2026-11-28T10:03:19.398Z",
           "execution": "success",
-          "issues": [],
+          "issues": [
+            "Consultas adiadas pela programação; as consultas executadas foram concluídas."
+          ],
           "coverage": {
-            "status": "complete",
-            "scheduled": 2,
-            "completed": 2,
+            "status": "deferred",
+            "scheduled": 1,
+            "completed": 1,
             "incomplete": 0,
-            "deferred": 0,
+            "deferred": 1,
             "pending_descriptions": 0,
             "pending_candidates": 0,
             "pending_details": 0,
@@ -602,15 +625,15 @@
         "label": "Monitores OLED",
         "summary": {
           "schema_version": 1,
-          "collected_at": "2026-11-27T19:03:50.087Z",
+          "collected_at": "2026-11-28T10:03:21.766Z",
           "execution": "success",
           "issues": [
             "OLX: consultas adiadas. Retomada suspensa após bloqueios repetidos. Aguarda verificação manual."
           ],
           "coverage": {
             "status": "deferred",
-            "scheduled": 0,
-            "completed": 0,
+            "scheduled": 1,
+            "completed": 1,
             "incomplete": 0,
             "deferred": 10,
             "pending_descriptions": 0,

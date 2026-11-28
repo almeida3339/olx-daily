@@ -1,23 +1,23 @@
 {
   "schema_version": 1,
-  "run_id": "2026-11-27T19-03-50-087Z",
-  "committed_at": "2026-11-27T19:03:50.113Z",
-  "snapshot": "runs/2026-11-27T19-03-50-087Z/snapshot.json",
-  "report": "runs/2026-11-27T19-03-50-087Z/report.md",
+  "run_id": "2026-11-28T10-03-21-766Z",
+  "committed_at": "2026-11-28T10:03:21.806Z",
+  "snapshot": "runs/2026-11-28T10-03-21-766Z/snapshot.json",
+  "report": "runs/2026-11-28T10-03-21-766Z/report.md",
   "quarantine": null,
   "summary": {
     "schema_version": 1,
-    "collected_at": "2026-11-27T19:03:50.087Z",
+    "collected_at": "2026-11-28T10:03:21.766Z",
     "execution": "success",
     "issues": [
       "OLX: consultas adiadas. Retomada suspensa após bloqueios repetidos. Aguarda verificação manual."
     ],
     "coverage": {
       "status": "deferred",
-      "scheduled": 0,
-      "completed": 0,
+      "scheduled": 1,
+      "completed": 1,
       "incomplete": 0,
-      "deferred": 21,
+      "deferred": 10,
       "pending_descriptions": 0,
       "pending_candidates": 1,
       "pending_details": 0,
@@ -34,12 +34,12 @@
     }
   },
   "checksums": {
-    "snapshot_sha256": "2f8a5472dd31fc78c9a2bc311a7a8009f55e4111a20abd9cf058fd27fa1d546e",
-    "report_sha256": "7a4c05082b6947abb3505fd05319302437483e683f494d85d38a2315f0b15185"
+    "snapshot_sha256": "c7b622226305dd5ca9137209f66739aa3b4b27a58c3f05269c927f6591511914",
+    "report_sha256": "61dc8c90fb8685417a8534e5e54248b5afbb392d9d046b729bebcedc69c80a19"
   },
   "metadata": {
     "source": "monitores-oled",
-    "collected_count": 0,
+    "collected_count": 2,
     "quarantined_item_count": 0
   }
 }
